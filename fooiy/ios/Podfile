@@ -26,6 +26,8 @@ target 'fooiy' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'NMapsMap','3.15.0'
+
   target 'fooiyTests' do
     inherit! :complete
     # Pods for testing
