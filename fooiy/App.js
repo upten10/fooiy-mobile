@@ -1,10 +1,14 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+
+import RootNavigator from './src/navigation/RootNavigator';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const App = () => {
-  return <View></View>;
+  return (
+    <SafeAreaProvider>
+      <RootNavigator />
+    </SafeAreaProvider>
+  );
 };
-
-const styles = StyleSheet.create({});
 
 export default App;
