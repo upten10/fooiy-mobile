@@ -2,6 +2,7 @@ import Map from '../screens/map/Map';
 import FeedStackNavigation from '../screens/feed/StackNavigation';
 import Suggestion from '../screens/suggestion/Suggestion';
 import Mypage from '../screens/mypage/Mypage';
+import Register from '../screens/register/Register';
 
 export const Route = [
   {
@@ -21,7 +22,7 @@ export const Route = [
   {
     id: 3,
     name: 'Register',
-    component: Suggestion,
+    component: Register,
     focused: require('../../assets/icons/navigation/ic_register.png'),
     unfocused: require('../../assets/icons/navigation/ic_register.png'),
   },
