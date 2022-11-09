@@ -5,6 +5,8 @@
 	<!-- 네이버 지도 -->
 	<key>NMFClientId</key>
     <string>slg5tzx3gv</string>
+	<!-- 네이버 지도 -->
+	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
