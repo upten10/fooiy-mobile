@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Dimensions, View, StyleSheet, FlatList, Animated} from 'react-native';
 
 import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import { apiUrl } from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import {UI_Feed} from '../../../common_ui/feed/Feed';
 import Suggestion from '../../suggestion/Suggestion';
@@ -17,7 +18,7 @@ const RenderScene = props => {
   console.log(tabRoute, tabIndex);
   const getFeedList = async data => {
     setIsLoading(true);
-    await ApiMangerV1.get('feeds/feed/', {
+    await ApiMangerV1.get(apiUrl.FEED_LIST, {
       params: {
         limit: globalVariable.FeedLimit,
         offset: offset,

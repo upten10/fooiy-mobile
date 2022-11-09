@@ -7,6 +7,7 @@ import {globalVariable} from '../../common/globalVariable';
 import {UI_Feed} from '../../common_ui/feed/Feed';
 import {RenderLoader} from '../../common_ui/RenderLoader';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
+import { apiUrl } from '../../common/Enums';
 
 const Feed = props => {
   const [feeds, setFeeds] = useState([]);
@@ -30,7 +31,7 @@ const Feed = props => {
 
   const getFeedList = async data => {
     setIsLoading(true);
-    await ApiMangerV1.get('feeds/feed/', {
+    await ApiMangerV1.get(apiUrl.FEED_LIST, {
       params: {
         limit: globalVariable.FeedLimit,
         offset: offset,

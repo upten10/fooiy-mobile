@@ -9,6 +9,8 @@ import {RenderLoader} from '../RenderLoader';
 import {UI_Feed} from '../feed/Feed';
 
 import {useNavigation} from '@react-navigation/native';
+import { apiUrl } from '../../common/Enums';
+
 export const Shop = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
@@ -18,7 +20,7 @@ export const Shop = props => {
   props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}})
   const getFeedList = async data => {
     setIsLoading(true);
-    await ApiMangerV1.get('feeds/feed/shop/', {
+    await ApiMangerV1.get(apiUrl.SHOP_LIST, {
       params: {
         limit: globalVariable.FeedLimit,
         offset: offset,
