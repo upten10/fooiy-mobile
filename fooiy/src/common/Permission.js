@@ -1,7 +1,7 @@
 import { Alert, Linking } from 'react-native';
 import {check, PERMISSIONS, RESULTS, request, checkNotifications} from 'react-native-permissions';
 
-const askPermission = async () => {
+const CameraPermission = async () => {
     return(
         check(PERMISSIONS.IOS.CAMERA)
         .then((result) => {
@@ -41,4 +41,4 @@ const askPermission = async () => {
     
 };
 
-export default askPermission();
+export default CameraPermission();
