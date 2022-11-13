@@ -7,7 +7,7 @@ import {globalVariable} from '../../common/globalVariable';
 import {UI_Feed} from '../../common_ui/feed/Feed';
 import {RenderLoader} from '../../common_ui/RenderLoader';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
-import { apiUrl } from '../../common/Enums';
+import {apiUrl} from '../../common/Enums';
 
 const Feed = props => {
   const [feeds, setFeeds] = useState([]);
@@ -38,7 +38,7 @@ const Feed = props => {
         address_depth1: '',
       },
     }).then(res => {
-      console.log(res)
+      console.log(res);
       if (res.data.payload.feed_list) {
         setFeeds([...feeds, ...res.data.payload.feed_list.results]);
         setIsLoading(false);
