@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Dimensions,
@@ -13,6 +13,22 @@ const RegisterCamera = () => {
   const camera = useRef(null);
   const devices = useCameraDevices();
   const device = devices.back;
+
+  const takePhotoOptions = {
+    qualityPrioritization: 'speed',
+    flash: 'off',
+    exif: true,
+  };
+
+  const takePhoto = async () => {
+    try {
+      if (camera.current == null) throw new Error('Camera Ref is Null');
+      const photo = await camera.current.takePhoto(takePhotoOptions);
+      console.warn(photo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const checkCameraPermission = async () => {
     let status = await Camera.getCameraPermissionStatus();
@@ -44,7 +60,7 @@ const RegisterCamera = () => {
       />
       <View style={styles.padding} />
       <View style={styles.take_photo_box}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={takePhoto}>
           <View style={styles.take_photo} />
         </TouchableOpacity>
       </View>

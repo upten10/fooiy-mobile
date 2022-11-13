@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Button, View,Text} from 'react-native';
+import {FlatList, StyleSheet, Button, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {StackHeader} from '../headers/StackHeader';
@@ -9,7 +9,7 @@ import {RenderLoader} from '../RenderLoader';
 import {UI_Feed} from '../feed/Feed';
 
 import {useNavigation} from '@react-navigation/native';
-import { apiUrl } from '../../common/Enums';
+import {apiUrl} from '../../common/Enums';
 
 export const Shop = props => {
   const [feeds, setFeeds] = useState([]);
@@ -17,7 +17,7 @@ export const Shop = props => {
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
-  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}})
+  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const getFeedList = async data => {
     setIsLoading(true);
     await ApiMangerV1.get(apiUrl.SHOP_LIST, {
@@ -43,17 +43,17 @@ export const Shop = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);
   return (
-      <SafeAreaView style={styles.container}>
-        <StackHeader shop={props.route.params} />
-        <FlatList
-          data={feeds}
-          renderItem={({item}) => <UI_Feed {...item} />}
-          keyExtractor={(feeds, index) => index.toString()}
-          ListFooterComponent={RenderLoader(isLoading)}
-          onEndReached={loadMoreItem}
-          onEndReachedThreshold={3}
-        />
-      </SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <StackHeader shop={props.route.params} />
+      <FlatList
+        data={feeds}
+        renderItem={({item}) => <UI_Feed {...item} />}
+        keyExtractor={(feeds, index) => index.toString()}
+        ListFooterComponent={RenderLoader(isLoading)}
+        onEndReached={loadMoreItem}
+        onEndReachedThreshold={3}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -67,12 +67,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   test: {
-    height:100,
-    zIndex:100,
+    height: 100,
+    zIndex: 100,
     backgroundColor: '#242424',
     display: 'flex',
     position: 'absolute',
-    top:700,
-    elevation:1
+    top: 700,
+    elevation: 1,
   },
 });
