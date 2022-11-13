@@ -10,6 +10,8 @@ import {useNavigation} from '@react-navigation/native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
+
 const RegisterCamera = () => {
   const navigation = useNavigation();
   const camera = useRef(null);
@@ -61,6 +63,7 @@ const RegisterCamera = () => {
 
   return (
     <View style={styles.container}>
+      <StackHeader title="카메라" />
       <Camera
         ref={camera}
         style={{width: width, height: width}}
@@ -82,10 +85,6 @@ export default RegisterCamera;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  padding: {
-    width: '100%',
-    height: '50%',
   },
   take_photo_box: {
     width: '100%',
