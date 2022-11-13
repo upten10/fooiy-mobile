@@ -6,25 +6,35 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const RegisterCamera = () => {
+  const navigation = useNavigation();
   const camera = useRef(null);
   const devices = useCameraDevices();
   const device = devices.back;
+  const width = Dimensions.get('window').width;
+  const height = Dimensions.get('window').height;
 
   const takePhotoOptions = {
     qualityPrioritization: 'speed',
     flash: 'off',
     exif: true,
+    width: width,
+    height: width,
   };
 
   const takePhoto = async () => {
     try {
       if (camera.current == null) throw new Error('Camera Ref is Null');
       const photo = await camera.current.takePhoto(takePhotoOptions);
-      console.warn(photo);
+      // console.log(photo);
+      const path = 'file://' + photo.path;
+      navigation.navigate('ImageCrop', {
+        photo: path,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -50,21 +60,20 @@ const RegisterCamera = () => {
     return <View style={{flex: 1, backgroundColor: '#666'}} />;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Camera
         ref={camera}
-        style={StyleSheet.absoluteFill}
+        style={{width: width, height: width}}
         device={device}
         isActive={true}
         photo={true}
       />
-      <View style={styles.padding} />
-      <View style={styles.take_photo_box}>
+      <View style={[styles.take_photo_box, {height: height - width - 100}]}>
         <TouchableOpacity onPress={takePhoto}>
           <View style={styles.take_photo} />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -80,7 +89,6 @@ const styles = StyleSheet.create({
   },
   take_photo_box: {
     width: '100%',
-    height: '50%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
