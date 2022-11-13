@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Image, Text, StyleSheet, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 export const StackHeader = props => {
@@ -21,7 +21,9 @@ export const StackHeader = props => {
       <View style={styles.go_back_container}>
         <TouchableOpacity
           onPress={() => {
-            navigation.getParent().setOptions({tabBarStyle: {...styles.tab_bar, ...styles.shadow},})
+            navigation
+              .getParent()
+              .setOptions({tabBarStyle: {...styles.tab_bar, ...styles.shadow}});
             navigation.goBack();
           }}>
           <Image
