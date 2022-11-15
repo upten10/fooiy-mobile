@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import CameraPermission from '../../../common/Permission';
 
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
@@ -42,22 +42,10 @@ const RegisterCamera = () => {
     }
   };
 
-  const checkCameraPermission = async () => {
-    let status = await Camera.getCameraPermissionStatus();
-    if (status !== 'authorized') {
-      await Camera.requestCameraPermission();
-      status = await Camera.getCameraPermissionStatus();
-      if (status === 'denied') {
-        // showToast(
-        //   'You will not be able to scan if you do not allow camera access',
-        // );
-      }
-    }
-  };
-
   useEffect(() => {
-    checkCameraPermission();
+    CameraPermission();
   }, []);
+
   if (device == null)
     return <View style={{flex: 1, backgroundColor: '#666'}} />;
 
@@ -71,7 +59,7 @@ const RegisterCamera = () => {
         isActive={true}
         photo={true}
       />
-      <View style={[styles.take_photo_box, {height: height - width - 100}]}>
+      <View style={[styles.take_photo_box, {height: height - width - 156}]}>
         <TouchableOpacity onPress={takePhoto}>
           <View style={styles.take_photo} />
         </TouchableOpacity>
