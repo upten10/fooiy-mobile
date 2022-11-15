@@ -11,7 +11,6 @@ import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import CameraPermission from '../../../common/Permission';
 
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import CameraPermission from '../../../common/Permission';
 
 const RegisterCamera = () => {
   const navigation = useNavigation();

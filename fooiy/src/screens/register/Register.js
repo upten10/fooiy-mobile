@@ -31,7 +31,7 @@ const Register = () => {
   };
 
   const goGallery = () => {
-    navigation.navigate('RegisterCamera');
+    navigation.navigate('Gallery');
     toggleModal();
   };
 
