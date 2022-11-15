@@ -2,7 +2,7 @@ import Map from '../screens/map/Map';
 import FeedStackNavigation from '../screens/feed/StackNavigation';
 import Suggestion from '../screens/suggestion/Suggestion';
 import Mypage from '../screens/mypage/Mypage';
-import Register from '../screens/register/Register';
+import RegisterStackNavigation from '../screens/register/RegisterStackNavigation';
 
 export const Route = [
   {
@@ -21,8 +21,8 @@ export const Route = [
   },
   {
     id: 3,
-    name: 'Register',
-    component: Register,
+    name: 'RegisterStackNavigation',
+    component: RegisterStackNavigation,
     focused: require('../../assets/icons/navigation/ic_register.png'),
     unfocused: require('../../assets/icons/navigation/ic_register.png'),
   },
