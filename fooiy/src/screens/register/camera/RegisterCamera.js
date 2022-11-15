@@ -11,6 +11,7 @@ import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import CameraPermission from '../../../common/Permission';
 
 const RegisterCamera = () => {
   const navigation = useNavigation();
@@ -56,7 +57,7 @@ const RegisterCamera = () => {
   };
 
   useEffect(() => {
-    checkCameraPermission();
+    CameraPermission();
   }, []);
   if (device == null)
     return <View style={{flex: 1, backgroundColor: '#666'}} />;

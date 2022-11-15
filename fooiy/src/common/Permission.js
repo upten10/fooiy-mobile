@@ -41,4 +41,4 @@ const CameraPermission = async () => {
     
 };
 
-export default CameraPermission();
+export default CameraPermission;

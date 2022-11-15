@@ -2,13 +2,13 @@ import React, {useEffect} from 'react';
 
 import RootNavigator from './src/navigation/RootNavigator';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import RNBootSplash from 'react-native-bootsplash';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      RNBootSplash.hide({fade: true});
+      SplashScreen.hide();
     }, 2000);
   }, []);
 
