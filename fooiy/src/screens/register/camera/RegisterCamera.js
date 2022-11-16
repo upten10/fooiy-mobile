@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Dimensions,
@@ -6,49 +6,65 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {CameraPermission} from '../../../common/Permission';
+
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const RegisterCamera = () => {
+  const navigation = useNavigation();
   const camera = useRef(null);
   const devices = useCameraDevices();
   const device = devices.back;
+  const width = Dimensions.get('window').width;
+  const height = Dimensions.get('window').height;
 
-  const checkCameraPermission = async () => {
-    let status = await Camera.getCameraPermissionStatus();
-    if (status !== 'authorized') {
-      await Camera.requestCameraPermission();
-      status = await Camera.getCameraPermissionStatus();
-      if (status === 'denied') {
-        // showToast(
-        //   'You will not be able to scan if you do not allow camera access',
-        // );
-      }
+  const takePhotoOptions = {
+    qualityPrioritization: 'speed',
+    flash: 'off',
+    exif: true,
+    width: width,
+    height: width,
+  };
+
+  const takePhoto = async () => {
+    try {
+      if (camera.current == null) throw new Error('Camera Ref is Null');
+      const photo = await camera.current.takePhoto(takePhotoOptions);
+      // console.log(photo);
+      const path = 'file://' + photo.path;
+      navigation.navigate('ImageCrop', {
+        photo: path,
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    checkCameraPermission();
+    CameraPermission();
   }, []);
+
   if (device == null)
     return <View style={{flex: 1, backgroundColor: '#666'}} />;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <StackHeader title="카메라" />
       <Camera
         ref={camera}
-        style={StyleSheet.absoluteFill}
+        style={{width: width, height: width}}
         device={device}
         isActive={true}
         photo={true}
       />
-      <View style={styles.padding} />
-      <View style={styles.take_photo_box}>
-        <TouchableOpacity>
+      <View style={[styles.take_photo_box, {height: height - width - 156}]}>
+        <TouchableOpacity onPress={takePhoto}>
           <View style={styles.take_photo} />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -58,13 +74,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  padding: {
-    width: '100%',
-    height: '50%',
-  },
   take_photo_box: {
     width: '100%',
-    height: '50%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',

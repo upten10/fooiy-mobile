@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Image, Text, StyleSheet, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 export const StackHeader = props => {
@@ -12,8 +12,12 @@ export const StackHeader = props => {
             <Text style={styles.shop_name}>{props.shop.shop_name}</Text>
             <Text style={styles.shop_address}>{props.shop.shop_address}</Text>
           </View>
+        ) : // It is for account stack header
+        props.title ? (
+          <View style={styles.header_container}>
+            <Text style={styles.title_name}>{props.title}</Text>
+          </View>
         ) : (
-          // It is for account stack header
           <View></View>
         )}
       </View>
@@ -21,7 +25,9 @@ export const StackHeader = props => {
       <View style={styles.go_back_container}>
         <TouchableOpacity
           onPress={() => {
-            navigation.getParent().setOptions({tabBarStyle: {...styles.tab_bar, ...styles.shadow},})
+            navigation
+              .getParent()
+              .setOptions({tabBarStyle: {...styles.tab_bar, ...styles.shadow}});
             navigation.goBack();
           }}>
           <Image
@@ -59,6 +65,9 @@ const styles = StyleSheet.create({
   shop_name: {
     color: '#0D0F14',
     marginBottom: 8,
+  },
+  title_name: {
+    fontSize: 16,
   },
   shop_address: {
     color: '#4A5470',

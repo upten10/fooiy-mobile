@@ -37,12 +37,24 @@
 			</dict>
 		</dict>
 	</dict>
+
+	<!-- camera -->
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs access to your Camera.</string>
+	<!-- camera -->
+
+	<!-- location -->
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>NSLocationWhenInUseUsageDescription Permission</string>
+	<!-- location -->
+
+	<!-- gallery -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>카메라 사용 권한은 이미지 촬영 및 첨부를 위해 필요합니다.</string>
+	<!-- gallery -->
+
 	<key>UILaunchStoryboardName</key>
-	<string>BootSplash.storyboard</string>
+	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
