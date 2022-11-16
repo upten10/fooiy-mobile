@@ -1,13 +1,6 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
-import {
-  View,
-  FlatList,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
-import {PermissionsAndroid, Platform} from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {View, FlatList, Image, TouchableOpacity, Text} from 'react-native';
+import {Platform} from 'react-native';
 
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import RNFS from 'react-native-fs';
