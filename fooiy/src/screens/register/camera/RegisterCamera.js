@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import CameraPermission from '../../../common/Permission';
+import {CameraPermission} from '../../../common/Permission';
 
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
