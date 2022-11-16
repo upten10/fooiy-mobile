@@ -3,7 +3,6 @@ import {View, FlatList} from 'react-native';
 import {PermissionsAndroid, Platform} from 'react-native';
 
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
-import {GalleryPermission} from '../../../common/Permission';
 // import RNFS from 'react-native-fs';
 
 const Gallery = () => {
@@ -21,8 +20,8 @@ const Gallery = () => {
   };
 
   useEffect(() => {
-    GalleryPermission();
-  }, []);
+    getPhotoWithPermission();
+  });
 
   //스크롤 될 때마다 사진을 불러올 경우 현재의 갤러리를 어디까지 불러왔는지에 대한 저장 값
   const [galleryCursor, setGalleryCursor] = useState(null);
