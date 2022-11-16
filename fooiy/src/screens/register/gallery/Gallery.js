@@ -1,13 +1,6 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
-import {
-  View,
-  FlatList,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
-import {PermissionsAndroid, Platform} from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {View, FlatList, Image, TouchableOpacity, Text} from 'react-native';
+import {Platform} from 'react-native';
 
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import RNFS from 'react-native-fs';
@@ -21,10 +14,10 @@ const Gallery = () => {
   const image_width = width / 3;
   const [galleryCursor, setGalleryCursor] = useState(null);
   const [galleryList, setGalleryList] = useState([]);
-  const [selectPhotoList, setSelectPhotoList] = useState([]);
+  const [selectedPhotoIndexs, setSelectedPhotoIndexs] = useState([]);
   const getGalleryPhotos = async () => {
     const params = {
-      first: 21,
+      first: 12,
       assetType: 'Photos',
       ...(galleryCursor && {after: galleryCursor}),
     };
@@ -66,8 +59,12 @@ const Gallery = () => {
     return fileURI;
   };
 
-  const selectPhoto = item => {
-    setSelectPhotoList([...selectPhotoList, item]);
+  const selectPhoto = index => {
+    if (selectedPhotoIndexs.findIndex(element => element === index) === -1) {
+      setSelectedPhotoIndexs([...selectedPhotoIndexs, index]);
+    } else {
+      setSelectedPhotoIndexs(selectedPhotoIndexs.filter(idx => idx !== index));
+    }
   };
 
   useEffect(() => {
@@ -76,14 +73,14 @@ const Gallery = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const SelectPhoto = useCallback(() => {
+  const SelectedPhoto = useCallback(() => {
     const width = globalVariable.width;
     return (
       <View style={{width: width, height: width}}>
         <Image
           source={
-            selectPhotoList.length !== 0
-              ? {uri: selectPhotoList[0].image.uri}
+            selectedPhotoIndexs.length !== 0
+              ? {uri: galleryList[selectedPhotoIndexs[0]].node.image.uri}
               : null
           }
           style={{
@@ -94,11 +91,12 @@ const Gallery = () => {
         />
       </View>
     );
-  }, [selectPhotoList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPhotoIndexs]);
 
   return (
     <View>
-      <SelectPhoto />
+      <SelectedPhoto />
       <FlatList
         data={galleryList}
         style={{height: height - width}}
@@ -112,11 +110,30 @@ const Gallery = () => {
           return (
             <View style={{flex: 1}}>
               {item.node ? (
-                <TouchableOpacity onPress={() => selectPhoto(item.node)}>
-                  <Image
-                    source={{uri: item.node.image.uri}}
-                    style={{width: image_width, height: image_width}}
-                  />
+                <TouchableOpacity
+                  onPress={() => {
+                    selectPhoto(index);
+                  }}>
+                  {selectedPhotoIndexs.findIndex(
+                    element => element === index,
+                  ) === -1 ? (
+                    <Image
+                      source={{uri: item.node.image.uri}}
+                      style={{width: image_width, height: image_width}}
+                    />
+                  ) : (
+                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                      <Image
+                        source={{uri: item.node.image.uri}}
+                        style={{width: image_width, height: image_width}}
+                      />
+                      <Text style={{position: 'absolute'}}>
+                        {selectedPhotoIndexs.findIndex(
+                          element => element === index,
+                        ) + 1}
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
               ) : null}
             </View>
