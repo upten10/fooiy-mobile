@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import NaverMapView from 'react-native-nmap';
+import { LocationPermission } from '../../common/Permission';
 
 const {width} = Dimensions.get('screen');
 
@@ -32,6 +33,11 @@ function MyMap() {
 
 const Map = () => {
   const tabBarheight = useBottomTabBarHeight();
+  
+  useEffect(()=>{
+    LocationPermission();
+  }, []);
+
   return (
     <View>
       <MyMap />
