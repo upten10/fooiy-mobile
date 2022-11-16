@@ -44,8 +44,13 @@
 	<!-- camera -->
 
 	<!-- location -->
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>YOUR-PURPOSE-KEY</key>
+		<string>앱이 사용자의 구체적인 위치를 사용하도록 허용해주세요.</string>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>NSLocationWhenInUseUsageDescription Permission</string>
+	<string>원활한 앱 사용을 위해 위치 권한을 허용해주세요.</string>
 	<!-- location -->
 
 	<!-- gallery -->
