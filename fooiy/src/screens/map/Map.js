@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import NaverMap from './NaverMap';
 
