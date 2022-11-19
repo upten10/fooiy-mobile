@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Button,
+  StyleSheet,
 } from 'react-native';
 import {Platform} from 'react-native';
 
@@ -20,13 +21,16 @@ import cloneDeep from 'lodash/cloneDeep';
 const Gallery = () => {
   const width = globalVariable.width;
   const height = globalVariable.height;
-  const image_width = width / 3;
   const cropViewRef = useRef(null);
   const [cropPhoto, setCropPhoto] = useState(false);
   const [galleryCursor, setGalleryCursor] = useState(null);
-  const [galleryOriginalList, setGalleryOriginalList] = useState([]);
   const [galleryList, setGalleryList] = useState([]);
-  const [selectedPhotoIndexs, setSelectedPhotoIndexs] = useState([]);
+  const [galleryOriginalListIOS, setGalleryOriginalListIOS] = useState([]); // ios 전용
+  const [galleryOriginalList, setGalleryOriginalList] = useState([]);
+  const [selectIndex, setSelectIndex] = useState(0);
+  const [selectedPhotoIndexList, setSelectedPhotoList] = useState([]);
+
+  // 갤러리에서 사진 받아오기
   const getGalleryPhotos = async () => {
     const params = {
       first: 12,
@@ -42,12 +46,11 @@ const Gallery = () => {
         } else {
           setGalleryCursor(page_info.end_cursor);
         }
-
         /*ios인 경우는 ph:// 형식으로 사진이 저장 uri가 아닌 url 이기에 읽을 수 없어
             react-native-fs의 파일 시스템을 이용하여 변환.*/
         if (Platform.OS === 'ios') {
           const copy_edges = cloneDeep(edges);
-          setGalleryOriginalList([...galleryOriginalList, ...copy_edges]);
+          setGalleryOriginalListIOS([...galleryOriginalListIOS, ...copy_edges]);
           for await (const item of edges) {
             const fileName = item.node.image.uri.replace('ph://', '');
             const result = await phPathToFilePath(
@@ -57,6 +60,8 @@ const Gallery = () => {
             item.node.image.uri = result;
           }
         }
+        const copy_edges = cloneDeep(edges);
+        setGalleryOriginalList([...galleryOriginalList, ...copy_edges]);
         setGalleryList([...galleryList, ...edges]);
       }
     } catch (error) {
@@ -78,10 +83,13 @@ const Gallery = () => {
   };
 
   const selectPhoto = index => {
-    if (selectedPhotoIndexs.findIndex(element => element === index) === -1) {
-      setSelectedPhotoIndexs([...selectedPhotoIndexs, index]);
+    if (selectedPhotoIndexList.findIndex(element => element === index) === -1) {
+      if (selectedPhotoIndexList.length === 5) {
+        return;
+      }
+      setSelectedPhotoList([...selectedPhotoIndexList, index]);
     } else {
-      setSelectedPhotoIndexs(selectedPhotoIndexs.filter(idx => idx !== index));
+      setSelectedPhotoList(selectedPhotoIndexList.filter(idx => idx !== index));
     }
   };
 
@@ -93,23 +101,27 @@ const Gallery = () => {
 
   const SelectedPhoto = useCallback(() => {
     const width = globalVariable.width;
-    if (selectedPhotoIndexs.length === 0) {
+    if (selectedPhotoIndexList.length === 0) {
       return;
     }
     return (
-      <View style={{width: width, height: width * 1.1}}>
+      <View style={styles.selected_photo_corp_container}>
         {cropPhoto ? (
-          <View style={{flex: 1}}>
+          <View>
             <CropView
               ref={cropViewRef}
               sourceUrl={
                 Platform.OS === 'ios'
-                  ? galleryOriginalList[selectedPhotoIndexs[0]].node.image.uri
-                  : galleryList[selectedPhotoIndexs[0]].node.image.uri
+                  ? galleryOriginalListIOS[selectedPhotoIndexList[selectIndex]]
+                      .node.image.uri
+                  : galleryList[selectedPhotoIndexList[selectIndex]].node.image
+                      .uri
               }
-              style={{width: width, height: width}}
+              style={styles.crop_photo}
               onImageCrop={res => {
-                galleryList[selectedPhotoIndexs[0]].node.image.uri = res.uri;
+                galleryList[
+                  selectedPhotoIndexList[selectIndex]
+                ].node.image.uri = res.uri;
                 setCropPhoto(false);
               }}
               keepAspectRatio
@@ -131,34 +143,55 @@ const Gallery = () => {
             </View>
           </View>
         ) : (
-          <View>
+          <View style={styles.container}>
             <Image
-              source={
-                selectedPhotoIndexs.length !== 0
-                  ? {uri: galleryList[selectedPhotoIndexs[0]].node.image.uri}
-                  : null
-              }
-              style={{
-                width: width,
-                height: width,
-                resizeMode: 'contain',
+              source={{
+                uri: galleryList[selectedPhotoIndexList[selectIndex]].node.image
+                  .uri,
               }}
+              style={styles.selected_photo}
             />
-            <View style={{height: width / 10, flexDirection: 'row'}}>
+            <View
+              style={{height: width / 10, flexDirection: 'row', bottom: 70}}>
               <Button title="편집" onPress={() => setCropPhoto(true)} />
             </View>
+            <FlatList
+              data={selectedPhotoIndexList}
+              keyExtractor={index => index.toString()}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={styles.selected_photo_list}
+              renderItem={({item, index}) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectIndex(index);
+                    }}>
+                    <Image
+                      source={{uri: galleryList[item].node.image.uri}}
+                      style={styles.selected_photo_list_item}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+            />
           </View>
         )}
       </View>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPhotoIndexs, cropPhoto]);
+  }, [selectedPhotoIndexList, cropPhoto, selectIndex]);
 
   return (
     <View>
-      <SelectedPhoto />
+      {selectedPhotoIndexList.length !== 0 ? (
+        <SelectedPhoto />
+      ) : (
+        <View style={[styles.crop_photo, {backgroundColor: '#cccc'}]}></View>
+      )}
+
       <FlatList
-        data={galleryList}
+        data={galleryOriginalList}
         style={{height: height - width}}
         keyExtractor={(item, index) => index.toString()}
         onEndReachedThreshold={0.7}
@@ -168,27 +201,27 @@ const Gallery = () => {
         }}
         renderItem={({item, index}) => {
           return (
-            <View style={{flex: 1}}>
+            <View style={styles.container}>
               {item.node ? (
                 <TouchableOpacity
                   onPress={() => {
                     selectPhoto(index);
                   }}>
-                  {selectedPhotoIndexs.findIndex(
+                  {selectedPhotoIndexList.findIndex(
                     element => element === index,
                   ) === -1 ? (
                     <Image
                       source={{uri: item.node.image.uri}}
-                      style={{width: image_width, height: image_width}}
+                      style={styles.gallery_photos}
                     />
                   ) : (
-                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                    <View>
                       <Image
                         source={{uri: item.node.image.uri}}
-                        style={{width: image_width, height: image_width}}
+                        style={styles.gallery_photos}
                       />
-                      <Text style={{position: 'absolute'}}>
-                        {selectedPhotoIndexs.findIndex(
+                      <Text style={styles.selected_photo_index}>
+                        {selectedPhotoIndexList.findIndex(
                           element => element === index,
                         ) + 1}
                       </Text>
@@ -205,3 +238,40 @@ const Gallery = () => {
 };
 
 export default Gallery;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  selected_photo_corp_container: {
+    width: globalVariable.width,
+    height: globalVariable.width * 1.1,
+  },
+  gallery_photos: {
+    width: globalVariable.width / 3,
+    height: globalVariable.width / 3,
+  },
+  crop_photo: {
+    width: globalVariable.width,
+    height: globalVariable.width,
+  },
+  selected_photo: {
+    width: globalVariable.width,
+    height: globalVariable.width,
+    resizeMode: 'contain',
+  },
+  selected_photo_index: {
+    position: 'absolute',
+    right: 0,
+  },
+  selected_photo_list: {
+    position: 'absolute',
+    bottom: 10,
+  },
+  selected_photo_list_item: {
+    width: globalVariable.width / 6,
+    height: globalVariable.width / 6,
+    borderRadius: 20,
+    marginLeft: 10,
+  },
+});

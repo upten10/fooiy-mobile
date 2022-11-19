@@ -6,7 +6,7 @@ import {
   request,
   checkNotifications,
   checkLocationAccuracy,
-  requestLocationAccuracy
+  requestLocationAccuracy,
 } from 'react-native-permissions';
 
 const CameraPermission = async () => {
@@ -90,13 +90,11 @@ const GalleryPermission = async () => {
 const LocationPermission = async () => {
   return (
     checkLocationAccuracy()
-    .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
-    .catch(() => console.warn('Cannot check location accuracy')),
-
+      .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
+      .catch(() => console.warn('Cannot check location accuracy')),
     requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
-    .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
-    .catch(() => console.warn('Cannot request location accuracy')),
-    
+      .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
+      .catch(() => console.warn('Cannot request location accuracy')),
     check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
       .then(result => {
         switch (result) {
