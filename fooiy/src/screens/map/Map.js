@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import NaverMap from './NaverMap';
-import { LocationPermission } from '../../common/Permission';
+import {LocationPermission} from '../../common/Permission';
 
 const {width} = Dimensions.get('screen');
 
@@ -11,7 +11,7 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.9;
 
 const Map = () => {
   const tabBarheight = useBottomTabBarHeight();
-  useEffect(()=>{
+  useEffect(() => {
     LocationPermission();
   }, []);
   return <NaverMap />;

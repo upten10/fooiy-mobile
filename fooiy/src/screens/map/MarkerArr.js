@@ -15,6 +15,13 @@ const MarkerArr = [
     },
     suitability: 84,
   },
+  {
+    Location: {
+      latitude: 37.301407091875376,
+      longitude: 126.83840355408941,
+    },
+    suitability: 60,
+  },
 ];
 
 export default MarkerArr;

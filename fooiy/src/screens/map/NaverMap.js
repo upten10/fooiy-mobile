@@ -1,10 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Dimensions} from 'react-native';
 import NaverMapView, {Align, Marker} from 'react-native-nmap';
 import MarkerArr from './MarkerArr';
 
 const NaverMap = () => {
   const currentLocation = {latitude: 37.301796, longitude: 126.840034};
   const markerImg = '../../../assets/icons/marker/marker.png';
+  const markerClickedImg = '../../../assets/icons/marker/marker_clicked.png';
+  // const markerImg = '../../../assets/icons/marker/marker.png';
+  // const markerClickedImg = '../../../assets/icons/marker/marker_clicked.png';
+
+  const clickArr = new Array(MarkerArr.length).fill(false);
+
+  const [isClicked, setIsClicked] = useState(clickArr);
+
+  const handleClick = idx => {
+    setIsClicked(
+      isClicked.map((elem, index) => (index === idx ? !elem : elem)),
+    );
+  };
 
   return (
     <NaverMapView
@@ -15,24 +29,26 @@ const NaverMap = () => {
       // onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
       // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
     >
-      {MarkerArr.map((elem, index) => (
-        <Marker
-          key={index}
-          coordinate={elem.Location}
-          width={48}
-          height={58}
-          image={require(markerImg)}
-          // image={require(markerImg)}
-          caption={{
-            text: `${elem.suitability}%`,
-            align: Align.Center,
-            color: '#FE5B5C',
-            textSize: 13,
-          }}
-          // 글자 위치 변경 안돼서 subCaption 넣어서 위로 밀었음
-          subCaption={{text: 'ㅤ', textSize: 15}}
-        />
-      ))}
+      {MarkerArr.map((elem, index) => {
+        return (
+          <Marker
+            key={index}
+            coordinate={elem.Location}
+            width={40}
+            height={50}
+            image={
+              isClicked[index] ? require(markerClickedImg) : require(markerImg)
+            }
+            caption={{
+              text: `${elem.suitability}%`,
+              align: Align.Center,
+              color: '#FE5B5C',
+              textSize: 13,
+            }}
+            onClick={() => handleClick(index)}
+          />
+        );
+      })}
     </NaverMapView>
   );
 };
