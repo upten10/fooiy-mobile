@@ -16,8 +16,6 @@ const Register = () => {
   const navigation = useNavigation();
   const width = Dimensions.get('window').width;
   const marginHeight = Dimensions.get('window').height / 2.8;
-
-  navigation.setOptions({tabBarStyle: {...styles.tab_bar, ...styles.shadow}});
   const register_photo = () => {
     setModalVisible(true);
   };

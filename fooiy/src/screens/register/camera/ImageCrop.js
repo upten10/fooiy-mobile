@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, Text, Dimensions} from 'react-native';
+import {Image, View, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 

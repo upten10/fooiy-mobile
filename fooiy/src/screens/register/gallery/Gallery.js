@@ -212,7 +212,7 @@ const Gallery = () => {
 
       <FlatList
         data={galleryOriginalList}
-        style={{height: height - width}}
+        style={{height: height - width - 56}}
         keyExtractor={(item, index) => index.toString()}
         onEndReachedThreshold={0.7}
         numColumns={3}
@@ -270,6 +270,8 @@ const styles = StyleSheet.create({
   gallery_photos: {
     width: globalVariable.width / 3,
     height: globalVariable.width / 3,
+    borderWidth: 1,
+    borderColor: '#fff',
   },
   crop_photo: {
     width: globalVariable.width,
