@@ -38,7 +38,7 @@ const Register = () => {
   return (
     <View style={styles.container}>
       <StackHeader title="사진 등록" />
-      <TouchableOpacity onPress={register_photo}>
+      <TouchableOpacity onPress={register_photo} activeOpacity={0.8}>
         <View style={[styles.register_photo, {width: width, height: width}]}>
           <Text>사진 등록</Text>
         </View>
@@ -56,7 +56,7 @@ const Register = () => {
             사진 등록 방법을 선택해주세요.
           </Text>
           <View style={styles.modal_select}>
-            <TouchableOpacity onPress={goCamera}>
+            <TouchableOpacity onPress={goCamera} activeOpacity={0.8}>
               <Image
                 // eslint-disable-next-line react-native/no-inline-styles
                 style={{
@@ -67,7 +67,7 @@ const Register = () => {
                 source={require('../../../assets/icons/register/ic_camera.png')}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={goGallery}>
+            <TouchableOpacity onPress={goGallery} activeOpacity={0.8}>
               <Image
                 // eslint-disable-next-line react-native/no-inline-styles
                 style={{

@@ -24,6 +24,7 @@ export const StackHeader = props => {
       {/* isolation for having absolute position back icon */}
       <View style={styles.go_back_container}>
         <TouchableOpacity
+          activeOpacity={0.8}
           onPress={() => {
             navigation.goBack();
           }}>
@@ -36,6 +37,8 @@ export const StackHeader = props => {
       <View style={styles.go_next_container}>
         {props.next ? (
           <TouchableOpacity
+            activeOpacity={0.8}
+            hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}
             onPress={() => {
               props.next();
             }}>

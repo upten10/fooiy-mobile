@@ -55,7 +55,7 @@ const RegisterCamera = props => {
         enableZoomGesture={true}
       />
       <View style={[styles.take_photo_box, {height: height - width - 156}]}>
-        <TouchableOpacity onPress={takePhoto}>
+        <TouchableOpacity onPress={takePhoto} activeOpacity={0.8}>
           <View style={styles.take_photo} />
         </TouchableOpacity>
       </View>

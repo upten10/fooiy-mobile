@@ -39,6 +39,7 @@ export const UI_Feed = item => {
           </View>
           <View style={styles.shop_container}>
             <TouchableOpacity
+              activeOpacity={0.8}
               style={styles.shop}
               onPress={() => {
                 navigation.navigate('Shop', {
