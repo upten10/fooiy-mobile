@@ -25,9 +25,6 @@ export const StackHeader = props => {
       <View style={styles.go_back_container}>
         <TouchableOpacity
           onPress={() => {
-            navigation
-              .getParent()
-              .setOptions({tabBarStyle: {...styles.tab_bar, ...styles.shadow}});
             navigation.goBack();
           }}>
           <Image
@@ -35,6 +32,16 @@ export const StackHeader = props => {
             source={require('../../../assets/icons/navigation/ic_go_back.png')}
           />
         </TouchableOpacity>
+      </View>
+      <View style={styles.go_next_container}>
+        {props.next ? (
+          <TouchableOpacity
+            onPress={() => {
+              props.next();
+            }}>
+            <Text style={styles.next_name}>다음</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );
@@ -47,12 +54,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff',
   },
   go_back_container: {
     height: 56,
     paddingLeft: 10,
     position: 'absolute',
     justifyContent: 'center',
+  },
+  go_next_container: {
+    height: 56,
+    position: 'absolute',
+    justifyContent: 'center',
+    right: 15,
+  },
+  next_name: {
+    fontSize: 16,
+    color: '#FF5C5C',
   },
   go_back_logo: {
     width: 24,
@@ -69,30 +87,8 @@ const styles = StyleSheet.create({
   title_name: {
     fontSize: 16,
   },
+
   shop_address: {
     color: '#4A5470',
-  },
-  tab_bar: {
-    position: 'absolute',
-    height: 90,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    elevation: 0,
-  },
-  shadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 0.15, // 낮을수록 진해짐
-        },
-        shadowOpacity: 0.3, // 높을수록 진해짐
-        shadowRadius: 5,
-      },
-      android: {
-        elevation: 6,
-      },
-    }),
   },
 });

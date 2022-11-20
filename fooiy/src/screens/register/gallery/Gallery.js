@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {Platform} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {CropView} from 'react-native-image-crop-tools';
@@ -16,9 +17,11 @@ import RNFS from 'react-native-fs';
 
 import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import cloneDeep from 'lodash/cloneDeep';
 
 const Gallery = () => {
+  const navigation = useNavigation();
   const width = globalVariable.width;
   const height = globalVariable.height;
   const cropViewRef = useRef(null);
@@ -29,6 +32,20 @@ const Gallery = () => {
   const [galleryOriginalList, setGalleryOriginalList] = useState([]);
   const [selectIndex, setSelectIndex] = useState(0);
   const [selectedPhotoIndexList, setSelectedPhotoList] = useState([]);
+  navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+
+  const go_next = () => {
+    if (selectedPhotoIndexList.length === 0) {
+      // 사진 하나는 골라야한다는 경고 로직 추가
+    } else {
+      const photoList = selectedPhotoIndexList.map(index => {
+        return galleryList[index].node;
+      });
+      navigation.navigate('TypingContent', {
+        photo_list: photoList,
+      });
+    }
+  };
 
   // 갤러리에서 사진 받아오기
   const getGalleryPhotos = async () => {
@@ -146,8 +163,10 @@ const Gallery = () => {
           <View style={styles.container}>
             <Image
               source={{
-                uri: galleryList[selectedPhotoIndexList[selectIndex]].node.image
-                  .uri,
+                uri: galleryList[selectedPhotoIndexList[selectIndex]]
+                  ? galleryList[selectedPhotoIndexList[selectIndex]].node.image
+                      .uri
+                  : null,
               }}
               style={styles.selected_photo}
             />
@@ -184,6 +203,7 @@ const Gallery = () => {
 
   return (
     <View>
+      <StackHeader title="앨범" next={go_next} />
       {selectedPhotoIndexList.length !== 0 ? (
         <SelectedPhoto />
       ) : (
@@ -267,6 +287,7 @@ const styles = StyleSheet.create({
   selected_photo_list: {
     position: 'absolute',
     bottom: 10,
+    width: globalVariable.width,
   },
   selected_photo_list_item: {
     width: globalVariable.width / 6,
