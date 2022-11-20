@@ -90,6 +90,7 @@ export default Register;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   modal_container: {
     flex: 1,

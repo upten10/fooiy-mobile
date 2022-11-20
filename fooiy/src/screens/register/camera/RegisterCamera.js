@@ -1,24 +1,19 @@
-import React, {useRef, useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-  View,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import React, {useRef, useEffect} from 'react';
+import {StyleSheet, Dimensions, View, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import {CameraPermission} from '../../../common/Permission';
 
+import {CameraPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
-const RegisterCamera = () => {
+const RegisterCamera = props => {
   const navigation = useNavigation();
   const camera = useRef(null);
   const devices = useCameraDevices();
   const device = devices.back;
   const width = Dimensions.get('window').width;
   const height = Dimensions.get('window').height;
+  navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
 
   const takePhotoOptions = {
     qualityPrioritization: 'speed',
@@ -32,7 +27,6 @@ const RegisterCamera = () => {
     try {
       if (camera.current == null) throw new Error('Camera Ref is Null');
       const photo = await camera.current.takePhoto(takePhotoOptions);
-      // console.log(photo);
       const path = 'file://' + photo.path;
       navigation.navigate('ImageCrop', {
         photo: path,
@@ -58,6 +52,7 @@ const RegisterCamera = () => {
         device={device}
         isActive={true}
         photo={true}
+        enableZoomGesture={true}
       />
       <View style={[styles.take_photo_box, {height: height - width - 156}]}>
         <TouchableOpacity onPress={takePhoto}>
@@ -73,6 +68,7 @@ export default RegisterCamera;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   take_photo_box: {
     width: '100%',
