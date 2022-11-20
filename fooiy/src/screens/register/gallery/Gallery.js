@@ -183,6 +183,7 @@ const Gallery = () => {
               renderItem={({item, index}) => {
                 return (
                   <TouchableOpacity
+                    activeOpacity={0.8}
                     onPress={() => {
                       setSelectIndex(index);
                     }}>
@@ -224,6 +225,7 @@ const Gallery = () => {
             <View style={styles.container}>
               {item.node ? (
                 <TouchableOpacity
+                  activeOpacity={0.8}
                   onPress={() => {
                     selectPhoto(index);
                   }}>
