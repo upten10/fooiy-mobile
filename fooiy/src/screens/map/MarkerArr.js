@@ -3,25 +3,42 @@
 const MarkerArr = [
   {
     Location: {
-      latitude: 37.301796,
-      longitude: 126.840034,
+      latitude: 37.298634013582046,
+      longitude: 126.83867349298293,
     },
     suitability: 98,
   },
   {
     Location: {
-      latitude: 37.300811,
-      longitude: 126.837707,
+      latitude: 37.30628067980989,
+      longitude: 126.83867349298293,
     },
     suitability: 84,
   },
   {
     Location: {
-      latitude: 37.301407091875376,
-      longitude: 126.83840355408941,
+      latitude: 37.30628067980989,
+      longitude: 126.84311523107056,
     },
     suitability: 60,
   },
+  {
+    Location: {
+      latitude: 37.298634013582046,
+      longitude: 126.84311523107056,
+    },
+    suitability: 62,
+  },
+  {
+    Location: {
+      latitude: 37.298634013582046,
+      longitude: 126.83867349298293,
+    },
+    suitability: 65,
+  },
+  // {
+  //
+  // }
 ];
 
 export default MarkerArr;
