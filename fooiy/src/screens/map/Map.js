@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, View} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import NaverMap from './NaverMap';
 import {LocationPermission} from '../../common/Permission';
-
+import BottomSheet from './BottomSheet';
 const {width} = Dimensions.get('screen');
 
 const ITEM_WIDTH = width * 0.9;
@@ -14,7 +14,12 @@ const Map = () => {
   useEffect(() => {
     LocationPermission();
   }, []);
-  return <NaverMap />;
+  return (
+    <View style={{flex: 1}}>
+      <NaverMap />
+      <BottomSheet />
+    </View>
+  );
 };
 
 export default Map;

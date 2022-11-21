@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {Dimensions} from 'react-native';
 import NaverMapView, {Align, Marker} from 'react-native-nmap';
 import MarkerArr from './MarkerArr';
 
@@ -21,7 +20,7 @@ const NaverMap = () => {
       center={{...currentLocation, zoom: 16}}
       onMapClick={() => setClickedIndex(null)}
       // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-      // onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
+      onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
       // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
     >
       {MarkerArr.map((elem, index) => {
