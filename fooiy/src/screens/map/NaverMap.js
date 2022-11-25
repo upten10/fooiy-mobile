@@ -10,19 +10,24 @@ const markerImg = '../../../assets/icons/marker/marker.png';
 const markerClickedImg = '../../../assets/icons/marker/marker_clicked.png';
 
 const NaverMap = props => {
-  const mapView = useRef(null);
+  // 현재 위치 (오브젝트)
   let curLocation = Location();
-
+  //map ref 초기화
+  const mapView = useRef(null);
+  // 클릭 된 마커 키
   const [clickedIndex, setClickedIndex] = useState(null);
 
+  // 마커 클릭 이벤트
   const onClickMarker = index => {
     setClickedIndex(index);
   };
 
+  // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
     mapView.current.setLocationTrackingMode(3);
   };
 
+  // 현위치 버튼 컴포넌트
   const LocationBtn = () => {
     return (
       <Pressable style={styles.button} onPress={onClickLocationBtn}>
@@ -36,8 +41,8 @@ const NaverMap = props => {
       <NaverMapView
         ref={mapView}
         style={styles.map}
-        center={{...curLocation, zoom: 16}}
-        onMapClick={() => setClickedIndex(null)}
+        center={{...curLocation, zoom: 16}} // 지도 시작 시 첫 위치 => 현재위치
+        onMapClick={() => setClickedIndex(null)} // 맵 클릭 시 클릭 된 마커 해제
         // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         // onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
         // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
@@ -54,13 +59,23 @@ const NaverMap = props => {
                   ? require(markerClickedImg)
                   : require(markerImg)
               }
-              caption={{
-                text: `${elem.suitability}%`,
-                align: Align.Center,
-                color: '#FE5B5C',
-                textSize: 13,
-              }}
-              onClick={() => onClickMarker(index)}
+              caption={
+                clickedIndex === index // 클릭 된 마커 캡션 흰색
+                  ? {
+                      text: `${elem.suitability}%`,
+                      align: Align.Center,
+                      color: '#ffffff',
+                      textSize: 13,
+                      haloColor: '#FE5B5C',
+                    }
+                  : {
+                      text: `${elem.suitability}%`,
+                      align: Align.Center,
+                      color: '#FE5B5C',
+                      textSize: 13,
+                    }
+              }
+              onClick={() => onClickMarker(index)} // 마커 클릭 시 해당 마커 키 저장
             />
           );
         })}
