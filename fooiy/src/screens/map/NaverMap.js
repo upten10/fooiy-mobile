@@ -59,22 +59,13 @@ const NaverMap = props => {
                   ? require(markerClickedImg)
                   : require(markerImg)
               }
-              caption={
-                clickedIndex === index // 클릭 된 마커 캡션 흰색
-                  ? {
-                      text: `${elem.suitability}%`,
-                      align: Align.Center,
-                      color: '#ffffff',
-                      textSize: 13,
-                      haloColor: '#FE5B5C',
-                    }
-                  : {
-                      text: `${elem.suitability}%`,
-                      align: Align.Center,
-                      color: '#FE5B5C',
-                      textSize: 13,
-                    }
-              }
+              caption={{
+                text: `${elem.suitability}%`,
+                align: Align.Center,
+                color: clickedIndex === index ? '#ffffff' : '#FE5B5C',
+                textSize: 13,
+                haloColor: clickedIndex === index ? '#FE5B5C' : '#ffffff',
+              }}
               onClick={() => onClickMarker(index)} // 마커 클릭 시 해당 마커 키 저장
             />
           );
