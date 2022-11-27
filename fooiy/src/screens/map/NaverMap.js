@@ -55,6 +55,7 @@ const NaverMap = props => {
         showsMyLocationButton={true}
         center={{...curLocation, zoom: 16}}
         onMapClick={() => setClickedIndex(null)}
+        zoomControl={false}
         // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         onCameraChange={e => onCameraChange(e)}
         // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}

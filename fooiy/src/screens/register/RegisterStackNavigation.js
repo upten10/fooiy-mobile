@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
+import {globalStyles} from '../../common/globalStyles';
 
 import Register from './Register';
 import RegisterCamera from './camera/RegisterCamera';
@@ -21,7 +22,7 @@ const RegisterStackNavigation = () => {
             const state = navigation.getState();
             if (state.index === 0) {
               navigation.getParent().setOptions({
-                tabBarStyle: {...styles.tab_bar, ...styles.shadow},
+                tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
               });
             }
           }}
@@ -38,29 +39,3 @@ const RegisterStackNavigation = () => {
 };
 
 export default RegisterStackNavigation;
-
-const styles = StyleSheet.create({
-  tab_bar: {
-    position: 'absolute',
-    height: 90,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    elevation: 0,
-  },
-  shadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 0.15, // 낮을수록 진해짐
-        },
-        shadowOpacity: 0.3, // 높을수록 진해짐
-        shadowRadius: 5,
-      },
-      android: {
-        elevation: 6,
-      },
-    }),
-  },
-});

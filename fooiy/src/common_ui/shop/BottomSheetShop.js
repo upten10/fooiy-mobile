@@ -1,11 +1,23 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {globalVariable} from '../../common/globalVariable';
 
 const BottomSheetShop = item => {
   const category_list = item.shop_category_list;
+  const navigation = useNavigation();
+  console.log(item);
   return (
-    <>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles.shop}
+      onPress={() => {
+        navigation.navigate('Shop', {
+          shop_id: item.public_id,
+          shop_name: item.name,
+          shop_address: item.address,
+        });
+      }}>
       <View style={styles.container}>
         <View style={styles.menu_image_container}>
           <Image source={{uri: item.menu_image}} style={styles.menu_image} />
@@ -30,7 +42,7 @@ const BottomSheetShop = item => {
           </View>
         </View>
       </View>
-    </>
+    </TouchableOpacity>
   );
 };
 
