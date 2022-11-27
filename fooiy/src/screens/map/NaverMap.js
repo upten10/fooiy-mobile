@@ -1,10 +1,11 @@
-import React, {useRef, useState} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import NaverMapView, {Align, Marker} from 'react-native-nmap';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {globalVariable} from '../../common/globalVariable';
 import Location from './Location';
 import MarkerArr from './MarkerArr';
+import MapBottomSheet from './bottom_sheet/MapBottomSheet';
 
 const markerImg = '../../../assets/icons/marker/marker.png';
 const markerClickedImg = '../../../assets/icons/marker/marker_clicked.png';
@@ -16,6 +17,12 @@ const NaverMap = props => {
   const mapView = useRef(null);
   // 클릭 된 마커 키
   const [clickedIndex, setClickedIndex] = useState(null);
+  const [screenLocation, setScreenLocation] = useState([]);
+  // 좌측 하단, 우측 하단 순으로 들어감
+
+  const onCameraChange = e => {
+    setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
+  };
 
   // 마커 클릭 이벤트
   const onClickMarker = index => {
@@ -24,7 +31,7 @@ const NaverMap = props => {
 
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
-    mapView.current.setLocationTrackingMode(3);
+    mapView.current.setLocationTrackingMode(2);
   };
 
   // 현위치 버튼 컴포넌트
@@ -36,15 +43,20 @@ const NaverMap = props => {
     );
   };
 
+  useEffect(() => {
+    onClickLocationBtn();
+  }, []);
+
   return (
     <View>
       <NaverMapView
         ref={mapView}
         style={styles.map}
-        center={{...curLocation, zoom: 16}} // 지도 시작 시 첫 위치 => 현재위치
-        onMapClick={() => setClickedIndex(null)} // 맵 클릭 시 클릭 된 마커 해제
+        showsMyLocationButton={true}
+        center={{...curLocation, zoom: 16}}
+        onMapClick={() => setClickedIndex(null)}
         // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-        // onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
+        onCameraChange={e => onCameraChange(e)}
         // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
       >
         {MarkerArr.map((elem, index) => {
@@ -62,19 +74,21 @@ const NaverMap = props => {
               caption={{
                 text: `${elem.suitability}%`,
                 align: Align.Center,
-                color: clickedIndex === index ? '#ffffff' : '#FE5B5C',
+                color: '#FE5B5C',
                 textSize: 13,
-                haloColor: clickedIndex === index ? '#FE5B5C' : '#ffffff',
               }}
-              onClick={() => onClickMarker(index)} // 마커 클릭 시 해당 마커 키 저장
+              onClick={() => onClickMarker(index)}
             />
           );
         })}
       </NaverMapView>
       <LocationBtn />
+      <MapBottomSheet screenLocation={screenLocation} />
     </View>
   );
 };
+
+export default NaverMap;
 
 const styles = StyleSheet.create({
   map: {
@@ -112,5 +126,3 @@ const styles = StyleSheet.create({
     color: '#FE5B5C',
   },
 });
-
-export default NaverMap;

@@ -3,6 +3,7 @@ const window = Dimensions.get('window');
 
 export const globalVariable = {
   FeedLimit: 12,
+  MapBottomSheetLimit: 8,
   width: window.width,
   height: window.height,
 };

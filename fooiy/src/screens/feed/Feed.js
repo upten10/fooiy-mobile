@@ -3,11 +3,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, StyleSheet, Image, FlatList} from 'react-native';
 
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
 import {UI_Feed} from '../../common_ui/feed/Feed';
 import {RenderLoader} from '../../common_ui/RenderLoader';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
-import {apiUrl} from '../../common/Enums';
 
 const Feed = props => {
   const [feeds, setFeeds] = useState([]);
@@ -38,7 +38,6 @@ const Feed = props => {
         address_depth1: '',
       },
     }).then(res => {
-      console.log(res);
       if (res.data.payload.feed_list) {
         setFeeds([...feeds, ...res.data.payload.feed_list.results]);
         setIsLoading(false);
@@ -65,6 +64,7 @@ const Feed = props => {
       <DefaultHeader />
       <View style={styles.container}>
         {noFeedImage ? (
+          ///* ListEmptyComponent 이거를 flatlist에 넣으면 됨 */
           <View>
             <Image source={{uri: noFeedImage}} style={styles.test} />
           </View>
