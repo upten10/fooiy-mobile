@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, View, Image, Platform} from 'react-native';
+import {View, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Route} from './Route';
+import {globalStyles} from '../common/globalStyles';
 
 const Tab = createBottomTabNavigator();
 
@@ -11,7 +12,7 @@ const TabNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: {...styles.tab_bar, ...styles.shadow},
+        tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
       }}>
       {Route.map(route => (
         <Tab.Screen
@@ -24,7 +25,6 @@ const TabNavigator = () => {
                 <Image
                   source={focused ? route.focused : route.unfocused}
                   resizeMode="contain"
-                  styles={styles.icon}
                 />
               </View>
             ),
@@ -53,30 +53,3 @@ const TabNavigator = () => {
 };
 
 export default TabNavigator;
-
-const styles = StyleSheet.create({
-  tab_bar: {
-    position: 'absolute',
-    height: 90,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    elevation: 0,
-  },
-  icon: {},
-  shadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 0.15, // 낮을수록 진해짐
-        },
-        shadowOpacity: 0.3, // 높을수록 진해짐
-        shadowRadius: 5,
-      },
-      android: {
-        elevation: 6,
-      },
-    }),
-  },
-});

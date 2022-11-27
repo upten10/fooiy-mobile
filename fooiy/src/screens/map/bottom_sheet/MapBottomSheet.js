@@ -73,6 +73,10 @@ const MapBottomSheet = props => {
     );
   };
 
+  const ListFooterComponent = () => {
+    return <View style={styles.footer} />;
+  };
+
   const ItemSeparatorComponent = () => {
     return <View style={styles.item_separator_line} />;
   };
@@ -87,7 +91,8 @@ const MapBottomSheet = props => {
         data={shops}
         ListEmptyComponent={ListEmptyComponent}
         ItemSeparatorComponent={ItemSeparatorComponent}
-        keyExtractor={index => index.toString()}
+        ListFooterComponent={ListFooterComponent}
+        keyExtractor={item => item.public_id.toString()}
         renderItem={({item}) => <BottomSheetShop {...item} />}
         onEndReached={loadMoreItem}
         contentContainerStyle={styles.contentContainer}
@@ -123,5 +128,8 @@ const styles = StyleSheet.create({
     width: globalVariable.width,
     backgroundColor: '#fdd',
     height: 1,
+  },
+  footer: {
+    height: globalVariable.tabBarHeight,
   },
 });

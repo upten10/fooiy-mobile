@@ -6,4 +6,5 @@ export const globalVariable = {
   MapBottomSheetLimit: 8,
   width: window.width,
   height: window.height,
+  tabBarHeight: 90,
 };
