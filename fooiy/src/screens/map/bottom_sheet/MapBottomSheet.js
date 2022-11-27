@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
     height: globalVariable.width,
   },
   item_separator_line: {
-    width: globalVariable.width,
+    width: globalVariable.width - 30,
+    alignSelf: 'center',
     backgroundColor: '#fdd',
     height: 1,
   },
