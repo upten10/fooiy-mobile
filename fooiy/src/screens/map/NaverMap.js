@@ -31,7 +31,7 @@ const NaverMap = props => {
 
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
-    mapView.current.setLocationTrackingMode(3);
+    mapView.current.setLocationTrackingMode(2);
   };
 
   // 현위치 버튼 컴포넌트
@@ -46,6 +46,7 @@ const NaverMap = props => {
   return (
     <View>
       <NaverMapView
+        ref={mapView}
         style={styles.map}
         showsMyLocationButton={true}
         center={{...curLocation, zoom: 16}}
