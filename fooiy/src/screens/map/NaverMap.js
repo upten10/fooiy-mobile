@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
 import NaverMapView, {Align, Marker} from 'react-native-nmap';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -42,6 +42,10 @@ const NaverMap = props => {
       </Pressable>
     );
   };
+
+  useEffect(() => {
+    onClickLocationBtn();
+  }, []);
 
   return (
     <View>
