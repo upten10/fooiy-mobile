@@ -1,7 +1,17 @@
-import React from 'react';
-import {View, Text, Image, Dimensions, StyleSheet, Button} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {debounce} from 'lodash';
+import {feedsAction} from '../../redux/actions/feedsAction';
+import {useDispatch, useSelector} from 'react-redux';
 
 const {width} = Dimensions.get('screen');
 const PROFILE_IMAGE_WIDTH = width * 0.1;
@@ -11,6 +21,34 @@ const IMAGE_HEIGHT = IMAGE_WIDTH;
 
 export const UI_Feed = item => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const feed_redux = {
+    id: item.id,
+    count_liked: item.count_liked,
+    is_liked: item.is_liked,
+    is_store: item.is_store,
+  };
+  dispatch(feedsAction.append(feed_redux));
+
+  const feeds = useSelector(state => state.feeds.feeds.value);
+  const feed = feeds.find(e => e.id === item.id);
+  const setIsLiked = () => {
+    feed.is_liked = !feed.is_liked;
+    dispatch(feedsAction.setChanged(feeds));
+  };
+
+  // 두번 터치 감지
+  var lastTap = null;
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    const DOUBLE_PRESS_DELAY = 300;
+    if (lastTap && now - lastTap < DOUBLE_PRESS_DELAY) {
+      setIsLiked();
+    } else {
+      lastTap = now;
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* 프사, 닉네임 */}
@@ -23,10 +61,15 @@ export const UI_Feed = item => {
       </View>
       {/* 이미지 */}
       <View style={styles.image_container}>
-        <Image source={{uri: item.image[0]}} style={styles.image} />
+        <TouchableWithoutFeedback onPress={handleDoubleTap}>
+          <Image source={{uri: item.image[0]}} style={styles.image} />
+        </TouchableWithoutFeedback>
       </View>
+
       {/* 유용한 기능 포크, 댓글 등등 */}
-      <View style={styles.useful_content}></View>
+      <View style={styles.useful_content}>
+        {feed.is_liked ? <Text>좋아요</Text> : <Text>싫어요</Text>}
+      </View>
       {/* 정보 */}
       <View style={styles.content}>
         <View style={styles.content_detail}>
