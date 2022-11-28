@@ -6,7 +6,6 @@ import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import BottomSheetShop from '../../../common_ui/shop/BottomSheetShop';
-import {RenderLoader} from '../../../common_ui/RenderLoader';
 
 const MapBottomSheet = props => {
   const {screenLocation} = props;
