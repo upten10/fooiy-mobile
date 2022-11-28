@@ -6,6 +6,7 @@ import {globalVariable} from '../../common/globalVariable';
 import Location from './Location';
 import MarkerArr from './MarkerArr';
 import MapBottomSheet from './bottom_sheet/MapBottomSheet';
+import ShopModal from './ShopModal';
 
 const markerImg = '../../../assets/icons/marker/marker.png';
 const markerClickedImg = '../../../assets/icons/marker/marker_clicked.png';
@@ -17,6 +18,8 @@ const NaverMap = props => {
   const mapView = useRef(null);
   // 클릭 된 마커 키
   const [clickedIndex, setClickedIndex] = useState(null);
+
+  const [isModalVisible, setModalVisible] = useState(false);
   const [screenLocation, setScreenLocation] = useState([]);
   // 좌측 하단, 우측 하단 순으로 들어감
 
@@ -24,9 +27,16 @@ const NaverMap = props => {
     setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
   };
 
+  // 모달 없애기
+  const toggleModal = () => {
+    setModalVisible(false);
+    setClickedIndex(null);
+  };
+
   // 마커 클릭 이벤트
   const onClickMarker = index => {
     setClickedIndex(index);
+    setModalVisible(true);
   };
 
   // 현위치 버튼 클릭 이벤트
@@ -54,7 +64,7 @@ const NaverMap = props => {
         style={styles.map}
         showsMyLocationButton={true}
         center={{...curLocation, zoom: 16}}
-        onMapClick={() => setClickedIndex(null)}
+        onMapClick={() => toggleModal()}
         zoomControl={false}
         // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         onCameraChange={e => onCameraChange(e)}
@@ -84,6 +94,7 @@ const NaverMap = props => {
         })}
       </NaverMapView>
       <LocationBtn />
+      {isModalVisible ? <ShopModal onBackdropPress={toggleModal} /> : null}
       <MapBottomSheet screenLocation={screenLocation} />
     </View>
   );

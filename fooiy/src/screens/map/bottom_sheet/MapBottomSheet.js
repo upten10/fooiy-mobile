@@ -1,21 +1,23 @@
 import React, {useCallback, useRef, useMemo, useState} from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image, ActivityIndicator} from 'react-native';
 import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 
 import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import BottomSheetShop from '../../../common_ui/shop/BottomSheetShop';
+import {RenderLoader} from '../../../common_ui/RenderLoader';
 
 const MapBottomSheet = props => {
-  const screenLocation = props.screenLocation;
+  const {screenLocation} = props;
   const sheetRef = useRef(null);
   const [shops, setShops] = useState([]);
+  const [isOpend, setIsOpend] = useState(false);
   const offset = useRef(0).current;
   const [emptyShopImage, setEmptyShopImage] = useState('');
   const totalCount = useRef(0).current;
 
-  const snapPoints = useMemo(() => ['18%', '93%'], []);
+  const snapPoints = useMemo(() => ['17%', '93%'], []);
 
   const handleSheetChange = useCallback(
     index => {
@@ -23,8 +25,11 @@ const MapBottomSheet = props => {
         offset.current = 0;
         totalCount.current = 0;
         setShops([]);
+        setEmptyShopImage('');
+        setIsOpend(false);
       } else {
         getShopList(screenLocation);
+        setIsOpend(true);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,16 +66,22 @@ const MapBottomSheet = props => {
   };
 
   const ListEmptyComponent = () => {
-    return (
-      <View>
-        {emptyShopImage ? (
-          <Image
-            source={{uri: emptyShopImage}}
-            style={styles.empty_shop_image}
-          />
-        ) : null}
-      </View>
-    );
+    if (isOpend) {
+      return (
+        <View>
+          {emptyShopImage ? (
+            <Image
+              source={{uri: emptyShopImage}}
+              style={styles.empty_shop_image}
+            />
+          ) : (
+            <View style={styles.indicator_container}>
+              <ActivityIndicator size="large" style={styles.loader} />
+            </View>
+          )}
+        </View>
+      );
+    }
   };
 
   const ListFooterComponent = () => {
@@ -92,7 +103,7 @@ const MapBottomSheet = props => {
         ListEmptyComponent={ListEmptyComponent}
         ItemSeparatorComponent={ItemSeparatorComponent}
         ListFooterComponent={ListFooterComponent}
-        keyExtractor={item => item.public_id.toString()}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => <BottomSheetShop {...item} />}
         onEndReached={loadMoreItem}
         contentContainerStyle={styles.contentContainer}
@@ -125,11 +136,16 @@ const styles = StyleSheet.create({
     height: globalVariable.width,
   },
   item_separator_line: {
-    width: globalVariable.width,
+    width: globalVariable.width - 30,
+    alignSelf: 'center',
     backgroundColor: '#fdd',
     height: 1,
   },
   footer: {
     height: globalVariable.tabBarHeight,
+  },
+  loader: {
+    marginVertical: 50,
+    alignSelf: 'center',
   },
 });

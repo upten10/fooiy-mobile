@@ -6,12 +6,12 @@ import {globalVariable} from '../../common/globalVariable';
 const BottomSheetShop = item => {
   const category_list = item.shop_category_list;
   const navigation = useNavigation();
-  console.log(item);
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      style={styles.shop}
       onPress={() => {
+        item.onBackdropPress ? item.onBackdropPress() : null;
         navigation.navigate('Shop', {
           shop_id: item.public_id,
           shop_name: item.name,
@@ -24,11 +24,13 @@ const BottomSheetShop = item => {
         </View>
         <View style={styles.shop_info_container}>
           <View style={styles.category_list_container}>
-            {category_list.map(category => (
-              <View style={styles.category_container}>
-                <Text style={styles.category}>{category}</Text>
-              </View>
-            ))}
+            {category_list
+              ? category_list.map(category => (
+                  <View style={styles.category_container}>
+                    <Text style={styles.category}>{category}</Text>
+                  </View>
+                ))
+              : null}
           </View>
           <View style={styles.shop_detail_container}>
             <Text>{item.name}</Text>
