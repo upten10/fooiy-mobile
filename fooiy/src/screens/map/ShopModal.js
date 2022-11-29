@@ -5,48 +5,21 @@ import BottomSheetShop from '../../common_ui/shop/BottomSheetShop';
 const ShopModal = props => {
   const [current, setCurrent] = useState(0);
   const shopRef = useRef(null);
-  const {onBackdropPress} = props;
-  const items = [
-    {
-      public_id: '20b8ca6c-6955-42c4-a4e3-e2cd94b0a6cf',
-      longitude: '126.840060807676',
-      latitude: '37.3002844901945',
-      address: '경기 안산시 상록구 학사2길 18',
-      name: '점수ㅐ계산테스트',
-      shop_category_list: ['돈까스'],
-      shop_score: '94%',
-      menu_image:
-        'https://dev-fooiy.s3.ap-northeast-2.amazonaws.com/feeds/pioneer/5bfe4c27-553f-4985-bc8a-b6fce2d05423/06aaf8d0-5bd0-4433-a9b7-acd915705e50/8E9F7F14.png.small',
-      menu_price: '44,444원',
+  const {onBackdropPress, shops_info} = props;
+  const shops = shops_info.map(shop => {
+    return {
+      public_id: shop.public_id,
+      longitude: shop.longitude,
+      latitude: shop.latitude,
+      address: shop.address,
+      name: shop.name,
+      shop_category_list: shop.shop_category_list,
+      shop_score: shop.shop_score,
+      menu_image: shop.menu_image,
+      menu_price: shop.menu_price,
       onBackdropPress: onBackdropPress,
-    },
-    {
-      public_id: '20b8ca6c-6955-42c4-a4e3-e2cd94b0a6cf',
-      longitude: '126.840060807676',
-      latitude: '37.3002844901945',
-      address: '경기 안산시 상록구 학사2길 18',
-      name: '점수ㅐ계산테스트',
-      shop_category_list: ['돈까스'],
-      shop_score: '92%',
-      menu_image:
-        'https://dev-fooiy.s3.ap-northeast-2.amazonaws.com/feeds/pioneer/5bfe4c27-553f-4985-bc8a-b6fce2d05423/06aaf8d0-5bd0-4433-a9b7-acd915705e50/8E9F7F14.png.small',
-      menu_price: '44,444원',
-      onBackdropPress: onBackdropPress,
-    },
-    {
-      public_id: '20b8ca6c-6955-42c4-a4e3-e2cd94b0a6cf',
-      longitude: '126.840060807676',
-      latitude: '37.3002844901945',
-      address: '경기 안산시 상록구 학사2길 18',
-      name: '점수ㅐ계산테스트',
-      shop_category_list: ['돈까스'],
-      shop_score: '92%',
-      menu_image:
-        'https://dev-fooiy.s3.ap-northeast-2.amazonaws.com/feeds/pioneer/5bfe4c27-553f-4985-bc8a-b6fce2d05423/06aaf8d0-5bd0-4433-a9b7-acd915705e50/8E9F7F14.png.small',
-      menu_price: '44,444원',
-      onBackdropPress: onBackdropPress,
-    },
-  ];
+    };
+  });
   const ItemSeparatorComponent = () => {
     return <View style={styles.item_separator} />;
   };
@@ -59,10 +32,10 @@ const ShopModal = props => {
 
   return (
     <View style={styles.modal_container}>
-      {items.length > 1 ? (
+      {shops.length > 1 ? (
         <View style={styles.shop_list_indicator}>
           <Text style={styles.shop_list_indicator_text}>
-            {current + 1} / {items.length}
+            {current + 1} / {shops.length}
           </Text>
         </View>
       ) : null}
@@ -72,7 +45,7 @@ const ShopModal = props => {
         horizontal={true}
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}
-        data={items}
+        data={shops}
         ListHeaderComponent={ListHeaderComponent}
         ItemSeparatorComponent={ItemSeparatorComponent}
         ListFooterComponent={ListFooterComponent}

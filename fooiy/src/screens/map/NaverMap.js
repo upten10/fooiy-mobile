@@ -1,12 +1,15 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
 import NaverMapView, {Align, Marker} from 'react-native-nmap';
+import {throttle} from 'lodash';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {globalVariable} from '../../common/globalVariable';
 import Location from './Location';
-import MarkerArr from './MarkerArr';
+
 import MapBottomSheet from './bottom_sheet/MapBottomSheet';
 import ShopModal from './ShopModal';
+import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {apiUrl} from '../../common/Enums';
 
 const markerImg = '../../../assets/icons/marker/marker.png';
 const markerClickedImg = '../../../assets/icons/marker/marker_clicked.png';
@@ -18,13 +21,19 @@ const NaverMap = props => {
   const mapView = useRef(null);
   // 클릭 된 마커 키
   const [clickedIndex, setClickedIndex] = useState(null);
-
   const [isModalVisible, setModalVisible] = useState(false);
-  const [screenLocation, setScreenLocation] = useState([]);
   // 좌측 하단, 우측 하단 순으로 들어감
+  const [screenLocation, setScreenLocation] = useState([]);
+  const [depth, setDepth] = useState(4);
+  const [shopMarkers, setShopMarkers] = useState([]);
 
-  const onCameraChange = e => {
+  // 맵 움직이고 몇초 후에 설정됨 -> throttle
+  const throttled = throttle(e => {
     setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
+    setDepth(e.zoom > 11 ? 4 : e.zoom > 8 ? 2 : 1);
+  }, 5000);
+  const onCameraChange = e => {
+    throttled(e);
   };
 
   // 모달 없애기
@@ -32,18 +41,15 @@ const NaverMap = props => {
     setModalVisible(false);
     setClickedIndex(null);
   };
-
   // 마커 클릭 이벤트
   const onClickMarker = index => {
     setClickedIndex(index);
     setModalVisible(true);
   };
-
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
     mapView.current.setLocationTrackingMode(2);
   };
-
   // 현위치 버튼 컴포넌트
   const LocationBtn = () => {
     return (
@@ -53,9 +59,36 @@ const NaverMap = props => {
     );
   };
 
+  const getShopMarkerList = async data => {
+    await ApiMangerV1.get(apiUrl.MAP_SHOP_MARKER, {
+      params: {
+        longitude_left_bottom: data[0].longitude,
+        latitude_left_bottom: data[0].latitude,
+        latitude_right_top: data[1].latitude,
+        longitude_right_top: data[1].longitude,
+        depth: depth,
+      },
+    })
+      .then(res => {
+        if (res.data.payload.shop_list) {
+          if (depth === 4) {
+            setShopMarkers(res.data.payload.shop_list.results);
+          } else {
+            setShopMarkers(res.data.payload.shop_list.regions);
+          }
+        }
+      })
+      .catch(e => console.log(e));
+  };
+
   useEffect(() => {
     onClickLocationBtn();
   }, []);
+
+  useEffect(() => {
+    getShopMarkerList(screenLocation);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screenLocation]);
 
   return (
     <View>
@@ -66,15 +99,20 @@ const NaverMap = props => {
         center={{...curLocation, zoom: 16}}
         onMapClick={() => toggleModal()}
         zoomControl={false}
+        minZoomLevel={5}
+        maxZoomLevel={18}
         // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         onCameraChange={e => onCameraChange(e)}
         // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
       >
-        {MarkerArr.map((elem, index) => {
+        {shopMarkers.map((marker, index) => {
           return (
             <Marker
               key={index}
-              coordinate={elem.Location}
+              coordinate={{
+                longitude: marker.longitude * 1,
+                latitude: marker.latitude * 1,
+              }}
               width={40}
               height={50}
               image={
@@ -83,7 +121,7 @@ const NaverMap = props => {
                   : require(markerImg)
               }
               caption={{
-                text: `${elem.suitability}%`,
+                text: `${marker.shops_score}`,
                 align: Align.Center,
                 color: '#FE5B5C',
                 textSize: 13,
@@ -94,7 +132,12 @@ const NaverMap = props => {
         })}
       </NaverMapView>
       <LocationBtn />
-      {isModalVisible ? <ShopModal onBackdropPress={toggleModal} /> : null}
+      {isModalVisible ? (
+        <ShopModal
+          onBackdropPress={toggleModal}
+          shops_info={shopMarkers[clickedIndex].shops_info}
+        />
+      ) : null}
       <MapBottomSheet screenLocation={screenLocation} />
     </View>
   );
