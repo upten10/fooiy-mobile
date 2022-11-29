@@ -1,27 +1,24 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
-import NaverMapView, {Align, Marker} from 'react-native-nmap';
+import NaverMapView from 'react-native-nmap';
 import {throttle} from 'lodash';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {globalVariable} from '../../common/globalVariable';
-import Location from './Location';
 
 import MapBottomSheet from './bottom_sheet/MapBottomSheet';
 import ShopModal from './ShopModal';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
+import CustomMarker from './Marker';
 
-const markerImg = '../../../assets/icons/marker/marker.png';
-const markerClickedImg = '../../../assets/icons/marker/marker_clicked.png';
-
-const NaverMap = props => {
-  // 현재 위치 (오브젝트)
-  let curLocation = Location();
+const NaverMap = () => {
   //map ref 초기화
   const mapView = useRef(null);
   // 클릭 된 마커 키
   const [clickedIndex, setClickedIndex] = useState(null);
+  const [clickedShop, setClickedShop] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [center, setCenter] = useState({});
   // 좌측 하단, 우측 하단 순으로 들어감
   const [screenLocation, setScreenLocation] = useState([]);
   const [depth, setDepth] = useState(4);
@@ -40,11 +37,23 @@ const NaverMap = props => {
   const toggleModal = () => {
     setModalVisible(false);
     setClickedIndex(null);
+    setClickedShop(null);
   };
   // 마커 클릭 이벤트
   const onClickMarker = index => {
-    setClickedIndex(index);
-    setModalVisible(true);
+    if (depth === 4) {
+      setClickedIndex(index);
+      setModalVisible(true);
+      setClickedShop(shopMarkers[index].shops_info);
+    } else {
+      setCenter({
+        ...{
+          longitude: shopMarkers[index].longitude * 1,
+          latitude: shopMarkers[index].latitude * 1,
+        },
+        zoom: depth === 1 ? 8.01 : 11.01,
+      });
+    }
   };
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
@@ -96,7 +105,7 @@ const NaverMap = props => {
         ref={mapView}
         style={styles.map}
         showsMyLocationButton={true}
-        center={{...curLocation, zoom: 16}}
+        center={center}
         onMapClick={() => toggleModal()}
         zoomControl={false}
         minZoomLevel={5}
@@ -107,36 +116,29 @@ const NaverMap = props => {
       >
         {shopMarkers.map((marker, index) => {
           return (
-            <Marker
-              key={index}
-              coordinate={{
-                longitude: marker.longitude * 1,
-                latitude: marker.latitude * 1,
-              }}
-              width={40}
-              height={50}
-              image={
-                clickedIndex === index
-                  ? require(markerClickedImg)
-                  : require(markerImg)
+            <CustomMarker
+              marker={marker}
+              index={index}
+              depth={depth}
+              clickedIndex={clickedIndex}
+              is_plural={
+                shopMarkers[index].shops_info
+                  ? shopMarkers[index].shops_info.length
+                  : 1
               }
-              caption={{
-                text: `${marker.shops_score}`,
-                align: Align.Center,
-                color: '#FE5B5C',
-                textSize: 13,
-              }}
-              onClick={() => onClickMarker(index)}
+              is_yummy={
+                shopMarkers[index].shops_info
+                  ? shopMarkers[index].shops_info.is_yummy
+                  : false
+              }
+              onClickMarker={onClickMarker}
             />
           );
         })}
       </NaverMapView>
       <LocationBtn />
       {isModalVisible ? (
-        <ShopModal
-          onBackdropPress={toggleModal}
-          shops_info={shopMarkers[clickedIndex].shops_info}
-        />
+        <ShopModal onBackdropPress={toggleModal} shops_info={clickedShop} />
       ) : null}
       <MapBottomSheet screenLocation={screenLocation} />
     </View>

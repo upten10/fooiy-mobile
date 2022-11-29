@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
-import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import NaverMap from './NaverMap';
 import {LocationPermission} from '../../common/Permission';
 
