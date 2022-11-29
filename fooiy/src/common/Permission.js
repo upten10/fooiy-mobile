@@ -1,4 +1,4 @@
-import {Alert, Linking} from 'react-native';
+import {Alert, Linking, Platform} from 'react-native';
 import {
   check,
   PERMISSIONS,
@@ -10,19 +10,16 @@ import {
 } from 'react-native-permissions';
 
 const CameraPermission = async () => {
+  const platformPermissions = Platform.OS === "ios" ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA;
   return (
-    check(PERMISSIONS.IOS.CAMERA)
+    request(platformPermissions)
       .then(result => {
-        switch (result) {
+        switch(result) {
           case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
+            console.log('This feature is not available (on this device / in this context)');
             break;
           case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
+            console.log('The permission has not been requested / is denied but requestable');
             break;
           case RESULTS.LIMITED:
             console.log('The permission is limited: some actions are possible');
@@ -41,27 +38,21 @@ const CameraPermission = async () => {
       })
       .catch(error => {
         console.log('Error!');
-      }),
-    request(PERMISSIONS.IOS.CAMERA).then(result => {
-      console.log(result);
-    })
+      })
   );
 };
 
 const GalleryPermission = async () => {
+  const platformPermissions = Platform.OS === "ios" ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
   return (
-    check(PERMISSIONS.IOS.PHOTO_LIBRARY)
+    request(platformPermissions)
       .then(result => {
-        switch (result) {
+        switch(result) {
           case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
+            console.log('This feature is not available (on this device / in this context)');
             break;
           case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
+            console.log('The permission has not been requested / is denied but requestable');
             break;
           case RESULTS.LIMITED:
             console.log('The permission is limited: some actions are possible');
@@ -80,33 +71,24 @@ const GalleryPermission = async () => {
       })
       .catch(error => {
         console.log('Error!');
-      }),
-    request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
-      console.log(result);
-    })
+      })
   );
 };
 
 const LocationPermission = async () => {
+  const platformPermissions = Platform.OS === "ios" ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION;
   return (
-    checkLocationAccuracy()
-      .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
-      .catch(() => console.warn('Cannot check location accuracy')),
     requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
       .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
       .catch(() => console.warn('Cannot request location accuracy')),
-    check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+    request(platformPermissions)
       .then(result => {
-        switch (result) {
+        switch(result) {
           case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
+            console.log('This feature is not available (on this device / in this context)');
             break;
           case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
+            console.log('The permission has not been requested / is denied but requestable');
             break;
           case RESULTS.LIMITED:
             console.log('The permission is limited: some actions are possible');
@@ -125,10 +107,7 @@ const LocationPermission = async () => {
       })
       .catch(error => {
         console.log('Error!');
-      }),
-    request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then(result => {
-      console.log(result);
-    })
+      })
   );
 };
 
