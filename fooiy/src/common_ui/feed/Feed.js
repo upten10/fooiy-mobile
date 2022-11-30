@@ -19,8 +19,6 @@ const PROFILE_IMAGE_WIDTH = width * 0.1;
 const PROFILE_IMAGE_HEIGHT = PROFILE_IMAGE_WIDTH;
 const IMAGE_WIDTH = width;
 const IMAGE_HEIGHT = IMAGE_WIDTH;
-const fork_icon = require('../../../assets/icons/feed/ic_fork.png');
-const fork_icon_focused = require('../../../assets/icons/feed/ic_fork_focused.png');
 
 export const UI_Feed = item => {
   const navigation = useNavigation();
@@ -38,7 +36,7 @@ export const UI_Feed = item => {
   const feed = feeds.find(e => e.id === item.id);
 
   const [likeIcon, setLikeIcon] = useState(feed.is_liked);
-  const [storeIcon, setStoreIcon] = useState(feed.is_stored);
+  const [storeIcon, setStoreIcon] = useState(feed.is_store);
 
   useEffect(() => {
     setLikeIcon(feed.is_liked);
@@ -70,8 +68,8 @@ export const UI_Feed = item => {
   }, 1500);
 
   const debounceStore = debounce(async stored => {
-    if (feed.is_stored === (await stored)) {
-      feed.is_stored = !(await stored);
+    if (feed.is_store === (await stored)) {
+      feed.is_store = !(await stored);
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
     }
@@ -104,7 +102,7 @@ export const UI_Feed = item => {
 
   return (
     <View style={styles.container}>
-      {/* 프사, 닉네임 */}
+      {/* 프로필 사진 */}
       <View style={styles.header_container}>
         <Image
           source={{uri: item.profile_image}}
@@ -112,8 +110,8 @@ export const UI_Feed = item => {
         />
         <Text style={styles.nickname}>{item.nickname}</Text>
       </View>
-      {/* 이미지 */}
       <View style={styles.image_container}>
+        {/* 피드 사진 */}
         <TouchableWithoutFeedback onPress={handleDoubleTap}>
           <Image source={{uri: item.image[0]}} style={styles.image} />
         </TouchableWithoutFeedback>
@@ -128,7 +126,6 @@ export const UI_Feed = item => {
           <Text>{storeIcon ? '보관중' : '보관취소'}</Text>
         </TouchableOpacity>
       </View>
-      {/* 정보 */}
       <View style={styles.content}>
         <View style={styles.content_detail}>
           <View style={styles.fooiyti_container}>
