@@ -21,7 +21,6 @@ export const feedSlice = createSlice({
         e => e.id === action.payload.id,
       );
       state.feeds.value[index] = action.payload;
-      console.log('change');
     },
     getFeed: (state, action) => {
       const index = state.feeds.value.findIndex(
