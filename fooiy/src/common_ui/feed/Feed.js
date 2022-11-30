@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,15 +12,20 @@ import {useNavigation} from '@react-navigation/native';
 import {debounce} from 'lodash';
 import {feedsAction} from '../../redux/actions/feedsAction';
 import {useDispatch, useSelector} from 'react-redux';
+import {globalVariable} from '../../common/globalVariable';
 
 const {width} = Dimensions.get('screen');
 const PROFILE_IMAGE_WIDTH = width * 0.1;
 const PROFILE_IMAGE_HEIGHT = PROFILE_IMAGE_WIDTH;
 const IMAGE_WIDTH = width;
 const IMAGE_HEIGHT = IMAGE_WIDTH;
+const fork_icon = require('../../../assets/icons/feed/ic_fork.png');
+const fork_icon_focused = require('../../../assets/icons/feed/ic_fork_focused.png');
 
 export const UI_Feed = item => {
   const navigation = useNavigation();
+
+  // feed redux
   const dispatch = useDispatch();
   const feed_redux = {
     id: item.id,
@@ -29,12 +34,57 @@ export const UI_Feed = item => {
     is_store: item.is_store,
   };
   dispatch(feedsAction.append(feed_redux));
-
   const feeds = useSelector(state => state.feeds.feeds.value);
   const feed = feeds.find(e => e.id === item.id);
-  const setIsLiked = () => {
-    feed.is_liked = !feed.is_liked;
-    dispatch(feedsAction.setChanged(feeds));
+
+  const [likeIcon, setLikeIcon] = useState(feed.is_liked);
+  const [storeIcon, setStoreIcon] = useState(feed.is_stored);
+
+  useEffect(() => {
+    setLikeIcon(feed.is_liked);
+  }, [feed.is_liked]);
+
+  useEffect(() => {
+    setStoreIcon(feed.is_store);
+  }, [feed.is_store]);
+
+  // debounce에 콜백 안쓰면 계속 랜더링 되서 이상해짐
+  const debounceCallback = useCallback((like, store) => {
+    if (typeof like === typeof true) {
+      console.log('like debounce');
+      debounceLike(like);
+    }
+    if (typeof store === typeof true) {
+      console.log('store debounce');
+      debounceStore(store);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const debounceLike = debounce(async liked => {
+    if (feed.is_liked === (await liked)) {
+      feed.is_liked = !(await liked);
+      dispatch(feedsAction.setChanged(feeds));
+      // axios fetch
+    }
+  }, 1500);
+
+  const debounceStore = debounce(async stored => {
+    if (feed.is_stored === (await stored)) {
+      feed.is_stored = !(await stored);
+      dispatch(feedsAction.setChanged(feeds));
+      // axios fetch
+    }
+  }, 1500);
+
+  const onClickLikeIcon = () => {
+    setLikeIcon(!likeIcon);
+    debounceCallback(likeIcon, undefined);
+  };
+
+  const onClickStoreIcon = () => {
+    setStoreIcon(!storeIcon);
+    debounceCallback(undefined, storeIcon);
   };
 
   // 두번 터치 감지
@@ -43,7 +93,10 @@ export const UI_Feed = item => {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
     if (lastTap && now - lastTap < DOUBLE_PRESS_DELAY) {
-      setIsLiked();
+      if (!likeIcon) {
+        onClickLikeIcon();
+      }
+      // fork 로띠만 실행
     } else {
       lastTap = now;
     }
@@ -68,7 +121,12 @@ export const UI_Feed = item => {
 
       {/* 유용한 기능 포크, 댓글 등등 */}
       <View style={styles.useful_content}>
-        {feed.is_liked ? <Text>좋아요</Text> : <Text>싫어요</Text>}
+        <TouchableOpacity activeOpacity={0.8} onPress={onClickLikeIcon}>
+          <Text>{likeIcon ? '좋아요' : '싫어요'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.8} onPress={onClickStoreIcon}>
+          <Text>{storeIcon ? '보관중' : '보관취소'}</Text>
+        </TouchableOpacity>
       </View>
       {/* 정보 */}
       <View style={styles.content}>
@@ -130,7 +188,6 @@ const styles = StyleSheet.create({
 
   image_container: {
     marginTop: PROFILE_IMAGE_WIDTH / 2,
-    marginBottom: PROFILE_IMAGE_WIDTH / 2,
     width: IMAGE_WIDTH,
     height: IMAGE_HEIGHT,
   },
@@ -138,6 +195,19 @@ const styles = StyleSheet.create({
     width: IMAGE_WIDTH,
     height: IMAGE_HEIGHT,
   },
+
+  useful_content: {
+    height: 40,
+    width: globalVariable.width,
+    flexDirection: 'row',
+    paddingLeft: 20,
+    alignItems: 'center',
+  },
+  fork: {
+    width: 20,
+    height: 20,
+  },
+
   content_detail: {
     flexDirection: 'row',
   },
