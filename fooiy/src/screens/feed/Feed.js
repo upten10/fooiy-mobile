@@ -6,14 +6,12 @@ import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
 import {UI_Feed} from '../../common_ui/feed/Feed';
-import {RenderLoader} from '../../common_ui/RenderLoader';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 
 const Feed = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [noFeedImage, setNoFeedImage] = useState(null);
 
   // go to scroll on top
@@ -30,7 +28,6 @@ const Feed = props => {
   };
 
   const getFeedList = async data => {
-    setIsLoading(true);
     await ApiMangerV1.get(apiUrl.FEED_LIST, {
       params: {
         limit: globalVariable.FeedLimit,
@@ -40,9 +37,7 @@ const Feed = props => {
     }).then(res => {
       if (res.data.payload.feed_list) {
         setFeeds([...feeds, ...res.data.payload.feed_list.results]);
-        setIsLoading(false);
         setTotalCount(res.data.payload.feed_list.total_count);
-        setNoFeedImage(null);
       } else {
         setNoFeedImage(res.data.payload.image);
       }
@@ -54,6 +49,15 @@ const Feed = props => {
       setOffset(offset + globalVariable.FeedLimit);
     }
   };
+
+  const ListEmptyComponent = () => {
+    return noFeedImage ? (
+      <View>
+        <Image source={{uri: noFeedImage}} style={styles.test} />
+      </View>
+    ) : null;
+  };
+
   useEffect(() => {
     getFeedList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,22 +67,15 @@ const Feed = props => {
     <SafeAreaView style={styles.container}>
       <DefaultHeader />
       <View style={styles.container}>
-        {noFeedImage ? (
-          ///* ListEmptyComponent 이거를 flatlist에 넣으면 됨 */
-          <View>
-            <Image source={{uri: noFeedImage}} style={styles.test} />
-          </View>
-        ) : (
-          <FlatList
-            ref={flatListRef}
-            data={feeds}
-            renderItem={({item}) => <UI_Feed {...item} />}
-            keyExtractor={(feeds, index) => index.toString()}
-            ListFooterComponent={RenderLoader(isLoading)}
-            onEndReached={loadMoreItem}
-            onEndReachedThreshold={3}
-          />
-        )}
+        <FlatList
+          ref={flatListRef}
+          data={feeds}
+          renderItem={({item}) => <UI_Feed {...item} />}
+          keyExtractor={(feeds, index) => index.toString()}
+          onEndReached={loadMoreItem}
+          ListEmptyComponent={ListEmptyComponent}
+          onEndReachedThreshold={3}
+        />
       </View>
     </SafeAreaView>
   );
