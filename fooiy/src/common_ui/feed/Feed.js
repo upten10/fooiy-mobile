@@ -13,6 +13,14 @@ import {debounce} from 'lodash';
 import {feedsAction} from '../../redux/actions/feedsAction';
 import {useDispatch, useSelector} from 'react-redux';
 import {globalVariable} from '../../common/globalVariable';
+import {
+  Fork,
+  ForkFocused,
+  Store,
+  StoreFocused,
+  Share,
+  Comment,
+} from '../../../assets/icons/svg';
 
 const {width} = Dimensions.get('screen');
 const PROFILE_IMAGE_WIDTH = width * 0.1;
@@ -49,11 +57,9 @@ export const UI_Feed = item => {
   // debounce에 콜백 안쓰면 계속 랜더링 되서 이상해짐
   const debounceCallback = useCallback((like, store) => {
     if (typeof like === typeof true) {
-      console.log('like debounce');
       debounceLike(like);
     }
     if (typeof store === typeof true) {
-      console.log('store debounce');
       debounceStore(store);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,13 +125,40 @@ export const UI_Feed = item => {
 
       {/* 유용한 기능 포크, 댓글 등등 */}
       <View style={styles.useful_content}>
-        <TouchableOpacity activeOpacity={0.8} onPress={onClickLikeIcon}>
-          <Text>{likeIcon ? '좋아요' : '싫어요'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} onPress={onClickStoreIcon}>
-          <Text>{storeIcon ? '보관중' : '보관취소'}</Text>
-        </TouchableOpacity>
+        <View style={styles.ic_fork}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={onClickLikeIcon}
+            hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
+            {likeIcon ? <ForkFocused /> : <Fork />}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.right_side_icon}>
+          <View style={styles.ic_comment}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
+              <Comment />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.ic_share}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
+              <Share />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.ic_store}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={onClickStoreIcon}
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
+              {storeIcon ? <StoreFocused /> : <Store />}
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
+
       <View style={styles.content}>
         <View style={styles.content_detail}>
           <View style={styles.fooiyti_container}>
@@ -198,9 +231,29 @@ const styles = StyleSheet.create({
     width: globalVariable.width,
     flexDirection: 'row',
     paddingLeft: 20,
+    paddingRight: 20,
     alignItems: 'center',
   },
-  fork: {
+  ic_fork: {
+    width: 20,
+    height: 20,
+  },
+  right_side_icon: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  ic_comment: {
+    width: 20,
+    height: 20,
+    marginRight: 20,
+  },
+  ic_share: {
+    width: 20,
+    height: 20,
+    marginRight: 20,
+  },
+  ic_store: {
     width: 20,
     height: 20,
   },
