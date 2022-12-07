@@ -13,6 +13,21 @@ const Feed = props => {
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [noFeedImage, setNoFeedImage] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    if (!refreshing) {
+      setOffset(0);
+      setFeeds([]);
+      getRefreshData();
+    }
+  };
+
+  const getRefreshData = async () => {
+    setRefreshing(true);
+    await getFeedList();
+    setRefreshing(false);
+  };
 
   // go to scroll on top
   const flatListRef = useRef(null);
@@ -70,6 +85,8 @@ const Feed = props => {
         <FlatList
           ref={flatListRef}
           data={feeds}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
           renderItem={({item}) => <UI_Feed {...item} />}
           keyExtractor={(feeds, index) => index.toString()}
           onEndReached={loadMoreItem}
