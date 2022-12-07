@@ -32,11 +32,32 @@ export const UI_Feed = item => {
   const navigation = useNavigation();
 
   const [line, setLine] = useState(3);
-  const [moreItemActive, setMoreItemActive] = useState(false);
+  const [moreTextActive, setMoreTextActive] = useState(false);
   const isOverLines = lines => {
     if (lines > 2 && line === 3) {
-      setMoreItemActive(true);
+      setMoreTextActive(true);
     }
+  };
+
+  const elapsedTime = date => {
+    const start = new Date(date);
+    const end = new Date();
+    const diff = (end - start) / 1000;
+    const times = [
+      {name: '년', milliSeconds: 60 * 60 * 24 * 365},
+      {name: '개월', milliSeconds: 60 * 60 * 24 * 30},
+      {name: '일', milliSeconds: 60 * 60 * 24},
+      {name: '시간', milliSeconds: 60 * 60},
+      {name: '분', milliSeconds: 60},
+    ];
+
+    for (const value of times) {
+      const betweenTime = Math.floor(diff / value.milliSeconds);
+      if (betweenTime > 0) {
+        return `${betweenTime}${value.name} 전`;
+      }
+    }
+    return '방금 전';
   };
 
   // feed redux
@@ -92,7 +113,6 @@ export const UI_Feed = item => {
     if (feed.is_liked === (await liked)) {
       feed.is_liked = !(await liked);
       feed.count_liked = await count;
-      console.log(feed.count_liked, likeCount);
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
     }
@@ -227,15 +247,19 @@ export const UI_Feed = item => {
           }}>
           {item.comment}
         </Text>
-        {moreItemActive ? (
-          <Text
-            onPress={() => {
-              setLine(100);
-              setMoreItemActive(false);
-            }}>
-            더보기
-          </Text>
-        ) : null}
+        <View style={styles.footer}>
+          {moreTextActive ? (
+            <Text
+              style={styles.more_text}
+              onPress={() => {
+                setLine(100);
+                setMoreTextActive(false);
+              }}>
+              더보기
+            </Text>
+          ) : null}
+          <Text style={styles.feed_time}>{elapsedTime(item.created_at)}</Text>
+        </View>
       </View>
     </View>
   );
@@ -254,17 +278,16 @@ const styles = StyleSheet.create({
     height: PROFILE_IMAGE_HEIGHT,
   },
   header_container: {
+    flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   nickname: {
-    justifyContent: 'center',
-    flex: 1,
     paddingLeft: 10,
-    height: PROFILE_IMAGE_HEIGHT,
   },
 
   image_container: {
-    marginTop: PROFILE_IMAGE_WIDTH / 2,
+    marginTop: PROFILE_IMAGE_WIDTH / 3,
     width: IMAGE_WIDTH,
     height: IMAGE_HEIGHT,
   },
@@ -356,5 +379,20 @@ const styles = StyleSheet.create({
     color: '#4A5470',
     lineHeight: 24,
     fontSize: 14,
+  },
+
+  footer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginLeft: 20,
+    marginTop: 17,
+  },
+  more_text: {
+    color: '#FF5C5C',
+  },
+  feed_time: {
+    position: 'absolute',
+    right: 16,
+    color: '#B3BBD3',
   },
 });
