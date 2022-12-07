@@ -31,6 +31,14 @@ const IMAGE_HEIGHT = IMAGE_WIDTH;
 export const UI_Feed = item => {
   const navigation = useNavigation();
 
+  const [line, setLine] = useState(3);
+  const [moreItemActive, setMoreItemActive] = useState(false);
+  const isOverLines = lines => {
+    if (lines > 2 && line === 3) {
+      setMoreItemActive(true);
+    }
+  };
+
   // feed redux
   const dispatch = useDispatch();
   const feed_redux = {
@@ -44,10 +52,25 @@ export const UI_Feed = item => {
   const feed = feeds.find(e => e.id === item.id);
 
   const [likeIcon, setLikeIcon] = useState(feed.is_liked);
+  const [likeCount, setLikeCount] = useState(
+    feed.is_liked === item.is_liked
+      ? item.count_liked
+      : feed.is_liked
+      ? item.count_liked + 1
+      : item.count_liked - 1,
+  );
   const [storeIcon, setStoreIcon] = useState(feed.is_store);
 
   useEffect(() => {
     setLikeIcon(feed.is_liked);
+    setLikeCount(
+      feed.is_liked === item.is_liked
+        ? item.count_liked
+        : feed.is_liked
+        ? item.count_liked + 1
+        : item.count_liked - 1,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feed.is_liked]);
 
   useEffect(() => {
@@ -55,9 +78,9 @@ export const UI_Feed = item => {
   }, [feed.is_store]);
 
   // debounce에 콜백 안쓰면 계속 랜더링 되서 이상해짐
-  const debounceCallback = useCallback((like, store) => {
+  const debounceCallback = useCallback((like, store, count) => {
     if (typeof like === typeof true) {
-      debounceLike(like);
+      debounceLike(like, count);
     }
     if (typeof store === typeof true) {
       debounceStore(store);
@@ -65,9 +88,11 @@ export const UI_Feed = item => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const debounceLike = debounce(async liked => {
+  const debounceLike = debounce(async (liked, count) => {
     if (feed.is_liked === (await liked)) {
       feed.is_liked = !(await liked);
+      feed.count_liked = await count;
+      console.log(feed.count_liked, likeCount);
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
     }
@@ -82,13 +107,14 @@ export const UI_Feed = item => {
   }, 1500);
 
   const onClickLikeIcon = () => {
+    likeIcon ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
     setLikeIcon(!likeIcon);
-    debounceCallback(likeIcon, undefined);
+    debounceCallback(likeIcon, undefined, likeCount);
   };
 
   const onClickStoreIcon = () => {
     setStoreIcon(!storeIcon);
-    debounceCallback(undefined, storeIcon);
+    debounceCallback(undefined, storeIcon, undefined);
   };
 
   // 두번 터치 감지
@@ -133,6 +159,11 @@ export const UI_Feed = item => {
             {likeIcon ? <ForkFocused /> : <Fork />}
           </TouchableOpacity>
         </View>
+        {likeCount > 0 ? (
+          <Text style={styles.fork_count}>
+            {likeCount}명이 포크로 찍었어요.
+          </Text>
+        ) : null}
         <View style={styles.right_side_icon}>
           <View style={styles.ic_comment}>
             <TouchableOpacity
@@ -188,7 +219,23 @@ export const UI_Feed = item => {
             </View>
           </View>
         </View>
-        <Text style={styles.comment}>{item.comment}</Text>
+        <Text
+          numberOfLines={line}
+          style={styles.comment}
+          onTextLayout={({nativeEvent: {lines}}) => {
+            isOverLines(lines.length);
+          }}>
+          {item.comment}
+        </Text>
+        {moreItemActive ? (
+          <Text
+            onPress={() => {
+              setLine(100);
+              setMoreItemActive(false);
+            }}>
+            더보기
+          </Text>
+        ) : null}
       </View>
     </View>
   );
@@ -237,6 +284,9 @@ const styles = StyleSheet.create({
   ic_fork: {
     width: 20,
     height: 20,
+  },
+  fork_count: {
+    left: 8,
   },
   right_side_icon: {
     flex: 1,
