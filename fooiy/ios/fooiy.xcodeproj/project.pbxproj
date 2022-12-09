@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-fooiy-fooiyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-fooiy-fooiyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		F8E28AB42940894400B7C9C0 /* icon_fork.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E28AB32940894400B7C9C0 /* icon_fork.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,9 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = fooiy/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-fooiy-fooiyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fooiy-fooiyTests.release.xcconfig"; path = "Target Support Files/Pods-fooiy-fooiyTests/Pods-fooiy-fooiyTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F8E28AAE2940845900B7C9C0 /* Vector-6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Vector-6.png"; path = "../../../../../Downloads/Vector-6.png"; sourceTree = "<group>"; };
+		F8E28AB1294085DB00B7C9C0 /* icon_fork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_fork.png; path = ../../../../../Downloads/icon_fork.png; sourceTree = "<group>"; };
+		F8E28AB32940894400B7C9C0 /* icon_fork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_fork.png; path = ../../../../../Downloads/icon_fork.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +120,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F8E28AB1294085DB00B7C9C0 /* icon_fork.png */,
+				F8E28AB32940894400B7C9C0 /* icon_fork.png */,
+				F8E28AAE2940845900B7C9C0 /* Vector-6.png */,
 				13B07FAE1A68108700A75B9A /* fooiy */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* fooiyTests */,
@@ -244,6 +251,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				F8E28AB42940894400B7C9C0 /* icon_fork.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
