@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {debounce} from 'lodash';
+import AnimatedLottieView from 'lottie-react-native';
 import {feedsAction} from '../../redux/actions/feedsAction';
 import {useDispatch, useSelector} from 'react-redux';
 import {globalVariable} from '../../common/globalVariable';
@@ -137,6 +139,8 @@ export const UI_Feed = item => {
     debounceCallback(undefined, storeIcon, undefined);
   };
 
+  const animationProgress = useRef(new Animated.Value(0));
+
   // 두번 터치 감지
   var lastTap = null;
   const handleDoubleTap = () => {
@@ -146,7 +150,18 @@ export const UI_Feed = item => {
       if (!likeIcon) {
         onClickLikeIcon();
       }
-      // fork 로띠만 실행
+      Animated.sequence([
+        Animated.timing(animationProgress.current, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animationProgress.current, {
+          toValue: 0,
+          duration: 1,
+          useNativeDriver: true,
+        }),
+      ]).start();
     } else {
       lastTap = now;
     }
@@ -165,7 +180,14 @@ export const UI_Feed = item => {
       <View style={styles.image_container}>
         {/* 피드 사진 */}
         <TouchableWithoutFeedback onPress={handleDoubleTap}>
-          <Image source={{uri: item.image[0]}} style={styles.image} />
+          <View>
+            <Image source={{uri: item.image[0]}} style={styles.image} />
+            <AnimatedLottieView
+              source={require('../../../assets/lottie/fork.json')}
+              progress={animationProgress.current}
+              imageAssetsFolder={'images'} // for android
+            />
+          </View>
         </TouchableWithoutFeedback>
       </View>
 
