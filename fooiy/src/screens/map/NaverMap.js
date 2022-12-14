@@ -1,6 +1,6 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
-import NaverMapView from 'react-native-nmap';
+import NaverMapView, {Marker, Align} from 'react-native-nmap';
 import {throttle} from 'lodash';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {globalVariable} from '../../common/globalVariable';
@@ -23,13 +23,29 @@ const NaverMap = () => {
   const [center, setCenter] = useState();
   // 좌측 하단, 우측 하단 순으로 들어감
   const [screenLocation, setScreenLocation] = useState([]);
+  const [zoom, setZoom] = useState(16);
   const [depth, setDepth] = useState(4);
+  const [currentLocation, setCurrentLocation] = useState({});
   const [shopMarkers, setShopMarkers] = useState([]);
+
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCurrentLocation({latitude, longitude, zoom: zoom});
+      },
+      error => {
+        console.log(error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  };
 
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const throttled = throttle(e => {
     setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
     setDepth(e.zoom > 11 ? 4 : e.zoom > 8 ? 2 : 1);
+    setZoom(e.zoom);
   }, 5000);
   const onCameraChange = e => {
     throttled(e);
@@ -59,7 +75,12 @@ const NaverMap = () => {
   };
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
-    mapView.current.setLocationTrackingMode(2);
+    getCurrentLocation();
+    setCenter({
+      latitude: currentLocation.latitude,
+      longitude: currentLocation.longitude,
+      zoom: zoom,
+    });
   };
   // 현위치 버튼 컴포넌트
   const LocationBtn = () => {
@@ -92,15 +113,26 @@ const NaverMap = () => {
       .catch(e => console.log(e));
   };
 
+  const CurrentLocation = useCallback(() => {
+    return (
+      <Marker
+        coordinate={{
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+        }}
+      />
+    );
+  }, [currentLocation]);
+
   useEffect(() => {
+    getCurrentLocation();
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        setCenter({latitude, longitude, zoom: 16});
+        setCenter({latitude, longitude, zoom: zoom});
       },
       error => {
         console.log(error.code, error.message);
-        console.log('test');
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
@@ -123,10 +155,12 @@ const NaverMap = () => {
         zoomControl={false}
         minZoomLevel={5}
         maxZoomLevel={18}
+        rotateGesturesEnabled={false}
         // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         onCameraChange={e => onCameraChange(e)}
         // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
       >
+        <CurrentLocation />
         {shopMarkers.map((marker, index) => {
           return (
             <CustomMarker
