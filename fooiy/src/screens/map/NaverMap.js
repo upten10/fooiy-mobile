@@ -10,15 +10,17 @@ import ShopModal from './ShopModal';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import CustomMarker from './Marker';
+import Geolocation from '@react-native-community/geolocation';
 
 const NaverMap = () => {
   //map ref 초기화
   const mapView = useRef(null);
+
   // 클릭 된 마커 키
   const [clickedIndex, setClickedIndex] = useState(null);
   const [clickedShop, setClickedShop] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [center, setCenter] = useState({});
+  const [center, setCenter] = useState();
   // 좌측 하단, 우측 하단 순으로 들어감
   const [screenLocation, setScreenLocation] = useState([]);
   const [depth, setDepth] = useState(4);
@@ -91,7 +93,18 @@ const NaverMap = () => {
   };
 
   useEffect(() => {
-    onClickLocationBtn();
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCenter({latitude, longitude, zoom: 16});
+      },
+      error => {
+        console.log(error.code, error.message);
+        console.log('test');
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
