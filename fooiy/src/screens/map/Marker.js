@@ -53,6 +53,10 @@ const CustomMarker = props => {
         longitude: marker.longitude * 1,
         latitude: marker.latitude * 1,
       }}
+      // anchor={{x: 200, y: 200}}
+      // alpha={100} // 연해지기
+      // angle={10} //기울기
+      flat={1000}
       width={width}
       height={height}
       image={clickedIndex === index ? markerClickedImg : markerImg}

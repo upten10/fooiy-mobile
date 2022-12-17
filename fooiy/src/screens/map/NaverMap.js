@@ -28,18 +28,18 @@ const NaverMap = () => {
   const [currentLocation, setCurrentLocation] = useState({});
   const [shopMarkers, setShopMarkers] = useState([]);
 
-  const getCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        setCurrentLocation({latitude, longitude, zoom: zoom});
-      },
-      error => {
-        console.log(error.code, error.message);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
-  };
+  // const getCurrentLocation = () => {
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       const {latitude, longitude} = position.coords;
+  //       setCurrentLocation({latitude, longitude, zoom: zoom, tilt: 10});
+  //     },
+  //     error => {
+  //       console.log(error.code, error.message);
+  //     },
+  //     {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+  //   );
+  // };
 
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const throttled = throttle(e => {
@@ -75,12 +75,13 @@ const NaverMap = () => {
   };
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
-    getCurrentLocation();
-    setCenter({
-      latitude: currentLocation.latitude,
-      longitude: currentLocation.longitude,
-      zoom: zoom,
-    });
+    // getCurrentLocation();
+    // setCenter({
+    //   latitude: currentLocation.latitude,
+    //   longitude: currentLocation.longitude,
+    //   zoom: zoom,
+    // });
+    mapView.current.setLocationTrackingMode(2);
   };
   // 현위치 버튼 컴포넌트
   const LocationBtn = () => {
@@ -125,7 +126,7 @@ const NaverMap = () => {
   }, [currentLocation]);
 
   useEffect(() => {
-    getCurrentLocation();
+    // getCurrentLocation();
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
@@ -136,6 +137,7 @@ const NaverMap = () => {
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
+    mapView.current.setLocationTrackingMode(2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
