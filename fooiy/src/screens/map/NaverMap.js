@@ -10,7 +10,8 @@ import ShopModal from './ShopModal';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import CustomMarker from './Marker';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
+import {LocationPermission} from '../../common/Permission';
 
 const NaverMap = () => {
   //map ref 초기화
@@ -27,19 +28,6 @@ const NaverMap = () => {
   const [depth, setDepth] = useState(4);
   const [currentLocation, setCurrentLocation] = useState({});
   const [shopMarkers, setShopMarkers] = useState([]);
-
-  // const getCurrentLocation = () => {
-  //   Geolocation.getCurrentPosition(
-  //     position => {
-  //       const {latitude, longitude} = position.coords;
-  //       setCurrentLocation({latitude, longitude, zoom: zoom, tilt: 10});
-  //     },
-  //     error => {
-  //       console.log(error.code, error.message);
-  //     },
-  //     {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-  //   );
-  // };
 
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const throttled = throttle(e => {
@@ -75,13 +63,25 @@ const NaverMap = () => {
   };
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
-    // getCurrentLocation();
-    // setCenter({
-    //   latitude: currentLocation.latitude,
-    //   longitude: currentLocation.longitude,
-    //   zoom: zoom,
-    // });
     mapView.current.setLocationTrackingMode(2);
+    if (Platform.OS === 'ios') {
+      mapView.current.setLocationTrackingMode(2);
+    } else {
+      Geolocation.getCurrentPosition(
+        position => {
+          const {latitude, longitude} = position.coords;
+          setCurrentLocation({latitude, longitude, zoom: zoom});
+          mapView.current.animateToCoordinate({
+            longitude,
+            latitude,
+          });
+        },
+        error => {
+          console.log(error.code, error.message);
+        },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      );
+    }
   };
   // 현위치 버튼 컴포넌트
   const LocationBtn = () => {
@@ -115,29 +115,21 @@ const NaverMap = () => {
   };
 
   const CurrentLocation = useCallback(() => {
-    return (
-      <Marker
-        coordinate={{
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-        }}
-      />
-    );
+    return Platform.OS === 'android' ? (
+      currentLocation.latitude ? (
+        <Marker
+          coordinate={{
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+          }}
+        />
+      ) : null
+    ) : null;
   }, [currentLocation]);
 
   useEffect(() => {
-    // getCurrentLocation();
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        setCenter({latitude, longitude, zoom: zoom});
-      },
-      error => {
-        console.log(error.code, error.message);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
-    mapView.current.setLocationTrackingMode(2);
+    LocationPermission();
+    onClickLocationBtn();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -157,6 +149,7 @@ const NaverMap = () => {
         zoomControl={false}
         minZoomLevel={5}
         maxZoomLevel={18}
+        locationTrackingMode={2}
         rotateGesturesEnabled={false}
         // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         onCameraChange={e => onCameraChange(e)}
