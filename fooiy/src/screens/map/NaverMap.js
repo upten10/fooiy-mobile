@@ -11,6 +11,8 @@ import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import CustomMarker from './Marker';
 import {LocationPermission} from '../../common/Permission';
+import Geolocation from 'react-native-geolocation-service';
+
 
 const NaverMap = () => {
   //map ref 초기화
@@ -60,6 +62,13 @@ const NaverMap = () => {
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
     mapView.current.setLocationTrackingMode(2);
+    Platform.OS === 'android' ? Geolocation.getCurrentPosition(async position => {
+      const { longitude, latitude } = position.coords;
+      mapView.current.animateToCoordinate({longitude,latitude});
+    },
+    (error) => this.setState({ error: error.message }),
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+  ) : null ;
   };
   // 현위치 버튼 컴포넌트
   const LocationBtn = () => {
