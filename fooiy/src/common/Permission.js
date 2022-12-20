@@ -7,6 +7,7 @@ import {
   checkNotifications,
   checkLocationAccuracy,
   requestLocationAccuracy,
+  requestMultiple,
 } from 'react-native-permissions';
 
 const CameraPermission = async () => {
@@ -87,12 +88,12 @@ const LocationPermission = async () => {
   const platformPermissions =
     Platform.OS === 'ios'
       ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-      : PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION;
+      : (PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION, PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
   return (
     requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
       .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
       .catch(() => console.warn('Cannot request location accuracy')),
-    request(platformPermissions)
+    requestMultiple(platformPermissions)
       .then(result => {
         switch (result) {
           case RESULTS.UNAVAILABLE:
