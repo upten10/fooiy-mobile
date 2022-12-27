@@ -1,9 +1,9 @@
 import {React, useState} from 'react';
-import {Pressable, View, Text, StyleSheet, Platform, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, Platform, TouchableOpacity} from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import { login, logout, getProfile as getKakaoProfile } from '@react-native-seoul/kakao-login';
+import {login, getProfile as getKakaoProfile} from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RootNavigator from '../../navigation/RootNavigator';
 
