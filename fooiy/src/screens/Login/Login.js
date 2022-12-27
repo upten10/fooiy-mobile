@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RootNavigator from '../../navigation/RootNavigator';
 
 const Login = () => {
-    const [isLogined, setisLogined] = useState(false)
+    const [isLogin, setisLogin] = useState(false)
 
     const signInWithKakao = async data => {
         const token = await login();
@@ -22,9 +22,9 @@ const Login = () => {
                 fcm_token: '123',
         }).then(res => {console.log(res)})
         await AsyncStorage.setItem('token', JSON.stringify(token));
-        token ? setisLogined(true) : null
+        token ? setisLogin(true) : null
     };
-    if (isLogined) {
+    if (isLogin) {
         return (<RootNavigator />)
     }
   return (

@@ -14,7 +14,7 @@ const App = () => {
     SplashScreen.hide();
   }, []);
 
-  const [test,setTest] = useState(false);
+  const [isLogin,setisLogin] = useState(false);
   useEffect(() => {
     route();
   },[])
@@ -22,14 +22,14 @@ const App = () => {
   const route = async () => {
     const value = await AsyncStorage.getItem('token');
     if(value){
-    setTest(true);
+    setisLogin(true);
   }
   }
 
   return (
   <SafeAreaProvider>
     <Provider store={store}>
-      {test ? <RootNavigator /> : <Login />}
+      {isLogin ? <RootNavigator /> : <Login />}
     </Provider>
   </SafeAreaProvider>
   )
