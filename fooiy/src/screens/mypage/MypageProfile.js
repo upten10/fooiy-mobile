@@ -42,6 +42,7 @@ const MypageProfile = props => {
               {/* 푸이티아이 */}
               <View style={styles.userInfoDetail}>
                 <TouchableOpacity
+                  activeOpacity={0.8}
                   onPress={() => {
                     navigation.navigate('FooiyTI', {
                       info: accountInfo,
@@ -85,6 +86,7 @@ const MypageProfile = props => {
           {/* 설정 */}
           <TouchableOpacity
             style={styles.btn}
+            activeOpacity={0.8}
             onPress={() => {
               navigation.navigate('Setting', {
                 info: accountInfo,

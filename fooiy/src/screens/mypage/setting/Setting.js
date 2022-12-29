@@ -108,7 +108,7 @@ const Setting = props => {
             })}
           </View>
           {/* 로그아웃 */}
-          <TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.8}>
             <View style={styles.logoutContainer}>
               <Text style={styles.logoutText}>로그아웃</Text>
             </View>
