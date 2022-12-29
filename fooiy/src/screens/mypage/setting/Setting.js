@@ -10,8 +10,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {ArrowIcon, Pencil} from '../../../../assets/icons/svg';
-import FooiySwitch from './MktSwitch';
+import {ArrowIcon, Pencil, ToggleOn} from '../../../../assets/icons/svg';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {globalVariable} from '../../../common/globalVariable';
 import {fooiyColor} from '../../../common/globalStyles';
@@ -20,8 +19,7 @@ const Setting = props => {
   props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const accountInfo = props.route.params.info;
 
-  const {profile_image, nickname, introduction, fooiyti, is_mkt_agree} =
-    accountInfo;
+  const {profile_image, nickname, introduction, fooiyti} = accountInfo;
 
   const settingArr = [
     {text: '푸이티아이', info: fooiyti, navigation: ''},
@@ -99,7 +97,7 @@ const Setting = props => {
                     </View>
                     <View>
                       {elem.text === '마케팅 수신 알림' ? (
-                        <FooiySwitch isMktAgree={is_mkt_agree} />
+                        <ToggleOn />
                       ) : (
                         <ArrowIcon />
                       )}

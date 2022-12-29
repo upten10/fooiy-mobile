@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {debounce} from 'lodash';
 import {useState, useCallback} from 'react';
 import {Switch} from 'react-native-paper';

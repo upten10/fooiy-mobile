@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Text} from 'react-native';
 
 import RootNavigator from './src/navigation/RootNavigator';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
@@ -8,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import store from './src/redux/store';
 import Login from './src/screens/Login/Login';
 import {Provider} from 'react-redux';
-import {Provider as PaperProvider} from 'react-native-paper';
 
 const App = () => {
   useEffect(() => {
@@ -30,7 +28,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <PaperProvider>{isLogin ? <RootNavigator /> : <Login />}</PaperProvider>
+        {isLogin ? <RootNavigator /> : <Login />}
       </Provider>
     </SafeAreaProvider>
   );
