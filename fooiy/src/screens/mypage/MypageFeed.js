@@ -1,12 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Animated,
-  Dimensions,
-  Image,
-  FlatList,
-} from 'react-native';
+import {View, StyleSheet, Image, FlatList} from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';

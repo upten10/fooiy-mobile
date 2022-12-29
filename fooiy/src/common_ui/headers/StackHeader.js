@@ -2,10 +2,11 @@ import React from 'react';
 import {View, Image, Text, StyleSheet, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {fooiyColor} from '../../common/globalStyles';
 export const StackHeader = props => {
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.header_container}>
         {props.shop ? (
           <View style={styles.shop_detail}>
@@ -51,13 +52,16 @@ export const StackHeader = props => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+  },
   header_container: {
     height: 56,
     fontSize: 14,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: fooiyColor.W,
   },
   go_back_container: {
     height: 56,

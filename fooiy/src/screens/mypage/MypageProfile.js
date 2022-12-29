@@ -1,10 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Button, Image} from 'react-native';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
-import {fooiyColor, globalStyles} from '../../common/globalStyles';
+import {fooiyColor} from '../../common/globalStyles';
 import {Archive, Map, Settings} from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -41,14 +41,15 @@ const MypageProfile = props => {
             <View style={styles.userInfoContainer}>
               {/* 푸이티아이 */}
               <View style={styles.userInfoDetail}>
-                <View
-                  onTouchStart={() => {
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
                     navigation.navigate('FooiyTI', {
                       info: accountInfo,
                     });
                   }}>
                   <Text style={styles.fooiyTI}>{accountInfo.fooiyti}</Text>
-                </View>
+                </TouchableOpacity>
                 {/* 나중에 개척수에서 총 게시물 수로 바꿔야함 */}
                 <Text style={styles.profileInfoCount}>
                   총 {accountInfo.pioneer_count}개
@@ -72,24 +73,29 @@ const MypageProfile = props => {
         <View style={styles.btnContainer}>
           {/* 지도 */}
           <View style={styles.btn}>
-            <Map />
+            <Map style={styles.btnIcon} />
             <Text style={styles.btnText}>내 지도</Text>
           </View>
           <View style={styles.btnLine} />
           {/* 보관함 */}
           <View style={styles.btn}>
-            <Archive />
+            <Archive style={styles.btnIcon} />
             <Text style={styles.btnText}>보관함</Text>
           </View>
           <View style={styles.btnLine} />
           {/* 설정 */}
-          <View style={styles.btn}>
-            <Settings />
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('Setting', {
+                info: accountInfo,
+              });
+            }}>
+            <Settings style={styles.btnIcon} />
             <Text style={styles.btnText}>설정</Text>
-          </View>
+          </TouchableOpacity>
         </View>
-        {/* 피드 */}
-        <View></View>
       </View>
     </View>
   );
@@ -98,97 +104,91 @@ const MypageProfile = props => {
 const styles = StyleSheet.create({
   rootContainer: {
     width: globalVariable.width,
-    height: globalVariable.height * 0.4,
-    flex: 1,
+    marginBottom: 24,
   },
   container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  profileContainer: {
-    flex: 1,
-    width: '100%',
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
   infoContainer: {
     flexDirection: 'row',
-    width: '100%',
     alignItems: 'center',
+    marginBottom: 16,
   },
   profileImageContainer: {
-    width: globalVariable.width * 0.2,
-    height: globalVariable.width * 0.2,
     borderRadius: 24,
-    margin: 15,
+    marginRight: 16,
   },
   profileImage: {
-    width: globalVariable.width * 0.2,
-    height: globalVariable.width * 0.2,
+    width: 80,
+    height: 80,
     borderRadius: 24,
+    borderColor: fooiyColor.G200,
     borderWidth: 1,
-    borderColor: globalVariable.G200,
   },
   userInfoDetail: {
     flexDirection: 'row',
+    marginBottom: 16,
   },
   fooiyTI: {
     fontsize: 16,
     fontWeight: '600',
     borderWidth: 1,
     borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    margin: 4,
     color: fooiyColor.P500,
     borderColor: fooiyColor.P500,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginRight: 8,
   },
   profileInfoCount: {
     fontsize: 16,
     fontWeight: '600',
     borderWidth: 1,
     borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    margin: 4,
     color: fooiyColor.G400,
     borderColor: fooiyColor.G400,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
   },
   userName: {
     fontSize: 18,
     fontWeight: '600',
     color: fooiyColor.B,
-    margin: 4,
   },
   introduction: {
-    marginHorizontal: 16,
-    marginVertical: 10,
     fontWeight: '400',
     fontSize: 14,
     color: fooiyColor.G600,
+    marginBottom: 24,
   },
   btnContainer: {
-    flex: 0.7,
-    width: '90%',
+    height: 84,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    margin: 20,
     borderWidth: 1,
     borderColor: fooiyColor.G200,
     borderRadius: 8,
   },
   btn: {
+    justifyContent: 'center',
     alignItems: 'center',
+    width: '33%',
+    height: '100%',
+  },
+  btnIcon: {
+    marginBottom: 8,
   },
   btnLine: {
     width: 1,
-    height: '75%',
+    height: 56,
     backgroundColor: fooiyColor.G200,
   },
   btnText: {
     color: fooiyColor.G500,
     fontSize: 14,
     fontWeight: '600',
-    paddingTop: 12,
   },
 });
 

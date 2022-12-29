@@ -8,10 +8,6 @@ import {StackHeader} from '../../common_ui/headers/StackHeader';
 const FooiyTI = param => {
   const accountInfo = param.route.params.info;
 
-  useEffect(() => {
-    console.log(accountInfo);
-  });
-
   const resultArr = [
     {
       text: '자극적인/순한',
