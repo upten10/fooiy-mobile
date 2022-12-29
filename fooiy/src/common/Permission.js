@@ -87,42 +87,50 @@ const GalleryPermission = async () => {
 const LocationPermission = async () => {
   const platformPermissions =
     Platform.OS === 'ios'
-      ? (PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
-      : (PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION, PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+      ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+      : [
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+        ];
   return (
     requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
       .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
       .catch(() => console.warn('Cannot request location accuracy')),
-    
-    Platform.OS === 'ios' ? request(platformPermissions)
-    .then(result => {
-      switch (result) {
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          Alert.alert('blocked', 'go to setting and unblock it', [
-            {text: 'no', style: 'cancel'},
-            {text: 'ok', onPress: Linking.openSettings},
-          ]);
-          break;
-      }
-    })
-    .catch(error => {
-      console.log('Error!');
-    }) : requestMultiple(platformPermissions)
-    .then(result => {
-      switch (result) {
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          Alert.alert('blocked', 'go to setting and unblock it', [
-            {text: 'no', style: 'cancel'},
-            {text: 'ok', onPress: Linking.openSettings},
-          ]);
-          break;
-      }
-    })
-    .catch(error => {
-      console.log('Error!');
-    })
+    Platform.OS === 'ios'
+      ? request(platformPermissions)
+          .then(result => {
+            switch (result) {
+              case RESULTS.BLOCKED:
+                console.log(
+                  'The permission is denied and not requestable anymore',
+                );
+                Alert.alert('blocked', 'go to setting and unblock it', [
+                  {text: 'no', style: 'cancel'},
+                  {text: 'ok', onPress: Linking.openSettings},
+                ]);
+                break;
+            }
+          })
+          .catch(error => {
+            console.log('Error!');
+          })
+      : requestMultiple(platformPermissions)
+          .then(result => {
+            switch (result) {
+              case RESULTS.BLOCKED:
+                console.log(
+                  'The permission is denied and not requestable anymore',
+                );
+                Alert.alert('blocked', 'go to setting and unblock it', [
+                  {text: 'no', style: 'cancel'},
+                  {text: 'ok', onPress: Linking.openSettings},
+                ]);
+                break;
+            }
+          })
+          .catch(error => {
+            console.log('Error!');
+          })
   );
 };
 

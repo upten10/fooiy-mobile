@@ -1,7 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
 import NaverMapView from 'react-native-nmap';
-import {throttle} from 'lodash';
+import {result, throttle} from 'lodash';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -12,7 +12,7 @@ import {apiUrl} from '../../common/Enums';
 import CustomMarker from './Marker';
 import {LocationPermission} from '../../common/Permission';
 import Geolocation from 'react-native-geolocation-service';
-
+import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const NaverMap = () => {
   //map ref 초기화
@@ -59,17 +59,51 @@ const NaverMap = () => {
       });
     }
   };
+
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
+    Platform.OS === 'android'
+      ? Geolocation.getCurrentPosition(
+          async position => {
+            const {longitude, latitude} = position.coords;
+            mapView.current.animateToCoordinate({longitude, latitude});
+          },
+          error => this.setState({error: error.message}),
+          {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+        )
+      : null;
     mapView.current.setLocationTrackingMode(2);
-    Platform.OS === 'android' ? Geolocation.getCurrentPosition(async position => {
-      const { longitude, latitude } = position.coords;
-      mapView.current.animateToCoordinate({longitude,latitude});
-    },
-    (error) => this.setState({ error: error.message }),
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-  ) : null ;
   };
+
+  const checkGrant = async () => {
+    await LocationPermission();
+    Platform.OS === 'ios'
+      ? check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+          .then(result => {
+            switch (result) {
+              case RESULTS.GRANTED:
+                onClickLocationBtn();
+              case RESULTS.LIMITED:
+                onClickLocationBtn();
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      : check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION)
+          .then(result => {
+            switch (result) {
+              case RESULTS.LIMITED:
+                onClickLocationBtn();
+              case RESULTS.GRANTED:
+                onClickLocationBtn();
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+  };
+
   // 현위치 버튼 컴포넌트
   const LocationBtn = () => {
     return (
@@ -102,8 +136,7 @@ const NaverMap = () => {
   };
 
   useEffect(() => {
-    LocationPermission();
-    onClickLocationBtn();
+    checkGrant();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

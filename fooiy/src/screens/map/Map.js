@@ -4,9 +4,6 @@ import NaverMap from './NaverMap';
 import {LocationPermission} from '../../common/Permission';
 
 const Map = () => {
-  useEffect(() => {
-    LocationPermission();
-  }, []);
   return (
     <View style={{flex: 1}}>
       <NaverMap />
