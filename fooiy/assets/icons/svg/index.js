@@ -7,3 +7,7 @@ export {default as Comment} from './ic_comment.svg';
 export {default as Map} from './map.svg';
 export {default as Archive} from './archive.svg';
 export {default as Settings} from './settings.svg';
+export {default as ArrowIcon} from './Icon_arrow.svg';
+export {default as ToggleOff} from './toggleOff.svg';
+export {default as ToggleOn} from './toggleOn.svg';
+export {default as Pencil} from './pencil.svg';
