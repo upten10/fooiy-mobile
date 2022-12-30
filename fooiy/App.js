@@ -19,7 +19,7 @@ const App = () => {
   }, []);
 
   const route = async () => {
-    const value = await AsyncStorage.getItem('token');
+    const value = await AsyncStorage.getItem('auth');
     if (value) {
       setisLogin(true);
     }
