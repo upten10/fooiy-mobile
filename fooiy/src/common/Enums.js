@@ -6,5 +6,6 @@ export const apiUrl = {
   MAP_SHOP_LIST: 'shops/shop/shop_map_list/',
   MAP_SHOP_MARKER: 'shops/shop/shop_map_picker/',
   KAKAO_LOGIN: 'accounts/kakao_login/',
+  APPLE_LOGIN: 'accounts/apple_login/',
   ACCOUNT_INFO: 'accounts/info/',
 };
