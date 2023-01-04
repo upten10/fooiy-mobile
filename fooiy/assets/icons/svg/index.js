@@ -11,3 +11,7 @@ export {default as ArrowIcon} from './Icon_arrow.svg';
 export {default as ToggleOff} from './toggleOff.svg';
 export {default as ToggleOn} from './toggleOn.svg';
 export {default as Pencil} from './pencil.svg';
+export {default as Kakaotalk} from './kakaotalk.svg';
+export {default as Apple} from './apple.svg';
+export {default as Login_img} from './login_img.svg';
+export {default as Login_icon} from './login_icon.svg';
