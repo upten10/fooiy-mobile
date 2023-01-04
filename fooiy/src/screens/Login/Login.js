@@ -2,7 +2,7 @@ import {React, useState} from 'react';
 import {Text, View, StyleSheet, Platform, TouchableOpacity} from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {
   login,
   getProfile as getKakaoProfile,
@@ -17,6 +17,7 @@ import {
   Login_img,
   Login_icon,
 } from '../../../assets/icons/svg';
+import {globalVariable} from '../../common/globalVariable';
 
 const Login = () => {
   const [isLogin, setisLogin] = useState(false);
@@ -30,7 +31,7 @@ const Login = () => {
     await ApiMangerV1.post(apiUrl.KAKAO_LOGIN, {
       social_id: profile.id,
       os: Platform.OS,
-      app_version: '1.2.0',
+      app_version: globalVariable.app_version,
       device_id: DEVICEID,
       fcm_token: '123',
     }).then(res => {
