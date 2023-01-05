@@ -13,7 +13,9 @@ import TypingContent from './typing_content/TypingContent';
 const Stack = createStackNavigator();
 const RegisterStackNavigation = () => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges="top">
+    <SafeAreaView
+      style={{flex: 1, backgroundColor: '#fff'}}
+      edges={Platform.OS === 'ios' ? 'top' : null}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="Register"

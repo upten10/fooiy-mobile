@@ -45,6 +45,15 @@ export const StackHeader = props => {
             }}>
             <Text style={styles.next_name}>다음</Text>
           </TouchableOpacity>
+        ) : props.enroll ? (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}
+            onPress={() => {
+              props.enroll();
+            }}>
+            <Text style={styles.next_name}>등록</Text>
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>

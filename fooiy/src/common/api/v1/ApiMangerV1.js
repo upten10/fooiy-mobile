@@ -3,12 +3,13 @@ import axios from 'axios';
 const BASEURL = 'http://dev-api.fooiy.com/api/v1/';
 const AUTHORIZATION =
   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzb2NpYWxfaWQiOiIyMzg1Mzk5MDYxIiwiY3JlYXRlZF9hdCI6MTY2MTQwNjg2Mi45OTIxMjU3fQ.p55xYjWexwZP880htz6zGCDkhMoRv_vLsHP2HyolEyo';
-const DEVICEID = '6EE35198-F6C9-4739-8720-671BA1AD9F3E';
+const DEVICEID = 'BBDA65DE-63DD-48B9-97B5-B324DD3FD719';
 const baseURL = BASEURL;
 const headers = {
   Authorization: AUTHORIZATION,
   os: 'ios',
   'device-id': DEVICEID,
+  'Content-Type': 'multipart/form-data',
 };
 const ApiMangerV1 = axios.create({
   baseURL: baseURL, // your url
@@ -35,4 +36,4 @@ ApiMangerV1.interceptors.response.use(
   },
 );
 
-export {ApiMangerV1};
+export {ApiMangerV1, headers};

@@ -3,24 +3,34 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
-import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 import {fooiyColor} from '../../common/globalStyles';
-import {Archive, Map, Settings} from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
+import {userInfoAction} from '../../redux/actions/userInfoAction';
+import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
+import {Archive, Map, Settings} from '../../../assets/icons/svg';
 
 const MypageProfile = props => {
   const navigation = useNavigation();
-  const [accountInfo, setAccountInfo] = useState({});
+  const [introduction, setIntroduction] = useState(props.data.introduction);
+  const [profileImg, setProfileImg] = useState();
+  const dispatch = useDispatch();
 
-  const getAccountInfo = async data => {
-    await ApiMangerV1.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res => {
-      setAccountInfo(res.data.payload.account_info);
-    });
-  };
+  const userInfoRedux = useSelector(state => state.userInfo.value);
 
   useEffect(() => {
-    getAccountInfo();
-  }, []);
+    'introduction' in userInfoRedux
+      ? setIntroduction(userInfoRedux.introduction)
+      : setIntroduction(props.data.introduction);
+    // setIntroduction(a ? userInfoRedux : props.data.introduction);
+  }, [props.data.introduction, userInfoRedux]);
+
+  useEffect(() => {
+    'profile_image' in userInfoRedux
+      ? setProfileImg(userInfoRedux.profile_image)
+      : setProfileImg(props.data.profile_image);
+    // setIntroduction(a ? userInfoRedux : props.data.introduction);
+  }, [props.data.profile_image, userInfoRedux]);
 
   return (
     <View style={styles.rootContainer} pointerEvents="box-none">
@@ -33,7 +43,7 @@ const MypageProfile = props => {
             <View style={styles.profileImageContainer}>
               <Image
                 source={{
-                  uri: accountInfo.profile_image,
+                  uri: profileImg,
                 }}
                 style={styles.profileImage}
               />
@@ -45,27 +55,27 @@ const MypageProfile = props => {
                   activeOpacity={0.8}
                   onPress={() => {
                     navigation.navigate('FooiyTI', {
-                      info: accountInfo,
+                      info: props.data,
                     });
                   }}>
-                  <Text style={styles.fooiyTI}>{accountInfo.fooiyti}</Text>
+                  <Text style={styles.fooiyTI}>{props.data.fooiyti}</Text>
                 </TouchableOpacity>
                 {/* 나중에 개척수에서 총 게시물 수로 바꿔야함 */}
                 <Text style={styles.profileInfoCount}>
-                  총 {accountInfo.pioneer_count}개
+                  총 {props.data.pioneer_count}개
                 </Text>
               </View>
               {/* 닉네임 */}
               <View>
-                <Text style={styles.userName}>{accountInfo.nickname}</Text>
+                <Text style={styles.userName}>{props.data.nickname}</Text>
               </View>
             </View>
           </View>
           <View>
             <Text style={styles.introduction}>
-              {accountInfo.introduction === null
+              {introduction === null
                 ? '안녕하세요 소개가 비어있어요힝'
-                : accountInfo.introduction}
+                : introduction}
             </Text>
           </View>
         </View>
@@ -89,7 +99,7 @@ const MypageProfile = props => {
             activeOpacity={0.8}
             onPress={() => {
               navigation.navigate('Setting', {
-                info: accountInfo,
+                info: props.data,
               });
             }}>
             <Settings style={styles.btnIcon} />

@@ -50,4 +50,20 @@ export const globalStyles = StyleSheet.create({
       },
     }),
   },
+  transparency: {
+    ...Platform.select({
+      ios: {
+        shadowColor: fooiyColor.W,
+        shadowOffset: {
+          width: 0,
+          height: -15, // 낮을수록 진해짐
+        },
+        shadowOpacity: 1, // 높을수록 진해짐
+        shadowRadius: 7,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
+  },
 });
