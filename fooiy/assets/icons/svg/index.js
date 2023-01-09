@@ -15,3 +15,8 @@ export {default as Kakaotalk} from './kakaotalk.svg';
 export {default as Apple} from './apple.svg';
 export {default as Login_img} from './login_img.svg';
 export {default as Login_icon} from './login_icon.svg';
+export {default as Register_icon} from './Register_icon.svg';
+export {default as Notice} from './Notice.svg';
+export {default as Camera} from './Camera.svg';
+export {default as Album} from './Album.svg';
+export {default as Cancel} from './Cancel.svg';
