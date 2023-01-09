@@ -11,7 +11,6 @@ export {default as ArrowIcon} from './Icon_arrow.svg';
 export {default as ToggleOff} from './toggleOff.svg';
 export {default as ToggleOn} from './toggleOn.svg';
 export {default as Pencil} from './pencil.svg';
-export {default as Camera} from './Icon_Camera.svg';
-export {default as Notice} from './notice.svg';
+export {default as Camera_Profile} from './Icon_Camera.svg';
 export {default as ArrowIconBottom} from './Icon_arrrow_bottom.svg';
 export {default as ArrowIconTop} from './Icon_arrrow_top.svg';
