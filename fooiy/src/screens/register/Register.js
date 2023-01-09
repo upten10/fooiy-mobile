@@ -5,7 +5,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image,
+  Alert,
+  Linking,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
@@ -18,6 +20,7 @@ import {
   Album,
   Cancel,
 } from '../../../assets/icons/svg';
+import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 const width = Dimensions.get('window').width;
 
@@ -38,6 +41,33 @@ const Register = () => {
   };
 
   const goGallery = () => {
+    Platform.OS === 'android'
+      ? request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(res => {
+          console.log(res);
+          switch (res) {
+            case RESULTS.DENIED:
+              Alert.alert(
+                '서비스 이용 알림',
+                '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+                [
+                  {text: '닫기', onPress: navigation.goBack},
+                  {text: '설정', onPress: Linking.openSettings},
+                ],
+              );
+              break;
+            case RESULTS.BLOCKED:
+              Alert.alert(
+                '서비스 이용 알림',
+                '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+                [
+                  {text: '닫기', onPress: navigation.goBack},
+                  {text: '설정', onPress: Linking.openSettings},
+                ],
+              );
+              break;
+          }
+        })
+      : null;
     navigation.navigate('Gallery');
     toggleModal();
   };

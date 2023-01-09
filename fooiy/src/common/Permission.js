@@ -1,15 +1,10 @@
-import {result} from 'lodash';
 import {Alert, Linking, Platform} from 'react-native';
 import {
-  check,
   PERMISSIONS,
   RESULTS,
   request,
-  checkNotifications,
-  checkLocationAccuracy,
   requestLocationAccuracy,
   requestMultiple,
-  checkMultiple,
 } from 'react-native-permissions';
 
 const CameraPermission = async () => {
@@ -36,11 +31,6 @@ const CameraPermission = async () => {
           break;
         case RESULTS.BLOCKED:
           console.log('The permission is denied and not requestable anymore');
-          Alert.alert(
-            '서비스 이용 알림',
-            '카메라 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-            [{text: '설정', onPress: Linking.openSettings}],
-          );
           break;
       }
     })
@@ -75,11 +65,6 @@ const GalleryPermission = async () => {
           break;
         case RESULTS.BLOCKED:
           console.log('The permission is denied and not requestable anymore');
-          Alert.alert(
-            '서비스 이용 알림',
-            '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-            [{text: '설정', onPress: Linking.openSettings}],
-          );
           break;
       }
     })
@@ -110,7 +95,7 @@ const LocationPermission = async () => {
               Alert.alert(
                 '서비스 이용 알림',
                 '위치 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-                [{text: '설정', onPress: Linking.openSettings}],
+                [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
               );
               break;
           }
@@ -120,15 +105,16 @@ const LocationPermission = async () => {
         }))
     : requestMultiple(platformPermissions)
         .then(result => {
-          console.log(result);
           if (
+            result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'denied' ||
+            result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'denied' ||
             result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'blocked' ||
             result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'blocked'
           ) {
             Alert.alert(
               '서비스 이용 알림',
               '위치 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-              [{text: '설정', onPress: Linking.openSettings}],
+              [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
             );
           }
         })
