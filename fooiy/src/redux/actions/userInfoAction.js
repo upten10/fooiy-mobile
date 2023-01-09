@@ -18,4 +18,10 @@ function isExist(data) {
   };
 }
 
-export const userInfoAction = {init, editIntro, isExist};
+function isLogin(data) {
+  return async (dispatch, getState) => {
+    dispatch(userInfoActions.isLogin(data));
+  };
+}
+
+export const userInfoAction = {init, editIntro, isExist, isLogin};

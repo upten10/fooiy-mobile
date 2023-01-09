@@ -9,10 +9,13 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {loginActions} from '../../../redux/reducer/login';
 
 const WithdrawConfirm = props => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const {reason} = props.route.params;
 
@@ -22,10 +25,12 @@ const WithdrawConfirm = props => {
 
   const onPressConfirm = async () => {
     await ApiMangerV1.delete(apiUrl.WITHDRAW, {
-      reason,
+      params: {reason},
     })
-      .then(AsyncStorage.clear())
-      .then(navigation.navigate('Login'));
+      // .then(res => console.log(JSON.stringify(res)))
+      .then(dispatch(loginActions.setLogin(false)))
+      .then(navigation.popToTop());
+    AsyncStorage.clear();
   };
 
   return (

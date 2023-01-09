@@ -24,6 +24,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {loginActions} from '../../../redux/reducer/login';
 
 const Setting = props => {
   props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
@@ -101,9 +102,10 @@ const Setting = props => {
     });
   };
 
-  const onPressLogout = () => {
-    AsyncStorage.clear();
-    navigation.navigate('Login');
+  const onPressLogout = async () => {
+    await AsyncStorage.clear()
+      .then(dispatch(loginActions.setLogin(false)))
+      .then(navigation.popToTop());
   };
 
   return (

@@ -46,27 +46,14 @@ const Withdraw = () => {
   };
 
   const onPressBtn = () => {
-    switch (clickedIndex) {
-      case 0:
-        navigation.navigate('WithdrawConfirm', {
-          reason: '사용을 잘 안해요',
-        });
-        break;
-      case 1:
-        navigation.navigate('WithdrawConfirm', {
-          reason: '가고싶은 음식점이 없어요',
-        });
-        break;
-      case 2:
-        navigation.navigate('WithdrawConfirm', {
-          reason: '사용법이 너무 어려워요',
-        });
-        break;
-      case 3:
-        navigation.navigate('WithdrawConfirm', {
-          reason: inputValue,
-        });
-        break;
+    if (clickedIndex === 3) {
+      navigation.navigate('WithdrawConfirm', {
+        reason: inputValue,
+      });
+    } else {
+      navigation.navigate('WithdrawConfirm', {
+        reason: checkBoxData[clickedIndex],
+      });
     }
   };
 
@@ -160,7 +147,7 @@ const Withdraw = () => {
                     ? styles.changeBtnText
                     : [styles.changeBtnText, styles.changeBtnTextOff]
                 }>
-                변경
+                다음
               </Text>
             </TouchableOpacity>
           </View>
