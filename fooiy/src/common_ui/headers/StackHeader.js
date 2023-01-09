@@ -45,6 +45,15 @@ export const StackHeader = props => {
             }}>
             <Text style={styles.next_name}>다음</Text>
           </TouchableOpacity>
+        ) : props.enroll ? (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}
+            onPress={() => {
+              props.enroll();
+            }}>
+            <Text style={styles.next_name}>등록</Text>
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>
@@ -52,9 +61,6 @@ export const StackHeader = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
   header_container: {
     height: 56,
     fontSize: 14,
@@ -93,6 +99,8 @@ const styles = StyleSheet.create({
   },
   title_name: {
     fontSize: 16,
+    fontWeight: '600',
+    color: fooiyColor.B,
   },
 
   shop_address: {

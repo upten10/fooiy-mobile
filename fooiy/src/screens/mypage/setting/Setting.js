@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Keyboard,
@@ -10,27 +10,75 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {ArrowIcon, Pencil, ToggleOn} from '../../../../assets/icons/svg';
+import {
+  ArrowIcon,
+  Camera,
+  Pencil,
+  ToggleOn,
+} from '../../../../assets/icons/svg';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {globalVariable} from '../../../common/globalVariable';
 import {fooiyColor} from '../../../common/globalStyles';
+import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {apiUrl} from '../../../common/Enums';
+import {useDispatch, useSelector} from 'react-redux';
+import {userInfoAction} from '../../../redux/actions/userInfoAction';
+import {useNavigation} from '@react-navigation/native';
 
 const Setting = props => {
   props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-  const accountInfo = props.route.params.info;
+  const navigation = useNavigation();
+  const userInfo = props.route.params.info;
+  const dispatch = useDispatch();
 
-  const {profile_image, nickname, introduction, fooiyti} = accountInfo;
+  const {profile_image, nickname, introduction, fooiyti} = userInfo;
 
   const settingArr = [
-    {text: '푸이티아이', info: fooiyti, navigation: ''},
-    {text: '닉네임 변경', info: nickname, navigation: ''},
+    {text: '문의함', navigation: 'Suggestion'},
+    {text: '푸이티아이', navigation: 'FooiyTI'},
+    {text: '닉네임 변경', navigation: 'EditName'},
     {text: '서비스 이용약관', navigation: ''},
     {text: '위치기반 이용약관', navigation: ''},
     {text: '개인정보 수집 및 이용', navigation: ''},
-    {text: '마케팅 수신 알림', navigation: ''},
+    {text: '마케팅 수신 알림'},
   ];
 
   const [isFocused, setIsFocused] = useState(false);
+  const [curIntro, setCurIntro] = useState(introduction);
+  const [curProfileImg, setCurProfileImg] = useState(profile_image);
+  const [curNickName, setCurNickName] = useState(nickname);
+
+  const editIntro = async () => {
+    await ApiMangerV1.patch(apiUrl.PROFILE_EDIT, {
+      introduction: curIntro === '' ? ' ' : curIntro,
+    }).then(res => {
+      dispatch(userInfoAction.editIntro(res.data.payload.account_info));
+    });
+  };
+
+  const userInfoRedux = useSelector(state => state.userInfo.value);
+
+  useEffect(() => {
+    'introduction' in userInfoRedux
+      ? setCurIntro(userInfoRedux.introduction)
+      : setCurIntro(userInfo.introduction);
+  }, [userInfo.introduction, userInfoRedux]);
+
+  useEffect(() => {
+    'profile_image' in userInfoRedux
+      ? setCurProfileImg(userInfoRedux.profile_image)
+      : setCurProfileImg(userInfo.profile_image);
+  }, [userInfo.profile_image, userInfoRedux]);
+
+  useEffect(() => {
+    'nickname' in userInfoRedux
+      ? setCurNickName(userInfoRedux.nickname)
+      : setCurNickName(userInfo.nickname);
+  }, [userInfo.nickname, userInfoRedux]);
+
+  const onPressWithdraw = () => {
+    navigation.navigate('Withdraw');
+  };
 
   const onIntroFocus = () => {
     setIsFocused(true);
@@ -38,11 +86,24 @@ const Setting = props => {
 
   const onIntroBlur = () => {
     setIsFocused(false);
+    if (introduction !== curIntro) {
+      editIntro();
+    }
+  };
+
+  const onImgPress = () => {
+    navigation.navigate('ProfileImg');
+  };
+
+  const onItemPress = navi => {
+    navigation.navigate(navi, {
+      info: userInfo,
+    });
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView
+      <View
         style={{
           height: globalVariable.height,
           backgroundColor: '#FFF',
@@ -51,30 +112,35 @@ const Setting = props => {
         <View style={styles.container}>
           {/* 프로필 사진 및 이름 */}
           <View style={styles.profileRowContainer}>
-            <View>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={onImgPress}
+              style={styles.profileImageContainer}>
               <Image
                 source={{
-                  uri: profile_image,
+                  uri: curProfileImg,
                 }}
                 style={styles.profileImage}
               />
-            </View>
+              <Camera style={styles.cameraIcon} />
+            </TouchableOpacity>
             <View>
-              <Text style={styles.nickName}>{nickname}</Text>
+              <Text style={styles.nickName}>{curNickName}</Text>
             </View>
           </View>
           {/* 소개 */}
           <View style={styles.introContainer}>
             <TextInput
-              maxLength={20}
+              maxLength={100}
               placeholder="인사말을 입력해주세요."
+              value={curIntro}
+              onChangeText={setCurIntro}
               style={
                 isFocused ? [styles.intro, styles.introFocus] : styles.intro
               }
               onFocus={onIntroFocus}
-              onBlur={onIntroBlur}>
-              {introduction}
-            </TextInput>
+              onBlur={onIntroBlur}
+            />
             <Pencil
               style={isFocused ? styles.pencilFocus : styles.pencilBlur}
             />
@@ -83,27 +149,35 @@ const Setting = props => {
           <View style={styles.settingsContainer}>
             {settingArr.map((elem, index) => {
               return (
-                <View key={index} style={styles.setting}>
-                  <View>
-                    <Text>{elem.text}</Text>
-                  </View>
-                  <View style={styles.rightCol}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    elem.navigation ? onItemPress(elem.navigation) : null
+                  }>
+                  <View key={index} style={styles.setting}>
                     <View>
-                      {elem.text === '푸이티아이' ? (
-                        <Text style={styles.rightFooiyti}>{elem.info}</Text>
-                      ) : elem.text === '닉네임 변경' ? (
-                        <Text style={styles.rightNickname}>{elem.info}</Text>
-                      ) : null}
+                      <Text>{elem.text}</Text>
                     </View>
-                    <View>
-                      {elem.text === '마케팅 수신 알림' ? (
-                        <ToggleOn />
-                      ) : (
-                        <ArrowIcon />
-                      )}
+                    <View style={styles.rightCol}>
+                      <View>
+                        {elem.text === '푸이티아이' ? (
+                          <Text style={styles.rightFooiyti}>{fooiyti}</Text>
+                        ) : elem.text === '닉네임 변경' ? (
+                          <Text style={styles.rightNickname}>
+                            {curNickName}
+                          </Text>
+                        ) : null}
+                      </View>
+                      <View>
+                        {elem.text === '마케팅 수신 알림' ? (
+                          <ToggleOn />
+                        ) : (
+                          <ArrowIcon />
+                        )}
+                      </View>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })}
           </View>
@@ -115,11 +189,13 @@ const Setting = props => {
           </TouchableOpacity>
           {/* 회원탈퇴 및 버전 정보 */}
           <View style={styles.footerContainer}>
-            <Text style={styles.footerText}>회원 탈퇴</Text>
+            <TouchableOpacity activeOpacity={0.8} onPress={onPressWithdraw}>
+              <Text style={styles.footerText}>회원 탈퇴</Text>
+            </TouchableOpacity>
             <Text style={styles.footerText}>버전 정보 0.0.1</Text>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -130,6 +206,7 @@ const styles = StyleSheet.create({
   container: {
     height: globalVariable.height,
     paddingHorizontal: 16,
+    marginTop: 16,
   },
   profileRowContainer: {
     flexDirection: 'row',
@@ -137,13 +214,20 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     width: '100%',
   },
+  profileImageContainer: {
+    marginRight: 16,
+  },
   profileImage: {
     width: 72,
     height: 72,
     borderWidth: 1,
     borderColor: fooiyColor.G200,
     borderRadius: 24,
-    marginRight: 16,
+  },
+  cameraIcon: {
+    position: 'absolute',
+    right: -4,
+    bottom: -4,
   },
   nickName: {
     height: 24,

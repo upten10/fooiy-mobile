@@ -10,6 +10,7 @@ const MypageFeed = props => {
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [noFeedImage, setNoFeedImage] = useState(null);
+  const userInfo = props.info;
 
   useEffect(() => {
     getFeedList();
@@ -40,8 +41,10 @@ const MypageFeed = props => {
         <Image
           source={{uri: item.image[0]}}
           style={{
-            width: globalVariable.width * (1 / 3),
-            height: globalVariable.width * (1 / 3),
+            width: globalVariable.width * (1 / 3) - 4 / 3,
+            height: globalVariable.width * (1 / 3) - 4 / 3,
+            marginRight: 2,
+            marginBottom: 2,
           }}
         />
       </View>
@@ -57,7 +60,7 @@ const MypageFeed = props => {
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         scrollEventThrottle={16}
-        ListHeaderComponent={MypageProfile}
+        ListHeaderComponent={<MypageProfile info={userInfo} />}
         bounces={false}
         numColumns={3}
         scrollToOverflowEnabled
