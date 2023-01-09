@@ -10,7 +10,7 @@ const MypageFeed = props => {
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [noFeedImage, setNoFeedImage] = useState(null);
-  const userInfo = props.data;
+  const userInfo = props.info;
 
   useEffect(() => {
     getFeedList();
@@ -60,7 +60,7 @@ const MypageFeed = props => {
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         scrollEventThrottle={16}
-        ListHeaderComponent={<MypageProfile data={userInfo} />}
+        ListHeaderComponent={<MypageProfile info={userInfo} />}
         bounces={false}
         numColumns={3}
         scrollToOverflowEnabled

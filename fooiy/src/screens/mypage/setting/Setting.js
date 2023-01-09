@@ -28,15 +28,15 @@ import {useNavigation} from '@react-navigation/native';
 const Setting = props => {
   props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const navigation = useNavigation();
-  const accountInfo = props.route.params.info;
+  const userInfo = props.route.params.info;
   const dispatch = useDispatch();
 
-  const {profile_image, nickname, introduction, fooiyti} = accountInfo;
+  const {profile_image, nickname, introduction, fooiyti} = userInfo;
 
   const settingArr = [
-    {text: '문의함', navigation: ''},
-    {text: '푸이티아이', info: fooiyti, navigation: 'FooiyTI'},
-    {text: '닉네임 변경', info: nickname, navigation: 'EditName'},
+    {text: '문의함', navigation: 'Suggestion'},
+    {text: '푸이티아이', navigation: 'FooiyTI'},
+    {text: '닉네임 변경', navigation: 'EditName'},
     {text: '서비스 이용약관', navigation: ''},
     {text: '위치기반 이용약관', navigation: ''},
     {text: '개인정보 수집 및 이용', navigation: ''},
@@ -46,19 +46,14 @@ const Setting = props => {
   const [isFocused, setIsFocused] = useState(false);
   const [curIntro, setCurIntro] = useState(introduction);
   const [curProfileImg, setCurProfileImg] = useState(profile_image);
+  const [curNickName, setCurNickName] = useState(nickname);
 
-  const editIntro = async data => {
+  const editIntro = async () => {
     await ApiMangerV1.patch(apiUrl.PROFILE_EDIT, {
       introduction: curIntro,
-    })
-      .then(res => {
-        dispatch(userInfoAction.editIntro(res.data.payload.account_info));
-      })
-      .then(
-        navigation.navigate('Setting', {
-          info: accountInfo,
-        }),
-      );
+    }).then(res => {
+      dispatch(userInfoAction.editIntro(res.data.payload.account_info));
+    });
   };
 
   const userInfoRedux = useSelector(state => state.userInfo.value);
@@ -66,14 +61,24 @@ const Setting = props => {
   useEffect(() => {
     'introduction' in userInfoRedux
       ? setCurIntro(userInfoRedux.introduction)
-      : setCurIntro(accountInfo.introduction);
-  }, [accountInfo.introduction, userInfoRedux]);
+      : setCurIntro(userInfo.introduction);
+  }, [userInfo.introduction, userInfoRedux]);
 
   useEffect(() => {
     'profile_image' in userInfoRedux
       ? setCurProfileImg(userInfoRedux.profile_image)
-      : setCurProfileImg(accountInfo.profile_image);
-  }, [accountInfo.profile_image, userInfoRedux]);
+      : setCurProfileImg(userInfo.profile_image);
+  }, [userInfo.profile_image, userInfoRedux]);
+
+  useEffect(() => {
+    'nickname' in userInfoRedux
+      ? setCurNickName(userInfoRedux.nickname)
+      : setCurNickName(userInfo.nickname);
+  }, [userInfo.nickname, userInfoRedux]);
+
+  const onPressWithdraw = () => {
+    navigation.navigate('Withdraw');
+  };
 
   const onIntroFocus = () => {
     setIsFocused(true);
@@ -92,7 +97,7 @@ const Setting = props => {
 
   const onItemPress = navi => {
     navigation.navigate(navi, {
-      info: accountInfo,
+      info: userInfo,
     });
   };
 
@@ -120,7 +125,7 @@ const Setting = props => {
               <Camera style={styles.cameraIcon} />
             </TouchableOpacity>
             <View>
-              <Text style={styles.nickName}>{nickname}</Text>
+              <Text style={styles.nickName}>{curNickName}</Text>
             </View>
           </View>
           {/* 소개 */}
@@ -156,9 +161,11 @@ const Setting = props => {
                     <View style={styles.rightCol}>
                       <View>
                         {elem.text === '푸이티아이' ? (
-                          <Text style={styles.rightFooiyti}>{elem.info}</Text>
+                          <Text style={styles.rightFooiyti}>{fooiyti}</Text>
                         ) : elem.text === '닉네임 변경' ? (
-                          <Text style={styles.rightNickname}>{elem.info}</Text>
+                          <Text style={styles.rightNickname}>
+                            {curNickName}
+                          </Text>
                         ) : null}
                       </View>
                       <View>
@@ -182,7 +189,9 @@ const Setting = props => {
           </TouchableOpacity>
           {/* 회원탈퇴 및 버전 정보 */}
           <View style={styles.footerContainer}>
-            <Text style={styles.footerText}>회원 탈퇴</Text>
+            <TouchableOpacity activeOpacity={0.8} onPress={onPressWithdraw}>
+              <Text style={styles.footerText}>회원 탈퇴</Text>
+            </TouchableOpacity>
             <Text style={styles.footerText}>버전 정보 0.0.1</Text>
           </View>
         </View>
@@ -197,6 +206,7 @@ const styles = StyleSheet.create({
   container: {
     height: globalVariable.height,
     paddingHorizontal: 16,
+    marginTop: 16,
   },
   profileRowContainer: {
     flexDirection: 'row',

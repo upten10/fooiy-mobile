@@ -8,6 +8,8 @@ import EditName from './setting/EditName';
 import {globalStyles} from '../../common/globalStyles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Platform} from 'react-native';
+import Suggestion from './setting/Suggestion';
+import Withdraw from './setting/Withdraw';
 
 const Stack = createStackNavigator();
 const MypageStackNavigation = () => {
@@ -34,6 +36,8 @@ const MypageStackNavigation = () => {
         <Stack.Screen name="Setting" component={Setting} />
         <Stack.Screen name="ProfileImg" component={ProfileImg} />
         <Stack.Screen name="EditName" component={EditName} />
+        <Stack.Screen name="Suggestion" component={Suggestion} />
+        <Stack.Screen name="Withdraw" component={Withdraw} />
       </Stack.Navigator>
     </SafeAreaView>
   );

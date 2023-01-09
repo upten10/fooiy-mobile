@@ -9,7 +9,6 @@ const headers = {
   Authorization: AUTHORIZATION,
   os: 'ios',
   'device-id': DEVICEID,
-  'Content-Type': 'multipart/form-data',
 };
 const ApiMangerV1 = axios.create({
   baseURL: baseURL, // your url

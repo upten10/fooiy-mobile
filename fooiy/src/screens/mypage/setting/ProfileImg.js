@@ -23,8 +23,11 @@ import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../../common/Enums';
 import {useDispatch} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {fooiyColor} from '../../../common/globalStyles';
 
 const ProfileImg = () => {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const width = globalVariable.width;
   const height = globalVariable.height;
@@ -66,7 +69,14 @@ const ProfileImg = () => {
           : galleryList[selectIndex].node.image;
 
       const match = /\.(\w+)$/.exec(photo.filename ?? '');
-      const type = match ? `image/${match[1]}` : `image`;
+      // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
+      const type =
+        galleryList[selectIndex].node.type === 'image'
+          ? match
+            ? `image/${match[1]}`
+            : `image`
+          : galleryList[selectIndex].node.type;
+
       const formData = new FormData();
       formData.append('profile_image', {
         uri: photo.uri,
@@ -191,8 +201,7 @@ const ProfileImg = () => {
               }}
               style={styles.selected_photo}
             />
-            <View
-              style={{height: width / 10, flexDirection: 'row', bottom: 70}}>
+            <View style={{height: width / 10, flexDirection: 'row', bottom: 0}}>
               <Button title="편집" onPress={() => setCropPhoto(true)} />
             </View>
           </View>
@@ -203,17 +212,18 @@ const ProfileImg = () => {
   }, [cropPhoto, selectIndex]);
 
   return (
-    <View>
+    <View style={{backgroundColor: fooiyColor.W}}>
       <StackHeader title="앨범" enroll={enroll} />
       {selectIndex !== -1 ? (
         <SelectedPhoto />
       ) : (
-        <View style={[styles.crop_photo, {backgroundColor: '#cccc'}]}></View>
+        <View
+          style={[styles.crop_photo, {backgroundColor: fooiyColor.W}]}></View>
       )}
 
       <FlatList
         data={galleryOriginalList}
-        style={{height: height - width - 56}}
+        style={BodyStyles(insets.top, insets.bottom).bodyContainer}
         keyExtractor={(item, index) => index.toString()}
         onEndReachedThreshold={0.7}
         numColumns={3}
@@ -229,22 +239,10 @@ const ProfileImg = () => {
                   onPress={() => {
                     selectPhoto(index);
                   }}>
-                  {selectIndex === -1 ? (
-                    <Image
-                      source={{uri: item.node.image.uri}}
-                      style={styles.gallery_photos}
-                    />
-                  ) : (
-                    <View>
-                      <Image
-                        source={{uri: item.node.image.uri}}
-                        style={styles.gallery_photos}
-                      />
-                      <Text style={styles.selected_photo_index}>
-                        {selectIndex + 1}
-                      </Text>
-                    </View>
-                  )}
+                  <Image
+                    source={{uri: item.node.image.uri}}
+                    style={styles.gallery_photos}
+                  />
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -263,36 +261,44 @@ const styles = StyleSheet.create({
   },
   selected_photo_corp_container: {
     width: globalVariable.width,
-    height: globalVariable.width * 1.1,
+    height: globalVariable.width * 0.9,
   },
   gallery_photos: {
     width: globalVariable.width / 3,
     height: globalVariable.width / 3,
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: fooiyColor.W,
   },
   crop_photo: {
     width: globalVariable.width,
-    height: globalVariable.width,
+    height: globalVariable.width * 0.8,
   },
   selected_photo: {
     width: globalVariable.width,
-    height: globalVariable.width,
-    // resizeMode: 'contain',
+    height: globalVariable.width * 0.8,
+    resizeMode: 'contain',
   },
-  selected_photo_index: {
-    position: 'absolute',
-    right: 0,
-  },
-  selected_photo_list: {
-    position: 'absolute',
-    bottom: 10,
-    width: globalVariable.width,
-  },
-  selected_photo_list_item: {
-    width: globalVariable.width / 6,
-    height: globalVariable.width / 6,
-    borderRadius: 20,
-    marginLeft: 10,
-  },
+  // selected_photo_index: {
+  // position: 'absolute',
+  // right: 0,
+  // },
+  // selected_photo_list: {
+  //   position: 'absolute',
+  //   bottom: 100,
+  //   width: globalVariable.width,
+  // },
+  // selected_photo_list_item: {
+  //   width: globalVariable.width / 6,
+  //   height: globalVariable.width / 6,
+  //   borderRadius: 20,
+  //   marginLeft: 10,
+  // },
 });
+
+const BodyStyles = (topSafeAreaHeight, bottomSafeAreaHeight) =>
+  StyleSheet.create({
+    bodyContainer: {
+      height:
+        globalVariable.height - (topSafeAreaHeight + bottomSafeAreaHeight + 72),
+    },
+  });

@@ -8,28 +8,28 @@ import {StackHeader} from '../../common_ui/headers/StackHeader';
 
 const FooiyTI = props => {
   props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-  const accountInfo = props.route.params.info;
+  const userInfo = props.route.params.info;
 
   const resultArr = [
     {
       text: '자극적인/순한',
-      left: ['E', accountInfo.fooiyti_e_percentage],
-      right: ['I', accountInfo.fooiyti_i_percentage],
+      left: ['E', userInfo.fooiyti_e_percentage],
+      right: ['I', userInfo.fooiyti_i_percentage],
     },
     {
       text: '짠/싱거운',
-      left: ['S', accountInfo.fooiyti_s_percentage],
-      right: ['N', accountInfo.fooiyti_n_percentage],
+      left: ['S', userInfo.fooiyti_s_percentage],
+      right: ['N', userInfo.fooiyti_n_percentage],
     },
     {
       text: '담백한/느끼한',
-      left: ['T', accountInfo.fooiyti_t_percentage],
-      right: ['F', accountInfo.fooiyti_f_percentage],
+      left: ['T', userInfo.fooiyti_t_percentage],
+      right: ['F', userInfo.fooiyti_f_percentage],
     },
     {
       text: '초딩/어른',
-      left: ['C', accountInfo.fooiyti_c_percentage],
-      right: ['A', accountInfo.fooiyti_a_percentage],
+      left: ['C', userInfo.fooiyti_c_percentage],
+      right: ['A', userInfo.fooiyti_a_percentage],
     },
   ];
 
@@ -102,9 +102,9 @@ const FooiyTI = props => {
         <View style={styles.container}>
           <View style={styles.fooiytiContainer}>
             <Text style={styles.fooiytiNickname}>
-              {accountInfo.fooiyti_nickname}
+              {userInfo.fooiyti_nickname}
             </Text>
-            <Text style={styles.fooiyti}>{accountInfo.fooiyti}</Text>
+            <Text style={styles.fooiyti}>{userInfo.fooiyti}</Text>
           </View>
           <View style={styles.resultPercentageContainer}>
             {resultArr.map((elem, index) => (
@@ -118,7 +118,7 @@ const FooiyTI = props => {
           </View>
           <View style={styles.resultImgContainer}>
             <Image
-              source={{uri: accountInfo.fooiyti_result_image}}
+              source={{uri: userInfo.fooiyti_result_image}}
               style={styles.resultImg}
             />
           </View>
@@ -138,6 +138,7 @@ export default FooiyTI;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginTop: 16,
   },
   fooiytiContainer: {
     alignItems: 'center',

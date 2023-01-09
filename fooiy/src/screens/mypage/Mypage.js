@@ -24,7 +24,7 @@ const Mypage = () => {
   }, []);
   return (
     <View style={styles.rootContainer}>
-      <MypageFeed data={userInfoLocal} />
+      <MypageFeed info={userInfoLocal} />
     </View>
   );
 };

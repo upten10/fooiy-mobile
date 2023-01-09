@@ -12,8 +12,10 @@ import {Archive, Map, Settings} from '../../../assets/icons/svg';
 
 const MypageProfile = props => {
   const navigation = useNavigation();
-  const [introduction, setIntroduction] = useState(props.data.introduction);
-  const [profileImg, setProfileImg] = useState();
+  const userInfo = props.info;
+  const [nickName, setNickName] = useState(userInfo.nickname);
+  const [introduction, setIntroduction] = useState(userInfo.introduction);
+  const [profileImg, setProfileImg] = useState(userInfo.profile_image);
   const dispatch = useDispatch();
 
   const userInfoRedux = useSelector(state => state.userInfo.value);
@@ -21,16 +23,23 @@ const MypageProfile = props => {
   useEffect(() => {
     'introduction' in userInfoRedux
       ? setIntroduction(userInfoRedux.introduction)
-      : setIntroduction(props.data.introduction);
+      : setIntroduction(userInfo.introduction);
     // setIntroduction(a ? userInfoRedux : props.data.introduction);
-  }, [props.data.introduction, userInfoRedux]);
+  }, [userInfo.introduction, userInfoRedux]);
 
   useEffect(() => {
     'profile_image' in userInfoRedux
       ? setProfileImg(userInfoRedux.profile_image)
-      : setProfileImg(props.data.profile_image);
+      : setProfileImg(userInfo.profile_image);
     // setIntroduction(a ? userInfoRedux : props.data.introduction);
-  }, [props.data.profile_image, userInfoRedux]);
+  }, [userInfo.profile_image, userInfoRedux]);
+
+  useEffect(() => {
+    'nickname' in userInfoRedux
+      ? setNickName(userInfoRedux.nickname)
+      : setNickName(userInfo.nickname);
+    // setIntroduction(a ? userInfoRedux : props.data.introduction);
+  }, [userInfo.nickname, userInfoRedux]);
 
   return (
     <View style={styles.rootContainer} pointerEvents="box-none">
@@ -55,19 +64,19 @@ const MypageProfile = props => {
                   activeOpacity={0.8}
                   onPress={() => {
                     navigation.navigate('FooiyTI', {
-                      info: props.data,
+                      info: userInfo,
                     });
                   }}>
-                  <Text style={styles.fooiyTI}>{props.data.fooiyti}</Text>
+                  <Text style={styles.fooiyTI}>{userInfo.fooiyti}</Text>
                 </TouchableOpacity>
                 {/* 나중에 개척수에서 총 게시물 수로 바꿔야함 */}
                 <Text style={styles.profileInfoCount}>
-                  총 {props.data.pioneer_count}개
+                  총 {userInfo.pioneer_count}개
                 </Text>
               </View>
               {/* 닉네임 */}
               <View>
-                <Text style={styles.userName}>{props.data.nickname}</Text>
+                <Text style={styles.userName}>{nickName}</Text>
               </View>
             </View>
           </View>
@@ -99,7 +108,7 @@ const MypageProfile = props => {
             activeOpacity={0.8}
             onPress={() => {
               navigation.navigate('Setting', {
-                info: props.data,
+                info: userInfo,
               });
             }}>
             <Settings style={styles.btnIcon} />

@@ -8,4 +8,5 @@ export const apiUrl = {
   KAKAO_LOGIN: 'accounts/kakao_login/',
   ACCOUNT_INFO: 'accounts/info/',
   PROFILE_EDIT: 'accounts/profile/',
+  SUGGESTION: 'archives/suggestion/',
 };

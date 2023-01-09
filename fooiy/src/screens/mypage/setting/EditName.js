@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
@@ -11,12 +12,19 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Info} from '../../../../assets/icons/svg';
+import {useDispatch} from 'react-redux';
+import {Notice} from '../../../../assets/icons/svg';
+import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {apiUrl} from '../../../common/Enums';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import {userInfoAction} from '../../../redux/actions/userInfoAction';
 
 const EditName = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const [inputValue, setInputValue] = useState('');
   const [isValid, setIsValid] = useState(false);
   const [nameError, setNameError] = useState(false);
@@ -26,20 +34,28 @@ const EditName = () => {
   // const checkKor = /[ㄱ-ㅎ|ㅏ-ㅣ]/;
   // const allowed = /[./_]/gi;
   const NICKNAME_RULE =
-    /^[0-9A-Za-z가-힣][0-9A-Za-z가-힣._]{0,18}[0-9A-Za-z가-힣]$/;
+    /^[0-9A-Za-z가-힣][0-9A-Za-z가-힣._/]{0,18}[0-9A-Za-z가-힣]$/;
 
   useEffect(() => setNameError(false), [inputValue]);
+
+  const patchNickName = async name => {
+    await ApiMangerV1.patch(apiUrl.PROFILE_EDIT, {
+      nickname: name,
+    })
+      .then(res =>
+        dispatch(userInfoAction.editIntro(res.data.payload.account_info)),
+      )
+      .then(navigation.goBack());
+  };
 
   const checkValid = name => {
     if (NICKNAME_RULE.test(name)) {
       setIsValid(true);
       setBtnActivate(true);
-      console.log('Allowed');
     } else {
       setIsValid(false);
       setNameError(true);
       setBtnActivate(false);
-      console.log('Not allowed');
     }
   };
 
@@ -53,7 +69,10 @@ const EditName = () => {
   };
 
   const onPressBtn = () => {
-    console.log('Nickname Changed!');
+    const name = inputValue;
+    if (NICKNAME_RULE.test(name)) {
+      patchNickName(name);
+    }
   };
 
   return (
@@ -74,6 +93,7 @@ const EditName = () => {
                 maxLength={20}
                 autoCapitalize="none"
                 autoCorrect={false}
+                spellCheck={false}
                 placeholder="특수문자 제외, 최대 20자"
                 placeholderTextColor={fooiyColor.G400}
                 style={
@@ -103,30 +123,33 @@ const EditName = () => {
                 <Text style={styles.infoTextBig}>안내사항</Text>
               </View>
               <View style={styles.infoTextContainer}>
-                <Info style={styles.infoIcon} />
+                <Notice style={styles.infoIcon} />
                 <Text style={styles.infoText}>
                   최소 2자, 최대 20자만 가능해요.
                 </Text>
               </View>
               <View style={styles.infoTextContainer}>
-                <Info style={styles.infoIcon} />
-                <Text style={styles.infoText}>영문 소문자만 가능해요.</Text>
-              </View>
-              <View style={styles.infoTextContainer}>
-                <Info style={styles.infoIcon} />
+                <Notice style={styles.infoIcon} />
                 <Text style={styles.infoText}>
                   특수문자는 [./_]만 가능해요.
                 </Text>
               </View>
               <View style={styles.infoTextContainerLast}>
-                <Info style={styles.infoIcon} />
+                <Notice style={styles.infoIcon} />
                 <Text style={styles.infoText}>[./_]는 중간에만 가능해요.</Text>
               </View>
             </View>
           </View>
           {/* btn */}
           <KeyboardAvoidingView
-            behavior={Platform.select({ios: 'padding', android: undefined})}
+            keyboardVerticalOffset={Platform.select({
+              ios: 150,
+              android: 100,
+            })}
+            behavior={Platform.select({
+              ios: 'position',
+              android: 'position',
+            })}
             style={styles.changeBtnContainer}>
             <TouchableOpacity
               style={
@@ -157,6 +180,7 @@ export default EditName;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: fooiyColor.W,
+    height: globalVariable.height,
   },
   introContainer: {
     marginBottom: 24,
@@ -224,11 +248,17 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   changeBtnContainer: {
-    width: '100%',
-    height: 56,
-    position: 'absolute',
-    bottom: 0,
-    backgroundColor: 'pink',
+    ...Platform.select({
+      ios: {
+        width: '100%',
+        height: 56,
+      },
+      android: {
+        width: '100%',
+        height: 56,
+        marginBottom: 45,
+      },
+    }),
   },
   changeBtn: {
     height: 56,
@@ -256,5 +286,7 @@ const BodyStyles = (topSafeAreaHeight, bottomSafeAreaHeight) =>
       height:
         globalVariable.height - (topSafeAreaHeight + bottomSafeAreaHeight + 72),
       marginHorizontal: 16,
+      justifyContent: 'space-between',
+      marginTop: 16,
     },
   });
