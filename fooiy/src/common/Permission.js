@@ -1,11 +1,8 @@
 import {Alert, Linking, Platform} from 'react-native';
 import {
-  check,
   PERMISSIONS,
   RESULTS,
   request,
-  checkNotifications,
-  checkLocationAccuracy,
   requestLocationAccuracy,
   requestMultiple,
 } from 'react-native-permissions';
@@ -34,10 +31,6 @@ const CameraPermission = async () => {
           break;
         case RESULTS.BLOCKED:
           console.log('The permission is denied and not requestable anymore');
-          Alert.alert('blocked', 'go to setting and unblock it', [
-            {text: 'no', style: 'cancel'},
-            {text: 'ok', onPress: Linking.openSettings},
-          ]);
           break;
       }
     })
@@ -72,10 +65,6 @@ const GalleryPermission = async () => {
           break;
         case RESULTS.BLOCKED:
           console.log('The permission is denied and not requestable anymore');
-          Alert.alert('blocked', 'go to setting and unblock it', [
-            {text: 'no', style: 'cancel'},
-            {text: 'ok', onPress: Linking.openSettings},
-          ]);
           break;
       }
     })
@@ -89,49 +78,49 @@ const LocationPermission = async () => {
     Platform.OS === 'ios'
       ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
       : [
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
           PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
         ];
-  return (
-    requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
-      .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
-      .catch(() => console.warn('Cannot request location accuracy')),
-    Platform.OS === 'ios'
-      ? request(platformPermissions)
-          .then(result => {
-            switch (result) {
-              case RESULTS.BLOCKED:
-                console.log(
-                  'The permission is denied and not requestable anymore',
-                );
-                Alert.alert('blocked', 'go to setting and unblock it', [
-                  {text: 'no', style: 'cancel'},
-                  {text: 'ok', onPress: Linking.openSettings},
-                ]);
-                break;
-            }
-          })
-          .catch(error => {
-            console.log('Error!');
-          })
-      : requestMultiple(platformPermissions)
-          .then(result => {
-            switch (result) {
-              case RESULTS.BLOCKED:
-                console.log(
-                  'The permission is denied and not requestable anymore',
-                );
-                Alert.alert('blocked', 'go to setting and unblock it', [
-                  {text: 'no', style: 'cancel'},
-                  {text: 'ok', onPress: Linking.openSettings},
-                ]);
-                break;
-            }
-          })
-          .catch(error => {
-            console.log('Error!');
-          })
-  );
+  return Platform.OS === 'ios'
+    ? (requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
+        .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
+        .catch(() => console.warn('Cannot request location accuracy')),
+      request(platformPermissions)
+        .then(result => {
+          switch (result) {
+            case RESULTS.BLOCKED:
+              console.log(
+                'The permission is denied and not requestable anymore',
+              );
+              Alert.alert(
+                '서비스 이용 알림',
+                '위치 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+                [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
+              );
+              break;
+          }
+        })
+        .catch(error => {
+          console.log('Error!');
+        }))
+    : requestMultiple(platformPermissions)
+        .then(result => {
+          if (
+            result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'denied' ||
+            result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'denied' ||
+            result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'blocked' ||
+            result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'blocked'
+          ) {
+            Alert.alert(
+              '서비스 이용 알림',
+              '위치 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+              [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
+            );
+          }
+        })
+        .catch(error => {
+          console.log('Error!');
+        });
 };
 
 export {CameraPermission};

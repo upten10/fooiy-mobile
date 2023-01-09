@@ -62,16 +62,20 @@ const NaverMap = () => {
 
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = () => {
-    Platform.OS === 'android'
-      ? Geolocation.getCurrentPosition(
-          async position => {
-            const {longitude, latitude} = position.coords;
-            mapView.current.animateToCoordinate({longitude, latitude});
-          },
-          error => this.setState({error: error.message}),
-          {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-        )
-      : null;
+    check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION).then(res => {
+      if (res === 'granted' || res === 'limited') {
+        Platform.OS === 'android'
+          ? Geolocation.getCurrentPosition(
+              async position => {
+                const {longitude, latitude} = position.coords;
+                mapView.current.animateToCoordinate({longitude, latitude});
+              },
+              error => this.setState({error: error.message}),
+              {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+            )
+          : null;
+      }
+    });
     mapView.current.setLocationTrackingMode(2);
   };
 
