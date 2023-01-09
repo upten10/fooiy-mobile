@@ -35,4 +35,4 @@ ApiMangerV1.interceptors.response.use(
   },
 );
 
-export {ApiMangerV1, headers};
+export {ApiMangerV1};
