@@ -172,11 +172,8 @@ export const UI_Feed = item => {
           {
             title: '앱에서 보기',
             link: {
-              androidExecutionParams: [{key: 'key1', value: 'value1'}],
-              iosExecutionParams: [
-                {key: 'key1', value: 'value1'},
-                {key: 'key2', value: 'value2'},
-              ],
+              androidExecutionParams: [{key: 'feed_id', value: item.id}],
+              iosExecutionParams: [{key: 'feed_id', value: item.id}],
             },
           },
         ],
