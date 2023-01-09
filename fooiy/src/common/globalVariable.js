@@ -7,4 +7,5 @@ export const globalVariable = {
   width: window.width,
   height: window.height,
   tabBarHeight: 90,
+  app_version: '1.2.0',
 };

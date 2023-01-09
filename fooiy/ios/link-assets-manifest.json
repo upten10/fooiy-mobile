@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Pretendard-Regular.ttf",
+      "sha1": "32317ccf43e6d722cfa71f8746c4c1da98031bdc"
+    },
+    {
+      "path": "assets/fonts/Pretendard-SemiBold.ttf",
+      "sha1": "f1afc4fafdc4d5fd83ee207bf9159251e4f7c8c7"
+    }
+  ]
+}

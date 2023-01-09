@@ -23,6 +23,9 @@ import {
   Share,
   Comment,
 } from '../../../assets/icons/svg';
+import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {apiUrl} from '../../common/Enums';
+import KakaoShareLink from 'react-native-kakao-share-link';
 
 const {width} = Dimensions.get('screen');
 const PROFILE_IMAGE_WIDTH = width * 0.1;
@@ -117,6 +120,11 @@ export const UI_Feed = item => {
       feed.count_liked = await count;
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
+      await ApiMangerV1.patch(apiUrl.FEED_LIKE, {
+        feed_id: item.id,
+      }).then(res => {
+        console.log(res.data);
+      });
     }
   }, 1500);
 
@@ -125,6 +133,11 @@ export const UI_Feed = item => {
       feed.is_store = !(await stored);
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
+      await ApiMangerV1.patch(apiUrl.FEED_STORAGE, {
+        feed_id: item.id,
+      }).then(res => {
+        console.log(res.data);
+      });
     }
   }, 1500);
 
@@ -132,6 +145,47 @@ export const UI_Feed = item => {
     likeIcon ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
     setLikeIcon(!likeIcon);
     debounceCallback(likeIcon, undefined, likeCount);
+  };
+
+  const onClickShareIcon = async () => {
+    try {
+      const response = await KakaoShareLink.sendFeed({
+        content: {
+          title: 'title',
+          imageUrl:
+            'http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg',
+          link: {
+            webUrl: 'https://developers.kakao.com/',
+            mobileWebUrl: 'https://developers.kakao.com/',
+          },
+          description: 'description',
+        },
+
+        social: {
+          commentCount: 1,
+          likeCount: 2,
+          sharedCount: 3,
+          viewCount: 4,
+          subscriberCount: 5,
+        },
+        buttons: [
+          {
+            title: '앱에서 보기',
+            link: {
+              androidExecutionParams: [{key: 'key1', value: 'value1'}],
+              iosExecutionParams: [
+                {key: 'key1', value: 'value1'},
+                {key: 'key2', value: 'value2'},
+              ],
+            },
+          },
+        ],
+      });
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+      console.error(e.message);
+    }
   };
 
   const onClickStoreIcon = () => {
@@ -217,7 +271,8 @@ export const UI_Feed = item => {
           <View style={styles.ic_share}>
             <TouchableOpacity
               activeOpacity={0.8}
-              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+              onPress={onClickShareIcon}>
               <Share />
             </TouchableOpacity>
           </View>
