@@ -10,36 +10,11 @@ import {userInfoAction} from '../../redux/actions/userInfoAction';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 import {Archive, Map, Settings} from '../../../assets/icons/svg';
 
-const MypageProfile = props => {
+const MypageProfile = () => {
   const navigation = useNavigation();
-  const userInfo = props.info;
-  const [nickName, setNickName] = useState(userInfo.nickname);
-  const [introduction, setIntroduction] = useState(userInfo.introduction);
-  const [profileImg, setProfileImg] = useState(userInfo.profile_image);
   const dispatch = useDispatch();
 
   const userInfoRedux = useSelector(state => state.userInfo.value);
-
-  useEffect(() => {
-    'introduction' in userInfoRedux
-      ? setIntroduction(userInfoRedux.introduction)
-      : setIntroduction(userInfo.introduction);
-    // setIntroduction(a ? userInfoRedux : props.data.introduction);
-  }, [userInfo.introduction, userInfoRedux]);
-
-  useEffect(() => {
-    'profile_image' in userInfoRedux
-      ? setProfileImg(userInfoRedux.profile_image)
-      : setProfileImg(userInfo.profile_image);
-    // setIntroduction(a ? userInfoRedux : props.data.introduction);
-  }, [userInfo.profile_image, userInfoRedux]);
-
-  useEffect(() => {
-    'nickname' in userInfoRedux
-      ? setNickName(userInfoRedux.nickname)
-      : setNickName(userInfo.nickname);
-    // setIntroduction(a ? userInfoRedux : props.data.introduction);
-  }, [userInfo.nickname, userInfoRedux]);
 
   return (
     <View style={styles.rootContainer} pointerEvents="box-none">
@@ -52,7 +27,7 @@ const MypageProfile = props => {
             <View style={styles.profileImageContainer}>
               <Image
                 source={{
-                  uri: profileImg,
+                  uri: userInfoRedux.profile_image,
                 }}
                 style={styles.profileImage}
               />
@@ -63,28 +38,28 @@ const MypageProfile = props => {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
-                    navigation.navigate('FooiyTI', {
-                      info: userInfo,
-                    });
+                    navigation.navigate('FooiyTI');
                   }}>
                   <Text style={styles.fooiyTI}>
-                    {userInfo.fooiyti !== null ? userInfo.fooiyti : 'OOOO'}
+                    {userInfoRedux.fooiyti !== null
+                      ? userInfoRedux.fooiyti
+                      : 'OOOO'}
                   </Text>
                 </TouchableOpacity>
                 {/* 나중에 개척수에서 총 게시물 수로 바꿔야함 */}
                 <Text style={styles.profileInfoCount}>
-                  총 {userInfo.pioneer_count}개
+                  총 {userInfoRedux.pioneer_count}개
                 </Text>
               </View>
               {/* 닉네임 */}
               <View>
-                <Text style={styles.userName}>{nickName}</Text>
+                <Text style={styles.userName}>{userInfoRedux.nickname}</Text>
               </View>
             </View>
           </View>
           <View>
             <Text style={styles.introduction}>
-              {introduction && introduction}
+              {userInfoRedux.introduction}
             </Text>
           </View>
         </View>
@@ -107,9 +82,7 @@ const MypageProfile = props => {
             style={styles.btn}
             activeOpacity={0.8}
             onPress={() => {
-              navigation.navigate('Setting', {
-                info: userInfo,
-              });
+              navigation.navigate('Setting');
             }}>
             <Settings style={styles.btnIcon} />
             <Text style={styles.btnText}>설정</Text>
