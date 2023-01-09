@@ -1,24 +1,31 @@
 import axios from 'axios';
+import {Platform} from 'react-native';
+import {getUniqueId} from 'react-native-device-info';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {BASEURL, AUTHORIZATION, DEVICEID} from '@env';
 const BASEURL = 'http://dev-api.fooiy.com/api/v1/';
-const AUTHORIZATION =
-  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzb2NpYWxfaWQiOiIyMzg1Mzk5MDYxIiwiY3JlYXRlZF9hdCI6MTY2MTQwNjg2Mi45OTIxMjU3fQ.p55xYjWexwZP880htz6zGCDkhMoRv_vLsHP2HyolEyo';
-const DEVICEID = 'BBDA65DE-63DD-48B9-97B5-B324DD3FD719';
 const baseURL = BASEURL;
-const headers = {
-  Authorization: AUTHORIZATION,
-  os: 'ios',
-  'device-id': DEVICEID,
-};
 const ApiMangerV1 = axios.create({
   baseURL: baseURL, // your url
   responseType: 'json',
-  headers: headers, // your headers
+  headers: {
+    Authorization: '',
+    os: Platform.OS,
+    'device-id': '',
+  }, // your headers
   withCredentials: true,
 });
 
 ApiMangerV1.interceptors.request.use(
-  config => {
+  async config => {
+    const auth = await AsyncStorage.getItem('auth');
+    if (auth) {
+      config.headers.Authorization = auth;
+    }
+    const device_id = await getUniqueId();
+    if (device_id) {
+      config.headers['device-id'] = device_id;
+    }
     return config;
   },
   error => {
