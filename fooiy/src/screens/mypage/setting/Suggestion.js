@@ -18,9 +18,11 @@ import {Notice} from '../../../../assets/icons/svg';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../../common/Enums';
+import {useNavigation} from '@react-navigation/native';
 
 const Suggestion = () => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   const [inputValue, setInputValue] = useState('');
   const [isBtnActivated, setIsBtnActivated] = useState(false);
@@ -69,6 +71,7 @@ const Suggestion = () => {
       type: value,
     };
     postSuggestion(data);
+    navigation.goBack();
   };
 
   const checkInputLength = () => {

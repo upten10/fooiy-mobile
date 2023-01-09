@@ -10,6 +10,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Platform} from 'react-native';
 import Suggestion from './setting/Suggestion';
 import Withdraw from './setting/Withdraw';
+import WithdrawConfirm from './setting/WithdrawConfirm';
+import Login from '../Login/Login';
 
 const Stack = createStackNavigator();
 const MypageStackNavigation = () => {
@@ -38,6 +40,8 @@ const MypageStackNavigation = () => {
         <Stack.Screen name="EditName" component={EditName} />
         <Stack.Screen name="Suggestion" component={Suggestion} />
         <Stack.Screen name="Withdraw" component={Withdraw} />
+        <Stack.Screen name="WithdrawConfirm" component={WithdrawConfirm} />
+        <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator>
     </SafeAreaView>
   );

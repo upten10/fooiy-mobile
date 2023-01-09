@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   Image,
   Keyboard,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -12,7 +11,7 @@ import {
 } from 'react-native';
 import {
   ArrowIcon,
-  Camera,
+  Camera_Profile,
   Pencil,
   ToggleOn,
 } from '../../../../assets/icons/svg';
@@ -24,6 +23,7 @@ import {apiUrl} from '../../../common/Enums';
 import {useDispatch, useSelector} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Setting = props => {
   props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
@@ -101,12 +101,17 @@ const Setting = props => {
     });
   };
 
+  const onPressLogout = () => {
+    AsyncStorage.clear();
+    navigation.navigate('Login');
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
         style={{
           height: globalVariable.height,
-          backgroundColor: '#FFF',
+          backgroundColor: fooiyColor.W,
         }}>
         <StackHeader title="설정" />
         <View style={styles.container}>
@@ -122,7 +127,7 @@ const Setting = props => {
                 }}
                 style={styles.profileImage}
               />
-              <Camera style={styles.cameraIcon} />
+              <Camera_Profile style={styles.cameraIcon} />
             </TouchableOpacity>
             <View>
               <Text style={styles.nickName}>{curNickName}</Text>
@@ -182,7 +187,7 @@ const Setting = props => {
             })}
           </View>
           {/* 로그아웃 */}
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} onPress={onPressLogout}>
             <View style={styles.logoutContainer}>
               <Text style={styles.logoutText}>로그아웃</Text>
             </View>

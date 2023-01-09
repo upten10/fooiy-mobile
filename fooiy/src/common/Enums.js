@@ -12,4 +12,5 @@ export const apiUrl = {
   SUGGESTION: 'archives/suggestion/',
   FEED_LIKE: 'feeds/feed/like/',
   FEED_STORAGE: 'feeds/feed/storage/',
+  WITHDRAW: 'accounts/withdrawal/',
 };

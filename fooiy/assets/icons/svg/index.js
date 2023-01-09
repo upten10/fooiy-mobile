@@ -23,3 +23,5 @@ export {default as Cancel} from './Cancel.svg';
 export {default as Camera_Profile} from './Icon_Camera.svg';
 export {default as ArrowIconBottom} from './Icon_arrrow_bottom.svg';
 export {default as ArrowIconTop} from './Icon_arrrow_top.svg';
+export {default as Check} from './Check.svg';
+export {default as Uncheck} from './Uncheck.svg';

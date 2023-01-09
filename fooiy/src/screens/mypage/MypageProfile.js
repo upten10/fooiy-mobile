@@ -82,9 +82,7 @@ const MypageProfile = props => {
           </View>
           <View>
             <Text style={styles.introduction}>
-              {introduction === null
-                ? '안녕하세요 소개가 비어있어요힝'
-                : introduction}
+              {introduction && introduction}
             </Text>
           </View>
         </View>

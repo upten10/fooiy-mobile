@@ -21,7 +21,7 @@ const MainNavigator = () => {
 
   return (
     <NavigationContainer independent={true}>
-      {isLogin ? <Login /> : <Login />}
+      {isLogin ? <TabNavigator /> : <Login />}
     </NavigationContainer>
   );
 };
