@@ -23,6 +23,7 @@ const StackNavigation = () => {
         }}
       />
       <Stack.Screen name="Shop" component={Shop} />
+      {/* 공유 하면 나오는 페이지 */}
     </Stack.Navigator>
   );
 };

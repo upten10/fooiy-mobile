@@ -29,7 +29,9 @@ const EditName = () => {
   const [isValid, setIsValid] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [btnActivate, setBtnActivate] = useState(false);
+
   const insets = useSafeAreaInsets();
+
   const NICKNAME_RULE =
     /^[0-9A-Za-z가-힣][0-9A-Za-z가-힣._/]{0,18}[0-9A-Za-z가-힣]$/;
 

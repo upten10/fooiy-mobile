@@ -1,34 +1,34 @@
 import React, {useEffect, useState} from 'react';
 
-import RootNavigator from './src/navigation/RootNavigator';
+import MainNavigator from './src/navigation/MainNavigator';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import store from './src/redux/store';
-import Login from './src/screens/Login/Login';
 import {Provider} from 'react-redux';
+import RootNavigator from './src/navigation/RootNavigator';
+import StackNavigation from './src/screens/feed/StackNavigation';
+import {LinkingOptions, NavigationContainer} from '@react-navigation/native';
 
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
 
-  const [isLogin, setisLogin] = useState(false);
-  useEffect(() => {
-    route();
-  }, []);
-
-  const route = async () => {
-    const value = await AsyncStorage.getItem('auth');
-    if (value) {
-      setisLogin(true);
-    }
+  const linking = {
+    prefixes: ['kakaoadeeb3a64a0ef610048dbcbe1010c07f://'],
+    config: {
+      screens: {
+        Test: 'kakaolink',
+      },
+    },
   };
 
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        {isLogin ? <RootNavigator /> : <Login />}
+        <NavigationContainer linking={linking}>
+          <RootNavigator />
+        </NavigationContainer>
       </Provider>
     </SafeAreaProvider>
   );

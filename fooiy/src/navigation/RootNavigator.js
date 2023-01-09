@@ -1,13 +1,19 @@
-import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import MainNavigator from './MainNavigator';
+import {Shop} from '../../common_ui/shop/Shop';
+import Test from './Test';
+import {globalStyles} from '../../common/globalStyles';
 
-import TabNavigator from './TabNavigator';
-
+const Stack = createStackNavigator();
 const RootNavigator = () => {
   return (
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
+    <Stack.Navigator
+      initialRouteName="MainNavigator"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="MainNavigator" component={MainNavigator} />
+      <Stack.Screen name="Test" component={Test} />
+    </Stack.Navigator>
   );
 };
 

@@ -25,6 +25,8 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>kakaoadeeb3a64a0ef610048dbcbe1010c07f</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakaoadeeb3a64a0ef610048dbcbe1010c07f</string>
@@ -61,6 +63,11 @@
 	<string>현재 위치는 지도, 피드 등록을 위한 푸이 서비스 필수 정보로 활용됩니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>사진은 피드 등록을 위한 푸이 서비스 필수 정보로 활용됩니다.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Pretendard-Regular.ttf</string>
+		<string>Pretendard-SemiBold.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -75,10 +82,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Pretendard-Regular.ttf</string>
-		<string>Pretendard-SemiBold.ttf</string>
-	</array>
 </dict>
 </plist>
