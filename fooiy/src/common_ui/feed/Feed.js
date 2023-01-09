@@ -23,6 +23,8 @@ import {
   Share,
   Comment,
 } from '../../../assets/icons/svg';
+import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {apiUrl} from '../../common/Enums';
 import KakaoShareLink from 'react-native-kakao-share-link';
 
 const {width} = Dimensions.get('screen');
@@ -118,6 +120,11 @@ export const UI_Feed = item => {
       feed.count_liked = await count;
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
+      await ApiMangerV1.patch(apiUrl.FEED_LIKE, {
+        feed_id: item.id,
+      }).then(res => {
+        console.log(res.data);
+      });
     }
   }, 1500);
 
@@ -126,6 +133,11 @@ export const UI_Feed = item => {
       feed.is_store = !(await stored);
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
+      await ApiMangerV1.patch(apiUrl.FEED_STORAGE, {
+        feed_id: item.id,
+      }).then(res => {
+        console.log(res.data);
+      });
     }
   }, 1500);
 

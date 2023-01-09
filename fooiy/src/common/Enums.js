@@ -8,4 +8,6 @@ export const apiUrl = {
   KAKAO_LOGIN: 'accounts/kakao_login/',
   APPLE_LOGIN: 'accounts/apple_login/',
   ACCOUNT_INFO: 'accounts/info/',
+  FEED_LIKE: 'feeds/feed/like/',
+  FEED_STORAGE: 'feeds/feed/storage/',
 };
