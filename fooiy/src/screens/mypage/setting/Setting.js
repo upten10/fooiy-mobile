@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {
   ArrowIcon,
-  Camera,
+  Camera_Profile,
   Pencil,
   ToggleOn,
 } from '../../../../assets/icons/svg';
@@ -122,7 +122,7 @@ const Setting = props => {
                 }}
                 style={styles.profileImage}
               />
-              <Camera style={styles.cameraIcon} />
+              <Camera_Profile style={styles.cameraIcon} />
             </TouchableOpacity>
             <View>
               <Text style={styles.nickName}>{curNickName}</Text>
