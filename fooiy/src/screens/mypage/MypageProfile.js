@@ -67,7 +67,9 @@ const MypageProfile = props => {
                       info: userInfo,
                     });
                   }}>
-                  <Text style={styles.fooiyTI}>{userInfo.fooiyti}</Text>
+                  <Text style={styles.fooiyTI}>
+                    {userInfo.fooiyti !== null ? userInfo.fooiyti : 'OOOO'}
+                  </Text>
                 </TouchableOpacity>
                 {/* 나중에 개척수에서 총 게시물 수로 바꿔야함 */}
                 <Text style={styles.profileInfoCount}>
@@ -82,9 +84,7 @@ const MypageProfile = props => {
           </View>
           <View>
             <Text style={styles.introduction}>
-              {introduction === null
-                ? '안녕하세요 소개가 비어있어요힝'
-                : introduction}
+              {introduction && introduction}
             </Text>
           </View>
         </View>

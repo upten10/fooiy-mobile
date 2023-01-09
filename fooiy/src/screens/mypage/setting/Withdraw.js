@@ -1,20 +1,264 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import {Check, Uncheck} from '../../../../assets/icons/svg/index';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
 
 const Withdraw = () => {
-  return (
-    <View>
-      <StackHeader title="회원 탈퇴" />
-      {/* Body */}
+  const checkBoxData = [
+    '사용을 잘 안해요',
+    '가고싶은 음식점이 없어요',
+    '사용법이 너무 어려워요',
+    '기타',
+  ];
+
+  const [clickedIndex, setClickedIndex] = useState(-1);
+  const [inputValue, setInputValue] = useState('');
+  const [btnActivate, setBtnActivate] = useState(false);
+
+  const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (clickedIndex === 3) {
+      inputValue.length >= 10 ? setBtnActivate(true) : setBtnActivate(false);
+    } else if (clickedIndex !== -1 && clickedIndex !== 3) {
+      setBtnActivate(true);
+    } else {
+      setBtnActivate(false);
+    }
+  }, [inputValue, clickedIndex]);
+
+  const onPressCheckBox = index => {
+    setClickedIndex(index);
+  };
+
+  const onPressBtn = () => {
+    if (clickedIndex === 3) {
+      navigation.navigate('WithdrawConfirm', {
+        reason: inputValue,
+      });
+    } else {
+      navigation.navigate('WithdrawConfirm', {
+        reason: checkBoxData[clickedIndex],
+      });
+    }
+  };
+
+  const checkBox = (text, index) => {
+    return (
       <View>
-        {/* Title */}
-        <View></View>
-        {/* SubTitle */}
-        <View></View>
+        <TouchableOpacity
+          key={index}
+          style={
+            clickedIndex === index
+              ? [styles.checkBox, styles.checkedCheckBox]
+              : styles.checkBox
+          }
+          activeOpacity={0.8}
+          onPress={() => onPressCheckBox(index)}>
+          <Text
+            style={
+              clickedIndex === index
+                ? [styles.checkBoxText, styles.checkedCheckBoxText]
+                : styles.checkBoxText
+            }>
+            {text}
+          </Text>
+          {clickedIndex === index ? <Check /> : <Uncheck />}
+        </TouchableOpacity>
       </View>
-    </View>
+    );
+  };
+  return (
+    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={50}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View
+          style={{
+            backgroundColor: fooiyColor.W,
+            height: '100%',
+          }}>
+          <StackHeader title="회원 탈퇴" />
+          {/* Body */}
+          <View style={BodyStyles(insets.top, insets.bottom).bodyContainer}>
+            {/* Title */}
+            <View style={styles.titleContainer}>
+              <Text style={styles.titleText}>푸이를{'\n'}탈퇴하시나요?</Text>
+            </View>
+            {/* SubTitle */}
+            <View style={styles.subTitleContainer}>
+              <Text style={styles.subtitleText}>
+                탈퇴하시는 이유를 알려주세요.
+              </Text>
+            </View>
+            {/* checkbox */}
+            <View>
+              {checkBoxData.map((item, index) => {
+                return checkBox(item, index);
+              })}
+              <View
+                style={
+                  clickedIndex === 3
+                    ? styles.yesGuitarContainer
+                    : styles.noGuitarContainer
+                }>
+                <View style={styles.textInputContainer}>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="아쉬운 점에 대해 말씀해주세요. (최소 10자 이상)"
+                    multiline
+                    autoCapitalize={false}
+                    autoCorrect={false}
+                    spellCheck={false}
+                    textAlignVertical="top"
+                    onChangeText={setInputValue}
+                    maxLength={300}
+                  />
+                </View>
+                <Text style={styles.textInputLength}>
+                  ({inputValue.length}/300)
+                </Text>
+              </View>
+            </View>
+            {/* Btn */}
+            <TouchableOpacity
+              style={
+                btnActivate
+                  ? styles.changeBtn
+                  : [styles.changeBtn, styles.changeBtnOff]
+              }
+              activeOpacity={0.8}
+              onPress={btnActivate ? onPressBtn : null}>
+              <Text
+                style={
+                  btnActivate
+                    ? styles.changeBtnText
+                    : [styles.changeBtnText, styles.changeBtnTextOff]
+                }>
+                다음
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
 export default Withdraw;
+
+const styles = StyleSheet.create({
+  bodyContainer: {
+    marginHorizontal: 16,
+    marginTop: 16,
+    height: '100%',
+  },
+  titleContainer: {
+    marginBottom: 8,
+  },
+  titleText: {
+    ...fooiyFont.H3,
+  },
+  subTitleContainer: {
+    // subtitle에 마진 바텀 8 주고 체크박스에 마진 탑 16줘서 24맞춤
+    marginBottom: 8,
+  },
+  subtitleText: {
+    ...fooiyFont.Body1,
+    color: fooiyColor.G600,
+  },
+  checkBox: {
+    width: '100%',
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: fooiyColor.G200,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+  },
+  checkedCheckBox: {
+    borderColor: fooiyColor.P500,
+  },
+  checkBoxText: {
+    ...fooiyFont.Button,
+    color: fooiyColor.G300,
+  },
+  checkedCheckBoxText: {
+    color: fooiyColor.P500,
+  },
+  yesGuitarContainer: {
+    alignItems: 'flex-end',
+  },
+  noGuitarContainer: {
+    display: 'none',
+    alignItems: 'flex-end',
+  },
+  textInputContainer: {
+    borderWidth: 1,
+    borderColor: fooiyColor.G200,
+    borderRadius: 8,
+    marginTop: 8,
+    marginBottom: 8,
+    width: '100%',
+    height: 104,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  textInput: {
+    width: '100%',
+    height: '100%',
+    fontSize: 14,
+    fontWeight: '400',
+    color: fooiyColor.G600,
+  },
+  textInputLength: {
+    ...fooiyFont.Caption1,
+    color: fooiyColor.G600,
+  },
+  changeBtn: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 56,
+    backgroundColor: fooiyColor.P500,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+  },
+  changeBtnOff: {
+    backgroundColor: fooiyColor.G100,
+  },
+  changeBtnText: {
+    color: fooiyColor.W,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  changeBtnTextOff: {
+    color: fooiyColor.G300,
+  },
+});
+
+const BodyStyles = (topSafeAreaHeight, bottomSafeAreaHeight) =>
+  StyleSheet.create({
+    bodyContainer: {
+      height:
+        globalVariable.height - (topSafeAreaHeight + bottomSafeAreaHeight + 72),
+      marginHorizontal: 16,
+      marginTop: 16,
+    },
+  });

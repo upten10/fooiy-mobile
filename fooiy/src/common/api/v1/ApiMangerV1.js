@@ -29,7 +29,7 @@ ApiMangerV1.interceptors.request.use(
     return config;
   },
   error => {
-    // console.log("requestError====>", error);
+    console.log('requestError====>', error);
   },
 );
 
