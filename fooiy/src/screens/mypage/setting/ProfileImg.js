@@ -278,21 +278,6 @@ const styles = StyleSheet.create({
     height: globalVariable.width * 0.8,
     resizeMode: 'contain',
   },
-  // selected_photo_index: {
-  // position: 'absolute',
-  // right: 0,
-  // },
-  // selected_photo_list: {
-  //   position: 'absolute',
-  //   bottom: 100,
-  //   width: globalVariable.width,
-  // },
-  // selected_photo_list_item: {
-  //   width: globalVariable.width / 6,
-  //   height: globalVariable.width / 6,
-  //   borderRadius: 20,
-  //   marginLeft: 10,
-  // },
 });
 
 const BodyStyles = (topSafeAreaHeight, bottomSafeAreaHeight) =>

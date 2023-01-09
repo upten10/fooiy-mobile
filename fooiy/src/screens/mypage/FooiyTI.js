@@ -120,6 +120,7 @@ const FooiyTI = props => {
             <Image
               source={{uri: userInfo.fooiyti_result_image}}
               style={styles.resultImg}
+              resizeMode={'contain'}
             />
           </View>
         </View>
@@ -160,11 +161,11 @@ const styles = StyleSheet.create({
   },
   resultImgContainer: {
     width: '100%',
-    height: (globalVariable.width - 32) / 0.548780487804878,
+    // height: (globalVariable.width - 32) / 0.548780487804878,
   },
   resultImg: {
     width: '100%',
-    height: '100%',
+    // height: '100%',
   },
   percentageBarTextContainer: {},
   resultPercentage: {

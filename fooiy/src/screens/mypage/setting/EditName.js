@@ -30,9 +30,6 @@ const EditName = () => {
   const [nameError, setNameError] = useState(false);
   const [btnActivate, setBtnActivate] = useState(false);
   const insets = useSafeAreaInsets();
-  // const regExp = /[ \{\}\[\]\?,;:|\)*~`!^\-+┼<>@\#$%&\'\"\\\(\=]/gi;
-  // const checkKor = /[ㄱ-ㅎ|ㅏ-ㅣ]/;
-  // const allowed = /[./_]/gi;
   const NICKNAME_RULE =
     /^[0-9A-Za-z가-힣][0-9A-Za-z가-힣._/]{0,18}[0-9A-Za-z가-힣]$/;
 

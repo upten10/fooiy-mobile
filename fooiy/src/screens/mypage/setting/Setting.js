@@ -50,7 +50,7 @@ const Setting = props => {
 
   const editIntro = async () => {
     await ApiMangerV1.patch(apiUrl.PROFILE_EDIT, {
-      introduction: curIntro,
+      introduction: curIntro === '' ? ' ' : curIntro,
     }).then(res => {
       dispatch(userInfoAction.editIntro(res.data.payload.account_info));
     });
