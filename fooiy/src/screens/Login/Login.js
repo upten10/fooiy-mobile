@@ -18,6 +18,7 @@ import {
   Login_icon,
 } from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
+import {Linking} from 'react-native';
 
 const Login = () => {
   const [isLogin, setisLogin] = useState(false);
