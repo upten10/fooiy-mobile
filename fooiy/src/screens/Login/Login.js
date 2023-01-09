@@ -1,5 +1,12 @@
 import {React, useState} from 'react';
-import {Text, View, StyleSheet, Platform, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -8,7 +15,7 @@ import {
   getProfile as getKakaoProfile,
 } from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RootNavigator from '../../navigation/RootNavigator';
+import MainNavigator from '../../navigation/MainNavigator';
 import {getUniqueId} from 'react-native-device-info';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import {
@@ -70,7 +77,7 @@ const Login = () => {
 
   AsyncStorage.setItem('auth', auth);
   if (isLogin) {
-    return <RootNavigator />;
+    return <MainNavigator />;
   }
 
   if (Platform.OS === 'android') {
