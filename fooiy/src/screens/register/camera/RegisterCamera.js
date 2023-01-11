@@ -22,7 +22,6 @@ const RegisterCamera = props => {
   const device = devices.back;
   const width = Dimensions.get('window').width;
   const height = Dimensions.get('window').height;
-  navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
 
   const takePhotoOptions = {
     qualityPrioritization: 'speed',

@@ -27,7 +27,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loginActions} from '../../../redux/reducer/login';
 
 const Setting = props => {
-  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const userInfoRedux = useSelector(state => state.userInfo.value);

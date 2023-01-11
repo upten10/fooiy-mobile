@@ -33,7 +33,7 @@ const PROFILE_IMAGE_HEIGHT = PROFILE_IMAGE_WIDTH;
 const IMAGE_WIDTH = width;
 const IMAGE_HEIGHT = IMAGE_WIDTH;
 
-export const UI_Feed = item => {
+export const GuestFeed = item => {
   const navigation = useNavigation();
 
   const [line, setLine] = useState(3);
@@ -148,18 +148,34 @@ export const UI_Feed = item => {
 
   const onClickShareIcon = async () => {
     try {
-      const response = await KakaoShareLink.sendLocation({
-        address: item.shop_address,
-        addressTitle: item.shop_name,
+      const response = await KakaoShareLink.sendFeed({
         content: {
-          title: item.shop_name,
-          imageUrl: item.image[0],
+          title: 'title',
+          imageUrl:
+            'http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg',
           link: {
-            androidExecutionParams: [{key: 'feed_id', value: item.id}],
-            iosExecutionParams: [{key: 'feed_id', value: item.id}],
+            webUrl: 'https://developers.kakao.com/',
+            mobileWebUrl: 'https://developers.kakao.com/',
           },
-          description: item.menu_name + ' ' + item.menu_price,
+          description: 'description',
         },
+
+        social: {
+          commentCount: 1,
+          likeCount: 2,
+          sharedCount: 3,
+          viewCount: 4,
+          subscriberCount: 5,
+        },
+        buttons: [
+          {
+            title: '앱에서 보기',
+            link: {
+              androidExecutionParams: [{key: 'feed_id', value: item.id}],
+              iosExecutionParams: [{key: 'feed_id', value: item.id}],
+            },
+          },
+        ],
       });
       console.log(response);
     } catch (e) {
@@ -213,16 +229,15 @@ export const UI_Feed = item => {
       </View>
       <View style={styles.image_container}>
         {/* 피드 사진 */}
-        <TouchableWithoutFeedback onPress={handleDoubleTap}>
-          <View>
-            <Image source={{uri: item.image[0]}} style={styles.image} />
-            <AnimatedLottieView
-              source={require('../../../assets/lottie/fork.json')}
-              progress={animationProgress.current}
-              imageAssetsFolder={'images'} // for android
-            />
-          </View>
-        </TouchableWithoutFeedback>
+
+        <View>
+          <Image source={{uri: item.image[0]}} style={styles.image} />
+          <AnimatedLottieView
+            source={require('../../../assets/lottie/fork.json')}
+            progress={animationProgress.current}
+            imageAssetsFolder={'images'} // for android
+          />
+        </View>
       </View>
 
       {/* 유용한 기능 포크, 댓글 등등 */}
@@ -230,7 +245,6 @@ export const UI_Feed = item => {
         <View style={styles.ic_fork}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={onClickLikeIcon}
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
             {likeIcon ? <ForkFocused /> : <Fork />}
           </TouchableOpacity>
@@ -251,15 +265,13 @@ export const UI_Feed = item => {
           <View style={styles.ic_share}>
             <TouchableOpacity
               activeOpacity={0.8}
-              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
-              onPress={onClickShareIcon}>
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
               <Share />
             </TouchableOpacity>
           </View>
           <View style={styles.ic_store}>
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={onClickStoreIcon}
               hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
               {storeIcon ? <StoreFocused /> : <Store />}
             </TouchableOpacity>
@@ -277,16 +289,7 @@ export const UI_Feed = item => {
             />
           </View>
           <View style={styles.shop_container}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={styles.shop}
-              onPress={() => {
-                navigation.navigate('Shop', {
-                  shop_id: item.shop_id,
-                  shop_name: item.shop_name,
-                  shop_address: item.shop_address,
-                });
-              }}>
+            <TouchableOpacity activeOpacity={0.8} style={styles.shop}>
               <Text>{item.shop_name}</Text>
             </TouchableOpacity>
 

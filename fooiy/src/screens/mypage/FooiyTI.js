@@ -7,9 +7,7 @@ import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
 
 const FooiyTI = props => {
-  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const userInfoRedux = useSelector(state => state.userInfo.value);
-
   const resultArr = [
     {
       text: '자극적인/순한',

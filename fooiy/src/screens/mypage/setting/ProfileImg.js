@@ -40,7 +40,6 @@ const ProfileImg = () => {
   const [selectIndex, setSelectIndex] = useState(-1);
   const [curEdges, setCurEdges] = useState([]);
 
-  navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const dispatch = useDispatch();
 
   const patchProfileImg = async data => {
