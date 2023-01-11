@@ -13,4 +13,5 @@ export const apiUrl = {
   FEED_LIKE: 'feeds/feed/like/',
   FEED_STORAGE: 'feeds/feed/storage/',
   RETRIEVE_FEED: 'feeds/feed/retrieve_feed/',
+  WITHDRAW: 'accounts/withdrawal/',
 };

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   Image,
   Keyboard,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -12,7 +11,7 @@ import {
 } from 'react-native';
 import {
   ArrowIcon,
-  Camera,
+  Camera_Profile,
   Pencil,
   ToggleOn,
 } from '../../../../assets/icons/svg';
@@ -24,13 +23,13 @@ import {apiUrl} from '../../../common/Enums';
 import {useDispatch, useSelector} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {loginActions} from '../../../redux/reducer/login';
 
 const Setting = props => {
   const navigation = useNavigation();
-  const userInfo = props.route.params.info;
   const dispatch = useDispatch();
-
-  const {profile_image, nickname, introduction, fooiyti} = userInfo;
+  const userInfoRedux = useSelector(state => state.userInfo.value);
 
   const settingArr = [
     {text: '문의함', navigation: 'Suggestion'},
@@ -43,9 +42,8 @@ const Setting = props => {
   ];
 
   const [isFocused, setIsFocused] = useState(false);
-  const [curIntro, setCurIntro] = useState(introduction);
-  const [curProfileImg, setCurProfileImg] = useState(profile_image);
-  const [curNickName, setCurNickName] = useState(nickname);
+  const [curIntro, setCurIntro] = useState(userInfoRedux.introduction);
+  const [curNickName, setCurNickName] = useState(userInfoRedux.nickname);
 
   const editIntro = async () => {
     await ApiMangerV1.patch(apiUrl.PROFILE_EDIT, {
@@ -54,26 +52,6 @@ const Setting = props => {
       dispatch(userInfoAction.editIntro(res.data.payload.account_info));
     });
   };
-
-  const userInfoRedux = useSelector(state => state.userInfo.value);
-
-  useEffect(() => {
-    'introduction' in userInfoRedux
-      ? setCurIntro(userInfoRedux.introduction)
-      : setCurIntro(userInfo.introduction);
-  }, [userInfo.introduction, userInfoRedux]);
-
-  useEffect(() => {
-    'profile_image' in userInfoRedux
-      ? setCurProfileImg(userInfoRedux.profile_image)
-      : setCurProfileImg(userInfo.profile_image);
-  }, [userInfo.profile_image, userInfoRedux]);
-
-  useEffect(() => {
-    'nickname' in userInfoRedux
-      ? setCurNickName(userInfoRedux.nickname)
-      : setCurNickName(userInfo.nickname);
-  }, [userInfo.nickname, userInfoRedux]);
 
   const onPressWithdraw = () => {
     navigation.navigate('Withdraw');
@@ -85,7 +63,7 @@ const Setting = props => {
 
   const onIntroBlur = () => {
     setIsFocused(false);
-    if (introduction !== curIntro) {
+    if (userInfoRedux.introduction !== curIntro) {
       editIntro();
     }
   };
@@ -95,9 +73,13 @@ const Setting = props => {
   };
 
   const onItemPress = navi => {
-    navigation.navigate(navi, {
-      info: userInfo,
-    });
+    navigation.navigate(navi);
+  };
+
+  const onPressLogout = async () => {
+    await AsyncStorage.clear()
+      .then(dispatch(loginActions.setLogin(false)))
+      .then(navigation.popToTop());
   };
 
   return (
@@ -105,7 +87,7 @@ const Setting = props => {
       <View
         style={{
           height: globalVariable.height,
-          backgroundColor: '#FFF',
+          backgroundColor: fooiyColor.W,
         }}>
         <StackHeader title="설정" />
         <View style={styles.container}>
@@ -117,14 +99,14 @@ const Setting = props => {
               style={styles.profileImageContainer}>
               <Image
                 source={{
-                  uri: curProfileImg,
+                  uri: userInfoRedux.profile_image,
                 }}
                 style={styles.profileImage}
               />
-              <Camera style={styles.cameraIcon} />
+              <Camera_Profile style={styles.cameraIcon} />
             </TouchableOpacity>
             <View>
-              <Text style={styles.nickName}>{curNickName}</Text>
+              <Text style={styles.nickName}>{userInfoRedux.nickname}</Text>
             </View>
           </View>
           {/* 소개 */}
@@ -160,10 +142,12 @@ const Setting = props => {
                     <View style={styles.rightCol}>
                       <View>
                         {elem.text === '푸이티아이' ? (
-                          <Text style={styles.rightFooiyti}>{fooiyti}</Text>
+                          <Text style={styles.rightFooiyti}>
+                            {userInfoRedux.fooiyti}
+                          </Text>
                         ) : elem.text === '닉네임 변경' ? (
                           <Text style={styles.rightNickname}>
-                            {curNickName}
+                            {userInfoRedux.nickname}
                           </Text>
                         ) : null}
                       </View>
@@ -181,7 +165,7 @@ const Setting = props => {
             })}
           </View>
           {/* 로그아웃 */}
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} onPress={onPressLogout}>
             <View style={styles.logoutContainer}>
               <Text style={styles.logoutText}>로그아웃</Text>
             </View>

@@ -5,23 +5,29 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import TabNavigator from './TabNavigator';
 import Login from '../screens/Login/Login';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginActions} from '../redux/reducer/login';
+import store from '../redux/store';
 
 const MainNavigator = () => {
-  const [isLogin, setisLogin] = useState(false);
-  useEffect(() => {
-    route();
-  }, []);
+  const isLoginRedux = useSelector(state => state.login.isLogin);
+  const dispatch = useDispatch();
 
   const route = async () => {
     const value = await AsyncStorage.getItem('auth');
     if (value) {
-      setisLogin(true);
+      dispatch(loginActions.setLogin(true));
     }
   };
 
+  useEffect(() => {
+    route();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <NavigationContainer independent={true}>
-      {isLogin ? <TabNavigator /> : <Login />}
+      {isLoginRedux ? <TabNavigator /> : <Login />}
     </NavigationContainer>
   );
 };

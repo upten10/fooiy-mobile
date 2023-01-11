@@ -26,6 +26,100 @@ export const fooiyColor = {
   B: '#000000',
 };
 
+export const fooiyFont = StyleSheet.create({
+  H1: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 36,
+    lineHeight: 44,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  H2: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 28,
+    lineHeight: 36,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  H3: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 24,
+    lineHeight: 32,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  H4: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 20,
+    lineHeight: 28,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  Subtitle1: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 18,
+    lineHeight: 24,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  Subtitle2: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  Subtitle3: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  Subtitle4: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 12,
+    lineHeight: 18,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  Body1: {
+    fontFamily: 'Pretendard-Regular',
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '400',
+    color: fooiyColor.B,
+  },
+  Body2: {
+    fontFamily: 'Pretendard-Regular',
+    fontSize: 14,
+    lineHeight: 24,
+    fontWeight: '400',
+    color: fooiyColor.B,
+  },
+  Caption1: {
+    fontFamily: 'Pretendard-Regular',
+    fontSize: 12,
+    lineHeight: 18,
+    fontWeight: '400',
+    color: fooiyColor.B,
+  },
+  Caption2: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 10,
+    lineHeight: 12,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+  Button: {
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 16,
+    lineHeight: 16,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
+});
+
 export const globalStyles = StyleSheet.create({
   tab_bar: {
     position: 'absolute',

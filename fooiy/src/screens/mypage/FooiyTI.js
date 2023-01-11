@@ -1,34 +1,33 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSelector} from 'react-redux';
 import {fooiyColor, globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
 
 const FooiyTI = props => {
-  const userInfo = props.route.params.info;
-
+  const userInfoRedux = useSelector(state => state.userInfo.value);
   const resultArr = [
     {
       text: '자극적인/순한',
-      left: ['E', userInfo.fooiyti_e_percentage],
-      right: ['I', userInfo.fooiyti_i_percentage],
+      left: ['E', userInfoRedux.fooiyti_e_percentage],
+      right: ['I', userInfoRedux.fooiyti_i_percentage],
     },
     {
       text: '짠/싱거운',
-      left: ['S', userInfo.fooiyti_s_percentage],
-      right: ['N', userInfo.fooiyti_n_percentage],
+      left: ['S', userInfoRedux.fooiyti_s_percentage],
+      right: ['N', userInfoRedux.fooiyti_n_percentage],
     },
     {
       text: '담백한/느끼한',
-      left: ['T', userInfo.fooiyti_t_percentage],
-      right: ['F', userInfo.fooiyti_f_percentage],
+      left: ['T', userInfoRedux.fooiyti_t_percentage],
+      right: ['F', userInfoRedux.fooiyti_f_percentage],
     },
     {
       text: '초딩/어른',
-      left: ['C', userInfo.fooiyti_c_percentage],
-      right: ['A', userInfo.fooiyti_a_percentage],
+      left: ['C', userInfoRedux.fooiyti_c_percentage],
+      right: ['A', userInfoRedux.fooiyti_a_percentage],
     },
   ];
 
@@ -101,9 +100,9 @@ const FooiyTI = props => {
         <View style={styles.container}>
           <View style={styles.fooiytiContainer}>
             <Text style={styles.fooiytiNickname}>
-              {userInfo.fooiyti_nickname}
+              {userInfoRedux.fooiyti_nickname}
             </Text>
-            <Text style={styles.fooiyti}>{userInfo.fooiyti}</Text>
+            <Text style={styles.fooiyti}>{userInfoRedux.fooiyti}</Text>
           </View>
           <View style={styles.resultPercentageContainer}>
             {resultArr.map((elem, index) => (
@@ -117,7 +116,7 @@ const FooiyTI = props => {
           </View>
           <View style={styles.resultImgContainer}>
             <Image
-              source={{uri: userInfo.fooiyti_result_image}}
+              source={{uri: userInfoRedux.fooiyti_result_image}}
               style={styles.resultImg}
               resizeMode={'contain'}
             />

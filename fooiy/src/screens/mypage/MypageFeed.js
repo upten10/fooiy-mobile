@@ -5,12 +5,11 @@ import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
 import MypageProfile from './MypageProfile';
 
-const MypageFeed = props => {
+const MypageFeed = () => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [noFeedImage, setNoFeedImage] = useState(null);
-  const userInfo = props.info;
 
   useEffect(() => {
     getFeedList();
@@ -60,7 +59,7 @@ const MypageFeed = props => {
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         scrollEventThrottle={16}
-        ListHeaderComponent={<MypageProfile info={userInfo} />}
+        ListHeaderComponent={<MypageProfile />}
         bounces={false}
         numColumns={3}
         scrollToOverflowEnabled
