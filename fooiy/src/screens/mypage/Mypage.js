@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {LogBox, ScrollView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import MypageFeed from './MypageFeed';
 import {globalVariable} from '../../common/globalVariable';
 import {useDispatch} from 'react-redux';
@@ -26,9 +26,7 @@ const Mypage = () => {
   return (
     <View style={styles.rootContainer}>
       <DefaultHeader />
-      {/* <ScrollView decelerationRate={'normal'}> */}
       <MypageFeed />
-      {/* </ScrollView> */}
     </View>
   );
 };

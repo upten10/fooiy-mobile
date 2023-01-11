@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
