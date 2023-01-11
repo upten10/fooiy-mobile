@@ -53,16 +53,16 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs access to your Camera.</string>
+	<string>카메라는 피드 등록을 위한 푸이 서비스 필수 정보로 활용됩니다.</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>YOUR-PURPOSE-KEY</key>
 		<string>앱이 사용자의 구체적인 위치를 사용하도록 허용해주세요.</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>원활한 앱 사용을 위해 위치 권한을 허용해주세요.</string>
+	<string>현재 위치는 지도, 피드 등록을 위한 푸이 서비스 필수 정보로 활용됩니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>카메라 사용 권한은 이미지 촬영 및 첨부를 위해 필요합니다.</string>
+	<string>사진은 피드 등록을 위한 푸이 서비스 필수 정보로 활용됩니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Regular.ttf</string>

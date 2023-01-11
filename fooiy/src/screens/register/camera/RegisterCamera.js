@@ -1,10 +1,19 @@
 import React, {useRef, useEffect} from 'react';
-import {StyleSheet, Dimensions, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 
 import {CameraPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import {check, PERMISSIONS} from 'react-native-permissions';
+import {Linking} from 'react-native';
 
 const RegisterCamera = props => {
   const navigation = useNavigation();
@@ -23,16 +32,33 @@ const RegisterCamera = props => {
   };
 
   const takePhoto = async () => {
-    try {
-      if (camera.current == null) throw new Error('Camera Ref is Null');
-      const photo = await camera.current.takePhoto(takePhotoOptions);
-      const path = 'file://' + photo.path;
-      navigation.navigate('ImageCrop', {
-        photo: path,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    const platformPermissions =
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.CAMERA
+        : PERMISSIONS.ANDROID.CAMERA;
+    check(platformPermissions).then(async res => {
+      if (res === 'blocked' || res === 'denied') {
+        Alert.alert(
+          '서비스 이용 알림',
+          '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+          [
+            {text: '닫기', onPress: navigation.goBack},
+            {text: '설정', onPress: Linking.openSettings},
+          ],
+        );
+      } else {
+        try {
+          if (camera.current == null) throw new Error('Camera Ref is Null');
+          const photo = await camera.current.takePhoto(takePhotoOptions);
+          const path = 'file://' + photo.path;
+          navigation.navigate('ImageCrop', {
+            photo: path,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
   };
 
   useEffect(() => {

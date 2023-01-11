@@ -7,8 +7,10 @@ import {
   Text,
   Button,
   StyleSheet,
+  Platform,
+  Alert,
+  Linking,
 } from 'react-native';
-import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
@@ -19,6 +21,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import cloneDeep from 'lodash/cloneDeep';
+import {check, PERMISSIONS} from 'react-native-permissions';
 
 const Gallery = () => {
   const navigation = useNavigation();
@@ -48,6 +51,19 @@ const Gallery = () => {
 
   // 갤러리에서 사진 받아오기
   const getGalleryPhotos = async () => {
+    Platform.OS === 'ios';
+    check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(res => {
+      if (res === 'blocked' || res === 'denied') {
+        Alert.alert(
+          '서비스 이용 알림',
+          '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+          [
+            {text: '닫기', onPress: navigation.goBack},
+            {text: '설정', onPress: Linking.openSettings},
+          ],
+        );
+      }
+    });
     const params = {
       first: 12,
       assetType: 'Photos',
