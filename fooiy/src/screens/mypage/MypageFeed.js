@@ -16,6 +16,7 @@ const MypageFeed = () => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [lastIndex, setLastIndex] = useState(-1);
+  const [noFeedImage, setNoFeedImage] = useState('');
 
   const navigation = useNavigation();
 
@@ -23,33 +24,6 @@ const MypageFeed = () => {
     getFeedList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);
-
-  const getFeed = async data => {
-    const {id, is_confirm} = data;
-    if (is_confirm) {
-      await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
-        params: {
-          type: 'list',
-          pioneer_id: id,
-        },
-      }).then(res =>
-        navigation.navigate('Feed', {
-          data: res.data.payload.feed_list.results,
-        }),
-      );
-    } else {
-      await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
-        params: {
-          type: 'list',
-          feed_id: id,
-        },
-      }).then(res =>
-        navigation.navigate('Feed', {
-          data: res.data.payload.feed_list.results,
-        }),
-      );
-    }
-  };
 
   const getFeedList = async data => {
     const limit = 4;
@@ -60,7 +34,12 @@ const MypageFeed = () => {
         type: 'image',
       },
     }).then(res => {
-      if (lastIndex === -1 || offset < lastIndex) {
+      if (
+        res.data.payload.feed_list.total_count === 0 &&
+        res.data.payload.image
+      ) {
+        setNoFeedImage(res.data.payload.image);
+      } else if (lastIndex === -1 || offset < lastIndex) {
         setLastIndex(res.data.payload.feed_list.total_count);
         setFeeds([...feeds, ...res.data.payload.feed_list.results]);
         setOffset(offset + limit);
@@ -70,7 +49,9 @@ const MypageFeed = () => {
 
   const renderItem = useCallback(({item, index}) => {
     const onPressFeed = () => {
-      getFeed(item);
+      navigation.navigate('FeedDetail', {
+        item,
+      });
     };
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={onPressFeed}>
@@ -84,17 +65,27 @@ const MypageFeed = () => {
 
   return (
     <View style={styles.rootContainer}>
-      <FlatList
-        data={feeds}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        scrollEventThrottle={16}
-        bounces={false}
-        numColumns={3}
-        scrollToOverflowEnabled
-        ListHeaderComponent={MypageProfile}
-        ListFooterComponent={() => <View style={styles.emptyComp}></View>}
-      />
+      {noFeedImage === '' ? (
+        <FlatList
+          data={feeds}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          scrollEventThrottle={16}
+          bounces={false}
+          numColumns={3}
+          scrollToOverflowEnabled
+          ListHeaderComponent={MypageProfile}
+          ListFooterComponent={() => <View style={styles.emptyComp}></View>}
+        />
+      ) : (
+        <View>
+          <MypageProfile />
+          <Image
+            source={{uri: noFeedImage}}
+            style={{width: '100%', height: 50}}
+          />
+        </View>
+      )}
     </View>
   );
 };

@@ -8,7 +8,6 @@ import {apiUrl} from '../../common/Enums';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
 import {fooiyColor} from '../../common/globalStyles';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
-import MypageProfile from './MypageProfile';
 
 const Mypage = () => {
   const dispatch = useDispatch();

@@ -43,9 +43,11 @@ const MypageProfile = () => {
                   </Text>
                 </TouchableOpacity>
                 {/* 피드 갯수 */}
-                <Text style={styles.profileInfoCount}>
-                  총 {userInfoRedux.feed_count}개
-                </Text>
+                <View style={styles.profileInfoCountContainer}>
+                  <Text style={styles.profileInfoCount}>
+                    총 {userInfoRedux.feed_count}개
+                  </Text>
+                </View>
               </View>
               {/* 닉네임 */}
               <View>
@@ -131,15 +133,18 @@ const styles = StyleSheet.create({
     color: fooiyColor.P500,
     lineHeight: 0,
   },
-  profileInfoCount: {
-    fontsize: 16,
-    fontWeight: '600',
+  profileInfoCountContainer: {
     borderWidth: 1,
     borderRadius: 8,
-    color: fooiyColor.G400,
     borderColor: fooiyColor.G400,
+    justifyContent: 'center',
     paddingHorizontal: 10,
     paddingVertical: 8,
+  },
+  profileInfoCount: {
+    ...fooiyFont.Button,
+    lineHeight: 0,
+    color: fooiyColor.G400,
   },
   userName: {
     ...fooiyFont.Subtitle1,

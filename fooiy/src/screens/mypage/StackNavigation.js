@@ -11,6 +11,7 @@ import {Platform} from 'react-native';
 import Suggestion from './setting/Suggestion';
 import Withdraw from './setting/Withdraw';
 import WithdrawConfirm from './setting/WithdrawConfirm';
+import FeedDetail from './FeedDetail';
 
 const Stack = createStackNavigator();
 const MypageStackNavigation = () => {
@@ -40,6 +41,7 @@ const MypageStackNavigation = () => {
         <Stack.Screen name="Suggestion" component={Suggestion} />
         <Stack.Screen name="Withdraw" component={Withdraw} />
         <Stack.Screen name="WithdrawConfirm" component={WithdrawConfirm} />
+        <Stack.Screen name="FeedDetail" component={FeedDetail} />
       </Stack.Navigator>
     </SafeAreaView>
   );
