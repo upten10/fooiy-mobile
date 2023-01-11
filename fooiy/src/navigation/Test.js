@@ -64,7 +64,9 @@ const Test = () => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
-            navigation.navigate(MainNavigator);
+            navigation.navigate(MainNavigator, {
+              screen: 'TabNavigator',
+            });
           }}
           style={{position: 'absolute', left: 16}}>
           <Image

@@ -148,34 +148,18 @@ export const UI_Feed = item => {
 
   const onClickShareIcon = async () => {
     try {
-      const response = await KakaoShareLink.sendFeed({
+      const response = await KakaoShareLink.sendLocation({
+        address: item.shop_address,
+        addressTitle: item.shop_name,
         content: {
-          title: 'title',
-          imageUrl:
-            'http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg',
+          title: item.shop_name,
+          imageUrl: item.image[0],
           link: {
-            webUrl: 'https://developers.kakao.com/',
-            mobileWebUrl: 'https://developers.kakao.com/',
+            androidExecutionParams: [{key: 'feed_id', value: item.id}],
+            iosExecutionParams: [{key: 'feed_id', value: item.id}],
           },
-          description: 'description',
+          description: item.menu_name + ' ' + item.menu_price,
         },
-
-        social: {
-          commentCount: 1,
-          likeCount: 2,
-          sharedCount: 3,
-          viewCount: 4,
-          subscriberCount: 5,
-        },
-        buttons: [
-          {
-            title: '앱에서 보기',
-            link: {
-              androidExecutionParams: [{key: 'feed_id', value: item.id}],
-              iosExecutionParams: [{key: 'feed_id', value: item.id}],
-            },
-          },
-        ],
       });
       console.log(response);
     } catch (e) {
