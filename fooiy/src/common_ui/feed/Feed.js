@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Animated,
+  ImageBackground,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {debounce} from 'lodash';
@@ -232,7 +233,15 @@ export const UI_Feed = item => {
         {/* 피드 사진 */}
         <TouchableWithoutFeedback onPress={handleDoubleTap}>
           <View>
-            <Image source={{uri: item.image[0]}} style={styles.image} />
+            {item.is_confirm ? (
+              <ImageBackground
+                source={{uri: item.image[0]}}
+                style={{flex: 1, resizeMode: 'cover', ...styles.image}}
+                blurRadius={10} //Blur 효과
+              />
+            ) : (
+              <Image source={{uri: item.image[0]}} style={styles.image} />
+            )}
             <AnimatedLottieView
               source={require('../../../assets/lottie/fork.json')}
               progress={animationProgress.current}

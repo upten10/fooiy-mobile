@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
@@ -26,7 +27,7 @@ const MypageFeed = () => {
   }, [offset]);
 
   const getFeedList = async data => {
-    const limit = 4;
+    const limit = 20;
     await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
         offset: offset,
@@ -55,7 +56,15 @@ const MypageFeed = () => {
     };
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={onPressFeed}>
-        <Image source={{uri: item.image[0]}} style={styles.feedImage} />
+        {item.is_confirm ? (
+          <ImageBackground
+            source={{uri: item.image[0]}}
+            style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}
+            blurRadius={10} //Blur 효과
+          />
+        ) : (
+          <Image source={{uri: item.image[0]}} style={styles.feedImage} />
+        )}
       </TouchableOpacity>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
