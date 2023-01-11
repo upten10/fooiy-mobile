@@ -26,7 +26,6 @@ import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import {useNavigation} from '@react-navigation/native';
 
 const Setting = props => {
-  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const navigation = useNavigation();
   const userInfo = props.route.params.info;
   const dispatch = useDispatch();

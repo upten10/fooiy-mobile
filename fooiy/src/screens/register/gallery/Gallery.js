@@ -32,7 +32,6 @@ const Gallery = () => {
   const [galleryOriginalList, setGalleryOriginalList] = useState([]);
   const [selectIndex, setSelectIndex] = useState(0);
   const [selectedPhotoIndexList, setSelectedPhotoList] = useState([]);
-  navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
 
   const go_next = () => {
     if (selectedPhotoIndexList.length === 0) {

@@ -7,7 +7,6 @@ import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
 
 const FooiyTI = props => {
-  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const userInfo = props.route.params.info;
 
   const resultArr = [

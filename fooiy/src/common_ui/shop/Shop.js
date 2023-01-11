@@ -17,7 +17,6 @@ export const Shop = props => {
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
-  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
   const getFeedList = async data => {
     setIsLoading(true);
     await ApiMangerV1.get(apiUrl.SHOP_LIST, {

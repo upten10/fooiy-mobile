@@ -1,13 +1,10 @@
-import React, {useEffect, useState} from 'react';
-
-import MainNavigator from './src/navigation/MainNavigator';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import React, {useEffect} from 'react';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import RootNavigator from './src/navigation/RootNavigator';
-import StackNavigation from './src/screens/feed/StackNavigation';
-import {LinkingOptions, NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 
 const App = () => {
   useEffect(() => {

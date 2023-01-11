@@ -29,10 +29,22 @@ const RegisterStackNavigation = () => {
             }
           }}
         />
-        <Stack.Screen name="RegisterCamera" component={RegisterCamera} />
+        <Stack.Screen
+          name="RegisterCamera"
+          component={RegisterCamera}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
         <Stack.Screen name="ImageCrop" component={ImageCrop} />
 
-        <Stack.Screen name="Gallery" component={Gallery} />
+        <Stack.Screen
+          name="Gallery"
+          component={Gallery}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
 
         <Stack.Screen name="TypingContent" component={TypingContent} />
       </Stack.Navigator>

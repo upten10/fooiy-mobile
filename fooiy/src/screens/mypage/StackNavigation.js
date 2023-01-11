@@ -32,9 +32,27 @@ const MypageStackNavigation = () => {
             }
           }}
         />
-        <Stack.Screen name="FooiyTI" component={FooiyTI} />
-        <Stack.Screen name="Setting" component={Setting} />
-        <Stack.Screen name="ProfileImg" component={ProfileImg} />
+        <Stack.Screen
+          name="FooiyTI"
+          component={FooiyTI}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
+        <Stack.Screen
+          name="Setting"
+          component={Setting}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
+        <Stack.Screen
+          name="ProfileImg"
+          component={ProfileImg}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
         <Stack.Screen name="EditName" component={EditName} />
         <Stack.Screen name="Suggestion" component={Suggestion} />
         <Stack.Screen name="Withdraw" component={Withdraw} />

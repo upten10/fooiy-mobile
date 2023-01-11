@@ -15,7 +15,6 @@ import {
   getProfile as getKakaoProfile,
 } from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MainNavigator from '../../navigation/MainNavigator';
 import {getUniqueId} from 'react-native-device-info';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import {
@@ -25,7 +24,8 @@ import {
   Login_icon,
 } from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
-import {Linking} from 'react-native';
+
+import TabNavigator from '../../navigation/TabNavigator';
 
 const Login = () => {
   const [isLogin, setisLogin] = useState(false);
@@ -77,7 +77,7 @@ const Login = () => {
 
   AsyncStorage.setItem('auth', auth);
   if (isLogin) {
-    return <MainNavigator />;
+    return <TabNavigator />;
   }
 
   if (Platform.OS === 'android') {
