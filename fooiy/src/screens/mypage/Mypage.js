@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {LogBox, ScrollView, StyleSheet, View} from 'react-native';
 import MypageFeed from './MypageFeed';
 import {globalVariable} from '../../common/globalVariable';
 import {useDispatch} from 'react-redux';
@@ -7,6 +7,8 @@ import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
 import {fooiyColor} from '../../common/globalStyles';
+import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
+import MypageProfile from './MypageProfile';
 
 const Mypage = () => {
   const dispatch = useDispatch();
@@ -16,6 +18,7 @@ const Mypage = () => {
       dispatch(userInfoAction.init(res.data.payload.account_info)),
     );
   };
+
   useEffect(() => {
     getAccountInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,7 +26,10 @@ const Mypage = () => {
 
   return (
     <View style={styles.rootContainer}>
+      <DefaultHeader />
+      {/* <ScrollView decelerationRate={'normal'}> */}
       <MypageFeed />
+      {/* </ScrollView> */}
     </View>
   );
 };
