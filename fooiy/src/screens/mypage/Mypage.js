@@ -7,15 +7,18 @@ import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
 import {fooiyColor} from '../../common/globalStyles';
+import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 
 const Mypage = () => {
   const dispatch = useDispatch();
 
   const getAccountInfo = async data => {
-    await ApiMangerV1.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res =>
-      dispatch(userInfoAction.init(res.data.payload.account_info)),
-    );
+    await ApiMangerV1.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res => {
+      dispatch(userInfoAction.init(res.data.payload.account_info));
+      console.log(JSON.stringify(res.data.payload.account_info));
+    });
   };
+
   useEffect(() => {
     getAccountInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,6 +26,7 @@ const Mypage = () => {
 
   return (
     <View style={styles.rootContainer}>
+      <DefaultHeader />
       <MypageFeed />
     </View>
   );
