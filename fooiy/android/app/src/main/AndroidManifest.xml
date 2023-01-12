@@ -53,7 +53,7 @@
       <!-- 네이버 지도 -->
       <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="slg5tzx3gv" />
+            android:value="oingm1h0rz" />
       <!-- 네이버 지도 -->
     </application>
 </manifest>
