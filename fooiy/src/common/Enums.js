@@ -15,4 +15,5 @@ export const apiUrl = {
   RETRIEVE_FEED: 'feeds/feed/retrieve_feed/',
   WITHDRAW: 'accounts/withdrawal/',
   MYPAGE_FEED_LIST: 'feeds/feed/mypage/',
+  STORED_SHOP_LIST: 'feeds/feed/storage/',
 };

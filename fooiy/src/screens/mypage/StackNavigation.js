@@ -12,6 +12,7 @@ import Suggestion from './setting/Suggestion';
 import Withdraw from './setting/Withdraw';
 import WithdrawConfirm from './setting/WithdrawConfirm';
 import FeedDetail from './FeedDetail';
+import Storage from './storage/Storage';
 
 const Stack = createStackNavigator();
 const MypageStackNavigation = () => {
@@ -60,6 +61,13 @@ const MypageStackNavigation = () => {
         <Stack.Screen name="Withdraw" component={Withdraw} />
         <Stack.Screen name="WithdrawConfirm" component={WithdrawConfirm} />
         <Stack.Screen name="FeedDetail" component={FeedDetail} />
+        <Stack.Screen
+          name="Storage"
+          component={Storage}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
       </Stack.Navigator>
     </SafeAreaView>
   );

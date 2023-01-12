@@ -15,7 +15,6 @@ const Mypage = () => {
   const getAccountInfo = async data => {
     await ApiMangerV1.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res => {
       dispatch(userInfoAction.init(res.data.payload.account_info));
-      console.log(JSON.stringify(res.data.payload.account_info));
     });
   };
 
