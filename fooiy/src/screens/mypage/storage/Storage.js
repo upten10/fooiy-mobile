@@ -1,5 +1,13 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../../common/Enums';
@@ -10,6 +18,7 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 const imageWidth = (globalVariable.width - 32 - 15) / 2;
 
 const Storage = () => {
+  const navigation = useNavigation();
   const limit = 12;
 
   const [offset, setOffset] = useState(0);
@@ -26,11 +35,13 @@ const Storage = () => {
   );
 
   const getStoredShopList = async () => {
-    await ApiMangerV1.get(apiUrl.STORED_SHOP_LIST, {
-      // address_depth1: 시,도 단위
-      // address_depth2: 구,동 단위
-      limit,
-      offset,
+    await ApiMangerV1.get(apiUrl.FEED_STORAGE, {
+      params: {
+        // address_depth1: 시,도 단위
+        // address_depth2: 구,동 단위
+        limit,
+        offset,
+      },
     }).then(res => {
       if (
         res.data.payload.storage_list.total_count === 0 &&
@@ -78,12 +89,20 @@ const Storage = () => {
   const StorageItem = item => {
     const {
       index,
-      item: {fooiyti, id, menu_name, menu_price, nickname, shop_name},
+      item: {fooiyti, feed_id, menu_name, menu_price, nickname, shop_name},
     } = item;
     const image = item.item.image[0];
 
     return (
-      <View key={index} style={styles.container}>
+      <TouchableOpacity
+        key={index}
+        style={styles.container}
+        activeOpacity={0.8}
+        onPress={() =>
+          navigation.navigate('FeedDetail', {
+            feed_id,
+          })
+        }>
         {/* img */}
         <View style={item_styles.imageContainer}>
           <View style={item_styles.fooiytiContainer}>
@@ -108,7 +127,7 @@ const Storage = () => {
             <Text style={item_styles.profileNicknameText}>{nickname}</Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

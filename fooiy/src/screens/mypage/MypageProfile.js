@@ -56,9 +56,11 @@ const MypageProfile = () => {
             </View>
           </View>
           <View>
-            <Text style={styles.introduction}>
-              {userInfoRedux.introduction}
-            </Text>
+            {userInfoRedux.introduction && (
+              <Text style={styles.introduction}>
+                {userInfoRedux.introduction}
+              </Text>
+            )}
           </View>
         </View>
         {/* 버튼 */}

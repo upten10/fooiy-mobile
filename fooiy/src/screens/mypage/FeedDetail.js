@@ -15,18 +15,35 @@ const FeedDetail = props => {
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [nickname, setNickname] = useState('');
+  const [shopName, setShopName] = useState('');
+  const [adress, setAdress] = useState('');
+
   const navigation = useNavigation();
   props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
 
   useEffect(() => {
+    // 나중에 통합해서 common ui로 만드려고 써놨어용
     if (props.route.params.shop_id) {
     } else if (props.route.params.item) {
-      getFeed(props.route.params.item);
+      getMyFeed(props.route.params.item);
+    } else if (props.route.params.feed_id) {
+      getFeed(props.route.params.feed_id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getFeed = async data => {
+  const getFeed = async feed_id => {
+    await ApiMangerV1.get(apiUrl.RETRIEVE_FEED, {
+      params: {feed_id},
+    }).then(res => {
+      setFeeds([res.data.payload.feed]);
+      setIsLoading(false);
+      setShopName(res.data.payload.feed.shop_name);
+      setAdress(res.data.payload.feed.shop_address);
+    });
+  };
+
+  const getMyFeed = async data => {
     const {id, is_confirm} = data;
     const idType = is_confirm ? 'pioneer_id' : 'feed_id';
     await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
@@ -50,7 +67,11 @@ const FeedDetail = props => {
 
   return (
     <View style={styles.container}>
-      <StackHeader title={nickname} />
+      {shopName === '' ? (
+        <StackHeader title={nickname} />
+      ) : (
+        <StackHeader shop={{shop_name: shopName, shop_address: adress}} />
+      )}
       <FlatList
         data={feeds}
         renderItem={({item}) => <UI_Feed {...item} />}
