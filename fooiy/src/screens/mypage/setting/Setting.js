@@ -131,6 +131,7 @@ const Setting = props => {
             {settingArr.map((elem, index) => {
               return (
                 <TouchableOpacity
+                  key={index}
                   activeOpacity={0.8}
                   onPress={() =>
                     elem.navigation ? onItemPress(elem.navigation) : null

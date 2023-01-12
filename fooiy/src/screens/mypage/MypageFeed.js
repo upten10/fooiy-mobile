@@ -80,7 +80,7 @@ const MypageFeed = () => {
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           scrollEventThrottle={16}
-          bounces={false}
+          bounces={true}
           numColumns={3}
           scrollToOverflowEnabled
           ListHeaderComponent={MypageProfile}

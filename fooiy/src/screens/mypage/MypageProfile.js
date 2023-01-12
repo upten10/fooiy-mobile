@@ -1,13 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity,
-  ImageBackground,
-} from 'react-native';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {useDispatch, useSelector} from 'react-redux';
@@ -63,9 +56,11 @@ const MypageProfile = () => {
             </View>
           </View>
           <View>
-            <Text style={styles.introduction}>
-              {userInfoRedux.introduction}
-            </Text>
+            {userInfoRedux.introduction && (
+              <Text style={styles.introduction}>
+                {userInfoRedux.introduction}
+              </Text>
+            )}
           </View>
         </View>
         {/* 버튼 */}
@@ -77,10 +72,15 @@ const MypageProfile = () => {
           </View>
           <View style={styles.btnLine} />
           {/* 보관함 */}
-          <View style={styles.btn}>
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('Storage');
+            }}>
             <Archive style={styles.btnIcon} />
             <Text style={styles.btnText}>보관함</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.btnLine} />
           {/* 설정 */}
           <TouchableOpacity
