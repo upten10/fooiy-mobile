@@ -8,7 +8,9 @@ import Register from './Register';
 import RegisterCamera from './camera/RegisterCamera';
 import ImageCrop from './camera/ImageCrop';
 import Gallery from './gallery/Gallery';
-import TypingContent from './typing_content/TypingContent';
+import SetAddress from './register_feed/SetAddress';
+import FindShop from './register_feed/FindShop';
+import RegisterFeed from './register_feed/test/RegisterFeed';
 
 const Stack = createStackNavigator();
 const RegisterStackNavigation = () => {
@@ -46,7 +48,9 @@ const RegisterStackNavigation = () => {
           }}
         />
 
-        <Stack.Screen name="TypingContent" component={TypingContent} />
+        <Stack.Screen name="SetAddress" component={SetAddress} />
+        <Stack.Screen name="FindShop" component={FindShop} />
+        <Stack.Screen name="RegisterFeed" component={RegisterFeed} />
       </Stack.Navigator>
     </SafeAreaView>
   );

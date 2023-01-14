@@ -12,7 +12,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		5C2A60B2296C1B0800A2D63A /* icon_fork.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C2A60B1296C1B0800A2D63A /* icon_fork.png */; };
+		5C3BEDFB296E986700816857 /* icon_fork.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C3BEDFA296E986700816857 /* icon_fork.png */; };
 		5CCE664A29654D4A00F07E3F /* SwiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE664929654D4A00F07E3F /* SwiftBridge.swift */; };
 		67F4D2FC388046E98C2BF6C4 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36F0FD185E9498A8F0F88D6 /* Pretendard-SemiBold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-fooiy-fooiyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-fooiy-fooiyTests.a */; };
@@ -44,7 +44,7 @@
 		3B4392A12AC88292D35C810B /* Pods-fooiy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fooiy.debug.xcconfig"; path = "Target Support Files/Pods-fooiy/Pods-fooiy.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-fooiy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fooiy.release.xcconfig"; path = "Target Support Files/Pods-fooiy/Pods-fooiy.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-fooiy-fooiyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fooiy-fooiyTests.debug.xcconfig"; path = "Target Support Files/Pods-fooiy-fooiyTests/Pods-fooiy-fooiyTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5C2A60B3296C2AAD00A2D63A /* icon_fork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_fork.png; path = ../assets/icon_fork.png; sourceTree = "<group>"; };
+		5C3BEDFA296E986700816857 /* icon_fork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_fork.png; path = ../assets/icon_fork.png; sourceTree = "<group>"; };
 		5CBB770D29628166005CE1BA /* fooiyDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = fooiyDebug.entitlements; path = fooiy/fooiyDebug.entitlements; sourceTree = "<group>"; };
 		5CCE664829654D4900F07E3F /* fooiy-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "fooiy-Bridging-Header.h"; sourceTree = "<group>"; };
 		5CCE664929654D4A00F07E3F /* SwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBridge.swift; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				5C2A60B1296C1B0800A2D63A /* icon_fork.png */,
+				5C3BEDFA296E986700816857 /* icon_fork.png */,
 				13B07FAE1A68108700A75B9A /* fooiy */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* fooiyTests */,
@@ -266,7 +266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C2A60B2296C1B0800A2D63A /* icon_fork.png in Resources */,
+				5C3BEDFB296E986700816857 /* icon_fork.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7EB88428995140EF96B309B8 /* Pretendard-Regular.ttf in Resources */,

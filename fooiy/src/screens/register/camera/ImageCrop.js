@@ -13,7 +13,7 @@ const ImageCrop = props => {
   const [photo, setPhoto] = useState(props.route.params.photo);
   const width = globalVariable.width;
   const go_next = () => {
-    navigation.navigate('TypingContent', {photo_list: [photo]});
+    navigation.navigate('SetAddress', {photo_list: [photo]});
   };
 
   return (

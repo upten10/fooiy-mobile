@@ -43,8 +43,13 @@ const Gallery = () => {
       const photoList = selectedPhotoIndexList.map(index => {
         return galleryList[index].node;
       });
-      navigation.navigate('TypingContent', {
+      navigation.navigate('SetAddress', {
         photo_list: photoList,
+        location: photoList[0].location
+          ? photoList[0].location
+          : photoList[1].location
+          ? photoList[1].location
+          : photoList[2].location,
       });
     }
   };

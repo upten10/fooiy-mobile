@@ -25,3 +25,5 @@ export {default as ArrowIconBottom} from './Icon_arrrow_bottom.svg';
 export {default as ArrowIconTop} from './Icon_arrrow_top.svg';
 export {default as Check} from './Check.svg';
 export {default as Uncheck} from './Uncheck.svg';
+export {default as Current_Location} from './Current_Location';
+export {default as Clear} from './Clear';
