@@ -27,7 +27,7 @@ const Mypage = props => {
   return (
     <View style={styles.rootContainer}>
       <DefaultHeader />
-      <MypageFeed />
+      <MypageFeed navigation={props.navigation} />
     </View>
   );
 };

@@ -174,6 +174,13 @@ export const UI_Feed = item => {
     debounceCallback(undefined, storeIcon, undefined);
   };
 
+  const onPressProfileImg = () => {
+    navigation.navigate('Profile', {
+      parent: item.parent,
+      other_account_id: item.account_id,
+    });
+  };
+
   const animationProgress = useRef(new Animated.Value(0));
 
   // 두번 터치 감지
@@ -205,13 +212,16 @@ export const UI_Feed = item => {
   return (
     <View style={styles.container}>
       {/* 프로필 사진 */}
-      <View style={styles.header_container}>
+      <TouchableOpacity
+        style={styles.header_container}
+        activeOpacity={0.8}
+        onPress={onPressProfileImg}>
         <Image
           source={{uri: item.profile_image}}
           style={styles.profile_image}
         />
         <Text style={styles.nickname}>{item.nickname}</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.image_container}>
         {/* 피드 사진 */}
         <TouchableWithoutFeedback onPress={handleDoubleTap}>

@@ -47,6 +47,7 @@ const FeedDetail = props => {
       params: {
         type: 'list',
         [idType]: id,
+        other_account_id: props.route.params.public_id,
       },
     }).then(res => {
       setFeeds([...res.data.payload.feed_list.results]);
@@ -71,7 +72,7 @@ const FeedDetail = props => {
       )}
       <FlatList
         data={feeds}
-        renderItem={({item}) => <UI_Feed {...item} />}
+        renderItem={({item}) => <UI_Feed {...item} parent={props.route.name} />}
         keyExtractor={(feeds, index) => index.toString()}
         ListFooterComponent={RenderLoader(isLoading)}
         onEndReached={loadMoreItem}

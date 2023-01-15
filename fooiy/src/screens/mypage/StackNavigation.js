@@ -22,7 +22,7 @@ const MypageStackNavigation = props => {
   const MypageStack = useCallback(() => {
     return (
       <Stack.Navigator
-        initialRouteName="Mypage"
+        initialRouteName="MypageStackNavigation"
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="Mypage"
@@ -57,6 +57,13 @@ const MypageStackNavigation = props => {
         <Stack.Screen
           name="Storage"
           component={Storage}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
           listeners={({navigation, route}) => {
             navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
           }}
