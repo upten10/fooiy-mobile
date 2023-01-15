@@ -2,9 +2,9 @@ import React from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
-import {fooiyColor, globalStyles} from '../../common/globalStyles';
-import {globalVariable} from '../../common/globalVariable';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
+import {fooiyColor, globalStyles} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const FooiyTI = props => {
   const userInfoRedux = useSelector(state => state.userInfo.value);

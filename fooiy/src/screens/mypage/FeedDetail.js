@@ -18,9 +18,6 @@ const FeedDetail = props => {
   const [shopName, setShopName] = useState('');
   const [adress, setAdress] = useState('');
 
-  const navigation = useNavigation();
-  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-
   useEffect(() => {
     // 나중에 통합해서 common ui로 만드려고 써놨어용
     if (props.route.params.shop_id) {

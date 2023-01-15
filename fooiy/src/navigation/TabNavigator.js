@@ -38,10 +38,8 @@ const TabNavigator = () => {
                       screen: 'Feed',
                     });
                   }
-                } else if (route.name === 'Mypage') {
-                  if (navigation.isFocused()) {
-                    navigation.navigate('Mypage');
-                  }
+                } else {
+                  navigation.navigate(route.name);
                 }
               } catch (error) {}
             },

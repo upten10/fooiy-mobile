@@ -1,25 +1,26 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Mypage from './Mypage';
-import FooiyTI from './FooiyTI';
+import FooiyTI from './setting/FooiyTI';
 import Setting from './setting/Setting';
 import ProfileImg from './setting/ProfileImg';
 import EditName from './setting/EditName';
 import {globalStyles} from '../../common/globalStyles';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import Suggestion from './setting/Suggestion';
 import Withdraw from './setting/Withdraw';
 import WithdrawConfirm from './setting/WithdrawConfirm';
 import FeedDetail from './FeedDetail';
 import Storage from './storage/Storage';
+import SettingStack from './setting/SettingStack';
 
 const Stack = createStackNavigator();
-const MypageStackNavigation = () => {
-  return (
-    <SafeAreaView
-      style={{flex: 1, backgroundColor: '#fff'}}
-      edges={Platform.OS === 'ios' ? 'top' : null}>
+const MypageStackNavigation = props => {
+  const tabNavigation = props.navigation;
+
+  const MypageStack = useCallback(() => {
+    return (
       <Stack.Navigator
         initialRouteName="Mypage"
         screenOptions={{headerShown: false}}>
@@ -30,7 +31,10 @@ const MypageStackNavigation = () => {
             const state = navigation.getState();
             if (state.index === 0) {
               navigation.getParent().setOptions({
-                tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+                tabBarStyle: {
+                  ...globalStyles.tab_bar,
+                  ...globalStyles.shadow,
+                },
               });
             }
           }}
@@ -43,23 +47,12 @@ const MypageStackNavigation = () => {
           }}
         />
         <Stack.Screen
-          name="Setting"
-          component={Setting}
+          name="SettingStack"
+          component={SettingStack}
           listeners={({navigation, route}) => {
             navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
           }}
         />
-        <Stack.Screen
-          name="ProfileImg"
-          component={ProfileImg}
-          listeners={({navigation, route}) => {
-            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-          }}
-        />
-        <Stack.Screen name="EditName" component={EditName} />
-        <Stack.Screen name="Suggestion" component={Suggestion} />
-        <Stack.Screen name="Withdraw" component={Withdraw} />
-        <Stack.Screen name="WithdrawConfirm" component={WithdrawConfirm} />
         <Stack.Screen name="FeedDetail" component={FeedDetail} />
         <Stack.Screen
           name="Storage"
@@ -69,7 +62,21 @@ const MypageStackNavigation = () => {
           }}
         />
       </Stack.Navigator>
-    </SafeAreaView>
+    );
+  }, []);
+  if (tabNavigation.getState().type === 'tab') {
+    return (
+      <SafeAreaView
+        style={{flex: 1, backgroundColor: '#fff'}}
+        edges={Platform.OS === 'ios' ? 'top' : null}>
+        <MypageStack />
+      </SafeAreaView>
+    );
+  }
+  return (
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <MypageStack />
+    </View>
   );
 };
 

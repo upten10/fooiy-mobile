@@ -8,8 +8,9 @@ import {apiUrl} from '../../common/Enums';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
 import {fooiyColor} from '../../common/globalStyles';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const Mypage = () => {
+const Mypage = props => {
   const dispatch = useDispatch();
 
   const getAccountInfo = async data => {

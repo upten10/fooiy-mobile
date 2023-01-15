@@ -87,7 +87,7 @@ const MypageProfile = () => {
             style={styles.btn}
             activeOpacity={0.8}
             onPress={() => {
-              navigation.navigate('Setting');
+              navigation.navigate('SettingStack');
             }}>
             <Settings style={styles.btnIcon} />
             <Text style={styles.btnText}>설정</Text>
