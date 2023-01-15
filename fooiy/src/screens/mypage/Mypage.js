@@ -9,7 +9,7 @@ import {userInfoAction} from '../../redux/actions/userInfoAction';
 import {fooiyColor} from '../../common/globalStyles';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 
-const Mypage = () => {
+const Mypage = props => {
   const dispatch = useDispatch();
 
   const getAccountInfo = async data => {
@@ -26,7 +26,7 @@ const Mypage = () => {
   return (
     <View style={styles.rootContainer}>
       <DefaultHeader />
-      <MypageFeed />
+      <MypageFeed navigation={props.navigation} />
     </View>
   );
 };

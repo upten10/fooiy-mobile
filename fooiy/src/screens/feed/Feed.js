@@ -39,7 +39,7 @@ const Feed = props => {
     }
   });
   const toTop = () => {
-    flatListRef.current.scrollToOffset({animated: true, offset: 0});
+    flatListRef.current.scrollToIndex({index: 0, animated: true});
   };
 
   const getFeedList = async data => {
@@ -79,7 +79,7 @@ const Feed = props => {
   }, [offset]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <DefaultHeader />
       <View style={styles.container}>
         <FlatList
@@ -87,14 +87,16 @@ const Feed = props => {
           data={feeds}
           onRefresh={onRefresh}
           refreshing={refreshing}
-          renderItem={({item}) => <UI_Feed {...item} />}
+          renderItem={({item}) => (
+            <UI_Feed {...item} parent={props.route.name} />
+          )}
           keyExtractor={(feeds, index) => index.toString()}
           onEndReached={loadMoreItem}
           ListEmptyComponent={ListEmptyComponent}
           onEndReachedThreshold={3}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

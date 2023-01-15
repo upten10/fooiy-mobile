@@ -19,7 +19,6 @@ const FeedDetail = props => {
   const [adress, setAdress] = useState('');
 
   const navigation = useNavigation();
-  props.navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
 
   useEffect(() => {
     // 나중에 통합해서 common ui로 만드려고 써놨어용
@@ -50,6 +49,7 @@ const FeedDetail = props => {
       params: {
         type: 'list',
         [idType]: id,
+        other_account_id: props.route.params.public_id,
       },
     }).then(res => {
       setFeeds([...res.data.payload.feed_list.results]);
@@ -74,7 +74,7 @@ const FeedDetail = props => {
       )}
       <FlatList
         data={feeds}
-        renderItem={({item}) => <UI_Feed {...item} />}
+        renderItem={({item}) => <UI_Feed {...item} parent={props.route.name} />}
         keyExtractor={(feeds, index) => index.toString()}
         ListFooterComponent={RenderLoader(isLoading)}
         onEndReached={loadMoreItem}

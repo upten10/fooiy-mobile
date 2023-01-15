@@ -13,6 +13,7 @@ import Withdraw from './setting/Withdraw';
 import WithdrawConfirm from './setting/WithdrawConfirm';
 import FeedDetail from './FeedDetail';
 import Storage from './storage/Storage';
+import Profile from '../../common_ui/profile/Profile';
 
 const Stack = createStackNavigator();
 const MypageStackNavigation = () => {
@@ -21,7 +22,7 @@ const MypageStackNavigation = () => {
       style={{flex: 1, backgroundColor: '#fff'}}
       edges={Platform.OS === 'ios' ? 'top' : null}>
       <Stack.Navigator
-        initialRouteName="Mypage"
+        initialRouteName="MypageStackNavigation"
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="Mypage"
@@ -60,10 +61,23 @@ const MypageStackNavigation = () => {
         <Stack.Screen name="Suggestion" component={Suggestion} />
         <Stack.Screen name="Withdraw" component={Withdraw} />
         <Stack.Screen name="WithdrawConfirm" component={WithdrawConfirm} />
-        <Stack.Screen name="FeedDetail" component={FeedDetail} />
+        <Stack.Screen
+          name="FeedDetail"
+          component={FeedDetail}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
         <Stack.Screen
           name="Storage"
           component={Storage}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
           listeners={({navigation, route}) => {
             navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
           }}
