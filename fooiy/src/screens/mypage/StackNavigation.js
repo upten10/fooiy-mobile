@@ -1,19 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Mypage from './Mypage';
-import FooiyTI from './setting/FooiyTI';
-import Setting from './setting/Setting';
-import ProfileImg from './setting/ProfileImg';
-import EditName from './setting/EditName';
+import Mypage from './mypage/Mypage';
 import {globalStyles} from '../../common/globalStyles';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Platform, View} from 'react-native';
-import Suggestion from './setting/Suggestion';
-import Withdraw from './setting/Withdraw';
-import WithdrawConfirm from './setting/WithdrawConfirm';
-import FeedDetail from './FeedDetail';
+import {View} from 'react-native';
 import Storage from './storage/Storage';
-import SettingStack from './setting/SettingStack';
+import Profile from '../../common_ui/profile/Profile';
+import MypageFeedDetail from './mypage/MypageFeedDetail';
+import StorageSingleFeed from './storage/StorageSingleFeed';
+import OtherUserPage from './storage/OtherUserPage';
+import OtherUserFeedDetail from './storage/OtherUserFeedDetail';
+import {Shop} from '../../common_ui/shop/Shop';
 
 const Stack = createStackNavigator();
 const MypageStackNavigation = props => {
@@ -39,47 +35,39 @@ const MypageStackNavigation = props => {
             }
           }}
         />
+        <Stack.Screen name="Shop" component={Shop} />
         <Stack.Screen
-          name="FooiyTI"
-          component={FooiyTI}
-          listeners={({navigation, route}) => {
-            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-          }}
+          name="OtherUserFeedDetail"
+          component={OtherUserFeedDetail}
         />
         <Stack.Screen
-          name="SettingStack"
-          component={SettingStack}
+          name="OtherUserPage"
+          component={OtherUserPage}
           listeners={({navigation, route}) => {
-            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+            const state = navigation.getState();
+            navigation.setOptions({
+              tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+            });
           }}
         />
-        <Stack.Screen name="FeedDetail" component={FeedDetail} />
-        <Stack.Screen
-          name="Storage"
-          component={Storage}
-          listeners={({navigation, route}) => {
-            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-          }}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={Profile}
-          listeners={({navigation, route}) => {
-            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-          }}
-        />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="FeedDetail" component={MypageFeedDetail} />
+        <Stack.Screen name="StorageSingleFeed" component={StorageSingleFeed} />
+        <Stack.Screen name="Storage" component={Storage} />
       </Stack.Navigator>
     );
   }, []);
-  if (tabNavigation.getState().type === 'tab') {
-    return (
-      <SafeAreaView
-        style={{flex: 1, backgroundColor: '#fff'}}
-        edges={Platform.OS === 'ios' ? 'top' : null}>
-        <MypageStack />
-      </SafeAreaView>
-    );
-  }
+
+  // 혹시 몰라 남겨둠
+  // if (tabNavigation.getState().type === 'tab') {
+  //   return (
+  //     <SafeAreaView
+  //       style={{flex: 1, backgroundColor: '#fff'}}
+  //       edges={Platform.OS === 'ios' ? 'top' : null}>
+  //       <MypageStack />
+  //     </SafeAreaView>
+  //   );
+  // }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <MypageStack />

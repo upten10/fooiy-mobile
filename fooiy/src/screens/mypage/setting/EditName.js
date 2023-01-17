@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {Notice} from '../../../../assets/icons/svg';
 import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
@@ -76,7 +76,7 @@ const EditName = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <StackHeader title="닉네임 변경" />
         {/* 바디 */}
         <View style={BodyStyles(insets.top, insets.bottom).bodyContainer}>
@@ -169,7 +169,7 @@ const EditName = () => {
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </View>
-      </View>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };

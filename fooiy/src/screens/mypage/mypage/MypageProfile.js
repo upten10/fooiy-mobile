@@ -1,10 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {globalVariable} from '../../common/globalVariable';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
 import {useDispatch, useSelector} from 'react-redux';
-import {Archive, Map, Settings} from '../../../assets/icons/svg';
+import {Archive, Map, Settings} from '../../../../assets/icons/svg';
 
 const MypageProfile = params => {
   const navigation = useNavigation();
@@ -131,29 +131,7 @@ const MypageProfile = params => {
               <Text style={styles.btnText}>설정</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.btnLine} />
-          {/* 보관함 */}
-          <TouchableOpacity
-            style={styles.btn}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('Storage');
-            }}>
-            <Archive style={styles.btnIcon} />
-            <Text style={styles.btnText}>보관함</Text>
-          </TouchableOpacity>
-          <View style={styles.btnLine} />
-          {/* 설정 */}
-          <TouchableOpacity
-            style={styles.btn}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('SettingStack');
-            }}>
-            <Settings style={styles.btnIcon} />
-            <Text style={styles.btnText}>설정</Text>
-          </TouchableOpacity>
-        </View>
+        )}
       </View>
     </View>
   );

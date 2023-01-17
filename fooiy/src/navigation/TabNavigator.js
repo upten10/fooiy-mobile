@@ -3,6 +3,7 @@ import {View, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Route} from './Route';
 import {globalStyles} from '../common/globalStyles';
+import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,7 +13,10 @@ const TabNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+        tabBarStyle: {
+          ...globalStyles.tab_bar,
+          ...globalStyles.shadow,
+        },
       }}>
       {Route.map(route => (
         <Tab.Screen

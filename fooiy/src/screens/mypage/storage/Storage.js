@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
@@ -89,7 +90,15 @@ const Storage = () => {
   const StorageItem = item => {
     const {
       index,
-      item: {fooiyti, feed_id, menu_name, menu_price, nickname, shop_name},
+      item: {
+        fooiyti,
+        feed_id,
+        menu_name,
+        menu_price,
+        nickname,
+        shop_name,
+        profile_image,
+      },
     } = item;
     const image = item.item.image[0];
 
@@ -99,7 +108,7 @@ const Storage = () => {
         style={styles.container}
         activeOpacity={0.8}
         onPress={() =>
-          navigation.navigate('FeedDetail', {
+          navigation.navigate('StorageSingleFeed', {
             feed_id,
           })
         }>
@@ -121,7 +130,10 @@ const Storage = () => {
         <View style={item_styles.profileContainer}>
           <View style={item_styles.profileImgContainer}>
             {/* 프사로 변경 */}
-            <Image source={{uri: image}} style={item_styles.profileImg} />
+            <Image
+              source={{uri: profile_image}}
+              style={item_styles.profileImg}
+            />
           </View>
           <View>
             <Text style={item_styles.profileNicknameText}>{nickname}</Text>
@@ -132,7 +144,7 @@ const Storage = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StackHeader title="보관함" />
       {/* 바디 */}
       <View style={styles.bodyContainer}>
@@ -155,7 +167,7 @@ const Storage = () => {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

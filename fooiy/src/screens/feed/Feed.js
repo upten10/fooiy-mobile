@@ -79,7 +79,7 @@ const Feed = props => {
   }, [offset]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <DefaultHeader />
       <View style={styles.container}>
         <FlatList
@@ -96,7 +96,7 @@ const Feed = props => {
           onEndReachedThreshold={3}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

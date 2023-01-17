@@ -34,8 +34,13 @@ const PROFILE_IMAGE_HEIGHT = PROFILE_IMAGE_WIDTH;
 const IMAGE_WIDTH = width;
 const IMAGE_HEIGHT = IMAGE_WIDTH;
 
-export const UI_Feed = item => {
+export const UI_Feed = (item, props) => {
   const navigation = useNavigation();
+  const [disableShopButton, setDisableShopButton] = useState(false);
+
+  useEffect(() => {
+    item.disable_shop_button && setDisableShopButton(item.disable_shop_button);
+  }, [item.disable_shop_button]);
 
   const [line, setLine] = useState(3);
   const [moreTextActive, setMoreTextActive] = useState(false);
@@ -175,7 +180,7 @@ export const UI_Feed = item => {
   };
 
   const onPressProfileImg = () => {
-    navigation.navigate('Profile', {
+    navigation.push('OtherUserPage', {
       parent: item.parent,
       other_account_id: item.account_id,
     });
@@ -215,7 +220,7 @@ export const UI_Feed = item => {
       <TouchableOpacity
         style={styles.header_container}
         activeOpacity={0.8}
-        onPress={onPressProfileImg}>
+        onPress={() => onPressProfileImg(item.stackName)}>
         <Image
           source={{uri: item.profile_image}}
           style={styles.profile_image}
@@ -300,11 +305,12 @@ export const UI_Feed = item => {
               activeOpacity={0.8}
               style={styles.shop}
               onPress={() => {
-                navigation.navigate('Shop', {
-                  shop_id: item.shop_id,
-                  shop_name: item.shop_name,
-                  shop_address: item.shop_address,
-                });
+                !disableShopButton &&
+                  navigation.push('Shop', {
+                    shop_id: item.shop_id,
+                    shop_name: item.shop_name,
+                    shop_address: item.shop_address,
+                  });
               }}>
               <Text>{item.shop_name}</Text>
             </TouchableOpacity>

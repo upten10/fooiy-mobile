@@ -1,6 +1,7 @@
 import React from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import {fooiyColor, globalStyles} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
@@ -94,7 +95,8 @@ const FooiyTI = props => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#FFF', paddingHorizontal: 16}}>
+    <SafeAreaView
+      style={{flex: 1, backgroundColor: '#FFF', paddingHorizontal: 16}}>
       <StackHeader title="푸이티아이" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
@@ -128,7 +130,7 @@ const FooiyTI = props => {
           <Text style={styles.reBtnText}>검사 다시하기</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

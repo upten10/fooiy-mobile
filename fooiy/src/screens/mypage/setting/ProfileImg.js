@@ -23,7 +23,7 @@ import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../../common/Enums';
 import {useDispatch} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {fooiyColor} from '../../../common/globalStyles';
 
 const ProfileImg = () => {
@@ -211,7 +211,7 @@ const ProfileImg = () => {
   }, [cropPhoto, selectIndex]);
 
   return (
-    <View style={{backgroundColor: fooiyColor.W}}>
+    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
       <StackHeader title="앨범" enroll={enroll} />
       {selectIndex !== -1 ? (
         <SelectedPhoto />
@@ -248,7 +248,7 @@ const ProfileImg = () => {
           );
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -8,40 +8,46 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
-import {apiUrl} from '../../common/Enums';
-import {globalVariable} from '../../common/globalVariable';
-import MypageProfile from './MypageProfile';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
+import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {apiUrl} from '../../../common/Enums';
+import {fooiyColor} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import {userInfoAction} from '../../../redux/actions/userInfoAction';
+import OtherUserPageProfile from './OtherUserPageProfile';
 
-const MypageFeed = props => {
+const OtherUserPage = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [lastIndex, setLastIndex] = useState(-1);
   const [noFeedImage, setNoFeedImage] = useState('');
+  const [otherUserInfo, setOtherUserInfo] = useState({});
 
-  const flatListRef = useRef(null);
-
-  const tabNavigation = props.navigation.getParent();
-  const stackNavigation = props.navigation;
-  tabNavigation?.addListener('tabPress', e => {
-    if (stackNavigation.getState().index === 0) {
-      toTop();
-    }
-  });
-  const toTop = () => {
-    flatListRef.current.scrollToIndex({
-      index: 0,
-      animated: true,
-      viewPosition: 1,
-    });
-  };
+  const other_account_id = props.route.params.other_account_id;
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    getAccountInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     getFeedList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);
+
+  const getAccountInfo = async data => {
+    await ApiMangerV1.get(apiUrl.ACCOUNT_INFO, {
+      params: {
+        other_account_id,
+      },
+    }).then(res => {
+      setOtherUserInfo(res.data.payload.account_info);
+    });
+  };
 
   const getFeedList = async data => {
     const limit = 20;
@@ -50,6 +56,7 @@ const MypageFeed = props => {
         offset: offset,
         limit,
         type: 'image',
+        other_account_id,
       },
     }).then(res => {
       if (
@@ -67,7 +74,8 @@ const MypageFeed = props => {
 
   const renderItem = useCallback(({item, index}) => {
     const onPressFeed = () => {
-      navigation.navigate('FeedDetail', {
+      navigation.push('OtherUserFeedDetail', {
+        other_account_id,
         item,
       });
     };
@@ -90,10 +98,10 @@ const MypageFeed = props => {
   const keyExtractor = useCallback((item, index) => index.toString(), []);
 
   return (
-    <View style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer}>
+      <StackHeader title={otherUserInfo.nickname} />
       {noFeedImage === '' ? (
         <FlatList
-          ref={flatListRef}
           data={feeds}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
@@ -101,25 +109,26 @@ const MypageFeed = props => {
           bounces={true}
           numColumns={3}
           scrollToOverflowEnabled
-          ListHeaderComponent={MypageProfile}
+          ListHeaderComponent={() => OtherUserPageProfile(otherUserInfo)}
           ListFooterComponent={() => <View style={styles.emptyComp}></View>}
         />
       ) : (
         <View>
-          <MypageProfile />
+          <OtherUserPageProfile otherUserInfo={otherUserInfo} />
           <Image
             source={{uri: noFeedImage}}
             style={{width: '100%', height: 50}}
           />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
+    backgroundColor: fooiyColor.W,
   },
   feedImage: {
     width: globalVariable.width * (1 / 3) - 4 / 3,
@@ -133,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MypageFeed;
+export default OtherUserPage;

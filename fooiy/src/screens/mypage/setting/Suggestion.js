@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {fooiyColor, globalStyles} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -98,7 +98,7 @@ const Suggestion = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <StackHeader title="문의함" />
         {/* body */}
         <View style={BodyStyles(insets.top, insets.bottom).bodyContainer}>
@@ -194,7 +194,7 @@ const Suggestion = () => {
             </View>
           </KeyboardAvoidingView>
         </View>
-      </View>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };

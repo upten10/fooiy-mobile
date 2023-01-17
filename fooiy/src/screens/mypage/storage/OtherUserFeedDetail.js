@@ -2,52 +2,38 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {FlatList, FlatListgi, StyleSheet, View} from 'react-native';
-import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
-import {apiUrl} from '../../common/Enums';
-import {globalVariable} from '../../common/globalVariable';
-import {UI_Feed} from '../../common_ui/feed/Feed';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
-import {RenderLoader} from '../../common_ui/RenderLoader';
+import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {apiUrl} from '../../../common/Enums';
+import {globalVariable} from '../../../common/globalVariable';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import {UI_Feed} from '../../../common_ui/feed/Feed';
+import {RenderLoader} from '../../../common_ui/RenderLoader';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const FeedDetail = props => {
+const OtherUserFeedDetail = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [nickname, setNickname] = useState('');
-  const [shopName, setShopName] = useState('');
-  const [adress, setAdress] = useState('');
+
+  console.log(props.route.params.other_account_id);
 
   useEffect(() => {
-    // 나중에 통합해서 common ui로 만드려고 써놨어용
-    if (props.route.params.shop_id) {
-    } else if (props.route.params.item) {
-      getMyFeed(props.route.params.item);
-    } else if (props.route.params.feed_id) {
-      getFeed(props.route.params.feed_id);
+    if (props.route.params) {
+      getOtherFeed(props.route.params);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [props, offset]);
 
-  const getFeed = async feed_id => {
-    await ApiMangerV1.get(apiUrl.RETRIEVE_FEED, {
-      params: {feed_id},
-    }).then(res => {
-      setFeeds([res.data.payload.feed]);
-      setIsLoading(false);
-      setShopName(res.data.payload.feed.shop_name);
-      setAdress(res.data.payload.feed.shop_address);
-    });
-  };
-
-  const getMyFeed = async data => {
-    const {id, is_confirm} = data;
+  const getOtherFeed = async data => {
+    const {id, is_confirm} = data.item;
     const idType = is_confirm ? 'pioneer_id' : 'feed_id';
     await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
         type: 'list',
         [idType]: id,
-        other_account_id: props.route.params.public_id,
+        other_account_id: data.other_account_id,
       },
     }).then(res => {
       setFeeds([...res.data.payload.feed_list.results]);
@@ -64,25 +50,27 @@ const FeedDetail = props => {
   };
 
   return (
-    <View style={styles.container}>
-      {shopName === '' ? (
-        <StackHeader title={nickname} />
-      ) : (
-        <StackHeader shop={{shop_name: shopName, shop_address: adress}} />
-      )}
+    <SafeAreaView style={styles.container}>
+      <StackHeader title={nickname} />
       <FlatList
         data={feeds}
-        renderItem={({item}) => <UI_Feed {...item} parent={props.route.name} />}
+        renderItem={({item}) => (
+          <UI_Feed
+            {...item}
+            parent={props.route.name}
+            stackName={'OtherUserPage'}
+          />
+        )}
         keyExtractor={(feeds, index) => index.toString()}
         ListFooterComponent={RenderLoader(isLoading)}
         onEndReached={loadMoreItem}
         onEndReachedThreshold={3}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
-export default FeedDetail;
+export default OtherUserFeedDetail;
 
 const styles = StyleSheet.create({
   container: {
