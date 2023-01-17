@@ -29,7 +29,7 @@ const RegisterStackNavigation = () => {
             }
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="RegisterCamera"
           component={RegisterCamera}
           listeners={({navigation, route}) => {
@@ -44,9 +44,9 @@ const RegisterStackNavigation = () => {
           listeners={({navigation, route}) => {
             navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
           }}
-        />
+        /> */}
 
-        <Stack.Screen name="TypingContent" component={TypingContent} />
+        {/* <Stack.Screen name="TypingContent" component={TypingContent} /> */}
       </Stack.Navigator>
     </SafeAreaView>
   );

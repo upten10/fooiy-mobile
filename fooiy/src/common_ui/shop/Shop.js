@@ -46,7 +46,9 @@ export const Shop = props => {
       <StackHeader shop={props.route.params} />
       <FlatList
         data={feeds}
-        renderItem={({item}) => <UI_Feed {...item} />}
+        renderItem={({item}) => (
+          <UI_Feed {...item} disable_shop_button={true} />
+        )}
         keyExtractor={(feeds, index) => index.toString()}
         ListFooterComponent={RenderLoader(isLoading)}
         onEndReached={loadMoreItem}

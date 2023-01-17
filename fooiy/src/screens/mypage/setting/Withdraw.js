@@ -13,7 +13,7 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {Check, Uncheck} from '../../../../assets/icons/svg/index';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 
 const Withdraw = () => {
@@ -85,7 +85,7 @@ const Withdraw = () => {
   return (
     <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={50}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
+        <SafeAreaView
           style={{
             backgroundColor: fooiyColor.W,
             height: '100%',
@@ -151,7 +151,7 @@ const Withdraw = () => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

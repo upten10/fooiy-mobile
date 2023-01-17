@@ -14,6 +14,7 @@ import {CameraPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {check, PERMISSIONS} from 'react-native-permissions';
 import {Linking} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const RegisterCamera = props => {
   const navigation = useNavigation();
@@ -69,7 +70,7 @@ const RegisterCamera = props => {
     return <View style={{flex: 1, backgroundColor: '#666'}} />;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StackHeader title="카메라" />
       <Camera
         ref={camera}
@@ -84,7 +85,7 @@ const RegisterCamera = props => {
           <View style={styles.take_photo} />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

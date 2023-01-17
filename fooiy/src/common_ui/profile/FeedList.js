@@ -1,19 +1,19 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  Image,
   FlatList,
-  TouchableOpacity,
+  Image,
   ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
-import MypageProfile from './MypageProfile';
+import MypageProfile from '../../screens/mypage/mypage/MypageProfile';
 
-const MypageFeed = () => {
+const FeedList = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [lastIndex, setLastIndex] = useState(-1);
@@ -22,17 +22,24 @@ const MypageFeed = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    getFeedList();
+    getPublicId();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
+  }, [offset, props]);
 
-  const getFeedList = async data => {
+  const getPublicId = () => {
+    if (props.otherUserInfo.public_id !== undefined) {
+      getOtherUserFeedList(props.otherUserInfo.public_id);
+    }
+  };
+
+  const getOtherUserFeedList = async data => {
     const limit = 20;
     await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
         offset: offset,
         limit,
         type: 'image',
+        other_account_id: data,
       },
     }).then(res => {
       if (
@@ -52,6 +59,7 @@ const MypageFeed = () => {
     const onPressFeed = () => {
       navigation.navigate('FeedDetail', {
         item,
+        public_id: props.otherUserInfo.public_id,
       });
     };
     return (
@@ -83,7 +91,9 @@ const MypageFeed = () => {
           bounces={true}
           numColumns={3}
           scrollToOverflowEnabled
-          ListHeaderComponent={MypageProfile}
+          ListHeaderComponent={() =>
+            MypageProfile({otherUserInfo: props.otherUserInfo})
+          }
           ListFooterComponent={() => <View style={styles.emptyComp}></View>}
         />
       ) : (
@@ -115,4 +125,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MypageFeed;
+export default FeedList;

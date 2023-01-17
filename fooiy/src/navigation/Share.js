@@ -8,7 +8,7 @@ import {UI_Feed} from '../common_ui/feed/Feed';
 import {GuestFeed} from '../common_ui/feed/GuestFeed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Test = () => {
+const Share = () => {
   const navigation = useNavigation();
   const route = useRoute();
   console.log(route.params);
@@ -85,4 +85,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default Share;
