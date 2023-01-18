@@ -87,8 +87,10 @@ const NaverMap = () => {
             switch (result) {
               case RESULTS.GRANTED:
                 onClickLocationBtn();
+                break;
               case RESULTS.LIMITED:
                 onClickLocationBtn();
+                break;
             }
           })
           .catch(error => {
@@ -99,8 +101,10 @@ const NaverMap = () => {
             switch (result) {
               case RESULTS.LIMITED:
                 onClickLocationBtn();
+                break;
               case RESULTS.GRANTED:
                 onClickLocationBtn();
+                break;
             }
           })
           .catch(error => {
@@ -128,13 +132,13 @@ const NaverMap = () => {
       },
     })
       .then(res => {
-        if (res.data.payload.shop_list) {
-          if (depth === 4) {
-            setShopMarkers(res.data.payload.shop_list.results);
-          } else {
-            setShopMarkers(res.data.payload.shop_list.regions);
-          }
-        }
+        // if (res.data.payload.shop_list) {
+        //   if (depth === 4) {
+        //     setShopMarkers(res.data.payload.shop_list.results);
+        //   } else {
+        //     setShopMarkers(res.data.payload.shop_list.regions);
+        //   }
+        // }
       })
       .catch(e => console.log(e));
   };

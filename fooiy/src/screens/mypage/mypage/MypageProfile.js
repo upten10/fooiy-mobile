@@ -100,16 +100,24 @@ const MypageProfile = params => {
         {params.otherUserInfo ? (
           <TouchableOpacity
             style={styles.otherBtnContainer}
-            activeOpacity={0.8}>
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('MypageMap');
+            }}>
             <Map style={styles.otherBtnIcon} />
             <Text style={styles.otherBtnText}>지도</Text>
           </TouchableOpacity>
         ) : (
           <View style={styles.btnContainer}>
-            <View style={styles.btn}>
+            <TouchableOpacity
+              style={styles.btn}
+              activeOpacity={0.8}
+              onPress={() => {
+                navigation.navigate('MypageMap');
+              }}>
               <Map style={styles.btnIcon} />
               <Text style={styles.btnText}>내 지도</Text>
-            </View>
+            </TouchableOpacity>
             <View style={styles.btnLine} />
             <TouchableOpacity
               style={styles.btn}

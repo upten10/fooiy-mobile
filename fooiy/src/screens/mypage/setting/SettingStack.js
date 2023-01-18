@@ -15,13 +15,7 @@ const SettingStack = props => {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Setting" component={Setting} />
         <Stack.Screen name="FooiyTI" component={FooiyTI} />
-        <Stack.Screen name="ProfileImg" component={ProfileImg} />
-        <Stack.Screen name="EditName" component={EditName} />
-        <Stack.Screen name="Suggestion" component={Suggestion} />
-        <Stack.Screen name="Withdraw" component={Withdraw} />
-        <Stack.Screen name="WithdrawConfirm" component={WithdrawConfirm} />
       </Stack.Navigator>
     </NavigationContainer>
   );

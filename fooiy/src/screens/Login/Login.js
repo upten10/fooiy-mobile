@@ -33,7 +33,7 @@ import {useNavigation} from '@react-navigation/native';
 const Login = () => {
   const navigation = useNavigation();
   const [isLogin, setisLogin] = useState(false);
-  const [auth, setAuth] = useState();
+  const [auth, setAuth] = useState('');
 
   const route = async () => {
     const value = await AsyncStorage.getItem('auth');
@@ -91,7 +91,7 @@ const Login = () => {
     appleAuth.State.AUTHORIZED === 1 ? setisLogin(true) : null;
   };
 
-  AsyncStorage.setItem('auth', auth);
+  auth !== '' ? AsyncStorage.setItem('auth', auth) : null;
 
   if (Platform.OS === 'android') {
     return (
