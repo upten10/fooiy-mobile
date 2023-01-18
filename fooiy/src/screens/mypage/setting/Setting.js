@@ -25,6 +25,7 @@ import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loginActions} from '../../../redux/reducer/login';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Setting = props => {
   const navigation = useNavigation();
@@ -84,7 +85,7 @@ const Setting = props => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View
+      <SafeAreaView
         style={{
           height: globalVariable.height,
           backgroundColor: fooiyColor.W,
@@ -131,6 +132,7 @@ const Setting = props => {
             {settingArr.map((elem, index) => {
               return (
                 <TouchableOpacity
+                  key={index}
                   activeOpacity={0.8}
                   onPress={() =>
                     elem.navigation ? onItemPress(elem.navigation) : null
@@ -178,7 +180,7 @@ const Setting = props => {
             <Text style={styles.footerText}>버전 정보 0.0.1</Text>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };

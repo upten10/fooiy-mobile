@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
@@ -34,7 +34,7 @@ const WithdrawConfirm = props => {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={{backgroundColor: fooiyColor.W, height: globalVariable.height}}>
       {/* Stack Header */}
       <StackHeader title="회원 탈퇴" />
@@ -111,7 +111,7 @@ const WithdrawConfirm = props => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

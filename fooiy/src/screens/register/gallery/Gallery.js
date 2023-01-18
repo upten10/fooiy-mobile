@@ -21,6 +21,7 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import cloneDeep from 'lodash/cloneDeep';
 import {check, PERMISSIONS} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Gallery = () => {
   const navigation = useNavigation();
@@ -231,7 +232,7 @@ const Gallery = () => {
   }, [selectedPhotoIndexList, cropPhoto, selectIndex]);
 
   return (
-    <View>
+    <SafeAreaView>
       <StackHeader title="앨범" next={go_next} />
       {selectedPhotoIndexList.length !== 0 ? (
         <SelectedPhoto />
@@ -283,7 +284,7 @@ const Gallery = () => {
           );
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -32,7 +32,7 @@ const RegisterStackNavigation = () => {
             }
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="RegisterCamera"
           component={RegisterCamera}
           listeners={({navigation, route}) => {
@@ -47,8 +47,7 @@ const RegisterStackNavigation = () => {
           listeners={({navigation, route}) => {
             navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
           }}
-        />
-
+        /> */}
         <Stack.Screen name="SetAddress" component={SetAddress} />
         <Stack.Screen name="FindShop" component={FindShop} />
         <Stack.Screen name="FindMenu" component={FindMenu} />

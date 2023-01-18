@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -26,10 +26,26 @@ import {
 import {globalVariable} from '../../common/globalVariable';
 
 import TabNavigator from '../../navigation/TabNavigator';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginActions} from '../redux/reducer/login';
+import {useNavigation} from '@react-navigation/native';
 
 const Login = () => {
+  const navigation = useNavigation();
   const [isLogin, setisLogin] = useState(false);
   const [auth, setAuth] = useState();
+
+  const route = async () => {
+    const value = await AsyncStorage.getItem('auth');
+    if (value) {
+      navigation.navigate('TabNavigator');
+    }
+  };
+
+  useEffect(() => {
+    route();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogin]);
 
   const signInWithKakao = async data => {
     const token = await login();
@@ -76,9 +92,6 @@ const Login = () => {
   };
 
   AsyncStorage.setItem('auth', auth);
-  if (isLogin) {
-    return <TabNavigator />;
-  }
 
   if (Platform.OS === 'android') {
     return (

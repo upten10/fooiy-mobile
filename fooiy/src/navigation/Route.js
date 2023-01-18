@@ -1,14 +1,14 @@
-import MapStackNavigation from '../screens/map/StackNavigation';
 import FeedStackNavigation from '../screens/feed/StackNavigation';
 import Suggestion from '../screens/suggestion/Suggestion';
 import MypageStackNavigation from '../screens/mypage/StackNavigation';
 import RegisterStackNavigation from '../screens/register/RegisterStackNavigation';
+import Map from '../screens/map/Map';
 
 export const Route = [
   {
     id: 1,
-    name: 'MapStackNavigation',
-    component: MapStackNavigation,
+    name: 'Map',
+    component: Map,
     focused: require('../../assets/icons/navigation/ic_map_focused.png'),
     unfocused: require('../../assets/icons/navigation/ic_map.png'),
   },

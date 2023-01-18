@@ -1,24 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
-import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
-import {apiUrl} from '../../common/Enums';
-import {fooiyColor} from '../../common/globalStyles';
-import {globalVariable} from '../../common/globalVariable';
-import {useDispatch, useSelector, shallowEqual} from 'react-redux';
-import {userInfoAction} from '../../redux/actions/userInfoAction';
-import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
-import {Archive, Map, Settings} from '../../../assets/icons/svg';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {useDispatch, useSelector} from 'react-redux';
+import {Archive, Map, Settings} from '../../../../assets/icons/svg';
 
-const MypageProfile = () => {
+const OtherUserPageProfile = params => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-
-  const userInfoRedux = useSelector(state => state.userInfo.value);
 
   return (
     <View style={styles.rootContainer} pointerEvents="box-none">
-      <DefaultHeader />
       <View style={styles.container}>
         {/* 프로필 */}
         <View style={styles.profileContainer}>
@@ -26,9 +18,7 @@ const MypageProfile = () => {
             {/* 프로필사진 */}
             <View style={styles.profileImageContainer}>
               <Image
-                source={{
-                  uri: userInfoRedux.profile_image,
-                }}
+                source={{uri: params.profile_image}}
                 style={styles.profileImage}
               />
             </View>
@@ -36,58 +26,39 @@ const MypageProfile = () => {
               {/* 푸이티아이 */}
               <View style={styles.userInfoDetail}>
                 <TouchableOpacity
+                  style={styles.fooiyTIContainer}
                   activeOpacity={0.8}
                   onPress={() => {
                     navigation.navigate('FooiyTI');
                   }}>
                   <Text style={styles.fooiyTI}>
-                    {userInfoRedux.fooiyti !== null
-                      ? userInfoRedux.fooiyti
-                      : 'OOOO'}
+                    {params.fooiyti !== null ? params.fooiyti : 'OOOO'}
                   </Text>
                 </TouchableOpacity>
-                {/* 나중에 개척수에서 총 게시물 수로 바꿔야함 */}
-                <Text style={styles.profileInfoCount}>
-                  총 {userInfoRedux.pioneer_count}개
-                </Text>
+                {/* 피드 갯수 */}
+                <View style={styles.profileInfoCountContainer}>
+                  <Text style={styles.profileInfoCount}>
+                    총 {params.feed_count}개
+                  </Text>
+                </View>
               </View>
               {/* 닉네임 */}
               <View>
-                <Text style={styles.userName}>{userInfoRedux.nickname}</Text>
+                <Text style={styles.userName}>{params.nickname}</Text>
               </View>
             </View>
           </View>
           <View>
-            <Text style={styles.introduction}>
-              {userInfoRedux.introduction}
-            </Text>
+            {params.introduction && (
+              <Text style={styles.introduction}>{params.introduction}</Text>
+            )}
           </View>
         </View>
         {/* 버튼 */}
-        <View style={styles.btnContainer}>
-          {/* 지도 */}
-          <View style={styles.btn}>
-            <Map style={styles.btnIcon} />
-            <Text style={styles.btnText}>내 지도</Text>
-          </View>
-          <View style={styles.btnLine} />
-          {/* 보관함 */}
-          <View style={styles.btn}>
-            <Archive style={styles.btnIcon} />
-            <Text style={styles.btnText}>보관함</Text>
-          </View>
-          <View style={styles.btnLine} />
-          {/* 설정 */}
-          <TouchableOpacity
-            style={styles.btn}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('Setting');
-            }}>
-            <Settings style={styles.btnIcon} />
-            <Text style={styles.btnText}>설정</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.otherBtnContainer} activeOpacity={0.8}>
+          <Map style={styles.otherBtnIcon} />
+          <Text style={styles.otherBtnText}>지도</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -122,35 +93,37 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 16,
   },
-  fooiyTI: {
-    fontsize: 16,
-    fontWeight: '600',
+  fooiyTIContainer: {
     borderWidth: 1,
     borderRadius: 8,
-    color: fooiyColor.P500,
     borderColor: fooiyColor.P500,
     paddingHorizontal: 10,
     paddingVertical: 8,
     marginRight: 8,
   },
-  profileInfoCount: {
-    fontsize: 16,
-    fontWeight: '600',
+  fooiyTI: {
+    ...fooiyFont.Button,
+    color: fooiyColor.P500,
+    lineHeight: 0,
+  },
+  profileInfoCountContainer: {
     borderWidth: 1,
     borderRadius: 8,
-    color: fooiyColor.G400,
     borderColor: fooiyColor.G400,
+    justifyContent: 'center',
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
+  profileInfoCount: {
+    ...fooiyFont.Button,
+    lineHeight: 0,
+    color: fooiyColor.G400,
+  },
   userName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: fooiyColor.B,
+    ...fooiyFont.Subtitle1,
   },
   introduction: {
-    fontWeight: '400',
-    fontSize: 14,
+    ...fooiyFont.Body2,
     color: fooiyColor.G600,
     marginBottom: 24,
   },
@@ -178,10 +151,24 @@ const styles = StyleSheet.create({
     backgroundColor: fooiyColor.G200,
   },
   btnText: {
+    ...fooiyFont.Subtitle3,
     color: fooiyColor.G500,
-    fontSize: 14,
-    fontWeight: '600',
+  },
+  otherBtnContainer: {
+    height: 84,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: fooiyColor.G200,
+    borderRadius: 8,
+  },
+  otherBtnIcon: {
+    marginBottom: 8,
+  },
+  otherBtnText: {
+    ...fooiyFont.Subtitle3,
+    color: fooiyColor.G500,
   },
 });
 
-export default MypageProfile;
+export default OtherUserPageProfile;
