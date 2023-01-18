@@ -31,7 +31,13 @@ export const apiUrl = {
   FEED_MAP_MARKER: 'feeds/feed/map_picker/',
   // 피드 지도 디테일
   FEED_MAP_DETAIL: 'feeds/feed/map_detail/',
-
+  
   // 음식점 지도 리스트
   MAP_SHOP_MARKER: 'shops/shop/shop_map_picker/',
+  
+  
+  REGISTER_PIONEER: 'feeds/pioneer/',
+  REGISTER_RECORD: 'feeds/record/',
+  SHOP_NEARBY: 'shops/shop/nearby/',
+  SHOP_MENU: 'shops/menu/',
 };
