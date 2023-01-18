@@ -23,7 +23,6 @@ import {check, PERMISSIONS} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 
 const Gallery = () => {
-  console.log('rendering Gallery');
   const navigation = useNavigation();
   const width = globalVariable.width;
   const height = globalVariable.height;
@@ -59,13 +58,6 @@ const Gallery = () => {
             : photoList.length === 3 && photoList[2].location
             ? photoList[2].location
             : null,
-        // : {
-        //     altitude: 0,
-        //     heading: 0,
-        //     latitude: globalVariable.default_latitude,
-        //     longitude: globalVariable.default_longitude,
-        //     speed: 0,
-        //   },
       });
     }
   };

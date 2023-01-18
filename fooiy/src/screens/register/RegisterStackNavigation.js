@@ -11,7 +11,7 @@ import Gallery from './gallery/Gallery';
 import SetAddress from './register_feed/SetAddress';
 import FindShop from './register_feed/FindShop';
 import FindMenu from './register_feed/FindMenu';
-import RegisterFeed from './register_feed/test/RegisterFeed';
+import RegisterFeed from './register_feed/register_feed_ui/RegisterFeed';
 
 const Stack = createStackNavigator();
 const RegisterStackNavigation = () => {

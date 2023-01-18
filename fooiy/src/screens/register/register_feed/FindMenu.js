@@ -17,9 +17,6 @@ import {useNavigation} from '@react-navigation/native';
 import {Search} from '../../../../assets/icons/svg';
 
 const FindMenu = props => {
-  console.log('rendering FindMenu');
-  //   console.log(props.route.params.shop);
-  // const photo_list = props.route.params.photo_list;
   const [menuList, setMenuList] = useState([]);
   const [searchMenu, setSearchMenu] = useState([]);
   const insets = useSafeAreaInsets();
@@ -41,7 +38,6 @@ const FindMenu = props => {
   }, []);
 
   const onChangeText = text => {
-    console.log(text);
     const nextData = menuList.filter(
       menuList => menuList.name.indexOf(text) > -1,
     );
@@ -56,39 +52,13 @@ const FindMenu = props => {
           marginBottom: 16,
         }}>
         <StackHeader title="메뉴 선택" />
-        <View
-          style={{
-            width: '100%',
-            height: 64,
-            justifyContent: 'flex-end',
-            marginTop: 16,
-          }}>
-          <Text style={{...fooiyFont.H3, marginLeft: 16}}>방문한 음식점을</Text>
-          <Text style={{...fooiyFont.H3, marginLeft: 16}}>선택해주세요</Text>
+        <View style={styles.top_text_view}>
+          <Text style={styles.top_text}>방문한 음식점을{'\n'}</Text>
         </View>
-        <View
-          style={{
-            width: '100%',
-            height: 56,
-            marginTop: 24,
-            marginBottom: 16,
-            paddingHorizontal: 16,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
+        <View style={styles.search_view}>
           <TextInput
             placeholder="메뉴를 검색해보세요!"
-            style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: fooiyColor.G50,
-              borderRadius: 8,
-              ...fooiyFont.Subtitle3,
-              padding: 16,
-              justifyContent: 'center',
-              lineHeight: 0,
-            }}
+            style={styles.search_input}
             maxLength={20}
             autoCapitalize="none"
             autoCorrect={false}
@@ -98,20 +68,12 @@ const FindMenu = props => {
               onChangeText(text);
             }}
           />
-          <Search
-            style={{
-              width: 24,
-              height: 24,
-              position: 'absolute',
-              right: 32,
-            }}
-          />
+          <Search style={styles.search_icon} />
         </View>
         {searchMenu &&
           searchMenu.map((item, index) => {
             return (
               <TouchableOpacity
-                style={{borderWidth: 0}}
                 onPress={() =>
                   navigation.navigate('RegisterFeed', {
                     photo_list: props.route.params.photo_list,
@@ -120,33 +82,9 @@ const FindMenu = props => {
                     address: props.route.params.address,
                   })
                 }>
-                <View
-                  style={{
-                    height: 78,
-                    borderBottomWidth: 1,
-                    borderColor: fooiyColor.G200,
-                    paddingTop: 16,
-                    marginHorizontal: 16,
-                  }}>
-                  <Text
-                    style={{
-                      width: '100%',
-                      height: 24,
-                      ...fooiyFont.Subtitle1,
-                      color: fooiyColor.G800,
-                      marginBottom: 4,
-                    }}>
-                    {item.name}
-                  </Text>
-                  <Text
-                    style={{
-                      width: '100%',
-                      height: 18,
-                      ...fooiyFont.Subtitle4,
-                      color: fooiyColor.G400,
-                    }}>
-                    {item.price}
-                  </Text>
+                <View style={styles.menu_view}>
+                  <Text style={styles.menu_name}>{item.name}</Text>
+                  <Text style={styles.menu_price}>{item.price}</Text>
                 </View>
               </TouchableOpacity>
             );
@@ -154,14 +92,7 @@ const FindMenu = props => {
       </ScrollView>
       <View>
         <TouchableOpacity
-          style={{
-            marginHorizontal: 16,
-            borderRadius: 8,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: fooiyColor.P500,
-            height: 56,
-          }}
+          style={styles.no_menu_btn}
           onPress={() => {
             navigation.navigate('RegisterFeed', {
               photo_list: props.route.params.photo_list,
@@ -170,9 +101,7 @@ const FindMenu = props => {
               address: props.route.params.address,
             });
           }}>
-          <Text style={{...fooiyFont.Button, color: fooiyColor.W}}>
-            먹은 메뉴가 없어요
-          </Text>
+          <Text style={styles.no_menu_text}>먹은 메뉴가 없어요</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -181,4 +110,73 @@ const FindMenu = props => {
 
 export default FindMenu;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  top_text_view: {
+    width: '100%',
+    height: 64,
+    justifyContent: 'flex-end',
+    marginTop: 16,
+  },
+  top_text: {
+    ...fooiyFont.H3,
+    marginLeft: 16,
+  },
+  search_view: {
+    width: '100%',
+    height: 56,
+    marginTop: 24,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  search_input: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: fooiyColor.G50,
+    borderRadius: 8,
+    ...fooiyFont.Subtitle3,
+    padding: 16,
+    justifyContent: 'center',
+    lineHeight: 0,
+  },
+  search_icon: {
+    width: 24,
+    height: 24,
+    position: 'absolute',
+    right: 32,
+  },
+  menu_view: {
+    height: 78,
+    borderBottomWidth: 1,
+    borderColor: fooiyColor.G200,
+    paddingTop: 16,
+    marginHorizontal: 16,
+  },
+  menu_name: {
+    width: '100%',
+    height: 24,
+    ...fooiyFont.Subtitle1,
+    color: fooiyColor.G800,
+    marginBottom: 4,
+  },
+  menu_price: {
+    width: '100%',
+    height: 18,
+    ...fooiyFont.Subtitle4,
+    color: fooiyColor.G400,
+  },
+  no_menu_btn: {
+    marginHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: fooiyColor.P500,
+    height: 56,
+  },
+  no_menu_text: {
+    ...fooiyFont.Button,
+    color: fooiyColor.W,
+  },
+});

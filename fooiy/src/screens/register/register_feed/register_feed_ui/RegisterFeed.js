@@ -22,8 +22,6 @@ import {apiUrl} from '../../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
 
 const RegisterFeed = props => {
-  console.log('rendering RegisterFeed');
-  // const photo_list = props.route.params.photo_list;
   const {photo_list, shop, menu, address} = props.route.params;
   const shop_init = shop ? props.route.params.shop.name : '';
   const menu_init = menu ? props.route.params.menu.name : '';
@@ -158,11 +156,7 @@ const RegisterFeed = props => {
       <ScrollView
         bounces={false}
         showsVerticalScrollIndicator={false}
-        style={{
-          backgroundColor: fooiyColor.W,
-          height: '100%',
-          paddingHorizontal: 16,
-        }}>
+        style={styles.container}>
         {/* 음식점 */}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
@@ -194,9 +188,7 @@ const RegisterFeed = props => {
               />
             )}
             {/* 푸이티아이 평가 */}
-            <Text style={{...fooiyFont.Subtitle1, marginTop: 16}}>
-              푸이티아이 평가
-            </Text>
+            <Text style={styles.fooiyti_evaluation}>푸이티아이 평가</Text>
             <View>
               <FooiytiRating
                 left={'E'}
@@ -247,9 +239,7 @@ const RegisterFeed = props => {
             </View>
             {/* 맛 평가 */}
             <View>
-              <Text style={{...fooiyFont.Subtitle1, marginTop: 16}}>
-                전체 맛 평가
-              </Text>
+              <Text style={styles.total_evaluation}>전체 맛 평가</Text>
               <FooiytiRating
                 left={''}
                 right={''}
@@ -263,75 +253,22 @@ const RegisterFeed = props => {
             </View>
             {/* 코멘트 */}
             <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'flex-end',
-                  marginTop: 36,
-                }}>
+              <View style={styles.comment}>
                 <Text style={{...fooiyFont.Subtitle1}}>코멘트</Text>
-                <Text
-                  style={{
-                    ...fooiyFont.Caption1,
-                    color: fooiyColor.G600,
-                    marginLeft: 8,
-                  }}>
-                  ({comment.length}/500)
-                </Text>
+                <Text style={styles.comment_limit}>({comment.length}/500)</Text>
               </View>
               <View
                 style={
                   isCommentFocus
-                    ? {
-                        marginTop: 16,
-                        justifyContent: 'center',
-                        width: '100%',
-                        flexDirection: 'row',
-                        height: 104,
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        borderColor: fooiyColor.G400,
-                      }
-                    : {
-                        marginTop: 16,
-                        justifyContent: 'center',
-                        width: '100%',
-                        height: 104,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        borderColor: fooiyColor.G200,
-                      }
+                    ? styles.comment_focus_active
+                    : styles.comment_focus_deactive
                 }>
                 <TextInput
                   ref={commentRef}
                   style={
                     isCommentFocus
-                      ? {
-                          paddingTop: 16,
-                          padding: 16,
-                          ...fooiyFont.Body1,
-                          lineHeight: 0,
-                          width: '90%',
-                          height: '100%',
-                          fontSize: 14,
-                          fontWeight: '400',
-                        }
-                      : {
-                          padding: 16,
-                          ...fooiyFont.Subtitle2,
-                          lineHeight: 0,
-                          color: 'red',
-                          width: '90%',
-                          height: '100%',
-                          fontSize: 14,
-                          paddingTop: 16,
-                          fontWeight: '400',
-                        }
+                      ? styles.comment_text_focus_active
+                      : styles.comment_text_focus_deactive
                   }
                   multiline
                   textAlignVertical="top"
@@ -347,75 +284,46 @@ const RegisterFeed = props => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-        <View
-          style={{
-            width: '100%',
-            backgroundColor: fooiyColor.P50,
-            borderRadius: 8,
-            padding: 16,
-            marginTop: 16,
-          }}>
-          <Text
-            style={{
-              ...fooiyFont.Subtitle3,
-              marginBottom: 8,
-              color: fooiyColor.G600,
-            }}>
-            코멘트 작성 안내사항
-          </Text>
-
+        <View style={styles.commnet_notice}>
+          <Text style={styles.commnet_notice_title}>코멘트 작성 안내사항</Text>
           <View style={{flexDirection: 'row'}}>
-            <Notice style={{width: 18, height: 18, color: fooiyColor.G600}} />
-            <Text style={{marginLeft: 8, color: fooiyColor.G600}}>
-              10자 이상 적어주세요.
-            </Text>
-          </View>
-          <View style={{flexDirection: 'row', marginTop: 8}}>
-            <Notice style={{width: 18, height: 18, color: fooiyColor.G600}} />
-            <Text style={{marginLeft: 8, color: fooiyColor.G600}}>
+            <Notice style={styles.comment_notice_icon} />
+            <Text style={styles.commnet_notice_text}>
               욕설, 비방 등의 코멘트는 지양해주세요.
             </Text>
           </View>
-          <View style={{flexDirection: 'row', marginTop: 8}}>
-            <Notice style={{width: 18, height: 18, color: fooiyColor.G600}} />
-            <Text style={{marginLeft: 8, color: fooiyColor.G600}}>
+          <View style={{flexDirection: 'row'}}>
+            <Notice style={styles.comment_notice_icon} />
+            <Text style={styles.commnet_notice_text}>
               개척이 완료되면 게시물을 삭제할 수 없어요.
             </Text>
           </View>
         </View>
         <View>
           <TouchableOpacity
+            activeOpacity={0.8}
             style={
               (shop || shopValue) &&
               (address || locationValue) &&
               (menu || menuValue)
-                ? {
-                    width: globalVariable.width - 32,
-                    borderRadius: 8,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 36,
-                    backgroundColor: fooiyColor.P500,
-                    height: 56,
-                  }
-                : {
-                    width: globalVariable.width - 32,
-                    borderRadius: 8,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 36,
-                    backgroundColor: fooiyColor.G100,
-                    height: 56,
-                  }
+                ? styles.register_btn_active
+                : styles.register_btn_deactive
             }
             onPress={
               (shop || shopValue) &&
               (address || locationValue) &&
-              (menu || menuValue) &&
-              onClickRegister
+              (menu || menuValue)
+                ? onClickRegister
+                : null
             }>
             <Text
-              style={{...fooiyFont.Button, color: fooiyColor.W, fontSize: 14}}>
+              style={
+                (shop || shopValue) &&
+                (address || locationValue) &&
+                (menu || menuValue)
+                  ? styles.register_btn_text_active
+                  : styles.register_btn_text_deactive
+              }>
               피드 등록
             </Text>
           </TouchableOpacity>
@@ -429,4 +337,122 @@ const RegisterFeed = props => {
 
 export default RegisterFeed;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: fooiyColor.W,
+    height: '100%',
+    paddingHorizontal: 16,
+  },
+  fooiyti_evaluation: {
+    ...fooiyFont.Subtitle1,
+    marginTop: 16,
+  },
+  total_evaluation: {
+    ...fooiyFont.Subtitle1,
+    marginTop: 16,
+  },
+  comment: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginTop: 36,
+  },
+  comment_limit: {
+    ...fooiyFont.Caption1,
+    color: fooiyColor.G600,
+    marginLeft: 8,
+  },
+  comment_focus_active: {
+    marginTop: 16,
+    justifyContent: 'center',
+    width: '100%',
+    flexDirection: 'row',
+    height: 104,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: fooiyColor.G400,
+  },
+  comment_focus_deactive: {
+    marginTop: 16,
+    justifyContent: 'center',
+    width: '100%',
+    height: 104,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: fooiyColor.G200,
+  },
+  comment_text_focus_active: {
+    paddingTop: 16,
+    padding: 16,
+    ...fooiyFont.Body1,
+    lineHeight: 0,
+    width: '90%',
+    height: '100%',
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  comment_text_focus_deactive: {
+    padding: 16,
+    ...fooiyFont.Subtitle2,
+    lineHeight: 0,
+    color: 'red',
+    width: '90%',
+    height: '100%',
+    fontSize: 14,
+    paddingTop: 16,
+    fontWeight: '400',
+  },
+  commnet_notice: {
+    width: '100%',
+    backgroundColor: fooiyColor.P50,
+    borderRadius: 8,
+    marginTop: 16,
+    padding: 16,
+  },
+  commnet_notice_title: {
+    ...fooiyFont.Subtitle3,
+    color: fooiyColor.G600,
+  },
+  comment_notice_icon: {
+    ...fooiyFont.Subtitle3,
+    marginTop: 8,
+    color: fooiyColor.G600,
+  },
+  commnet_notice_text: {
+    marginLeft: 8,
+    color: fooiyColor.G600,
+    marginTop: 8,
+  },
+  register_btn_active: {
+    width: globalVariable.width - 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 36,
+    backgroundColor: fooiyColor.P500,
+    height: 56,
+  },
+  register_btn_deactive: {
+    width: globalVariable.width - 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 36,
+    backgroundColor: fooiyColor.G100,
+    height: 56,
+  },
+  register_btn_text_active: {
+    ...fooiyFont.Button,
+    color: fooiyColor.W,
+    fontSize: 14,
+  },
+  register_btn_text_deactive: {
+    ...fooiyFont.Button,
+    color: fooiyColor.G300,
+    fontSize: 14,
+  },
+});

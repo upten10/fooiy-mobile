@@ -14,7 +14,6 @@ import {Current_Location} from '../../../../assets/icons/svg';
 import {check, PERMISSIONS} from 'react-native-permissions';
 
 const SetAddress = props => {
-  console.log('rendering SetAddress');
   const navigation = useNavigation();
   const photo_list = props.route.params.photo_list;
   const [btnActivate, setBtnActivate] = useState(false);
@@ -82,12 +81,9 @@ const SetAddress = props => {
           setBtnActivate(false);
           setAddress('', '', '', '', '', 0, 0);
         }
-
-        // console.log(res.data.status.code);
       });
   }, 700);
   const onCameraChange = e => {
-    console.log(e.longitude, e.latitude);
     debounceCallback(e.longitude, e.latitude);
   };
 
@@ -184,19 +180,9 @@ const SetAddress = props => {
           </View>
         </NaverMapView>
       </View>
-      <View
-        style={{
-          width: 56,
-          height: 56,
-          // borderWidth: 1,
-          position: 'absolute',
-          right: 0,
-          bottom: 258,
-          marginRight: 8,
-          marginBottom: 8,
-        }}>
+      <View style={styles.current_location}>
         <TouchableOpacity onPress={onClickLocationBtn}>
-          <Current_Location style={{}} />
+          <Current_Location />
         </TouchableOpacity>
       </View>
       <View style={styles.bottom_container}>
@@ -249,6 +235,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '85%',
   },
+  current_location: {
+    width: 56,
+    height: 56,
+    position: 'absolute',
+    right: 0,
+    bottom: 258,
+    marginRight: 8,
+    marginBottom: 8,
+  },
   bottom_container: {
     position: 'absolute',
     bottom: 0,
@@ -262,7 +257,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.16,
     shadowOffset: {width: 0, height: -4},
     shadowRadius: 16,
-    // marginLeft: -200,
   },
   address: {
     marginTop: 24,

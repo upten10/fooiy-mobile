@@ -36,14 +36,11 @@ import {SliderTOTAL_2} from '../../../../../assets/icons/svg';
 import {SliderTOTAL_3} from '../../../../../assets/icons/svg';
 import {SliderTOTAL_4} from '../../../../../assets/icons/svg';
 
-// const margin = 56;
-
 const leftBarColor = 'red';
 const rightBarColor = 'blue';
 const imogiSize = 40;
 
 function FooiytiRating(props) {
-  console.log('rendering FooiytiRating');
   const {
     left,
     right,
@@ -59,10 +56,6 @@ function FooiytiRating(props) {
   const fooiytiRatingWidth = globalVariable.width - margin * 2 - 40;
   const step = useMemo(() => fooiytiRatingWidth * 0.25, [fooiytiRatingWidth]);
   const panX = useSharedValue(fooiytiRatingWidth / 2); // 사용자의 드래그 위치를 저장하는 변수
-
-  // useEffect(() => {
-  //   setFooiytiRating(rating);
-  // }, [FooiytiRating]);
 
   const FooiytiImogi = () => {
     if (type === 'EI' && fooiytiRating === 0) {
@@ -236,45 +229,17 @@ function FooiytiRating(props) {
 
   return (
     <View style={styles.rootContainer} onLayout={rootContainerOnLayout}>
-      <View style={{position: 'absolute', height: 36}}>
-        <Text
-          style={{
-            ...fooiyFont.Subtitle2,
-            color: fooiyColor.G600,
-            height: 24,
-            alignItems: 'center',
-          }}>
-          {left}
-        </Text>
-        <Text
-          style={{...fooiyFont.Caption2, color: fooiyColor.G400, height: 12}}>
-          {leftText}
-        </Text>
+      <View style={styles.left_view}>
+        <Text style={styles.left_text}>{left}</Text>
+        <Text style={styles.left_sub_text}>{leftText}</Text>
       </View>
-      <View
-        style={{
-          position: 'absolute',
-          right: 0,
-          color: fooiyColor.G600,
-          alignItems: 'flex-end',
-          height: 36,
-        }}>
-        <Text
-          style={{
-            ...fooiyFont.Subtitle2,
-            height: 24,
-            alignItems: 'center',
-          }}>
-          {right}
-        </Text>
-        <Text
-          style={{...fooiyFont.Caption2, color: fooiyColor.G400, height: 12}}>
-          {rightText}
-        </Text>
+      <View style={styles.right_view}>
+        <Text style={styles.right_text}>{right}</Text>
+        <Text style={styles.right_sub_text}>{rightText}</Text>
       </View>
       <View
         style={[
-          styles.starRatingContainer,
+          styles.fooiytiRatingContainer,
           {
             marginLeft: margin,
             marginRight: margin,
@@ -306,11 +271,7 @@ function FooiytiRating(props) {
           </View>
         </Animated.View>
         <View
-          style={{
-            width: fooiytiRatingWidth + 16,
-            height: 40,
-            alignSelf: 'center',
-          }}
+          style={[styles.hide_pan, {width: fooiytiRatingWidth + 16}]}
           {...panResponders.panHandlers}></View>
       </View>
     </View>
@@ -324,17 +285,42 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
   },
-  starRatingText: {
-    fontFamily: 'AppleSDGothicNeo-Regular',
-    fontSize: 12,
+  left_view: {
+    position: 'absolute',
+    height: 36,
   },
-  starRatingContainer: {
+  left_text: {
+    ...fooiyFont.Subtitle2,
+    color: fooiyColor.G600,
+    height: 24,
+    alignItems: 'center',
+  },
+  left_sub_text: {
+    ...fooiyFont.Caption2,
+    color: fooiyColor.G400,
+    height: 12,
+  },
+  right_view: {
+    position: 'absolute',
+    right: 0,
+    color: fooiyColor.G600,
+    alignItems: 'flex-end',
+    height: 36,
+  },
+  right_text: {
+    ...fooiyFont.Subtitle2,
+    height: 24,
+    alignItems: 'center',
+  },
+  right_sub_text: {
+    ...fooiyFont.Caption2,
+    color: fooiyColor.G400,
+    height: 12,
+  },
+  fooiytiRatingContainer: {
     flexDirection: 'row',
     marginTop: 19,
     height: 2,
-    // marginLeft: margin,
-    // marginRight: margin,
-    // width: globalVariable.width - margin * 2,
   },
   leftBackground: {
     position: 'absolute',
@@ -342,7 +328,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     alignSelf: 'center',
-    // minWidth: 0,
     maxWidth: '100%',
   },
   rightBackground: {
@@ -351,8 +336,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     alignSelf: 'center',
-    // marginLeft: globalVariable.width - 68 - 68,
-    // minWidth: 0,
     maxWidth: '100%',
   },
   imogi: {
@@ -367,6 +350,10 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 100,
+  },
+  hide_pan: {
+    height: 40,
+    alignSelf: 'center',
   },
 });
 

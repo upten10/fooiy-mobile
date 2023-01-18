@@ -17,9 +17,6 @@ import {useNavigation} from '@react-navigation/native';
 import {Search} from '../../../../assets/icons/svg';
 
 const FindShop = props => {
-  console.log('rendering ShopMenu');
-  // console.log(props.route.params.address);
-  // const photo_list = props.route.params.photo_list;
   const [shopList, setShopList] = useState([]);
   const [searchShop, setSearchShop] = useState([]);
   const insets = useSafeAreaInsets();
@@ -29,7 +26,6 @@ const FindShop = props => {
     await ApiMangerV1.get(apiUrl.SHOP_NEARBY, {
       params: {
         address: props.route.params.address,
-        // address: '서울 종로구 동숭길 148',
       },
     }).then(res => {
       setShopList(res.data.payload.shop_list.results),
@@ -56,39 +52,14 @@ const FindShop = props => {
           marginBottom: 16,
         }}>
         <StackHeader title="음식점 선택" />
-        <View
-          style={{
-            width: '100%',
-            height: 64,
-            justifyContent: 'flex-end',
-            marginTop: 16,
-          }}>
-          <Text style={{...fooiyFont.H3, marginLeft: 16}}>방문한 음식점을</Text>
-          <Text style={{...fooiyFont.H3, marginLeft: 16}}>선택해주세요</Text>
+        <View style={styles.top_text_view}>
+          <Text style={styles.top_text}>방문한 음식점을</Text>
+          <Text style={styles.top_text}>선택해주세요</Text>
         </View>
-        <View
-          style={{
-            width: '100%',
-            height: 56,
-            marginTop: 24,
-            marginBottom: 16,
-            paddingHorizontal: 16,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
+        <View style={styles.search_view}>
           <TextInput
             placeholder="음식점을 검색해보세요!"
-            style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: fooiyColor.G50,
-              borderRadius: 8,
-              ...fooiyFont.Subtitle3,
-              padding: 16,
-              justifyContent: 'center',
-              lineHeight: 0,
-            }}
+            style={styles.search_input}
             maxLength={20}
             autoCapitalize="none"
             autoCorrect={false}
@@ -98,20 +69,12 @@ const FindShop = props => {
               onChangeText(text);
             }}
           />
-          <Search
-            style={{
-              width: 24,
-              height: 24,
-              position: 'absolute',
-              right: 32,
-            }}
-          />
+          <Search style={styles.search_icon} />
         </View>
         {searchShop &&
           searchShop.map((item, index) => {
             return (
               <TouchableOpacity
-                style={{borderWidth: 0}}
                 onPress={() =>
                   navigation.navigate('FindMenu', {
                     photo_list: props.route.params.photo_list,
@@ -120,34 +83,9 @@ const FindShop = props => {
                     address: props.route.params.address,
                   })
                 }>
-                <View
-                  style={{
-                    height: 78,
-                    borderBottomWidth: 1,
-                    borderColor: fooiyColor.G200,
-                    paddingTop: 16,
-                    marginHorizontal: 16,
-                  }}
-                  key={index}>
-                  <Text
-                    style={{
-                      width: '100%',
-                      height: 24,
-                      ...fooiyFont.Subtitle1,
-                      color: fooiyColor.G800,
-                      marginBottom: 4,
-                    }}>
-                    {item.name}
-                  </Text>
-                  <Text
-                    style={{
-                      width: '100%',
-                      height: 18,
-                      ...fooiyFont.Subtitle4,
-                      color: fooiyColor.G400,
-                    }}>
-                    {item.address}
-                  </Text>
+                <View style={styles.shop_view}>
+                  <Text style={styles.shop_name}>{item.name}</Text>
+                  <Text style={styles.shop_address}>{item.address}</Text>
                 </View>
               </TouchableOpacity>
             );
@@ -155,14 +93,7 @@ const FindShop = props => {
       </ScrollView>
       <View>
         <TouchableOpacity
-          style={{
-            marginHorizontal: 16,
-            borderRadius: 8,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: fooiyColor.P500,
-            height: 56,
-          }}
+          style={styles.no_shop_btn}
           onPress={() => {
             navigation.navigate('RegisterFeed', {
               photo_list: props.route.params.photo_list,
@@ -171,9 +102,7 @@ const FindShop = props => {
               address: props.route.params.address,
             });
           }}>
-          <Text style={{...fooiyFont.Button, color: fooiyColor.W}}>
-            방문한 음식점이 없어요
-          </Text>
+          <Text style={styles.no_shop_text}>방문한 음식점이 없어요</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -182,4 +111,73 @@ const FindShop = props => {
 
 export default FindShop;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  top_text_view: {
+    width: '100%',
+    height: 64,
+    justifyContent: 'flex-end',
+    marginTop: 16,
+  },
+  top_text: {
+    ...fooiyFont.H3,
+    marginLeft: 16,
+  },
+  search_view: {
+    width: '100%',
+    height: 56,
+    marginTop: 24,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  search_input: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: fooiyColor.G50,
+    borderRadius: 8,
+    ...fooiyFont.Subtitle3,
+    padding: 16,
+    justifyContent: 'center',
+    lineHeight: 0,
+  },
+  search_icon: {
+    width: 24,
+    height: 24,
+    position: 'absolute',
+    right: 32,
+  },
+  shop_view: {
+    height: 78,
+    borderBottomWidth: 1,
+    borderColor: fooiyColor.G200,
+    paddingTop: 16,
+    marginHorizontal: 16,
+  },
+  shop_name: {
+    width: '100%',
+    height: 24,
+    ...fooiyFont.Subtitle1,
+    color: fooiyColor.G800,
+    marginBottom: 4,
+  },
+  shop_address: {
+    width: '100%',
+    height: 18,
+    ...fooiyFont.Subtitle4,
+    color: fooiyColor.G400,
+  },
+  no_shop_btn: {
+    marginHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: fooiyColor.P500,
+    height: 56,
+  },
+  no_shop_text: {
+    ...fooiyFont.Button,
+    color: fooiyColor.W,
+  },
+});
