@@ -104,6 +104,13 @@ export const fooiyFont = StyleSheet.create({
     fontWeight: '400',
     color: fooiyColor.B,
   },
+  Caption1_1: {
+    fontFamily: 'Pretendard-Regular',
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: '600',
+    color: fooiyColor.B,
+  },
   Caption2: {
     fontFamily: 'Pretendard-SemiBold',
     fontSize: 10,

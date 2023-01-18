@@ -5,6 +5,7 @@ import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import RootNavigator from './src/navigation/RootNavigator';
 import {NavigationContainer} from '@react-navigation/native';
+import {StatusBar} from 'react-native';
 
 const App = () => {
   useEffect(() => {
@@ -25,6 +26,7 @@ const App = () => {
       <Provider store={store}>
         <NavigationContainer linking={linking}>
           <RootNavigator />
+          <StatusBar barStyle={'dark-content'} />
         </NavigationContainer>
       </Provider>
     </SafeAreaProvider>

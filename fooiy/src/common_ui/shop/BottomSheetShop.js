@@ -1,10 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
 const BottomSheetShop = item => {
-  const category_list = item.shop_category_list;
+  const category_list = item.category_list;
   const navigation = useNavigation();
 
   return (
@@ -20,9 +21,16 @@ const BottomSheetShop = item => {
       }}>
       <View style={styles.container}>
         <View style={styles.menu_image_container}>
-          <Image source={{uri: item.menu_image}} style={styles.menu_image} />
+          <Image source={{uri: item.image}} style={styles.menu_image} />
         </View>
         <View style={styles.shop_info_container}>
+          <View style={styles.shop_detail_container}>
+            <Text style={styles.shop_detail_feeds_count}>
+              {item.feed_count}개의 피드가 있어요
+            </Text>
+            <Text style={styles.shop_detail_name}>{item.shop_name}</Text>
+            <Text style={styles.shop_detail_price}>{item.menu_price}</Text>
+          </View>
           <View style={styles.category_list_container}>
             {category_list
               ? category_list.map(category => (
@@ -31,16 +39,6 @@ const BottomSheetShop = item => {
                   </View>
                 ))
               : null}
-          </View>
-          <View style={styles.shop_detail_container}>
-            <Text>{item.name}</Text>
-            <Text>{item.menu_price}</Text>
-          </View>
-          <View style={styles.score_container}>
-            <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-              <Text style={styles.score}>{item.shop_score}</Text>
-              <Text style={styles.score_text}>확률로 마음에 들거에요</Text>
-            </View>
           </View>
         </View>
       </View>
@@ -53,31 +51,24 @@ export default BottomSheetShop;
 const styles = StyleSheet.create({
   container: {
     width: globalVariable.width,
-    height: globalVariable.height / 7,
-    marginLeft: 15,
-    marginRight: 15,
-    marginTop: 7,
-    marginBottom: 7,
+    height: 136,
+    padding: 16,
     alignItems: 'center',
     flexDirection: 'row',
-  },
-  shop_info_container: {
-    marginLeft: 15,
-    height: globalVariable.height / 8.5,
-    flex: 1,
   },
   category_list_container: {
     flexDirection: 'row',
   },
   category_container: {
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: '#FF5C5C',
-    borderRadius: 10,
+    borderRadius: 8,
+    backgroundColor: fooiyColor.G50,
+    marginRight: 4,
   },
   category: {
-    margin: 6,
-    color: '#FF5C5C',
+    ...fooiyFont.Caption1_1,
+    color: fooiyColor.G600,
+    marginHorizontal: 8,
+    marginVertical: 6,
   },
   shop_detail_container: {justifyContent: 'center', flex: 1},
   score_container: {justifyContent: 'flex-end', flex: 1},
@@ -86,9 +77,23 @@ const styles = StyleSheet.create({
   },
 
   menu_image: {
-    width: globalVariable.height / 8.5,
-    height: globalVariable.height / 8.5,
-    resizeMode: 'contain',
-    borderRadius: 10,
+    width: 104,
+    height: 104,
+    resizeMode: 'cover',
+    borderRadius: 16,
+    marginRight: 16,
+  },
+  shop_detail_name: {
+    ...fooiyFont.Subtitle2,
+    marginBottom: 2,
+  },
+  shop_detail_price: {
+    ...fooiyFont.Caption1,
+    marginBottom: 10,
+  },
+  shop_detail_feeds_count: {
+    ...fooiyFont.Subtitle3,
+    color: fooiyColor.P500,
+    marginBottom: 2,
   },
 });

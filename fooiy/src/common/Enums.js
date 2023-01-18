@@ -27,6 +27,10 @@ export const apiUrl = {
   RETRIEVE_FEED: 'feeds/feed/retrieve_feed/',
   // 마이페이지 피드 리스트
   MYPAGE_FEED_LIST: 'feeds/feed/mypage/',
+  // 피드 지도 마커
+  FEED_MAP_MARKER: 'feeds/feed/map_picker/',
+  // 피드 지도 디테일
+  FEED_MAP_DETAIL: 'feeds/feed/map_detail/',
 
   // 음식점 지도 리스트
   MAP_SHOP_MARKER: 'shops/shop/shop_map_picker/',

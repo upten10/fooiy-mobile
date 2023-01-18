@@ -14,11 +14,11 @@ import TypingContent from '../screens/register/typing_content/TypingContent';
 import {useNavigation} from '@react-navigation/native';
 import Map from '../screens/map/Map';
 import Setting from '../screens/mypage/setting/Setting';
+import MypageMap from '../screens/mypage/mypage_map/MypageMap';
 
 const Stack = createStackNavigator();
 const RootNavigator = () => {
   const navigation = useNavigation();
-  console.log(navigation.getState());
   return (
     <Stack.Navigator
       initialRouteName="Login"
@@ -44,6 +44,8 @@ const RootNavigator = () => {
       <Stack.Screen name="Gallery" component={Gallery} />
 
       <Stack.Screen name="TypingContent" component={TypingContent} />
+
+      <Stack.Screen name="MypageMap" component={MypageMap} />
     </Stack.Navigator>
   );
 };

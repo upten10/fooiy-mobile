@@ -16,7 +16,7 @@ import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {DefaultHeader} from '../../../common_ui/headers/DefaultHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
-import Profile from './MypageProfile';
+import MypageProfile from './MypageProfile';
 
 const Mypage = props => {
   const [feeds, setFeeds] = useState([]);
@@ -120,12 +120,12 @@ const Mypage = props => {
           bounces={true}
           numColumns={3}
           scrollToOverflowEnabled
-          ListHeaderComponent={Profile}
+          ListHeaderComponent={MypageProfile}
           ListFooterComponent={() => <View style={styles.emptyComp}></View>}
         />
       ) : (
         <View>
-          <Profile />
+          <MypageProfile />
           <Image
             source={{uri: noFeedImage}}
             style={{width: '100%', height: 50}}

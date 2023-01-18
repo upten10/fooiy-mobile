@@ -8,6 +8,8 @@ const reactotron = Reactotron.setAsyncStorageHandler(AsyncStorage)
   .use(reactotronRedux())
   .connect(); // let's connect!
 
+reactotron.clear();
+
 //  patch console.log to send log to reactotron
 const yeOldeConsoleLog = console.log;
 console.log = (...args) => {

@@ -2,7 +2,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Feed from './Feed';
 import {Shop} from '../../common_ui/shop/Shop';
-import Profile from '../../common_ui/profile/Profile';
 import {globalStyles} from '../../common/globalStyles';
 import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
 import OtherUserPage from '../mypage/storage/OtherUserPage';
@@ -51,7 +50,6 @@ const StackNavigation = () => {
         name="OtherUserFeedDetail"
         component={OtherUserFeedDetail}
       />
-      <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen
         name="FeedDetail"
         component={MypageFeedDetail}
