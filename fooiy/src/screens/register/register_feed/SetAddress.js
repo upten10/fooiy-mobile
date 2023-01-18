@@ -14,24 +14,22 @@ import {Current_Location} from '../../../../assets/icons/svg';
 import {check, PERMISSIONS} from 'react-native-permissions';
 
 const SetAddress = props => {
+  console.log('rendering SetAddress');
   const navigation = useNavigation();
   const photo_list = props.route.params.photo_list;
-  // console.log(props.route.params.location);
   const [btnActivate, setBtnActivate] = useState(false);
   const mapView = useRef(null);
   const [address, setAddress] = useState({
     area1: '',
     area2: '',
-    area3: '',
     area4: '',
     land_name: '',
     land_number1: 0,
     land_number2: 0,
   });
-  // const onClickLocationBtn = () => {
-  //   mapView.current.setLocationTrackingMode(2);
-  // };
-  // axios 에 디바운스,,,
+  const [fullAddress, setFullAddress] = useState('');
+  const [location, setLocation] = useState({longitude: 0, latitude: 0});
+
   const debounceCallback = useCallback((longitude, latitude) => {
     debounceLocation(longitude, latitude);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,7 +54,6 @@ const SetAddress = props => {
 
           const area1 = res.data.results[0].region.area1.alias;
           const area2 = res.data.results[0].region.area2.name;
-          const area3 = res.data.results[0].region.area3.name;
           const area4 = res.data.results[0].region.area4.name;
           const land_name = res.data.results[0].land.name;
           const land_number1 = res.data.results[0].land.number1;
@@ -64,12 +61,23 @@ const SetAddress = props => {
           setAddress({
             area1,
             area2,
-            area3,
             area4,
             land_name,
             land_number1,
             land_number2,
           });
+          setFullAddress(
+            area1 +
+              ' ' +
+              area2 +
+              ' ' +
+              area4 +
+              land_name +
+              ' ' +
+              land_number1 +
+              '-' +
+              land_number2,
+          );
         } else {
           setBtnActivate(false);
           setAddress('', '', '', '', '', 0, 0);
@@ -93,8 +101,8 @@ const SetAddress = props => {
             {address.land_number2 && address.land_number2}
           </Text>
           <Text style={{...fooiyFont.Body2}}>
-            {address.area1} {address.area2} {address.area3} {address.area4}{' '}
-            {address.land_name} {address.land_number1}
+            {address.area1} {address.area2} {address.area4} {address.land_name}{' '}
+            {address.land_number1}
             {address.land_number2 && '-'}
             {address.land_number2 && address.land_number2}
           </Text>
@@ -130,6 +138,16 @@ const SetAddress = props => {
     mapView.current.setLocationTrackingMode(2);
   };
 
+  useEffect(() => {
+    Geolocation.getCurrentPosition(position => {
+      const {latitude, longitude} = position.coords;
+      setLocation({
+        longitude,
+        latitude,
+      });
+    });
+  }, []);
+
   return (
     <View style={{height: '100%'}}>
       <StackHeader title="주소 설정" />
@@ -139,15 +157,19 @@ const SetAddress = props => {
           showsMyLocationButton={false}
           zoomControl={false}
           onCameraChange={e => onCameraChange(e)}
-          center={{
-            longitude: props.route.params.location
-              ? props.route.params.location.longitude
-              : globalVariable.default_longitude,
-            latitude: props.route.params.location
-              ? props.route.params.location.latitude
-              : globalVariable.default_latitude,
-            zoom: 17,
-          }}
+          center={
+            props.route.params.address
+              ? {
+                  longitude: props.route.params.address.longitude,
+                  latitude: props.route.params.address.latitude,
+                  zoom: 17,
+                }
+              : {
+                  longitude: location.longitude,
+                  latitude: location.latitude,
+                  zoom: 17,
+                }
+          }
           style={styles.mapview}>
           <View
             style={{
@@ -191,7 +213,7 @@ const SetAddress = props => {
               photo_list: photo_list,
               shop: null,
               menu: null,
-              address: address,
+              address: fullAddress,
             })
           }>
           <Text

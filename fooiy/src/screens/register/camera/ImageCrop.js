@@ -13,7 +13,11 @@ const ImageCrop = props => {
   const [photo, setPhoto] = useState(props.route.params.photo);
   const width = globalVariable.width;
   const go_next = () => {
-    navigation.navigate('SetAddress', {photo_list: [photo]});
+    navigation.navigate('SetAddress', {
+      photo_list: [{image: {uri: photo, filename: 'image.jpg'}}],
+      address: null,
+    });
+    console.log(photo);
   };
 
   return (

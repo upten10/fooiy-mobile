@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useRef, useCallback} from 'react';
+import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react';
 import {View, StyleSheet, PanResponder, Image, Text} from 'react-native';
 import Animated, {
   useSharedValue,
@@ -10,15 +10,40 @@ import Animated, {
 } from 'react-native-reanimated';
 import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {globalVariable} from '../../../../common/globalVariable';
-import SliderImage from './SliderImage';
+import {SliderEI_0} from '../../../../../assets/icons/svg';
+import {SliderEI_1} from '../../../../../assets/icons/svg';
+import {SliderEI_2} from '../../../../../assets/icons/svg';
+import {SliderEI_3} from '../../../../../assets/icons/svg';
+import {SliderEI_4} from '../../../../../assets/icons/svg';
+import {SliderSN_0} from '../../../../../assets/icons/svg';
+import {SliderSN_1} from '../../../../../assets/icons/svg';
+import {SliderSN_2} from '../../../../../assets/icons/svg';
+import {SliderSN_3} from '../../../../../assets/icons/svg';
+import {SliderSN_4} from '../../../../../assets/icons/svg';
+import {SliderTF_0} from '../../../../../assets/icons/svg';
+import {SliderTF_1} from '../../../../../assets/icons/svg';
+import {SliderTF_2} from '../../../../../assets/icons/svg';
+import {SliderTF_3} from '../../../../../assets/icons/svg';
+import {SliderTF_4} from '../../../../../assets/icons/svg';
+import {SliderAC_0} from '../../../../../assets/icons/svg';
+import {SliderAC_1} from '../../../../../assets/icons/svg';
+import {SliderAC_2} from '../../../../../assets/icons/svg';
+import {SliderAC_3} from '../../../../../assets/icons/svg';
+import {SliderAC_4} from '../../../../../assets/icons/svg';
+import {SliderTOTAL_0} from '../../../../../assets/icons/svg';
+import {SliderTOTAL_1} from '../../../../../assets/icons/svg';
+import {SliderTOTAL_2} from '../../../../../assets/icons/svg';
+import {SliderTOTAL_3} from '../../../../../assets/icons/svg';
+import {SliderTOTAL_4} from '../../../../../assets/icons/svg';
 
-const margin = 56;
-const fooiytiRatingWidth = globalVariable.width - 72 - 80;
+// const margin = 56;
+
 const leftBarColor = 'red';
 const rightBarColor = 'blue';
 const imogiSize = 40;
 
 function FooiytiRating(props) {
+  console.log('rendering FooiytiRating');
   const {
     left,
     right,
@@ -27,27 +52,69 @@ function FooiytiRating(props) {
     fooiytiRating,
     setFooiytiRating,
     type,
+    margin,
   } = props;
   const [rootViewPosX, setRootViewPosX] = useState(0);
-  // const [fooiytiRating, setFooiytiRating] = useState(2);
+
+  const fooiytiRatingWidth = globalVariable.width - margin * 2 - 40;
   const step = useMemo(() => fooiytiRatingWidth * 0.25, [fooiytiRatingWidth]);
   const panX = useSharedValue(fooiytiRatingWidth / 2); // 사용자의 드래그 위치를 저장하는 변수
 
+  // useEffect(() => {
+  //   setFooiytiRating(rating);
+  // }, [FooiytiRating]);
+
   const FooiytiImogi = () => {
-    if (type === 'EI') {
-      return (
-        <Image
-          source={SliderImage.sliderImage_EI[fooiytiRating]}
-          style={{width: imogiSize, height: imogiSize, alignSelf: 'center'}}
-        />
-      );
-    } else if (type === 'SN') {
-      return (
-        <Image
-          source={SliderImage.sliderImage_SN[fooiytiRating]}
-          style={{width: imogiSize, height: imogiSize, alignSelf: 'center'}}
-        />
-      );
+    if (type === 'EI' && fooiytiRating === 0) {
+      return <SliderEI_0 />;
+    } else if (type === 'EI' && fooiytiRating === 1) {
+      return <SliderEI_1 />;
+    } else if (type === 'EI' && fooiytiRating === 2) {
+      return <SliderEI_2 />;
+    } else if (type === 'EI' && fooiytiRating === 3) {
+      return <SliderEI_3 />;
+    } else if (type === 'EI' && fooiytiRating === 4) {
+      return <SliderEI_4 />;
+    } else if (type === 'SN' && fooiytiRating === 0) {
+      return <SliderSN_0 />;
+    } else if (type === 'SN' && fooiytiRating === 1) {
+      return <SliderSN_1 />;
+    } else if (type === 'SN' && fooiytiRating === 2) {
+      return <SliderSN_2 />;
+    } else if (type === 'SN' && fooiytiRating === 3) {
+      return <SliderSN_3 />;
+    } else if (type === 'SN' && fooiytiRating === 4) {
+      return <SliderSN_4 />;
+    } else if (type === 'TF' && fooiytiRating === 0) {
+      return <SliderTF_0 />;
+    } else if (type === 'TF' && fooiytiRating === 1) {
+      return <SliderTF_1 />;
+    } else if (type === 'TF' && fooiytiRating === 2) {
+      return <SliderTF_2 />;
+    } else if (type === 'TF' && fooiytiRating === 3) {
+      return <SliderTF_3 />;
+    } else if (type === 'TF' && fooiytiRating === 4) {
+      return <SliderTF_4 />;
+    } else if (type === 'AC' && fooiytiRating === 0) {
+      return <SliderAC_0 />;
+    } else if (type === 'AC' && fooiytiRating === 1) {
+      return <SliderAC_1 />;
+    } else if (type === 'AC' && fooiytiRating === 2) {
+      return <SliderAC_2 />;
+    } else if (type === 'AC' && fooiytiRating === 3) {
+      return <SliderAC_3 />;
+    } else if (type === 'AC' && fooiytiRating === 4) {
+      return <SliderAC_4 />;
+    } else if (type === 'TOTAL' && fooiytiRating === 0) {
+      return <SliderTOTAL_0 />;
+    } else if (type === 'TOTAL' && fooiytiRating === 1) {
+      return <SliderTOTAL_1 />;
+    } else if (type === 'TOTAL' && fooiytiRating === 2) {
+      return <SliderTOTAL_2 />;
+    } else if (type === 'TOTAL' && fooiytiRating === 3) {
+      return <SliderTOTAL_3 />;
+    } else if (type === 'TOTAL' && fooiytiRating === 4) {
+      return <SliderTOTAL_4 />;
     }
   };
   const position = [0 * step, 1 * step, 2 * step, 3 * step, 4 * step];
@@ -205,7 +272,15 @@ function FooiytiRating(props) {
           {rightText}
         </Text>
       </View>
-      <View style={styles.starRatingContainer}>
+      <View
+        style={[
+          styles.starRatingContainer,
+          {
+            marginLeft: margin,
+            marginRight: margin,
+            width: globalVariable.width - margin * 2,
+          },
+        ]}>
         <Animated.View
           style={[styles.leftBackground, leftFooiytiStyle]}
           pointerEvents="none"
@@ -257,9 +332,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 19,
     height: 2,
-    marginLeft: margin,
-    marginRight: margin,
-    width: globalVariable.width - margin * 2,
+    // marginLeft: margin,
+    // marginRight: margin,
+    // width: globalVariable.width - margin * 2,
   },
   leftBackground: {
     position: 'absolute',

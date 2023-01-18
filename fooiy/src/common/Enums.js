@@ -14,4 +14,8 @@ export const apiUrl = {
   FEED_STORAGE: 'feeds/feed/storage/',
   RETRIEVE_FEED: 'feeds/feed/retrieve_feed/',
   WITHDRAW: 'accounts/withdrawal/',
+  REGISTER_PIONEER: 'feeds/pioneer/',
+  REGISTER_RECORD: 'feeds/record/',
+  SHOP_NEARBY: 'shops/shop/nearby/',
+  SHOP_MENU: 'shops/menu/',
 };

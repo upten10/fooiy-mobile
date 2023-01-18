@@ -10,6 +10,7 @@ import ImageCrop from './camera/ImageCrop';
 import Gallery from './gallery/Gallery';
 import SetAddress from './register_feed/SetAddress';
 import FindShop from './register_feed/FindShop';
+import FindMenu from './register_feed/FindMenu';
 import RegisterFeed from './register_feed/test/RegisterFeed';
 
 const Stack = createStackNavigator();
@@ -50,6 +51,7 @@ const RegisterStackNavigation = () => {
 
         <Stack.Screen name="SetAddress" component={SetAddress} />
         <Stack.Screen name="FindShop" component={FindShop} />
+        <Stack.Screen name="FindMenu" component={FindMenu} />
         <Stack.Screen name="RegisterFeed" component={RegisterFeed} />
       </Stack.Navigator>
     </SafeAreaView>

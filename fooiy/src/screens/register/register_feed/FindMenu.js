@@ -16,36 +16,36 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {Search} from '../../../../assets/icons/svg';
 
-const FindShop = props => {
-  console.log('rendering ShopMenu');
-  // console.log(props.route.params.address);
+const FindMenu = props => {
+  console.log('rendering FindMenu');
+  //   console.log(props.route.params.shop);
   // const photo_list = props.route.params.photo_list;
-  const [shopList, setShopList] = useState([]);
-  const [searchShop, setSearchShop] = useState([]);
+  const [menuList, setMenuList] = useState([]);
+  const [searchMenu, setSearchMenu] = useState([]);
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
-  const getShopList = async () => {
-    await ApiMangerV1.get(apiUrl.SHOP_NEARBY, {
+  const getMenuList = async () => {
+    await ApiMangerV1.get(apiUrl.SHOP_MENU, {
       params: {
-        address: props.route.params.address,
-        // address: '서울 종로구 동숭길 148',
+        shop_id: props.route.params.shop.public_id,
       },
     }).then(res => {
-      setShopList(res.data.payload.shop_list.results),
-        setSearchShop(res.data.payload.shop_list.results);
+      setMenuList(res.data.payload.menu_list),
+        setSearchMenu(res.data.payload.menu_list);
     });
   };
 
   useEffect(() => {
-    getShopList();
+    getMenuList();
   }, []);
 
   const onChangeText = text => {
-    const nextData = shopList.filter(
-      shopList => shopList.name.indexOf(text) > -1,
+    console.log(text);
+    const nextData = menuList.filter(
+      menuList => menuList.name.indexOf(text) > -1,
     );
-    setSearchShop(nextData);
+    setSearchMenu(nextData);
   };
 
   return (
@@ -55,7 +55,7 @@ const FindShop = props => {
           height: globalVariable.height - insets.top - insets.bottom - 56 - 16,
           marginBottom: 16,
         }}>
-        <StackHeader title="음식점 선택" />
+        <StackHeader title="메뉴 선택" />
         <View
           style={{
             width: '100%',
@@ -78,7 +78,7 @@ const FindShop = props => {
             flexDirection: 'row',
           }}>
           <TextInput
-            placeholder="음식점을 검색해보세요!"
+            placeholder="메뉴를 검색해보세요!"
             style={{
               width: '100%',
               height: '100%',
@@ -107,16 +107,16 @@ const FindShop = props => {
             }}
           />
         </View>
-        {searchShop &&
-          searchShop.map((item, index) => {
+        {searchMenu &&
+          searchMenu.map((item, index) => {
             return (
               <TouchableOpacity
                 style={{borderWidth: 0}}
                 onPress={() =>
-                  navigation.navigate('FindMenu', {
+                  navigation.navigate('RegisterFeed', {
                     photo_list: props.route.params.photo_list,
-                    shop: item,
-                    menu: null,
+                    shop: props.route.params.shop,
+                    menu: item,
                     address: props.route.params.address,
                   })
                 }>
@@ -127,8 +127,7 @@ const FindShop = props => {
                     borderColor: fooiyColor.G200,
                     paddingTop: 16,
                     marginHorizontal: 16,
-                  }}
-                  key={index}>
+                  }}>
                   <Text
                     style={{
                       width: '100%',
@@ -146,7 +145,7 @@ const FindShop = props => {
                       ...fooiyFont.Subtitle4,
                       color: fooiyColor.G400,
                     }}>
-                    {item.address}
+                    {item.price}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -166,13 +165,13 @@ const FindShop = props => {
           onPress={() => {
             navigation.navigate('RegisterFeed', {
               photo_list: props.route.params.photo_list,
-              shop: null,
+              shop: props.route.params.shop,
               menu: null,
               address: props.route.params.address,
             });
           }}>
           <Text style={{...fooiyFont.Button, color: fooiyColor.W}}>
-            방문한 음식점이 없어요
+            먹은 메뉴가 없어요
           </Text>
         </TouchableOpacity>
       </View>
@@ -180,6 +179,6 @@ const FindShop = props => {
   );
 };
 
-export default FindShop;
+export default FindMenu;
 
 const styles = StyleSheet.create({});

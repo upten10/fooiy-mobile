@@ -29,7 +29,7 @@ import TabNavigator from '../../navigation/TabNavigator';
 
 const Login = () => {
   const [isLogin, setisLogin] = useState(false);
-  const [auth, setAuth] = useState([]);
+  const [auth, setAuth] = useState();
 
   const signInWithKakao = async data => {
     const token = await login();

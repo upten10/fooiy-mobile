@@ -12,18 +12,18 @@ import {
   Linking,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {CropView} from 'react-native-image-crop-tools';
 import RNFS from 'react-native-fs';
-
 import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import cloneDeep from 'lodash/cloneDeep';
 import {check, PERMISSIONS} from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
 
 const Gallery = () => {
+  console.log('rendering Gallery');
   const navigation = useNavigation();
   const width = globalVariable.width;
   const height = globalVariable.height;
@@ -45,11 +45,27 @@ const Gallery = () => {
       });
       navigation.navigate('SetAddress', {
         photo_list: photoList,
-        location: photoList[0].location
-          ? photoList[0].location
-          : photoList[1].location
-          ? photoList[1].location
-          : photoList[2].location,
+        address:
+          photoList.length === 1 && photoList[0].location
+            ? photoList[0].location
+            : photoList.length === 2 && photoList[0].location
+            ? photoList[0].location
+            : photoList.length === 2 && photoList[1].location
+            ? photoList[1].location
+            : photoList.length === 3 && photoList[0].location
+            ? photoList[0].location
+            : photoList.length === 3 && photoList[1].location
+            ? photoList[1].location
+            : photoList.length === 3 && photoList[2].location
+            ? photoList[2].location
+            : null,
+        // : {
+        //     altitude: 0,
+        //     heading: 0,
+        //     latitude: globalVariable.default_latitude,
+        //     longitude: globalVariable.default_longitude,
+        //     speed: 0,
+        //   },
       });
     }
   };

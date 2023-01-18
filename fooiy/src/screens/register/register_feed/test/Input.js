@@ -13,15 +13,11 @@ import {StackHeader} from '../../../../common_ui/headers/StackHeader';
 import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {globalStyles} from '../../../../common/globalStyles';
-import Slider from '@react-native-community/slider';
 import {Notice} from '../../../../../assets/icons/svg';
 import {Clear} from '../../../../../assets/icons/svg';
 const Input = props => {
-  const {holders, onChangeText, title, checkInput} = props;
-
+  const {holders, onChangeText, title} = props;
   const [isFocus, setFocused] = useState(false);
-  const [isInput, setInput] = useState(false);
-  const [isNull, setIsNull] = useState(true);
   const textInputRef = useRef();
 
   const onFocus = () => {
@@ -30,10 +26,6 @@ const Input = props => {
   const onBlur = () => {
     setFocused(false);
   };
-
-  useEffect(() => {
-    setIsNull(!checkInput());
-  }, [isFocus]);
 
   return (
     <View>
@@ -106,7 +98,9 @@ const Input = props => {
               : {right: 16}
           }
           hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
-          onPress={() => textInputRef.current.clear()}>
+          onPress={() => {
+            textInputRef.current.clear(), onChangeText('');
+          }}>
           {isFocus ? <Clear /> : null}
         </TouchableOpacity>
       </View>
