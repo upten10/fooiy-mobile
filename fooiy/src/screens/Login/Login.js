@@ -33,7 +33,7 @@ import {useNavigation} from '@react-navigation/native';
 const Login = () => {
   const navigation = useNavigation();
   const [isLogin, setisLogin] = useState(false);
-  const [auth, setAuth] = useState([]);
+  const [auth, setAuth] = useState();
 
   const route = async () => {
     const value = await AsyncStorage.getItem('auth');

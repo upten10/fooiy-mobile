@@ -12,16 +12,15 @@ import {
   Linking,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {CropView} from 'react-native-image-crop-tools';
 import RNFS from 'react-native-fs';
-
 import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import cloneDeep from 'lodash/cloneDeep';
 import {check, PERMISSIONS} from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Gallery = () => {
@@ -44,8 +43,22 @@ const Gallery = () => {
       const photoList = selectedPhotoIndexList.map(index => {
         return galleryList[index].node;
       });
-      navigation.navigate('TypingContent', {
+      navigation.navigate('SetAddress', {
         photo_list: photoList,
+        address:
+          photoList.length === 1 && photoList[0].location
+            ? photoList[0].location
+            : photoList.length === 2 && photoList[0].location
+            ? photoList[0].location
+            : photoList.length === 2 && photoList[1].location
+            ? photoList[1].location
+            : photoList.length === 3 && photoList[0].location
+            ? photoList[0].location
+            : photoList.length === 3 && photoList[1].location
+            ? photoList[1].location
+            : photoList.length === 3 && photoList[2].location
+            ? photoList[2].location
+            : null,
       });
     }
   };
