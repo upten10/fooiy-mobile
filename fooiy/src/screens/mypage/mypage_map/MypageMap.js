@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import NaverMapView, {Marker} from 'react-native-nmap';
+import React, {useEffect, useRef, useState} from 'react';
+import {Platform, StyleSheet, View} from 'react-native';
+import NaverMapView from 'react-native-nmap';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, globalStyles} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
@@ -16,8 +16,6 @@ import MypageMapMarker from './MypageMapMarker';
 
 const MypageMap = () => {
   const mapView = useRef(null);
-
-  console.log(feedMarkerDetails);
 
   const [screenLocation, setScreenLocation] = useState([]);
   const [feedMarkers, setFeedMarkers] = useState([]);
@@ -106,7 +104,7 @@ const MypageMap = () => {
   };
 
   const getFeedMarkerList = async data => {
-    await ApiMangerV1.get(apiUrl.FEED_MAP_MARKER, {
+    await ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
       params: {
         type: 'mypage',
         longitude_left_bottom: screenLocation[0].longitude,
@@ -122,7 +120,7 @@ const MypageMap = () => {
   };
 
   const getFeedMarkerDetail = async data => {
-    await ApiMangerV1.get(apiUrl.FEED_MAP_DETAIL, {
+    await ApiManagerV2.get(apiUrl.FEED_MAP_DETAIL, {
       params: {
         type: 'mypage',
         latitude: data.latitude,

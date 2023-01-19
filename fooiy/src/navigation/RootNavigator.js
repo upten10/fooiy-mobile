@@ -10,7 +10,6 @@ import Register from '../screens/register/Register';
 import RegisterCamera from '../screens/register/camera/RegisterCamera';
 import ImageCrop from '../screens/register/camera/ImageCrop';
 import Gallery from '../screens/register/gallery/Gallery';
-import TypingContent from '../screens/register/typing_content/TypingContent';
 import {useNavigation} from '@react-navigation/native';
 import Map from '../screens/map/Map';
 import Setting from '../screens/mypage/setting/Setting';
@@ -42,8 +41,6 @@ const RootNavigator = () => {
       <Stack.Screen name="ImageCrop" component={ImageCrop} />
 
       <Stack.Screen name="Gallery" component={Gallery} />
-
-      <Stack.Screen name="TypingContent" component={TypingContent} />
 
       <Stack.Screen name="MypageMap" component={MypageMap} />
     </Stack.Navigator>

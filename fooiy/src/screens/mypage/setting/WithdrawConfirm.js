@@ -3,7 +3,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
@@ -24,7 +24,7 @@ const WithdrawConfirm = props => {
   };
 
   const onPressConfirm = async () => {
-    await ApiMangerV1.delete(apiUrl.WITHDRAW, {
+    await ApiManagerV2.delete(apiUrl.WITHDRAW, {
       params: {reason},
     })
       // .then(res => console.log(JSON.stringify(res)))

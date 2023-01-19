@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {SafeAreaView, Text, TouchableOpacity, View, Image} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import MainNavigator from './MainNavigator';
-import {ApiMangerV1} from '../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
 import {UI_Feed} from '../common_ui/feed/Feed';
 import {GuestFeed} from '../common_ui/feed/GuestFeed';
@@ -26,7 +26,7 @@ const Share = () => {
   };
 
   const getFeedId = async () => {
-    ApiMangerV1.interceptors.request.use(
+    ApiManagerV2.interceptors.request.use(
       async config => {
         config.headers.Authorization =
           'fooiy!@123hzqlfhrmdls02WEBasejkfbkajsbefkj123123123fassjefbkasjb!@*sgdrkln1aeg123';
@@ -36,7 +36,7 @@ const Share = () => {
         // console.log("requestError====>", error);
       },
     );
-    await ApiMangerV1.get(apiUrl.RETRIEVE_FEED, {
+    await ApiManagerV2.get(apiUrl.RETRIEVE_FEED, {
       params: {
         feed_id: route.params.feed_id,
       },

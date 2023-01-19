@@ -2,7 +2,7 @@ import {React, useEffect, useState, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, StyleSheet, Image, FlatList} from 'react-native';
 
-import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
 import {UI_Feed} from '../../common_ui/feed/Feed';
@@ -43,7 +43,7 @@ const Feed = props => {
   };
 
   const getFeedList = async data => {
-    await ApiMangerV1.get(apiUrl.FEED_LIST, {
+    await ApiManagerV2.get(apiUrl.FEED_LIST, {
       params: {
         limit: globalVariable.FeedLimit,
         offset: offset,

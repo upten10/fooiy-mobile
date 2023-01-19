@@ -3,9 +3,9 @@ import {Platform} from 'react-native';
 import {getUniqueId} from 'react-native-device-info';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {BASEURL, AUTHORIZATION, DEVICEID} from '@env';
-const BASEURL = 'http://dev-api.fooiy.com/api/v1/';
+const BASEURL = 'http://dev-api.fooiy.com/api/v2/';
 const baseURL = BASEURL;
-const ApiMangerV1 = axios.create({
+const ApiManagerV2 = axios.create({
   baseURL: baseURL, // your url
   responseType: 'json',
   headers: {
@@ -16,7 +16,7 @@ const ApiMangerV1 = axios.create({
   withCredentials: true,
 });
 
-ApiMangerV1.interceptors.request.use(
+ApiManagerV2.interceptors.request.use(
   async config => {
     const auth = await AsyncStorage.getItem('auth');
     if (auth) {
@@ -33,7 +33,7 @@ ApiMangerV1.interceptors.request.use(
   },
 );
 
-ApiMangerV1.interceptors.response.use(
+ApiManagerV2.interceptors.response.use(
   response => {
     return response;
   },
@@ -42,4 +42,4 @@ ApiMangerV1.interceptors.response.use(
   },
 );
 
-export {ApiMangerV1};
+export {ApiManagerV2};

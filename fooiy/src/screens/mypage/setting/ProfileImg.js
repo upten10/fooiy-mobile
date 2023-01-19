@@ -19,7 +19,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import cloneDeep from 'lodash/cloneDeep';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {useDispatch} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
@@ -43,7 +43,7 @@ const ProfileImg = () => {
   const dispatch = useDispatch();
 
   const patchProfileImg = async data => {
-    await ApiMangerV1.patch(apiUrl.PROFILE_EDIT, data, {
+    await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
