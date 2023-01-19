@@ -18,7 +18,7 @@ import {
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {globalVariable} from '../../../common/globalVariable';
 import {fooiyColor} from '../../../common/globalStyles';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {useDispatch, useSelector} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
@@ -47,7 +47,7 @@ const Setting = props => {
   const [curNickName, setCurNickName] = useState(userInfoRedux.nickname);
 
   const editIntro = async () => {
-    await ApiMangerV1.patch(apiUrl.PROFILE_EDIT, {
+    await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
       introduction: curIntro === '' ? ' ' : curIntro,
     }).then(res => {
       dispatch(userInfoAction.editIntro(res.data.payload.account_info));

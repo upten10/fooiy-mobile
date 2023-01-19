@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
@@ -36,7 +36,7 @@ const Storage = () => {
   );
 
   const getStoredShopList = async () => {
-    await ApiMangerV1.get(apiUrl.FEED_STORAGE, {
+    await ApiManagerV2.get(apiUrl.FEED_STORAGE, {
       params: {
         // address_depth1: 시,도 단위
         // address_depth2: 구,동 단위

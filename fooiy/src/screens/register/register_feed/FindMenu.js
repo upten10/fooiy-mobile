@@ -10,7 +10,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {ScrollView} from 'react-native-gesture-handler';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
@@ -23,7 +23,7 @@ const FindMenu = props => {
   const navigation = useNavigation();
 
   const getMenuList = async () => {
-    await ApiMangerV1.get(apiUrl.SHOP_MENU, {
+    await ApiManagerV2.get(apiUrl.SHOP_MENU, {
       params: {
         shop_id: props.route.params.shop.public_id,
       },

@@ -2,7 +2,7 @@ import React, {useCallback, useRef, useMemo, useState} from 'react';
 import {StyleSheet, View, Text, Image, ActivityIndicator} from 'react-native';
 import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import BottomSheetShop from '../../../common_ui/shop/BottomSheetShop';
@@ -36,7 +36,7 @@ const MapBottomSheet = props => {
   );
 
   const getShopList = async data => {
-    await ApiMangerV1.get(apiUrl.MAP_SHOP_LIST, {
+    await ApiManagerV2.get(apiUrl.MAP_SHOP_LIST, {
       params: {
         limit: globalVariable.MapBottomSheetLimit,
         offset: offset,

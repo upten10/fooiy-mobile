@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
@@ -27,7 +27,7 @@ const Mypage = props => {
   const dispatch = useDispatch();
 
   const getAccountInfo = async data => {
-    await ApiMangerV1.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res => {
+    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res => {
       dispatch(userInfoAction.init(res.data.payload.account_info));
     });
   };
@@ -63,7 +63,7 @@ const Mypage = props => {
 
   const getFeedList = async data => {
     const limit = 20;
-    await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
+    await ApiManagerV2.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
         offset: offset,
         limit,

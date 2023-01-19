@@ -17,7 +17,7 @@ import {Notice} from '../../../../../assets/icons/svg';
 import Input from './Input';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import FooiytiRating from './FooiytiRating';
-import {ApiMangerV1} from '../../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
 
@@ -58,7 +58,7 @@ const RegisterFeed = props => {
     menuValue && menuValue.length > 0 ? true : false;
   };
   const getAccountInfo = async () => {
-    await ApiMangerV1.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res =>
+    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res =>
       setAccountValue(res.data.payload.account_info.public_id),
     );
   };
@@ -69,7 +69,7 @@ const RegisterFeed = props => {
   }, []);
   const postRegister = async data => {
     shop && menu
-      ? await ApiMangerV1.post(apiUrl.REGISTER_RECORD, data, {
+      ? await ApiManagerV2.post(apiUrl.REGISTER_RECORD, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -79,7 +79,7 @@ const RegisterFeed = props => {
         }).then(res => {
           console.log(res);
         })
-      : await ApiMangerV1.post(apiUrl.REGISTER_PIONEER, data, {
+      : await ApiManagerV2.post(apiUrl.REGISTER_PIONEER, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

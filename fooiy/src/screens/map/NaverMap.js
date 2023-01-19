@@ -7,7 +7,7 @@ import {globalVariable} from '../../common/globalVariable';
 
 import MapBottomSheet from './bottom_sheet/MapBottomSheet';
 import ShopModal from './ShopModal';
-import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import CustomMarker from './Marker';
 import {LocationPermission} from '../../common/Permission';
@@ -122,7 +122,7 @@ const NaverMap = () => {
   };
 
   const getShopMarkerList = async data => {
-    await ApiMangerV1.get(apiUrl.MAP_SHOP_MARKER, {
+    await ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER, {
       params: {
         longitude_left_bottom: data[0].longitude,
         latitude_left_bottom: data[0].latitude,

@@ -23,7 +23,7 @@ import {
   Share,
   Comment,
 } from '../../../assets/icons/svg';
-import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import KakaoShareLink from 'react-native-kakao-share-link';
 
@@ -119,7 +119,7 @@ export const GuestFeed = item => {
       feed.count_liked = await count;
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
-      await ApiMangerV1.patch(apiUrl.FEED_LIKE, {
+      await ApiManagerV2.patch(apiUrl.FEED_LIKE, {
         feed_id: item.id,
       }).then(res => {
         console.log(res.data);
@@ -132,7 +132,7 @@ export const GuestFeed = item => {
       feed.is_store = !(await stored);
       dispatch(feedsAction.setChanged(feeds));
       // axios fetch
-      await ApiMangerV1.patch(apiUrl.FEED_STORAGE, {
+      await ApiManagerV2.patch(apiUrl.FEED_STORAGE, {
         feed_id: item.id,
       }).then(res => {
         console.log(res.data);

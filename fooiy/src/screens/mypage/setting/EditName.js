@@ -14,7 +14,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {Notice} from '../../../../assets/icons/svg';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
@@ -38,7 +38,7 @@ const EditName = () => {
   useEffect(() => setNameError(false), [inputValue]);
 
   const patchNickName = async name => {
-    await ApiMangerV1.patch(apiUrl.PROFILE_EDIT, {
+    await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
       nickname: name,
     })
       .then(res =>

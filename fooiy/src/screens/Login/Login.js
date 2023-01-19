@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {
@@ -52,7 +52,7 @@ const Login = () => {
     const profile = await getKakaoProfile();
     const DEVICEID = await getUniqueId();
 
-    await ApiMangerV1.post(apiUrl.KAKAO_LOGIN, {
+    await ApiManagerV2.post(apiUrl.KAKAO_LOGIN, {
       social_id: profile.id,
       os: Platform.OS,
       app_version: globalVariable.app_version,
@@ -79,7 +79,7 @@ const Login = () => {
       console.log('user is authenticated');
     }
 
-    await ApiMangerV1.post(apiUrl.APPLE_LOGIN, {
+    await ApiManagerV2.post(apiUrl.APPLE_LOGIN, {
       social_id: responseObject.user,
       os: Platform.OS,
       app_version: '1.2.0',

@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -30,7 +30,7 @@ const StorageSingleFeed = props => {
   }, []);
 
   const getFeed = async feed_id => {
-    await ApiMangerV1.get(apiUrl.RETRIEVE_FEED, {
+    await ApiManagerV2.get(apiUrl.RETRIEVE_FEED, {
       params: {feed_id},
     }).then(res => {
       setFeeds([res.data.payload.feed]);
@@ -43,7 +43,7 @@ const StorageSingleFeed = props => {
   const getMyFeed = async data => {
     const {id, is_confirm} = data;
     const idType = is_confirm ? 'pioneer_id' : 'feed_id';
-    await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
+    await ApiManagerV2.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
         type: 'list',
         [idType]: id,

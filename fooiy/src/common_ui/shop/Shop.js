@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, Button, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {StackHeader} from '../headers/StackHeader';
-import {ApiMangerV1} from '../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {globalVariable} from '../../common/globalVariable';
 import {RenderLoader} from '../RenderLoader';
 import {UI_Feed} from '../feed/Feed';
@@ -19,7 +19,7 @@ export const Shop = props => {
   const navigation = useNavigation();
   const getFeedList = async data => {
     setIsLoading(true);
-    await ApiMangerV1.get(apiUrl.SHOP_LIST, {
+    await ApiManagerV2.get(apiUrl.SHOP_LIST, {
       params: {
         limit: globalVariable.FeedLimit,
         offset: offset,

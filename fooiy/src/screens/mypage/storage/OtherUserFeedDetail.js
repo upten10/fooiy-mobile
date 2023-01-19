@@ -2,7 +2,7 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {FlatList, FlatListgi, StyleSheet, View} from 'react-native';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -29,7 +29,7 @@ const OtherUserFeedDetail = props => {
   const getOtherFeed = async data => {
     const {id, is_confirm} = data.item;
     const idType = is_confirm ? 'pioneer_id' : 'feed_id';
-    await ApiMangerV1.get(apiUrl.MYPAGE_FEED_LIST, {
+    await ApiManagerV2.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
         type: 'list',
         [idType]: id,

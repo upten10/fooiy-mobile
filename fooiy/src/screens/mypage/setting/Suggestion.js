@@ -16,7 +16,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {Notice} from '../../../../assets/icons/svg';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {ApiMangerV1} from '../../../common/api/v1/ApiMangerV1';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
 
@@ -59,7 +59,7 @@ const Suggestion = () => {
 
   const postSuggestion = async data => {
     const {type, content} = data;
-    await ApiMangerV1.post(apiUrl.SUGGESTION, {
+    await ApiManagerV2.post(apiUrl.SUGGESTION, {
       content,
       type,
     }).then(res => console.log(JSON.stringify(res)));
