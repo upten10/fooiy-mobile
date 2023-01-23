@@ -16,7 +16,15 @@ export const Shop = props => {
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [shopAdress, setShopAdress] = useState('');
+
   const navigation = useNavigation();
+
+  const type = props.route.params.type && props.route.params.type;
+
+  const other_account_id =
+    props.route.params.other_account_id && props.route.params.other_account_id;
+
   const getFeedList = async data => {
     setIsLoading(true);
     await ApiManagerV2.get(apiUrl.SHOP_LIST, {
@@ -24,6 +32,8 @@ export const Shop = props => {
         limit: globalVariable.FeedLimit,
         offset: offset,
         shop_id: data,
+        ...(type && {type: type}),
+        ...(other_account_id && {other_account_id: other_account_id}),
       },
     }).then(res => {
       setFeeds([...feeds, ...res.data.payload.feed_list.results]);

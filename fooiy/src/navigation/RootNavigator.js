@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import Map from '../screens/map/Map';
 import Setting from '../screens/mypage/setting/Setting';
 import MypageMap from '../screens/mypage/mypage_map/MypageMap';
+import {Shop} from '../common_ui/shop/Shop';
 
 const Stack = createStackNavigator();
 const RootNavigator = () => {
@@ -43,6 +44,9 @@ const RootNavigator = () => {
       <Stack.Screen name="Gallery" component={Gallery} />
 
       <Stack.Screen name="MypageMap" component={MypageMap} />
+
+      {/* 지도에서 피드로 들어갔다가 뒤로 가면 피드 스택으로 넘어가서 바꿨어용~ */}
+      <Stack.Screen name="Shop" component={Shop} />
     </Stack.Navigator>
   );
 };

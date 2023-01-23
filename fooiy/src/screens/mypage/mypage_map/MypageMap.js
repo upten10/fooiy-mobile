@@ -14,8 +14,11 @@ import {throttle} from 'lodash';
 import ShopModal from '../../map/ShopModal';
 import MypageMapMarker from './MypageMapMarker';
 
-const MypageMap = () => {
+// 다른 유저 페이지에서 접근 시 props에 account_id랑 nickname 들어있음
+const MypageMap = props => {
   const mapView = useRef(null);
+  const account_id =
+    props.route.params !== undefined ? props.route.params.account_id : null;
 
   const [screenLocation, setScreenLocation] = useState([]);
   const [feedMarkers, setFeedMarkers] = useState([]);
@@ -111,6 +114,7 @@ const MypageMap = () => {
         latitude_left_bottom: screenLocation[0].latitude,
         latitude_right_top: screenLocation[1].latitude,
         longitude_right_top: screenLocation[1].longitude,
+        ...(account_id && {other_account_id: account_id}),
       },
     })
       .then(res => {
@@ -125,6 +129,7 @@ const MypageMap = () => {
         type: 'mypage',
         latitude: data.latitude,
         longitude: data.longitude,
+        ...(account_id && {other_account_id: account_id}),
       },
     })
       .then(res => {
@@ -137,7 +142,9 @@ const MypageMap = () => {
     <SafeAreaView
       style={{flex: 1, backgroundColor: fooiyColor.W}}
       edges={Platform.OS === 'ios' && 'top'}>
-      <StackHeader title={'내 지도'} />
+      <StackHeader
+        title={account_id !== null ? props.route.params.nickname : '내 지도'}
+      />
       <View>
         <NaverMapView
           ref={mapView}
@@ -174,6 +181,7 @@ const MypageMap = () => {
           <ShopModal
             onBackdropPress={toggleModal}
             shops_info={feedMarkerDetails}
+            other_account_id={account_id && account_id}
           />
         )}
       </View>

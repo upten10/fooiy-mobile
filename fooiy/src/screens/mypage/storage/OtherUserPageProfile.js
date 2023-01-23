@@ -3,10 +3,9 @@ import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {useDispatch, useSelector} from 'react-redux';
-import {Archive, Map, Settings} from '../../../../assets/icons/svg';
+import {Map} from '../../../../assets/icons/svg';
 
-const OtherUserPageProfile = params => {
+const OtherUserPageProfile = props => {
   const navigation = useNavigation();
 
   return (
@@ -18,7 +17,7 @@ const OtherUserPageProfile = params => {
             {/* 프로필사진 */}
             <View style={styles.profileImageContainer}>
               <Image
-                source={{uri: params.profile_image}}
+                source={{uri: props.profile_image}}
                 style={styles.profileImage}
               />
             </View>
@@ -32,30 +31,38 @@ const OtherUserPageProfile = params => {
                     navigation.navigate('FooiyTI');
                   }}>
                   <Text style={styles.fooiyTI}>
-                    {params.fooiyti !== null ? params.fooiyti : 'OOOO'}
+                    {props.fooiyti !== null ? props.fooiyti : 'OOOO'}
                   </Text>
                 </TouchableOpacity>
                 {/* 피드 갯수 */}
                 <View style={styles.profileInfoCountContainer}>
                   <Text style={styles.profileInfoCount}>
-                    총 {params.feed_count}개
+                    총 {props.feed_count}개
                   </Text>
                 </View>
               </View>
               {/* 닉네임 */}
               <View>
-                <Text style={styles.userName}>{params.nickname}</Text>
+                <Text style={styles.userName}>{props.nickname}</Text>
               </View>
             </View>
           </View>
           <View>
-            {params.introduction && (
-              <Text style={styles.introduction}>{params.introduction}</Text>
+            {props.introduction && (
+              <Text style={styles.introduction}>{props.introduction}</Text>
             )}
           </View>
         </View>
         {/* 버튼 */}
-        <TouchableOpacity style={styles.otherBtnContainer} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.otherBtnContainer}
+          activeOpacity={0.8}
+          onPress={() => {
+            navigation.navigate('MypageMap', {
+              account_id: props.public_id,
+              nickname: props.nickname,
+            });
+          }}>
           <Map style={styles.otherBtnIcon} />
           <Text style={styles.otherBtnText}>지도</Text>
         </TouchableOpacity>

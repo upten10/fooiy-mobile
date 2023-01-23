@@ -31,13 +31,15 @@ export const apiUrl = {
   FEED_MAP_MARKER: 'feeds/feed/map_picker/',
   // 피드 지도 디테일
   FEED_MAP_DETAIL: 'feeds/feed/map_detail/',
-  
+  // 개척 등록
+  REGISTER_PIONEER: 'feeds/pioneer/',
+  // 기록 등록
+  REGISTER_RECORD: 'feeds/record/',
+
   // 음식점 지도 리스트
   MAP_SHOP_MARKER: 'shops/shop/shop_map_picker/',
-  
-  
-  REGISTER_PIONEER: 'feeds/pioneer/',
-  REGISTER_RECORD: 'feeds/record/',
+  // 개척, 근처 매장 리스트
   SHOP_NEARBY: 'shops/shop/nearby/',
+  // 개척, 메뉴 리스트
   SHOP_MENU: 'shops/menu/',
 };
