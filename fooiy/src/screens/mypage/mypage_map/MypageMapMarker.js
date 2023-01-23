@@ -6,6 +6,7 @@ import {fooiyColor} from '../../../common/globalStyles';
 // api 변경되면 인덱스 수정
 
 const MypageMapMarker = props => {
+  // index는 MypageMap에서 준 id
   const {
     item,
     index,
@@ -18,8 +19,6 @@ const MypageMapMarker = props => {
   } = props;
   const {feed_image, feeds_count, latitude, longitude} = item;
   const [isClicked, setIsClicked] = useState(false);
-
-  console.log(props);
 
   useEffect(() => {
     if (clickedIndex === index) {
