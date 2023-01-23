@@ -3,8 +3,6 @@ import {StyleSheet} from 'react-native';
 import {Marker} from 'react-native-nmap';
 import {fooiyColor} from '../../../common/globalStyles';
 
-// api 변경되면 인덱스 수정
-
 const MypageMapMarker = props => {
   // index는 MypageMap에서 준 id
   const {
