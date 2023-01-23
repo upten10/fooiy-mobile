@@ -29,6 +29,7 @@ const ShopModal = props => {
       menu_price: shop.menu_price,
       public_id: shop.public_id,
       shop_name: shop.shop_name,
+      shop_address: shop.address,
       other_account_id,
       onBackdropPress: onBackdropPress,
     };
