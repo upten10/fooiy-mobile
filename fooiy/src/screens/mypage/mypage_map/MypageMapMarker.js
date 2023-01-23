@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Marker, Circle, Align} from 'react-native-nmap';
-import {fooiyColor, globalStyles} from '../../../common/globalStyles';
+import {StyleSheet} from 'react-native';
+import {Marker} from 'react-native-nmap';
+import {fooiyColor} from '../../../common/globalStyles';
 
 const MypageMapMarker = props => {
+  // index는 MypageMap에서 준 id
   const {
     item,
     index,
@@ -38,6 +39,7 @@ const MypageMapMarker = props => {
   return (
     feed_image && (
       <>
+        {/* 이미지 */}
         <Marker
           key={index}
           coordinate={{
@@ -53,7 +55,9 @@ const MypageMapMarker = props => {
               : styles.image_small
           }
           onClick={() => onClickMarker(item, index)}
+          zIndex={isClicked && 1}
         />
+        {/* 클릭된 테두리 */}
         <Marker
           coordinate={{
             latitude: latitude * 1,
@@ -67,10 +71,12 @@ const MypageMapMarker = props => {
               ? styles.frame_mid
               : styles.frame_small
           }
-          anchor={{x: 0.5, y: 0.838}}
+          anchor={{x: 0.5, y: 0.772}}
           onClick={() => onClickMarker(item, index)}
           hidden={!isClicked}
+          zIndex={1}
         />
+        {/* 클릭 안된 테두리 */}
         <Marker
           coordinate={{
             latitude: latitude * 1,
@@ -84,12 +90,13 @@ const MypageMapMarker = props => {
               ? styles.frame_mid
               : styles.frame_small
           }
-          anchor={{x: 0.5, y: 0.838}}
+          anchor={{x: 0.5, y: 0.772}}
           onClick={() => onClickMarker(item, index)}
           hidden={isClicked}
         />
         {feeds_count !== 1 ? (
           <>
+            {/* 클릭 된 뱃지 */}
             <Marker
               coordinate={{
                 latitude: latitude * 1,
@@ -105,7 +112,8 @@ const MypageMapMarker = props => {
               }
               onClick={() => onClickMarker(item, index)}
               hidden={!isClicked}
-              anchor={{x: 0.1, y: 1}}
+              anchor={{x: 0.1, y: 0.95}}
+              zIndex={1}
               caption={{
                 text: JSON.stringify(feeds_count),
                 color: fooiyColor.W,
@@ -116,6 +124,7 @@ const MypageMapMarker = props => {
                   zoomLevel > 11 ? 12 : zoomLevel > 8 ? 12 * 0.8 : 12 * 0.6,
               }}
             />
+            {/* 클릭 안된 뱃지 */}
             <Marker
               coordinate={{
                 latitude: latitude * 1,
@@ -131,7 +140,7 @@ const MypageMapMarker = props => {
               }
               onClick={() => onClickMarker(item, index)}
               hidden={isClicked}
-              anchor={{x: 0.1, y: 1}}
+              anchor={{x: 0.1, y: 0.95}}
               caption={{
                 text: JSON.stringify(feeds_count),
                 color: fooiyColor.G600,
@@ -153,36 +162,36 @@ export default MypageMapMarker;
 
 const styles = StyleSheet.create({
   image_big: {
-    width: 48,
-    height: 48,
+    width: 48.5,
+    height: 48.5,
+  },
+  image_mid: {
+    width: 48.5 * 0.8,
+    height: 48.5 * 0.8,
+  },
+  image_small: {
+    width: 48.5 * 0.6,
+    height: 48.5 * 0.6,
   },
   frame_big: {
-    width: 56,
-    height: 62,
+    width: 64,
+    height: 70,
+  },
+  frame_mid: {
+    width: 64 * 0.8,
+    height: 70 * 0.8,
+  },
+  frame_small: {
+    width: 64 * 0.6,
+    height: 70 * 0.6,
   },
   badge_big: {
     width: 62,
     height: 62,
   },
-  image_mid: {
-    width: 48 * 0.8,
-    height: 48 * 0.8,
-  },
-  frame_mid: {
-    width: 56 * 0.8,
-    height: 62 * 0.8,
-  },
   badge_mid: {
     width: 62 * 0.8,
     height: 62 * 0.8,
-  },
-  image_small: {
-    width: 48 * 0.6,
-    height: 48 * 0.6,
-  },
-  frame_small: {
-    width: 56 * 0.6,
-    height: 62 * 0.6,
   },
   badge_small: {
     width: 62 * 0.6,

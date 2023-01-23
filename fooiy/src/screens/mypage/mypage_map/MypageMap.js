@@ -25,7 +25,6 @@ const MypageMap = props => {
   const [feedMarkerDetails, setFeedMarkerDetails] = useState([]);
 
   const [clickedIndex, setClickedIndex] = useState(null);
-  const [clickedShop, setClickedShop] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(14);
 
@@ -43,7 +42,6 @@ const MypageMap = props => {
   const toggleModal = () => {
     setModalVisible(false);
     setClickedIndex(null);
-    setClickedShop(null);
   };
 
   const throttled = throttle(e => {
@@ -160,12 +158,12 @@ const MypageMap = props => {
           // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
           // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
         >
-          {feedMarkers.map((item, index) => {
+          {feedMarkers.map(item => {
             return (
               <MypageMapMarker
-                key={index}
+                key={item.id}
                 item={item}
-                index={index}
+                index={item.id}
                 toggleModal={toggleModal}
                 setClickedIndex={setClickedIndex}
                 setModalVisible={setModalVisible}
