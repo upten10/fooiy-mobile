@@ -69,7 +69,7 @@ const MypageMapMarker = props => {
               ? styles.frame_mid
               : styles.frame_small
           }
-          anchor={{x: 0.5, y: 0.768}}
+          anchor={{x: 0.5, y: 0.772}}
           onClick={() => onClickMarker(item, index)}
           hidden={!isClicked}
         />
@@ -87,7 +87,7 @@ const MypageMapMarker = props => {
               ? styles.frame_mid
               : styles.frame_small
           }
-          anchor={{x: 0.5, y: 0.768}}
+          anchor={{x: 0.5, y: 0.772}}
           onClick={() => onClickMarker(item, index)}
           hidden={isClicked}
         />
@@ -158,32 +158,26 @@ export default MypageMapMarker;
 
 const styles = StyleSheet.create({
   image_big: {
-    width: 48,
-    height: 48,
+    width: 48.5,
+    height: 48.5,
   },
   image_mid: {
-    width: 48 * 0.8,
-    height: 48 * 0.8,
+    width: 48.5 * 0.8,
+    height: 48.5 * 0.8,
   },
   image_small: {
-    width: 48 * 0.6,
-    height: 48 * 0.6,
+    width: 48.5 * 0.6,
+    height: 48.5 * 0.6,
   },
   frame_big: {
-    // width: 56,
-    // height: 62,
     width: 64,
     height: 70,
   },
   frame_mid: {
-    // width: 56 * 0.8,
-    // height: 62 * 0.8,
     width: 64 * 0.8,
     height: 70 * 0.8,
   },
   frame_small: {
-    // width: 56 * 0.6,
-    // height: 62 * 0.6,
     width: 64 * 0.6,
     height: 70 * 0.6,
   },
