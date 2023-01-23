@@ -16,7 +16,6 @@ export const Shop = props => {
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [shopAdress, setShopAdress] = useState('');
 
   const navigation = useNavigation();
 
