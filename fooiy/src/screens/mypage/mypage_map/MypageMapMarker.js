@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Marker, Circle, Align} from 'react-native-nmap';
-import {fooiyColor, globalStyles} from '../../../common/globalStyles';
+import {StyleSheet} from 'react-native';
+import {Marker} from 'react-native-nmap';
+import {fooiyColor} from '../../../common/globalStyles';
+
+// api 변경되면 인덱스 수정
 
 const MypageMapMarker = props => {
   const {
@@ -16,6 +18,8 @@ const MypageMapMarker = props => {
   } = props;
   const {feed_image, feeds_count, latitude, longitude} = item;
   const [isClicked, setIsClicked] = useState(false);
+
+  console.log(props);
 
   useEffect(() => {
     if (clickedIndex === index) {
@@ -54,6 +58,7 @@ const MypageMapMarker = props => {
               : styles.image_small
           }
           onClick={() => onClickMarker(item, index)}
+          zIndex={isClicked && 1}
         />
         {/* 클릭된 테두리 */}
         <Marker
@@ -72,6 +77,7 @@ const MypageMapMarker = props => {
           anchor={{x: 0.5, y: 0.772}}
           onClick={() => onClickMarker(item, index)}
           hidden={!isClicked}
+          zIndex={1}
         />
         {/* 클릭 안된 테두리 */}
         <Marker
@@ -110,6 +116,7 @@ const MypageMapMarker = props => {
               onClick={() => onClickMarker(item, index)}
               hidden={!isClicked}
               anchor={{x: 0.1, y: 0.95}}
+              zIndex={1}
               caption={{
                 text: JSON.stringify(feeds_count),
                 color: fooiyColor.W,
