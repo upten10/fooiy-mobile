@@ -12,7 +12,6 @@ const BottomSheetShop = item => {
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() => {
-        item.onBackdropPress ? item.onBackdropPress() : null;
         navigation.navigate('Shop', {
           shop_id: item.public_id,
           shop_name: item.shop_name,

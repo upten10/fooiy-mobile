@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Platform, StyleSheet, Text, View} from 'react-native';
 import {globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import BottomSheetShop from '../../common_ui/shop/BottomSheetShop';
@@ -87,8 +87,10 @@ export default ShopModal;
 const styles = StyleSheet.create({
   modal_container: {
     position: 'absolute',
-    bottom: globalVariable.height * 0.2,
-    // marginHorizontal: 16,
+    bottom: Platform.select({
+      ios: globalVariable.height * 0.2,
+      android: 122,
+    }),
     ...globalStyles.shadow,
   },
   shop_container: {

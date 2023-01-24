@@ -13,6 +13,7 @@ import Geolocation from 'react-native-geolocation-service';
 import {throttle} from 'lodash';
 import ShopModal from '../../map/ShopModal';
 import MypageMapMarker from './MypageMapMarker';
+import AndroidMypageMapMarker from './AndroidMypageMapMarker';
 
 // 다른 유저 페이지에서 접근 시 props에 account_id랑 nickname 들어있음
 const MypageMap = props => {
@@ -30,6 +31,7 @@ const MypageMap = props => {
 
   useEffect(() => {
     checkGrant();
+    getFeedMarkerList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -139,7 +141,7 @@ const MypageMap = props => {
   return (
     <SafeAreaView
       style={{flex: 1, backgroundColor: fooiyColor.W}}
-      edges={Platform.OS === 'ios' && 'top'}>
+      edges={Platform.OS === 'ios' ? 'top' : null}>
       <StackHeader
         title={account_id !== null ? props.route.params.nickname : '내 지도'}
       />
@@ -147,32 +149,47 @@ const MypageMap = props => {
         <NaverMapView
           ref={mapView}
           style={styles.map}
-          //   showsMyLocationButton={true}
-          // center={center}
+          useTextureView={Platform.select({
+            ios: false,
+            android: true,
+          })}
           onMapClick={toggleModal}
           zoomControl={false}
           minZoomLevel={5}
           maxZoomLevel={18}
           rotateGesturesEnabled={false}
-          onCameraChange={e => onCameraChange(e)}
-          // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-          // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
-        >
-          {feedMarkers.map(item => {
-            return (
-              <MypageMapMarker
-                key={item.id}
-                item={item}
-                index={item.id}
-                toggleModal={toggleModal}
-                setClickedIndex={setClickedIndex}
-                setModalVisible={setModalVisible}
-                getFeedMarkerDetail={getFeedMarkerDetail}
-                clickedIndex={clickedIndex}
-                style={{...globalStyles.shadow}}
-                zoomLevel={zoomLevel}
-              />
-            );
+          onCameraChange={e => onCameraChange(e)}>
+          {Platform.select({
+            ios: feedMarkers.map(item => {
+              return (
+                <MypageMapMarker
+                  key={item.id}
+                  item={item}
+                  index={item.id}
+                  toggleModal={toggleModal}
+                  setClickedIndex={setClickedIndex}
+                  setModalVisible={setModalVisible}
+                  getFeedMarkerDetail={getFeedMarkerDetail}
+                  clickedIndex={clickedIndex}
+                  zoomLevel={zoomLevel}
+                />
+              );
+            }),
+            android: feedMarkers.map(item => {
+              return (
+                <AndroidMypageMapMarker
+                  key={item.id}
+                  item={item}
+                  index={item.id}
+                  toggleModal={toggleModal}
+                  setClickedIndex={setClickedIndex}
+                  setModalVisible={setModalVisible}
+                  getFeedMarkerDetail={getFeedMarkerDetail}
+                  clickedIndex={clickedIndex}
+                  zoomLevel={zoomLevel}
+                />
+              );
+            }),
           })}
         </NaverMapView>
         {isModalVisible && (
