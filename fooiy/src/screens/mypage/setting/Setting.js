@@ -80,7 +80,7 @@ const Setting = props => {
   const onPressLogout = async () => {
     await AsyncStorage.clear()
       .then(dispatch(loginActions.setLogin(false)))
-      .then(navigation.popToTop());
+      .then(navigation.navigate('Login'));
   };
 
   return (
