@@ -232,11 +232,6 @@ export const UI_Feed = (item, props) => {
         <TouchableWithoutFeedback onPress={handleDoubleTap}>
           <View>
             {item.is_confirm ? (
-              // <ImageBackground
-              //   source={{uri: item.image[0]}}
-              //   style={{flex: 1, resizeMode: 'cover', ...styles.image}}
-              //   blurRadius={10} //Blur 효과
-              // />
               <ImageBackground
                 source={{uri: item.image[0]}}
                 style={styles.image}>
