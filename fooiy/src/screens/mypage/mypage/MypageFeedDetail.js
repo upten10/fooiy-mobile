@@ -1,7 +1,6 @@
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {FlatList, FlatListgi, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
