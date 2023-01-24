@@ -31,6 +31,7 @@ const MypageMap = props => {
 
   useEffect(() => {
     checkGrant();
+    getFeedMarkerList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -148,6 +149,7 @@ const MypageMap = props => {
         <NaverMapView
           ref={mapView}
           style={styles.map}
+          useTextureView={true}
           //   showsMyLocationButton={true}
           // center={center}
           onMapClick={toggleModal}
@@ -171,7 +173,6 @@ const MypageMap = props => {
                   setModalVisible={setModalVisible}
                   getFeedMarkerDetail={getFeedMarkerDetail}
                   clickedIndex={clickedIndex}
-                  style={{...globalStyles.shadow}}
                   zoomLevel={zoomLevel}
                 />
               );
@@ -187,7 +188,6 @@ const MypageMap = props => {
                   setModalVisible={setModalVisible}
                   getFeedMarkerDetail={getFeedMarkerDetail}
                   clickedIndex={clickedIndex}
-                  style={{...globalStyles.shadow}}
                   zoomLevel={zoomLevel}
                 />
               );
