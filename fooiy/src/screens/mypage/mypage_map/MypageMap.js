@@ -150,17 +150,12 @@ const MypageMap = props => {
           ref={mapView}
           style={styles.map}
           useTextureView={true}
-          //   showsMyLocationButton={true}
-          // center={center}
           onMapClick={toggleModal}
           zoomControl={false}
           minZoomLevel={5}
           maxZoomLevel={18}
           rotateGesturesEnabled={false}
-          onCameraChange={e => onCameraChange(e)}
-          // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-          // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
-        >
+          onCameraChange={e => onCameraChange(e)}>
           {Platform.select({
             ios: feedMarkers.map(item => {
               return (
