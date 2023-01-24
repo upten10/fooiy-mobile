@@ -33,7 +33,6 @@ const AndroidMypageMapMarker = props => {
     setClickedIndex(index);
     setModalVisible(true);
     getFeedMarkerDetail(item);
-    // setClickedShop(feedMarkers[index].shops_info);
   };
 
   return (

@@ -149,7 +149,10 @@ const MypageMap = props => {
         <NaverMapView
           ref={mapView}
           style={styles.map}
-          useTextureView={true}
+          useTextureView={Platform.select({
+            ios: false,
+            android: true,
+          })}
           onMapClick={toggleModal}
           zoomControl={false}
           minZoomLevel={5}
