@@ -1,6 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {Map} from '../../../../assets/icons/svg';
@@ -101,30 +108,47 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   fooiyTIContainer: {
+    marginRight: 8,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: fooiyColor.P500,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    marginRight: 8,
   },
   fooiyTI: {
-    ...fooiyFont.Button,
-    color: fooiyColor.P500,
-    lineHeight: 0,
+    ...Platform.select({
+      ios: {
+        ...fooiyFont.Button,
+        color: fooiyColor.P500,
+        lineHeight: 0,
+      },
+      android: {
+        ...fooiyFont.Button,
+        color: fooiyColor.P500,
+        lineHeight: 18,
+      },
+    }),
   },
   profileInfoCountContainer: {
     borderWidth: 1,
     borderRadius: 8,
     borderColor: fooiyColor.G400,
-    justifyContent: 'center',
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
   profileInfoCount: {
-    ...fooiyFont.Button,
-    lineHeight: 0,
-    color: fooiyColor.G400,
+    ...Platform.select({
+      ios: {
+        ...fooiyFont.Button,
+        color: fooiyColor.G400,
+        lineHeight: 0,
+      },
+      android: {
+        ...fooiyFont.Button,
+        color: fooiyColor.G400,
+        lineHeight: 18,
+      },
+    }),
   },
   userName: {
     ...fooiyFont.Subtitle1,

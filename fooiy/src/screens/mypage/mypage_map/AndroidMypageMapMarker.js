@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Marker} from 'react-native-nmap';
+import {Align, Marker} from 'react-native-nmap';
 import {fooiyColor} from '../../../common/globalStyles';
 
-const MypageMapMarker = props => {
+const AndroidMypageMapMarker = props => {
   // index는 MypageMap에서 준 id
   const {
     item,
@@ -57,13 +57,17 @@ const MypageMapMarker = props => {
           onClick={() => onClickMarker(item, index)}
           zIndex={isClicked ? 1 : null}
         />
-        {/* 클릭된 테두리 */}
+        {/* 테두리 */}
         <Marker
           coordinate={{
             latitude: latitude * 1,
             longitude: longitude * 1,
           }}
-          image={require('../../../../assets/icons/marker/mypage_marker_clicked.png')}
+          image={
+            isClicked
+              ? require('../../../../assets/icons/marker/mypage_marker_clicked.png')
+              : require('../../../../assets/icons/marker/mypage_marker_unclicked.png')
+          }
           style={
             zoomLevel > 11
               ? styles.frame_big
@@ -76,33 +80,19 @@ const MypageMapMarker = props => {
           hidden={!isClicked}
           zIndex={1}
         />
-        {/* 클릭 안된 테두리 */}
-        <Marker
-          coordinate={{
-            latitude: latitude * 1,
-            longitude: longitude * 1,
-          }}
-          image={require('../../../../assets/icons/marker/mypage_marker_unclicked.png')}
-          style={
-            zoomLevel > 11
-              ? styles.frame_big
-              : zoomLevel > 8
-              ? styles.frame_mid
-              : styles.frame_small
-          }
-          anchor={{x: 0.5, y: 0.772}}
-          onClick={() => onClickMarker(item, index)}
-          hidden={isClicked}
-        />
         {feeds_count !== 1 ? (
           <>
-            {/* 클릭 된 뱃지 */}
+            {/* 뱃지 */}
             <Marker
               coordinate={{
                 latitude: latitude * 1,
                 longitude: longitude * 1,
               }}
-              image={require('../../../../assets/icons/marker/marker_badge_clicked.png')}
+              image={
+                isClicked
+                  ? require('../../../../assets/icons/marker/marker_badge_clicked.png')
+                  : require('../../../../assets/icons/marker/marker_badge_unclicked.png')
+              }
               style={
                 zoomLevel > 11
                   ? styles.badge_big
@@ -116,37 +106,10 @@ const MypageMapMarker = props => {
               zIndex={1}
               caption={{
                 text: JSON.stringify(feeds_count),
-                color: fooiyColor.W,
-                haloColor: fooiyColor.P500,
+                color: isClicked ? fooiyColor.W : fooiyColor.G600,
+                haloColor: isClicked ? fooiyColor.P500 : fooiyColor.W,
                 offset:
                   zoomLevel > 11 ? -60 : zoomLevel > 8 ? -60 * 0.8 : -60 * 0.6,
-                textSize:
-                  zoomLevel > 11 ? 12 : zoomLevel > 8 ? 12 * 0.8 : 12 * 0.6,
-              }}
-            />
-            {/* 클릭 안된 뱃지 */}
-            <Marker
-              coordinate={{
-                latitude: latitude * 1,
-                longitude: longitude * 1,
-              }}
-              image={require('../../../../assets/icons/marker/marker_badge_unclicked.png')}
-              style={
-                zoomLevel > 11
-                  ? styles.badge_big
-                  : zoomLevel > 8
-                  ? styles.badge_mid
-                  : styles.badge_small
-              }
-              onClick={() => onClickMarker(item, index)}
-              hidden={isClicked}
-              anchor={{x: 0.1, y: 0.95}}
-              caption={{
-                text: JSON.stringify(feeds_count),
-                color: fooiyColor.G600,
-                offset:
-                  zoomLevel > 11 ? -60 : zoomLevel > 8 ? -60 * 0.8 : -60 * 0.6,
-                requestedWidth: 100,
                 textSize:
                   zoomLevel > 11 ? 12 : zoomLevel > 8 ? 12 * 0.8 : 12 * 0.6,
               }}
@@ -158,7 +121,7 @@ const MypageMapMarker = props => {
   );
 };
 
-export default MypageMapMarker;
+export default AndroidMypageMapMarker;
 
 const styles = StyleSheet.create({
   image_big: {
