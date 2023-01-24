@@ -78,7 +78,7 @@ const AndroidMypageMapMarker = props => {
           anchor={{x: 0.5, y: 0.772}}
           onClick={() => onClickMarker(item, index)}
           hidden={!isClicked}
-          zIndex={1}
+          zIndex={isClicked ? 1 : null}
         />
         {feeds_count !== 1 ? (
           <>
@@ -103,7 +103,7 @@ const AndroidMypageMapMarker = props => {
               onClick={() => onClickMarker(item, index)}
               hidden={!isClicked}
               anchor={{x: 0.1, y: 0.95}}
-              zIndex={1}
+              zIndex={isClicked ? 1 : null}
               caption={{
                 text: JSON.stringify(feeds_count),
                 color: isClicked ? fooiyColor.W : fooiyColor.G600,
