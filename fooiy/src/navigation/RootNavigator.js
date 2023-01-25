@@ -19,12 +19,17 @@ import {Shop} from '../common_ui/shop/Shop';
 const Stack = createStackNavigator();
 const RootNavigator = () => {
   const navigation = useNavigation();
+
   return (
     <Stack.Navigator
       initialRouteName="Login"
       screenOptions={{headerShown: false}}>
-      <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen
+        name="TabNavigator"
+        component={TabNavigator}
+        options={{gestureEnabled: false}}
+      />
       <Stack.Screen name="Share" component={Share} />
 
       <Stack.Screen name="Map" component={Map} />

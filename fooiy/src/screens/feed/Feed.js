@@ -93,7 +93,7 @@ const Feed = props => {
           keyExtractor={(feeds, index) => index.toString()}
           onEndReached={loadMoreItem}
           ListEmptyComponent={ListEmptyComponent}
-          onEndReachedThreshold={3}
+          onEndReachedThreshold={2}
         />
       </View>
     </SafeAreaView>
