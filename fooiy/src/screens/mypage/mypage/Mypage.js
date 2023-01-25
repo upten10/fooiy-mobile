@@ -94,9 +94,12 @@ const Mypage = props => {
         {item.is_confirm ? (
           <ImageBackground
             source={{uri: item.image[0]}}
-            style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}
-            blurRadius={10} //Blur 효과
-          />
+            style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}>
+            <Image
+              source={require('../../../../assets/image/feed_confirm_simple.png')}
+              style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}
+            />
+          </ImageBackground>
         ) : (
           <Image source={{uri: item.image[0]}} style={styles.feedImage} />
         )}

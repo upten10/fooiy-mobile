@@ -12,11 +12,14 @@ const BottomSheetShop = item => {
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() => {
-        item.onBackdropPress ? item.onBackdropPress() : null;
         navigation.navigate('Shop', {
           shop_id: item.public_id,
-          shop_name: item.name,
-          shop_address: item.address,
+          shop_name: item.shop_name,
+          shop_address: item.shop_address,
+          type: 'mypage',
+          ...(item.other_account_id && {
+            other_account_id: item.other_account_id,
+          }),
         });
       }}>
       <View style={styles.container}>

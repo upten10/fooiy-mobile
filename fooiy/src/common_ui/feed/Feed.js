@@ -234,9 +234,12 @@ export const UI_Feed = (item, props) => {
             {item.is_confirm ? (
               <ImageBackground
                 source={{uri: item.image[0]}}
-                style={{flex: 1, resizeMode: 'cover', ...styles.image}}
-                blurRadius={10} //Blur 효과
-              />
+                style={styles.image}>
+                <Image
+                  source={require('../../../assets/image/feed_confirm_detail.png')}
+                  style={styles.image}
+                />
+              </ImageBackground>
             ) : (
               <Image source={{uri: item.image[0]}} style={styles.image} />
             )}

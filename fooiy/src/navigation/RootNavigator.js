@@ -59,6 +59,9 @@ const RootNavigator = () => {
       <Stack.Screen name="Setting" component={Setting} />
       <Stack.Screen name="EditName" component={EditName} />
       <Stack.Screen name="MypageMap" component={MypageMap} />
+
+      {/* 지도에서 피드로 들어갔다가 뒤로 가면 피드 스택으로 넘어가서 바꿨어용~ */}
+      <Stack.Screen name="Shop" component={Shop} />
     </Stack.Navigator>
   );
 };

@@ -1,7 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Feed from './Feed';
-import {Shop} from '../../common_ui/shop/Shop';
 import {globalStyles} from '../../common/globalStyles';
 import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
 import OtherUserPage from '../mypage/storage/OtherUserPage';

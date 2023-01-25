@@ -26,6 +26,9 @@ export const Shop = props => {
   const [isLoading, setIsLoading] = useState(false);
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const type = props.route.params.type && props.route.params.type;
+  const other_account_id =
+    props.route.params.other_account_id && props.route.params.other_account_id;
 
   const getFeedList = async data => {
     setIsLoading(true);
@@ -34,6 +37,8 @@ export const Shop = props => {
         limit: globalVariable.FeedLimit,
         offset: offset,
         shop_id: data,
+        ...(type && {type: type}),
+        ...(other_account_id && {other_account_id: other_account_id}),
       },
     }).then(res => {
       setFeeds([...feeds, ...res.data.payload.feed_list.results]);

@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Platform, StyleSheet, Text, View} from 'react-native';
 import {globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import BottomSheetShop from '../../common_ui/shop/BottomSheetShop';
 const ShopModal = props => {
   const [current, setCurrent] = useState(0);
   const shopRef = useRef(null);
-  const {onBackdropPress, shops_info} = props;
+  const {onBackdropPress, shops_info, other_account_id} = props;
 
   useEffect(() => {
     if (shops_info.length !== 0) {
@@ -29,6 +29,8 @@ const ShopModal = props => {
       menu_price: shop.menu_price,
       public_id: shop.public_id,
       shop_name: shop.shop_name,
+      shop_address: shop.address,
+      other_account_id,
       onBackdropPress: onBackdropPress,
     };
   });
@@ -70,9 +72,9 @@ const ShopModal = props => {
           );
           setCurrent(index);
         }}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <View style={styles.shop_container}>
-            <BottomSheetShop {...item} />
+            <BottomSheetShop {...item} key={index} />
           </View>
         )}
       />
@@ -85,8 +87,10 @@ export default ShopModal;
 const styles = StyleSheet.create({
   modal_container: {
     position: 'absolute',
-    bottom: globalVariable.height * 0.2,
-    // marginHorizontal: 16,
+    bottom: Platform.select({
+      ios: globalVariable.height * 0.2,
+      android: 122,
+    }),
     ...globalStyles.shadow,
   },
   shop_container: {
