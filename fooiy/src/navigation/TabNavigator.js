@@ -13,6 +13,7 @@ const TabNavigator = () => {
   }, []);
   return (
     <Tab.Navigator
+      initialRouteName="FeedStackNavigation"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
