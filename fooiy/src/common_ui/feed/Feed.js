@@ -310,6 +310,8 @@ export const UI_Feed = (item, props) => {
                     shop_id: item.shop_id,
                     shop_name: item.shop_name,
                     shop_address: item.shop_address,
+                    shop_longitude: item.longitude,
+                    shop_latitude: item.latitude,
                   });
               }}>
               <Text>{item.shop_name}</Text>

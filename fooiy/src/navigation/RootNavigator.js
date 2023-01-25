@@ -14,6 +14,13 @@ import {useNavigation} from '@react-navigation/native';
 import Map from '../screens/map/Map';
 import Setting from '../screens/mypage/setting/Setting';
 import MypageMap from '../screens/mypage/mypage_map/MypageMap';
+import SetAddress from '../screens/register/register_feed/SetAddress';
+import FindShop from '../screens/register/register_feed/FindShop';
+import FindMenu from '../screens/register/register_feed/FindMenu';
+import RegisterFeed from '../screens/register/register_feed/register_feed_ui/RegisterFeed';
+import EditName from '../screens/mypage/setting/EditName';
+import FindWay from '../common_ui/shop/FindWay';
+import Menu from '../common_ui/shop/Menu';
 
 const Stack = createStackNavigator();
 const RootNavigator = () => {
@@ -26,22 +33,31 @@ const RootNavigator = () => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Share" component={Share} />
 
+      {/* map */}
       <Stack.Screen name="Map" component={Map} />
 
       {/* feed */}
       <Stack.Screen name="Feed" component={Feed} />
 
+      {/* shop */}
+      <Stack.Screen name="FindWay" component={FindWay} />
+      <Stack.Screen name="Menu" component={Menu} />
+
+      {/* register */}
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="RegisterCamera" component={RegisterCamera} />
+      <Stack.Screen name="ImageCrop" component={ImageCrop} />
+      <Stack.Screen name="Gallery" component={Gallery} />
+      <Stack.Screen name="SetAddress" component={SetAddress} />
+      <Stack.Screen name="FindShop" component={FindShop} />
+      <Stack.Screen name="FindMenu" component={FindMenu} />
+      <Stack.Screen name="RegisterFeed" component={RegisterFeed} />
+
       {/* mypage */}
       <Stack.Screen name="Mypage" component={Mypage} />
       <Stack.Screen name="FooiyTI" component={FooiyTI} />
       <Stack.Screen name="Setting" component={Setting} />
-
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="RegisterCamera" component={RegisterCamera} />
-      <Stack.Screen name="ImageCrop" component={ImageCrop} />
-
-      <Stack.Screen name="Gallery" component={Gallery} />
-
+      <Stack.Screen name="EditName" component={EditName} />
       <Stack.Screen name="MypageMap" component={MypageMap} />
     </Stack.Navigator>
   );

@@ -52,9 +52,14 @@ const RegisterCamera = props => {
           if (camera.current == null) throw new Error('Camera Ref is Null');
           const photo = await camera.current.takePhoto(takePhotoOptions);
           const path = 'file://' + photo.path;
-          navigation.navigate('ImageCrop', {
-            photo: path,
-          });
+          props.route.params
+            ? navigation.navigate('ImageCrop', {
+                photo: path,
+                shop: props.route.params.shop,
+              })
+            : navigation.navigate('ImageCrop', {
+                photo: path,
+              });
         } catch (error) {
           console.log(error);
         }

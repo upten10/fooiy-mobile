@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -12,25 +12,33 @@ import {globalVariable} from '../../../../common/globalVariable';
 import {StackHeader} from '../../../../common_ui/headers/StackHeader';
 import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {globalStyles} from '../../../../common/globalStyles';
 import {Notice} from '../../../../../assets/icons/svg';
 import Input from './Input';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import FooiytiRating from './FooiytiRating';
 import {ApiManagerV2} from '../../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 
 const RegisterFeed = props => {
   const {photo_list, shop, menu, address} = props.route.params;
-  const shop_init = shop ? props.route.params.shop.name : '';
+  const shop_init = shop
+    ? props.route.params.shop.name
+      ? props.route.params.shop.name
+      : props.route.params.shop.shop_name
+    : '';
+  const shop_id = shop
+    ? props.route.params.shop.shop_id
+      ? props.route.params.shop.shop_id
+      : props.route.params.shop.public_id
+    : null;
   const menu_init = menu ? props.route.params.menu.name : '';
   const [accountValue, setAccountValue] = useState('');
   const [shopValue, setShopValue] = useState(shop_init);
   const [locationValue, setLocationValue] = useState(address);
   const [menuValue, setMenuValue] = useState(menu_init);
   const [comment, setComment] = useState('');
-  const [isCommentFocus, setCommentFocused] = useState(false);
   const [fooiytiRatingEI, setFooiytiRatingEI] = useState(2);
   const [fooiytiRatingSN, setFooiytiRatingSN] = useState(2);
   const [fooiytiRatingTF, setFooiytiRatingTF] = useState(2);
@@ -38,24 +46,20 @@ const RegisterFeed = props => {
   const [totalRating, setTotalRating] = useState(2);
   const valueSet = [90, 70, 50, 30, 10];
   const totalValueSet = [10, 30, 50, 70, 99];
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
-  const onFocus = () => {
-    setCommentFocused(true);
-  };
-  const onBlur = () => {
-    setCommentFocused(false);
-  };
   const commentRef = useRef();
   const checkShopInput = () => {
-    shopValue && shopValue.length > 0 ? true : false;
+    return shopValue ? true : false;
   };
   const checkLocationInput = () => {
-    locationValue && locationValue.length > 0 ? true : false;
+    return locationValue ? true : false;
   };
   const checkMenuInput = () => {
-    menuValue && menuValue.length > 0 ? true : false;
+    return menuValue ? true : false;
+  };
+  const checkCommentInput = () => {
+    return comment ? true : false;
   };
   const getAccountInfo = async () => {
     await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res =>
@@ -67,6 +71,7 @@ const RegisterFeed = props => {
     getAccountInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const postRegister = async data => {
     shop && menu
       ? await ApiManagerV2.post(apiUrl.REGISTER_RECORD, data, {
@@ -89,8 +94,8 @@ const RegisterFeed = props => {
         }).then(res => {
           console.log(res);
         });
+    navigation.navigate('FeedStackNavigation');
   };
-
   const onClickRegister = async () => {
     const match = /\.(\w+)$/.exec(photo_list[0].filename ?? '');
     // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
@@ -103,7 +108,7 @@ const RegisterFeed = props => {
     const formData = new FormData();
     formData.append('account', accountValue);
     shop && menu
-      ? formData.append('shop_id', shop.public_id)
+      ? formData.append('shop_id', shop_id)
       : formData.append('shop_name', shopValue);
     shop && menu
       ? formData.append('menu_id', menu.id)
@@ -151,7 +156,8 @@ const RegisterFeed = props => {
   };
 
   return (
-    <View>
+    <SafeAreaView
+      style={{backgroundColor: fooiyColor.W, flex: 1, paddingBottom: 16}}>
       <StackHeader title="피드 등록" />
       <ScrollView
         bounces={false}
@@ -259,17 +265,13 @@ const RegisterFeed = props => {
               </View>
               <View
                 style={
-                  isCommentFocus
+                  checkCommentInput()
                     ? styles.comment_focus_active
                     : styles.comment_focus_deactive
                 }>
                 <TextInput
                   ref={commentRef}
-                  style={
-                    isCommentFocus
-                      ? styles.comment_text_focus_active
-                      : styles.comment_text_focus_deactive
-                  }
+                  style={styles.comment_text_focus_active}
                   multiline
                   textAlignVertical="top"
                   autoCapitalize={false}
@@ -277,8 +279,6 @@ const RegisterFeed = props => {
                   spellCheck={false}
                   onChangeText={setComment}
                   maxLength={500}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
                 />
               </View>
             </View>
@@ -299,39 +299,45 @@ const RegisterFeed = props => {
             </Text>
           </View>
         </View>
-        <View>
-          <TouchableOpacity
-            activeOpacity={0.8}
+      </ScrollView>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.select({
+          ios: 16,
+          android: 16,
+        })}
+        behavior={Platform.select({
+          ios: 'padding',
+          android: 'absolute',
+        })}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={
+            (shop || shopValue) &&
+            (address || locationValue) &&
+            (menu || menuValue)
+              ? styles.register_btn_active
+              : styles.register_btn_deactive
+          }
+          onPress={
+            (shop || shopValue) &&
+            (address || locationValue) &&
+            (menu || menuValue)
+              ? onClickRegister
+              : null
+          }>
+          <Text
             style={
               (shop || shopValue) &&
               (address || locationValue) &&
               (menu || menuValue)
-                ? styles.register_btn_active
-                : styles.register_btn_deactive
-            }
-            onPress={
-              (shop || shopValue) &&
-              (address || locationValue) &&
-              (menu || menuValue)
-                ? onClickRegister
-                : null
+                ? styles.register_btn_text_active
+                : styles.register_btn_text_deactive
             }>
-            <Text
-              style={
-                (shop || shopValue) &&
-                (address || locationValue) &&
-                (menu || menuValue)
-                  ? styles.register_btn_text_active
-                  : styles.register_btn_text_deactive
-              }>
-              피드 등록
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{height: insets.bottom + 80}} />
-      </ScrollView>
-    </View>
-    // </TouchableWithoutFeedback>÷
+            피드 등록
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -345,11 +351,11 @@ const styles = StyleSheet.create({
   },
   fooiyti_evaluation: {
     ...fooiyFont.Subtitle1,
-    marginTop: 16,
+    marginTop: 36,
   },
   total_evaluation: {
     ...fooiyFont.Subtitle1,
-    marginTop: 16,
+    marginTop: 36,
   },
   comment: {
     flexDirection: 'row',
@@ -395,23 +401,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
   },
-  comment_text_focus_deactive: {
-    padding: 16,
-    ...fooiyFont.Subtitle2,
-    lineHeight: 0,
-    color: 'red',
-    width: '90%',
-    height: '100%',
-    fontSize: 14,
-    paddingTop: 16,
-    fontWeight: '400',
-  },
   commnet_notice: {
     width: '100%',
     backgroundColor: fooiyColor.P50,
     borderRadius: 8,
     marginTop: 16,
     padding: 16,
+    marginBottom: 16,
   },
   commnet_notice_title: {
     ...fooiyFont.Subtitle3,
@@ -428,20 +424,20 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   register_btn_active: {
+    marginHorizontal: 16,
     width: globalVariable.width - 32,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 36,
     backgroundColor: fooiyColor.P500,
     height: 56,
   },
   register_btn_deactive: {
+    marginHorizontal: 16,
     width: globalVariable.width - 32,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 36,
     backgroundColor: fooiyColor.G100,
     height: 56,
   },

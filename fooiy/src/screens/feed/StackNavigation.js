@@ -6,13 +6,11 @@ import {globalStyles} from '../../common/globalStyles';
 import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
 import OtherUserPage from '../mypage/storage/OtherUserPage';
 import OtherUserFeedDetail from '../mypage/storage/OtherUserFeedDetail';
+import Register from '../register/Register';
 
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
-    // <SafeAreaView
-    //   style={{flex: 1, backgroundColor: '#fff'}}
-    //   edges={Platform.OS === 'ios' ? 'top' : null}>
     <Stack.Navigator
       initialRouteName="FeedStackNavigation"
       screenOptions={{headerShown: false}}>
@@ -28,14 +26,13 @@ const StackNavigation = () => {
           }
         }}
       />
-      {/* <Stack.Screen
-          name="Shop"
-          component={Shop}
-          listeners={({navigation, route}) => {
-            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-          }}
-        /> */}
-      <Stack.Screen name="Shop" component={Shop} />
+      <Stack.Screen
+        name="Shop"
+        component={Shop}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+        }}
+      />
       <Stack.Screen
         name="OtherUserPage"
         component={OtherUserPage}
@@ -57,8 +54,17 @@ const StackNavigation = () => {
           navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
         }}
       />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        listeners={({navigation, route}) => {
+          const state = navigation.getState();
+          navigation.getParent().setOptions({
+            tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+          });
+        }}
+      />
     </Stack.Navigator>
-    // </SafeAreaView>
   );
 };
 

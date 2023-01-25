@@ -5,6 +5,7 @@ import {CropView} from 'react-native-image-crop-tools';
 
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {globalVariable} from '../../../common/globalVariable';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const ImageCrop = props => {
   const navigation = useNavigation();
@@ -12,16 +13,21 @@ const ImageCrop = props => {
   const cropViewRef = useRef(null);
   const [photo, setPhoto] = useState(props.route.params.photo);
   const width = globalVariable.width;
+
   const go_next = () => {
-    navigation.navigate('SetAddress', {
-      photo_list: [{image: {uri: photo, filename: 'image.jpg'}}],
-      address: null,
-    });
-    console.log(photo);
+    props.route.params.shop
+      ? navigation.navigate('FindMenu', {
+          photo_list: [{image: {uri: photo, filename: 'image.jpg'}}],
+          shop: props.route.params.shop,
+        })
+      : navigation.navigate('SetAddress', {
+          photo_list: [{image: {uri: photo, filename: 'image.jpg'}}],
+          address: null,
+        });
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <StackHeader title="사진등록" next={go_next} />
       {cropPhoto ? (
         <View>
@@ -66,7 +72,7 @@ const ImageCrop = props => {
           <Button title="편집" onPress={() => setCropPhoto(true)} />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
