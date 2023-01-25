@@ -26,17 +26,6 @@ const Mypage = props => {
 
   const dispatch = useDispatch();
 
-  const getAccountInfo = async data => {
-    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res => {
-      dispatch(userInfoAction.init(res.data.payload.account_info));
-    });
-  };
-
-  useEffect(() => {
-    getAccountInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const flatListRef = useRef(null);
 
   const tabNavigation = props.navigation.getParent();
@@ -57,7 +46,9 @@ const Mypage = props => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    getFeedList();
+    if (lastIndex === -1 || offset < lastIndex) {
+      getFeedList();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);
 

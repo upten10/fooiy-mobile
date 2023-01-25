@@ -8,10 +8,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
 
 const App = () => {
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
-
   const linking = {
     prefixes: ['kakaoadeeb3a64a0ef610048dbcbe1010c07f://'],
     config: {
