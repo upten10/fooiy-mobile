@@ -12,11 +12,17 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {Search} from '../../../../assets/icons/svg';
 
 const FindMenu = props => {
+  const shop_id = props.route.params.shop.shop_id
+    ? props.route.params.shop.shop_id
+    : props.route.params.shop.public_id;
+  const address = props.route.params.address
+    ? props.route.params.address
+    : props.route.params.shop.shop_address;
   const [menuList, setMenuList] = useState([]);
   const [searchMenu, setSearchMenu] = useState([]);
   const insets = useSafeAreaInsets();
@@ -25,7 +31,7 @@ const FindMenu = props => {
   const getMenuList = async () => {
     await ApiManagerV2.get(apiUrl.SHOP_MENU, {
       params: {
-        shop_id: props.route.params.shop.public_id,
+        shop_id: shop_id,
       },
     }).then(res => {
       setMenuList(res.data.payload.menu_list),
@@ -45,15 +51,18 @@ const FindMenu = props => {
   };
 
   return (
-    <View style={{backgroundColor: fooiyColor.W}}>
+    <SafeAreaView
+      style={{backgroundColor: fooiyColor.W, flex: 1, paddingBottom: 16}}>
       <ScrollView
-        style={{
-          height: globalVariable.height - insets.top - insets.bottom - 56 - 16,
-          marginBottom: 16,
-        }}>
+        style={
+          {
+            // height: globalVariable.height - insets.top - insets.bottom - 56 - 16,
+            // marginBottom: 16,
+          }
+        }>
         <StackHeader title="메뉴 선택" />
         <View style={styles.top_text_view}>
-          <Text style={styles.top_text}>방문한 음식점을{'\n'}</Text>
+          <Text style={styles.top_text}>메뉴를{'\n'}선택해주세요</Text>
         </View>
         <View style={styles.search_view}>
           <TextInput
@@ -79,7 +88,7 @@ const FindMenu = props => {
                     photo_list: props.route.params.photo_list,
                     shop: props.route.params.shop,
                     menu: item,
-                    address: props.route.params.address,
+                    address: address,
                   })
                 }>
                 <View style={styles.menu_view}>
@@ -98,13 +107,13 @@ const FindMenu = props => {
               photo_list: props.route.params.photo_list,
               shop: props.route.params.shop,
               menu: null,
-              address: props.route.params.address,
+              address: address,
             });
           }}>
           <Text style={styles.no_menu_text}>먹은 메뉴가 없어요</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

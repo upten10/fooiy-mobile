@@ -1,26 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Button, View, Text} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Button,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
 import {StackHeader} from '../headers/StackHeader';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {globalVariable} from '../../common/globalVariable';
 import {RenderLoader} from '../RenderLoader';
 import {UI_Feed} from '../feed/Feed';
-
 import {useNavigation} from '@react-navigation/native';
 import {apiUrl} from '../../common/Enums';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Menu} from '../../../assets/icons/svg';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 
 export const Shop = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-
   const type = props.route.params.type && props.route.params.type;
-
   const other_account_id =
     props.route.params.other_account_id && props.route.params.other_account_id;
 
@@ -50,9 +56,26 @@ export const Shop = props => {
     getFeedList(props.route.params.shop_id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);
+
+  const go_map = () => {
+    navigation.navigate('FindWay', {
+      shop: props.route.params,
+    });
+  };
+  const onClickMenu = () => {
+    navigation.navigate('Menu', {
+      shop: props.route.params,
+    });
+  };
+  const onClickRegister = () => {
+    navigation.navigate('RegisterStackNavigation', {
+      shop: props.route.params,
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <StackHeader shop={props.route.params} />
+      <StackHeader shop={props.route.params} map={go_map} />
       <FlatList
         data={feeds}
         renderItem={({item}) => (
@@ -63,6 +86,21 @@ export const Shop = props => {
         onEndReached={loadMoreItem}
         onEndReachedThreshold={3}
       />
+      <View style={[styles.bottom_container, {height: insets.bottom + 88}]}>
+        <TouchableOpacity
+          style={styles.menu_container}
+          activeOpacity={0.8}
+          onPress={onClickMenu}>
+          <Menu style={styles.menu} />
+          <Text style={styles.menu_text}>메뉴판</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.register_container}
+          activeOpacity={0.8}
+          onPress={onClickRegister}>
+          <Text style={styles.register_text}>피드 등록하기</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -70,7 +108,7 @@ export const Shop = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: fooiyColor.W,
   },
   shop_name: {
     alignItems: 'center',
@@ -84,5 +122,53 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 700,
     elevation: 1,
+  },
+  bottom_container: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    backgroundColor: fooiyColor.W,
+    flexDirection: 'row',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    shadowColor: '#000000',
+    shadowOpacity: 0.16,
+    shadowOffset: {width: 0, height: -4},
+    shadowRadius: 16,
+  },
+  menu_container: {
+    margin: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+    width: 56,
+    height: 56,
+  },
+  menu: {
+    width: 24,
+    height: 24,
+    marginBottom: 4,
+  },
+  menu_text: {
+    ...fooiyFont.Caption1,
+    lineHeight: 18,
+    color: fooiyColor.P500,
+    textAlign: 'center',
+  },
+  register_container: {
+    margin: 16,
+    marginLeft: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: fooiyColor.P500,
+    height: 56,
+    flex: 1,
+    borderRadius: 8,
+  },
+  register_text: {
+    ...fooiyFont.Button,
+    letterSpacing: 0.5,
+    color: fooiyColor.W,
+    textAlign: 'center',
   },
 });

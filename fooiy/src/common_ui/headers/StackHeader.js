@@ -2,7 +2,8 @@ import React from 'react';
 import {View, Image, Text, StyleSheet, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {fooiyColor} from '../../common/globalStyles';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {Map_shop} from '../../../assets/icons/svg';
 export const StackHeader = props => {
   const navigation = useNavigation();
   return (
@@ -17,6 +18,11 @@ export const StackHeader = props => {
         props.title ? (
           <View style={styles.header_container}>
             <Text style={styles.title_name}>{props.title}</Text>
+          </View>
+        ) : props.menu ? (
+          <View style={styles.menu_container}>
+            <Text style={styles.menu}>메뉴판</Text>
+            <Text style={styles.menu_shop_name}>{props.menu.shop_name}</Text>
           </View>
         ) : (
           <View></View>
@@ -53,6 +59,15 @@ export const StackHeader = props => {
               props.enroll();
             }}>
             <Text style={styles.next_name}>등록</Text>
+          </TouchableOpacity>
+        ) : props.map ? (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}
+            onPress={() => {
+              props.map();
+            }}>
+            <Map_shop style={styles.map_icon} />
           </TouchableOpacity>
         ) : null}
       </View>
@@ -105,5 +120,19 @@ const styles = StyleSheet.create({
 
   shop_address: {
     color: '#4A5470',
+  },
+  menu_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menu: {
+    ...fooiyFont.Subtitle2,
+  },
+  menu_shop_name: {
+    ...fooiyFont.Caption1,
+  },
+  map_icon: {
+    width: 24,
+    height: 24,
   },
 });

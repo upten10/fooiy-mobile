@@ -23,7 +23,13 @@ const StackNavigation = () => {
           }
         }}
       />
-      <Stack.Screen name="Shop" component={Shop} />
+      <Stack.Screen
+        name="Shop"
+        component={Shop}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+        }}
+      />
     </Stack.Navigator>
   );
 };

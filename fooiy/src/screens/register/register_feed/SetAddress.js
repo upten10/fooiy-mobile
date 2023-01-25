@@ -1,17 +1,16 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import NaverMapView, {Marker} from 'react-native-nmap';
+import NaverMapView from 'react-native-nmap';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {useNavigation} from '@react-navigation/native';
-import Geolocation, {
-  getCurrentPosition,
-} from 'react-native-geolocation-service';
+import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
-import {add, debounce, throttle} from 'lodash';
+import {debounce} from 'lodash';
 import {Current_Location} from '../../../../assets/icons/svg';
 import {check, PERMISSIONS} from 'react-native-permissions';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const SetAddress = props => {
   const navigation = useNavigation();
@@ -145,7 +144,7 @@ const SetAddress = props => {
   }, []);
 
   return (
-    <View style={{height: '100%'}}>
+    <SafeAreaView style={{backgroundColor: fooiyColor.W, height: '100%'}}>
       <StackHeader title="주소 설정" />
       <View>
         <NaverMapView
@@ -166,19 +165,18 @@ const SetAddress = props => {
                   zoom: 17,
                 }
           }
-          style={styles.mapview}>
-          <View
-            style={{
-              width: 10,
-              height: 10,
-              position: 'absolute',
-              right: '50%',
-              top: '50%',
-              borderWidth: 2,
-            }}>
-            <Current_Location />
-          </View>
-        </NaverMapView>
+          style={styles.mapview}></NaverMapView>
+        <View
+          style={{
+            width: 5,
+            height: 5,
+            position: 'absolute',
+            right: '50%',
+            top: '42.5%',
+            borderWidth: 2,
+            backgroundColor: 'red',
+          }}
+        />
       </View>
       <View style={styles.current_location}>
         <TouchableOpacity onPress={onClickLocationBtn}>
@@ -224,7 +222,7 @@ const SetAddress = props => {
           <Text style={styles.input_adress_text}>주소 직접 입력</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

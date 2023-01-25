@@ -5,6 +5,7 @@ import {globalStyles} from '../../common/globalStyles';
 import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
 import OtherUserPage from '../mypage/storage/OtherUserPage';
 import OtherUserFeedDetail from '../mypage/storage/OtherUserFeedDetail';
+import Register from '../register/Register';
 
 const Stack = createStackNavigator();
 const StackNavigation = () => {
@@ -22,6 +23,13 @@ const StackNavigation = () => {
               tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
             });
           }
+        }}
+      />
+      <Stack.Screen
+        name="Shop"
+        component={Shop}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
         }}
       />
       <Stack.Screen
@@ -43,6 +51,16 @@ const StackNavigation = () => {
         component={MypageFeedDetail}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+        }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        listeners={({navigation, route}) => {
+          const state = navigation.getState();
+          navigation.getParent().setOptions({
+            tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+          });
         }}
       />
     </Stack.Navigator>

@@ -22,8 +22,9 @@ import cloneDeep from 'lodash/cloneDeep';
 import {check, PERMISSIONS} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {fooiyColor} from '../../../common/globalStyles';
 
-const Gallery = () => {
+const Gallery = props => {
   const navigation = useNavigation();
   const width = globalVariable.width;
   const height = globalVariable.height;
@@ -43,23 +44,42 @@ const Gallery = () => {
       const photoList = selectedPhotoIndexList.map(index => {
         return galleryList[index].node;
       });
-      navigation.navigate('SetAddress', {
-        photo_list: photoList,
-        address:
-          photoList.length === 1 && photoList[0].location
-            ? photoList[0].location
-            : photoList.length === 2 && photoList[0].location
-            ? photoList[0].location
-            : photoList.length === 2 && photoList[1].location
-            ? photoList[1].location
-            : photoList.length === 3 && photoList[0].location
-            ? photoList[0].location
-            : photoList.length === 3 && photoList[1].location
-            ? photoList[1].location
-            : photoList.length === 3 && photoList[2].location
-            ? photoList[2].location
-            : null,
-      });
+      props.route.params
+        ? navigation.navigate('FindMenu', {
+            shop: props.route.params.shop,
+            photo_list: photoList,
+            address:
+              photoList.length === 1 && photoList[0].location
+                ? photoList[0].location
+                : photoList.length === 2 && photoList[0].location
+                ? photoList[0].location
+                : photoList.length === 2 && photoList[1].location
+                ? photoList[1].location
+                : photoList.length === 3 && photoList[0].location
+                ? photoList[0].location
+                : photoList.length === 3 && photoList[1].location
+                ? photoList[1].location
+                : photoList.length === 3 && photoList[2].location
+                ? photoList[2].location
+                : null,
+          })
+        : navigation.navigate('SetAddress', {
+            photo_list: photoList,
+            address:
+              photoList.length === 1 && photoList[0].location
+                ? photoList[0].location
+                : photoList.length === 2 && photoList[0].location
+                ? photoList[0].location
+                : photoList.length === 2 && photoList[1].location
+                ? photoList[1].location
+                : photoList.length === 3 && photoList[0].location
+                ? photoList[0].location
+                : photoList.length === 3 && photoList[1].location
+                ? photoList[1].location
+                : photoList.length === 3 && photoList[2].location
+                ? photoList[2].location
+                : null,
+          });
     }
   };
 
@@ -232,7 +252,7 @@ const Gallery = () => {
   }, [selectedPhotoIndexList, cropPhoto, selectIndex]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
       <StackHeader title="앨범" next={go_next} />
       {selectedPhotoIndexList.length !== 0 ? (
         <SelectedPhoto />

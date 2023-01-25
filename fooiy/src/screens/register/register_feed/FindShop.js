@@ -12,7 +12,7 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {Search} from '../../../../assets/icons/svg';
 
@@ -45,16 +45,18 @@ const FindShop = props => {
   };
 
   return (
-    <View style={{backgroundColor: fooiyColor.W}}>
+    <SafeAreaView
+      style={{backgroundColor: fooiyColor.W, flex: 1, paddingBottom: 16}}>
       <ScrollView
-        style={{
-          height: globalVariable.height - insets.top - insets.bottom - 56 - 16,
-          marginBottom: 16,
-        }}>
+        style={
+          {
+            // height: globalVariable.height - insets.top - insets.bottom - 56 - 16,
+            // marginBottom: 16,
+          }
+        }>
         <StackHeader title="음식점 선택" />
         <View style={styles.top_text_view}>
-          <Text style={styles.top_text}>방문한 음식점을</Text>
-          <Text style={styles.top_text}>선택해주세요</Text>
+          <Text style={styles.top_text}>방문한 음식점을{'\n'}선택해주세요</Text>
         </View>
         <View style={styles.search_view}>
           <TextInput
@@ -105,7 +107,7 @@ const FindShop = props => {
           <Text style={styles.no_shop_text}>방문한 음식점이 없어요</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

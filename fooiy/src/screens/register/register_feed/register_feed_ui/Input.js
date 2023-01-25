@@ -8,15 +8,13 @@ import {
   Keyboard,
   Touchable,
 } from 'react-native';
-import {globalVariable} from '../../../../common/globalVariable';
-import {StackHeader} from '../../../../common_ui/headers/StackHeader';
 import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {globalStyles} from '../../../../common/globalStyles';
 import {Notice} from '../../../../../assets/icons/svg';
 import {Clear} from '../../../../../assets/icons/svg';
+import {check} from 'react-native-permissions';
 const Input = props => {
-  const {holders, onChangeText, title} = props;
+  const {holders, onChangeText, title, checkInput} = props;
   const [isFocus, setFocused] = useState(false);
   const textInputRef = useRef();
 
@@ -31,11 +29,15 @@ const Input = props => {
     <View>
       <Text style={styles.title}>{title}</Text>
       <View
-        style={isFocus ? styles.focus_active_view : styles.focus_deactive_view}>
+        style={
+          checkInput() ? styles.focus_active_view : styles.focus_deactive_view
+        }>
         <TextInput
           ref={textInputRef}
           style={
-            isFocus ? styles.focus_active_input : styles.focus_deactive_input
+            checkInput()
+              ? styles.focus_active_input
+              : styles.focus_deactive_input
           }
           placeholder={holders}
           multiline={false}
@@ -49,16 +51,16 @@ const Input = props => {
           onBlur={onBlur}
           placeholderTextColor={fooiyColor.G400}
         />
-        <TouchableOpacity
-          style={
-            isFocus ? styles.focus_active_icon : styles.focus_deactive_icon
-          }
-          hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
-          onPress={() => {
-            textInputRef.current.clear(), onChangeText('');
-          }}>
-          {isFocus ? <Clear /> : null}
-        </TouchableOpacity>
+        {isFocus && (
+          <TouchableOpacity
+            style={styles.focus_active_icon}
+            hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+            onPress={() => {
+              textInputRef.current.clear(), onChangeText('');
+            }}>
+            <Clear />
+          </TouchableOpacity>
+        )}
       </View>
       {title === '위치' ? (
         <View style={styles.location_notice}>
@@ -123,11 +125,8 @@ const styles = StyleSheet.create({
   focus_active_icon: {
     width: 24,
     height: 24,
-    right: 16,
     justifyContent: 'center',
-  },
-  focus_deactive_icon: {
-    right: 16,
+    marginRight: 16,
   },
   location_notice: {
     width: '100%',

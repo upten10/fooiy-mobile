@@ -8,6 +8,7 @@ import {
   Alert,
   Linking,
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
@@ -24,7 +25,7 @@ import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 const width = Dimensions.get('window').width;
 
-const Register = () => {
+const Register = props => {
   const navigation = useNavigation();
   const register_photo = () => {
     setModalVisible(true);
@@ -36,7 +37,11 @@ const Register = () => {
   };
 
   const goCamera = () => {
-    navigation.navigate('RegisterCamera');
+    props.route.params
+      ? navigation.navigate('RegisterCamera', {
+          shop: props.route.params.shop,
+        })
+      : navigation.navigate('RegisterCamera');
     toggleModal();
   };
 
@@ -68,12 +73,15 @@ const Register = () => {
           }
         })
       : null;
-    navigation.navigate('Gallery');
+    props.route.params
+      ? navigation.navigate('Gallery', {
+          shop: props.route.params.shop,
+        })
+      : navigation.navigate('Gallery');
     toggleModal();
   };
-
   return (
-    <View>
+    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
       <StackHeader title="사진 등록" style={{color: 'black'}} />
       <TouchableOpacity
         onPress={register_photo}
@@ -142,7 +150,7 @@ const Register = () => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

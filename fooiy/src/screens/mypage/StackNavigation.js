@@ -40,22 +40,43 @@ const MypageStackNavigation = props => {
             }
           }}
         />
-        <Stack.Screen name="Shop" component={Shop} />
+        <Stack.Screen
+          name="Shop"
+          component={Shop}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
         <Stack.Screen
           name="OtherUserFeedDetail"
           component={OtherUserFeedDetail}
+          listeners={({navigation, route}) => {
+            const state = navigation.getState();
+            navigation.getParent().setOptions({
+              tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+            });
+          }}
         />
         <Stack.Screen
           name="OtherUserPage"
           component={OtherUserPage}
           listeners={({navigation, route}) => {
             const state = navigation.getState();
-            navigation.setOptions({
+            navigation.getParent().setOptions({
               tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
             });
           }}
         />
-        <Stack.Screen name="FeedDetail" component={MypageFeedDetail} />
+        <Stack.Screen
+          name="FeedDetail"
+          component={MypageFeedDetail}
+          listeners={({navigation, route}) => {
+            const state = navigation.getState();
+            navigation.getParent().setOptions({
+              tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+            });
+          }}
+        />
         <Stack.Screen name="StorageSingleFeed" component={StorageSingleFeed} />
         <Stack.Screen name="Storage" component={Storage} />
         <Stack.Screen

@@ -53,3 +53,7 @@ export {default as SliderTOTAL_2} from './Slider/SliderTOTAL_2.svg';
 export {default as SliderTOTAL_3} from './Slider/SliderTOTAL_3.svg';
 export {default as SliderTOTAL_4} from './Slider/SliderTOTAL_4.svg';
 export {default as Search} from './Search.svg';
+export {default as Menu} from './Menu.svg';
+export {default as Map_shop} from './Map_shop.svg';
+export {default as Current_Location_2} from './Current_Location_2.svg';
+export {default as Copy} from './Copy.svg';
