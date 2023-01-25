@@ -17,8 +17,6 @@ const OtherUserFeedDetail = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [nickname, setNickname] = useState('');
 
-  console.log(props.route.params.other_account_id);
-
   useEffect(() => {
     if (props.route.params) {
       getOtherFeed(props.route.params);

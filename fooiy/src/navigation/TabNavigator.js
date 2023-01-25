@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Route} from './Route';
 import {globalStyles} from '../common/globalStyles';
-import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
+import SplashScreen from 'react-native-splash-screen';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  useEffect(() => {
+    setTimeout(() => SplashScreen.hide(), 500);
+  }, []);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -17,6 +20,7 @@ const TabNavigator = () => {
           ...globalStyles.tab_bar,
           ...globalStyles.shadow,
         },
+        lazy: false,
       }}>
       {Route.map(route => (
         <Tab.Screen

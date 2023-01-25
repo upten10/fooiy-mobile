@@ -9,13 +9,11 @@ import {
   ImageBackground,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import OtherUserPageProfile from './OtherUserPageProfile';
 
 const OtherUserPage = props => {
@@ -35,7 +33,9 @@ const OtherUserPage = props => {
   }, []);
 
   useEffect(() => {
-    getFeedList();
+    if (lastIndex === -1 || offset < lastIndex) {
+      getFeedList();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);
 
@@ -84,9 +84,12 @@ const OtherUserPage = props => {
         {item.is_confirm ? (
           <ImageBackground
             source={{uri: item.image[0]}}
-            style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}
-            blurRadius={10} //Blur 효과
-          />
+            style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}>
+            <Image
+              source={require('../../../../assets/image/feed_confirm_simple.png')}
+              style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}
+            />
+          </ImageBackground>
         ) : (
           <Image source={{uri: item.image[0]}} style={styles.feedImage} />
         )}

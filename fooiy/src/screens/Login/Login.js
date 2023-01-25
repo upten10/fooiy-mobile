@@ -24,21 +24,30 @@ import {
   Login_icon,
 } from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
-
-import TabNavigator from '../../navigation/TabNavigator';
-import {useDispatch, useSelector} from 'react-redux';
-import {loginActions} from '../redux/reducer/login';
+import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import {userInfoAction} from '../../redux/actions/userInfoAction';
+import SplashScreen from 'react-native-splash-screen';
 
 const Login = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [isLogin, setisLogin] = useState(false);
   const [auth, setAuth] = useState('');
+
+  const getAccountInfo = async data => {
+    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res => {
+      dispatch(userInfoAction.init(res.data.payload.account_info));
+    });
+  };
 
   const route = async () => {
     const value = await AsyncStorage.getItem('auth');
     if (value) {
+      getAccountInfo();
       navigation.navigate('TabNavigator');
+    } else {
+      setTimeout(() => SplashScreen.hide(), 500);
     }
   };
 
