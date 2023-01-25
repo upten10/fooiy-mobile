@@ -21,6 +21,7 @@ import RegisterFeed from '../screens/register/register_feed/register_feed_ui/Reg
 import EditName from '../screens/mypage/setting/EditName';
 import FindWay from '../common_ui/shop/FindWay';
 import Menu from '../common_ui/shop/Menu';
+import Shop from '../common_ui/shop/Shop';
 
 const Stack = createStackNavigator();
 const RootNavigator = () => {

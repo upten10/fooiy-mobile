@@ -8,7 +8,7 @@ import MypageFeedDetail from './mypage/MypageFeedDetail';
 import StorageSingleFeed from './storage/StorageSingleFeed';
 import OtherUserPage from './storage/OtherUserPage';
 import OtherUserFeedDetail from './storage/OtherUserFeedDetail';
-import {Shop} from '../../common_ui/shop/Shop';
+import Shop from '../../common_ui/shop/Shop';
 import Suggestion from './setting/Suggestion';
 import Setting from './setting/Setting';
 import ProfileImg from './setting/ProfileImg';

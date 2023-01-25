@@ -19,7 +19,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Menu} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 
-export const Shop = props => {
+const Shop = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -104,6 +104,8 @@ export const Shop = props => {
     </SafeAreaView>
   );
 };
+
+export default Shop;
 
 const styles = StyleSheet.create({
   container: {

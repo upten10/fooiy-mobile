@@ -6,6 +6,7 @@ import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
 import OtherUserPage from '../mypage/storage/OtherUserPage';
 import OtherUserFeedDetail from '../mypage/storage/OtherUserFeedDetail';
 import Register from '../register/Register';
+import Shop from '../../common_ui/shop/Shop';
 
 const Stack = createStackNavigator();
 const StackNavigation = () => {

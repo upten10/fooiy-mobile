@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Shop} from '../../common_ui/shop/Shop';
+import Shop from '../../common_ui/shop/Shop';
 import Map from './Map';
 import {globalStyles} from '../../common/globalStyles';
 
