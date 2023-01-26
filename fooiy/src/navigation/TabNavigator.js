@@ -21,7 +21,6 @@ const TabNavigator = () => {
           ...globalStyles.tab_bar,
           ...globalStyles.shadow,
         },
-        lazy: false,
       }}>
       {Route.map(route => (
         <Tab.Screen

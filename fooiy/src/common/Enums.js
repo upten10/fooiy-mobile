@@ -14,6 +14,8 @@ export const apiUrl = {
 
   // 문의 등록
   SUGGESTION: 'archives/suggestion/',
+  // 주소 필터 리스트
+  STORAGE_ADRESS: 'archives/filter/address/',
 
   // 피드 리스트
   FEED_LIST: 'feeds/feed/',
