@@ -27,29 +27,50 @@ const Storage = () => {
   const [lastIndex, setLastIndex] = useState(-1);
   const [noFeedImage, setNoFeedImage] = useState('');
 
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('전체');
+  const [items, setItems] = useState([{value: '전체', label: '전체'}]);
+
   useEffect(
     () => {
-      getStoredShopList();
+      getAddress();
+      setItems([{value: '전체', label: '전체'}]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  useEffect(
+    () => {
+      if (lastIndex === -1 || offset < lastIndex) {
+        getStoredShopList();
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [offset],
   );
+
+  useEffect(() => {
+    setLastIndex(-1);
+    setFeeds([]);
+    setNoFeedImage('');
+    setOffset(0);
+  }, [value]);
 
   const getStoredShopList = async () => {
     await ApiManagerV2.get(apiUrl.FEED_STORAGE, {
       params: {
         // address_depth1: 시,도 단위
         // address_depth2: 구,동 단위
+        ...(value !== '전체' && {address_depth1: value}),
         limit,
         offset,
       },
     }).then(res => {
-      if (
-        res.data.payload.storage_list.total_count === 0 &&
-        res.data.payload.image
-      ) {
+      if (res.data.payload.image) {
         setNoFeedImage(res.data.payload.image);
       } else if (lastIndex === -1 || offset < lastIndex) {
+        setNoFeedImage('');
         setLastIndex(res.data.payload.storage_list.total_count);
         setFeeds([...feeds, ...res.data.payload.storage_list.results]);
         setOffset(offset + limit);
@@ -57,25 +78,29 @@ const Storage = () => {
     });
   };
 
+  const setFilter = address => {
+    const filters = address.map(item => {
+      return {value: item, label: item};
+    });
+    setItems([...items, ...filters]);
+  };
+
+  const getAddress = async () => {
+    await ApiManagerV2.get(apiUrl.STORAGE_ADRESS, {}).then(res => {
+      setFilter(res.data.payload.address_list);
+    });
+  };
+
   const Filter = () => {
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('IMP');
-    const [items, setItems] = useState([
-      {value: 'IMP', label: '서울 전체'},
-      {value: 'FR', label: '고양시 전체'},
-      {value: 'BUG', label: '안산시 전체'},
-      //   {value: 'AC', label: '계정 관련'},
-      //   {value: 'AD', label: '광고 제의'},
-      //   {value: 'ETC', label: '기타 피드백'},
-    ]);
     return (
       <DropDownPicker
         items={items}
+        setItems={setItems}
+        autoScroll={true}
         open={open}
         value={value}
         setOpen={setOpen}
         setValue={setValue}
-        setItems={setItems}
         maxHeight={336}
         style={filter_styles.categoryContainer}
         labelStyle={filter_styles.dropDownTitle}
@@ -149,22 +174,29 @@ const Storage = () => {
       {/* 바디 */}
       <View style={styles.bodyContainer}>
         {/* 지역 필터 */}
-        <View></View>
+        <View style={styles.filterContainer}>
+          <Filter />
+        </View>
         {/* 리스트 */}
         <View style={styles.flatListContainer}>
-          <FlatList
-            data={feeds}
-            renderItem={StorageItem}
-            keyExtractor={(feeds, index) => index.toString()}
-            scrollEventThrottle={16}
-            bounces={true}
-            numColumns={2}
-            scrollToOverflowEnabled
-            style={styles.flatList}
-            columnWrapperStyle={styles.flatListRow}
-            ListHeaderComponent={Filter}
-            ListFooterComponent={<View style={styles.flatListFooter}></View>}
-          />
+          {noFeedImage !== '' ? (
+            <View style={styles.noFeedImageContainer}>
+              <Image source={{uri: noFeedImage}} style={styles.noFeedImage} />
+            </View>
+          ) : (
+            <FlatList
+              data={feeds}
+              renderItem={StorageItem}
+              keyExtractor={(feeds, index) => index.toString()}
+              scrollEventThrottle={16}
+              bounces={true}
+              numColumns={2}
+              scrollToOverflowEnabled
+              style={styles.flatList}
+              columnWrapperStyle={styles.flatListRow}
+              ListFooterComponent={<View style={styles.flatListFooter}></View>}
+            />
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -181,17 +213,32 @@ const styles = StyleSheet.create({
   bodyContainer: {
     marginTop: 16,
   },
-  flatListContainer: {},
+  filterContainer: {
+    zIndex: 1,
+    paddingHorizontal: 16,
+  },
+  flatListContainer: {
+    marginTop: 24,
+  },
   flatList: {
-    // width: '100%',
     paddingHorizontal: 16,
   },
   flatListRow: {
     justifyContent: 'space-between',
-    marginTop: 24,
+    marginBottom: 24,
   },
   flatListFooter: {
-    height: 100,
+    height: 250,
+  },
+  noFeedImageContainer: {
+    width: '100%',
+    height: 500,
+    paddingHorizontal: 16,
+  },
+  noFeedImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
 });
 
