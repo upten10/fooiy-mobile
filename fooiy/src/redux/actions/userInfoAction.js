@@ -6,9 +6,9 @@ function init(data) {
   };
 }
 
-function editIntro(data) {
+function edit(data) {
   return async (dispatch, getState) => {
-    dispatch(userInfoActions.editIntro(data));
+    dispatch(userInfoActions.edit(data));
   };
 }
 
@@ -18,4 +18,4 @@ function isExist(data) {
   };
 }
 
-export const userInfoAction = {init, editIntro, isExist};
+export const userInfoAction = {init, edit, isExist};

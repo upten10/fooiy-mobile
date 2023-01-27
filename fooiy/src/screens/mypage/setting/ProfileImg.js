@@ -52,7 +52,7 @@ const ProfileImg = () => {
       },
     })
       .then(res => {
-        dispatch(userInfoAction.editIntro(res.data.payload.account_info));
+        dispatch(userInfoAction.edit(res.data.payload.account_info));
       })
       .then(navigation.goBack());
   };
