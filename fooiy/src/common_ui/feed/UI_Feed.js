@@ -1,11 +1,10 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
+import React, {useState, useCallback, useEffect, useRef, memo} from 'react';
 import {
   View,
   Text,
   Image,
   Dimensions,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Animated,
   ImageBackground,
@@ -27,6 +26,7 @@ import {
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import KakaoShareLink from 'react-native-kakao-share-link';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const {width} = Dimensions.get('screen');
 const PROFILE_IMAGE_WIDTH = width * 0.1;
@@ -34,21 +34,55 @@ const PROFILE_IMAGE_HEIGHT = PROFILE_IMAGE_WIDTH;
 const IMAGE_WIDTH = width;
 const IMAGE_HEIGHT = IMAGE_WIDTH;
 
-export const UI_Feed = (item, props) => {
+const UI_Feed = (item, props) => {
+  // feed redux
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [disableShopButton, setDisableShopButton] = useState(false);
+  const [line, setLine] = useState(3);
+  const [moreTextActive, setMoreTextActive] = useState(false);
+  const [likeIcon, setLikeIcon] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [storeIcon, setStoreIcon] = useState(false);
+
+  const feed_redux = {
+    id: item.id,
+    count_liked: item.count_liked,
+    is_liked: item.is_liked,
+    is_store: item.is_store,
+  };
+
+  dispatch(feedsAction.append(feed_redux));
+
+  const feeds = useSelector(state => state.feeds.feeds.value);
+  const feed = feeds.find(e => e.id === item.id);
+
+  useEffect(() => {
+    setLikeIcon(feed.is_liked);
+    setLikeCount(
+      feed.is_liked === item.is_liked
+        ? item.count_liked
+        : feed.is_liked
+        ? item.count_liked + 1
+        : item.count_liked - 1,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feed.is_liked]);
+
+  useEffect(() => {
+    setStoreIcon(feed.is_store);
+  }, [feed.is_store]);
 
   useEffect(() => {
     item.disable_shop_button && setDisableShopButton(item.disable_shop_button);
   }, [item.disable_shop_button]);
 
-  const [line, setLine] = useState(3);
-  const [moreTextActive, setMoreTextActive] = useState(false);
   const isOverLines = lines => {
     if (lines > 2 && line === 3) {
       setMoreTextActive(true);
     }
   };
+
   const elapsedTime = date => {
     const start = new Date(date);
     const end = new Date();
@@ -69,44 +103,6 @@ export const UI_Feed = (item, props) => {
     }
     return '방금 전';
   };
-
-  // feed redux
-  const dispatch = useDispatch();
-  const feed_redux = {
-    id: item.id,
-    count_liked: item.count_liked,
-    is_liked: item.is_liked,
-    is_store: item.is_store,
-  };
-  dispatch(feedsAction.append(feed_redux));
-  const feeds = useSelector(state => state.feeds.feeds.value);
-  const feed = feeds.find(e => e.id === item.id);
-
-  const [likeIcon, setLikeIcon] = useState(feed.is_liked);
-  const [likeCount, setLikeCount] = useState(
-    feed.is_liked === item.is_liked
-      ? item.count_liked
-      : feed.is_liked
-      ? item.count_liked + 1
-      : item.count_liked - 1,
-  );
-  const [storeIcon, setStoreIcon] = useState(feed.is_store);
-
-  useEffect(() => {
-    setLikeIcon(feed.is_liked);
-    setLikeCount(
-      feed.is_liked === item.is_liked
-        ? item.count_liked
-        : feed.is_liked
-        ? item.count_liked + 1
-        : item.count_liked - 1,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [feed.is_liked]);
-
-  useEffect(() => {
-    setStoreIcon(feed.is_store);
-  }, [feed.is_store]);
 
   // debounce에 콜백 안쓰면 계속 랜더링 되서 이상해짐
   const debounceCallback = useCallback((like, store, count) => {
@@ -351,6 +347,8 @@ export const UI_Feed = (item, props) => {
     </View>
   );
 };
+
+export default memo(UI_Feed);
 
 const styles = StyleSheet.create({
   container: {

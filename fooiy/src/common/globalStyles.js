@@ -1,5 +1,4 @@
 import {StyleSheet, Platform} from 'react-native';
-import {globalVariable} from './globalVariable';
 
 export const fooiyColor = {
   P50: '#FFF5F5',
@@ -130,10 +129,10 @@ export const fooiyFont = StyleSheet.create({
 export const globalStyles = StyleSheet.create({
   tab_bar: {
     position: 'absolute',
-    height: globalVariable.tabBarHeight,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     elevation: 0,
+    paddingHorizontal: 8,
   },
   shadow: {
     ...Platform.select({
@@ -147,7 +146,7 @@ export const globalStyles = StyleSheet.create({
         shadowRadius: 5,
       },
       android: {
-        elevation: 6,
+        elevation: 20,
       },
     }),
   },

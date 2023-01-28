@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import {Logo} from '../../../assets/icons/svg';
 
 export const DefaultHeader = () => {
   return (
     <View style={styles.header_container}>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
+      <Logo />
     </View>
   );
 };
@@ -14,9 +15,5 @@ const styles = StyleSheet.create({
     height: 56,
     justifyContent: 'center',
     paddingLeft: 24,
-  },
-  logo: {
-    height: 28,
-    width: 60,
   },
 });

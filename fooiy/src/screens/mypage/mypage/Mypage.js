@@ -1,13 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  ImageBackground,
-} from 'react-native';
+import {View, StyleSheet, Image, FlatList, ImageBackground} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';

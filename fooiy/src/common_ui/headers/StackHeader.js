@@ -3,7 +3,7 @@ import {View, Image, Text, StyleSheet, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {Map_shop} from '../../../assets/icons/svg';
+import {GoBackArrow, Map_shop} from '../../../assets/icons/svg';
 export const StackHeader = props => {
   const navigation = useNavigation();
   return (
@@ -35,10 +35,7 @@ export const StackHeader = props => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Image
-            style={styles.go_back_logo}
-            source={require('../../../assets/icons/navigation/ic_go_back.png')}
-          />
+          <GoBackArrow />
         </TouchableOpacity>
       </View>
       <View style={styles.go_next_container}>

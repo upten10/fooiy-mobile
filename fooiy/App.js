@@ -4,8 +4,12 @@ import SplashScreen from 'react-native-splash-screen';
 import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import RootNavigator from './src/navigation/RootNavigator';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
+import {useFlipper} from '@react-navigation/devtools';
 
 const App = () => {
   const linking = {
@@ -16,16 +20,20 @@ const App = () => {
       },
     },
   };
+  const navigationRef = useNavigationContainerRef();
+  useFlipper(navigationRef);
 
   return (
-    <SafeAreaProvider>
-      <Provider store={store}>
-        <NavigationContainer linking={linking}>
-          <RootNavigator />
-          <StatusBar barStyle={'dark-content'} />
-        </NavigationContainer>
-      </Provider>
-    </SafeAreaProvider>
+    <React.StrictMode>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <NavigationContainer linking={linking} ref={navigationRef}>
+            <RootNavigator />
+            <StatusBar barStyle={'dark-content'} />
+          </NavigationContainer>
+        </Provider>
+      </SafeAreaProvider>
+    </React.StrictMode>
   );
 };
 

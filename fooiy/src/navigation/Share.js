@@ -4,7 +4,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import MainNavigator from './MainNavigator';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
-import {UI_Feed} from '../common_ui/feed/Feed';
+import UI_Feed from '../common_ui/feed/UI_Feed';
 import {GuestFeed} from '../common_ui/feed/GuestFeed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SafeAreaView} from 'react-native-safe-area-context';

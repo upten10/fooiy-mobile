@@ -14,8 +14,6 @@ const MktSwitch = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(mktAgreeRedux);
   const {debounceCallback, isLoading} = useDebounce({time: 1500});
 
-  console.log(mktAgreeRedux);
-
   const patchMkt = async switchOn => {
     await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
       is_mkt_agree: `${switchOn}`,

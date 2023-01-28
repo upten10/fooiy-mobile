@@ -7,9 +7,12 @@ import OtherUserPage from '../mypage/storage/OtherUserPage';
 import OtherUserFeedDetail from '../mypage/storage/OtherUserFeedDetail';
 import Register from '../register/Register';
 import Shop from '../../common_ui/shop/Shop';
+import {useSelector} from 'react-redux';
+import {globalVariable} from '../../common/globalVariable';
 
 const Stack = createStackNavigator();
 const StackNavigation = () => {
+  const insets = useSelector(state => state.insets.insets);
   return (
     <Stack.Navigator
       initialRouteName="FeedStackNavigation"
@@ -21,7 +24,11 @@ const StackNavigation = () => {
           const state = navigation.getState();
           if (state.index === 0) {
             navigation.getParent().setOptions({
-              tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+              tabBarStyle: {
+                height: globalVariable.tabBarHeight + insets.bottom,
+                ...globalStyles.tab_bar,
+                ...globalStyles.shadow,
+              },
             });
           }
         }}
@@ -30,7 +37,9 @@ const StackNavigation = () => {
         name="Shop"
         component={Shop}
         listeners={({navigation, route}) => {
-          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
         }}
       />
       <Stack.Screen
@@ -39,19 +48,35 @@ const StackNavigation = () => {
         listeners={({navigation, route}) => {
           const state = navigation.getState();
           navigation.setOptions({
-            tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
           });
         }}
       />
       <Stack.Screen
         name="OtherUserFeedDetail"
         component={OtherUserFeedDetail}
+        listeners={({navigation, route}) => {
+          const state = navigation.getState();
+          navigation.setOptions({
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
+          });
+        }}
       />
       <Stack.Screen
         name="FeedDetail"
         component={MypageFeedDetail}
         listeners={({navigation, route}) => {
-          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
         }}
       />
       <Stack.Screen
@@ -60,7 +85,11 @@ const StackNavigation = () => {
         listeners={({navigation, route}) => {
           const state = navigation.getState();
           navigation.getParent().setOptions({
-            tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
           });
         }}
       />
