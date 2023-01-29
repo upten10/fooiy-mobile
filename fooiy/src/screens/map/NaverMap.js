@@ -1,7 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
 import NaverMapView from 'react-native-nmap';
-import {result, throttle} from 'lodash';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -9,14 +8,16 @@ import MapBottomSheet from './bottom_sheet/MapBottomSheet';
 import ShopModal from './ShopModal';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
-import CustomMarker from './Marker';
 import {LocationPermission} from '../../common/Permission';
 import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import MapMarker from './MapMarker';
+import {useDebounce} from '../../common/hooks/useDebounce';
 
 const NaverMap = () => {
   //map ref 초기화
   const mapView = useRef(null);
+  const {debounceCallback, isLoading} = useDebounce({time: 500});
 
   // 클릭 된 마커 키
   const [clickedIndex, setClickedIndex] = useState(null);
@@ -29,35 +30,28 @@ const NaverMap = () => {
   const [shopMarkers, setShopMarkers] = useState([]);
 
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
-  const throttled = throttle(e => {
-    setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
-    setDepth(e.zoom > 11 ? 4 : e.zoom > 8 ? 2 : 1);
-  }, 5000);
   const onCameraChange = e => {
-    throttled(e);
+    debounceCallback(() => {
+      setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
+      // 10 < 4단계, 8 < 2단계 < 10, 1단계 < 8
+      setDepth(e.zoom > 10 ? 4 : e.zoom > 8 ? 2 : 1);
+    });
   };
 
   // 모달 없애기
   const toggleModal = () => {
     setModalVisible(false);
     setClickedIndex(null);
-    setClickedShop(null);
+    setClickedShop([]);
   };
-  // 마커 클릭 이벤트
-  const onClickMarker = index => {
-    if (depth === 4) {
-      setClickedIndex(index);
-      setModalVisible(true);
-      setClickedShop(shopMarkers[index].shops_info);
-    } else {
-      setCenter({
-        ...{
-          longitude: shopMarkers[index].longitude * 1,
-          latitude: shopMarkers[index].latitude * 1,
-        },
-        zoom: depth === 1 ? 8.01 : 11.01,
-      });
-    }
+
+  const onPressClusterMarker = id => {
+    const curMarker = shopMarkers.filter(shop => shop.id === id);
+    setCenter({
+      longitude: curMarker[0].longitude * 1,
+      latitude: curMarker[0].latitude * 1,
+      zoom: depth === 1 ? 8.01 : 11.01,
+    });
   };
 
   // 현위치 버튼 클릭 이벤트
@@ -94,7 +88,7 @@ const NaverMap = () => {
             }
           })
           .catch(error => {
-            console.log(error);
+            console.log('checkGrant: ', error);
           })
       : check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION)
           .then(result => {
@@ -108,7 +102,7 @@ const NaverMap = () => {
             }
           })
           .catch(error => {
-            console.log(error);
+            console.log('checkGrant: ', error);
           });
   };
 
@@ -128,19 +122,35 @@ const NaverMap = () => {
         latitude_left_bottom: data[0].latitude,
         latitude_right_top: data[1].latitude,
         longitude_right_top: data[1].longitude,
+        // shop_category: ,
         depth: depth,
       },
     })
       .then(res => {
-        // if (res.data.payload.shop_list) {
-        //   if (depth === 4) {
-        //     setShopMarkers(res.data.payload.shop_list.results);
-        //   } else {
-        //     setShopMarkers(res.data.payload.shop_list.regions);
-        //   }
-        // }
+        if (res.data.payload.shop_list) {
+          if (depth === 1) {
+            setShopMarkers(res.data.payload.shop_list.regions);
+          } else {
+            setShopMarkers(res.data.payload.shop_list);
+          }
+        } else {
+          setShopMarkers([]);
+        }
       })
-      .catch(e => console.log(e));
+      .catch(e => console.log('getShopMarkerList: ', e));
+  };
+
+  const getShopMarkerDetail = async data => {
+    await ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER_DETAIL, {
+      params: {
+        latitude: data.latitude,
+        longitude: data.longitude,
+      },
+    })
+      .then(res => {
+        setClickedShop(res.data.payload.shop_list);
+      })
+      .catch(e => console.warn('getShopMarkerDetail: ', e));
   };
 
   useEffect(() => {
@@ -149,7 +159,9 @@ const NaverMap = () => {
   }, []);
 
   useEffect(() => {
-    getShopMarkerList(screenLocation);
+    if (screenLocation.length !== 0) {
+      getShopMarkerList(screenLocation);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screenLocation]);
 
@@ -165,11 +177,11 @@ const NaverMap = () => {
         minZoomLevel={5}
         maxZoomLevel={18}
         rotateGesturesEnabled={false}
-        // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         onCameraChange={e => onCameraChange(e)}
+        // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
       >
-        {shopMarkers.map((marker, index) => {
+        {/* {shopMarkers.map((marker, index) => {
           return (
             <CustomMarker
               marker={marker}
@@ -187,6 +199,20 @@ const NaverMap = () => {
                   : false
               }
               onClickMarker={onClickMarker}
+            />
+          );
+        })} */}
+        {shopMarkers.map(item => {
+          return (
+            <MapMarker
+              key={item.id}
+              {...item}
+              setClickedIndex={setClickedIndex}
+              clickedIndex={clickedIndex}
+              getShopMarkerDetail={getShopMarkerDetail}
+              setModalVisible={setModalVisible}
+              depth={depth}
+              onPressClusterMarker={onPressClusterMarker}
             />
           );
         })}

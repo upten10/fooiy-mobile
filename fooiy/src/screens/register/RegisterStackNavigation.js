@@ -4,9 +4,12 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
 import {globalStyles} from '../../common/globalStyles';
 import Register from './Register';
+import {globalVariable} from '../../common/globalVariable';
+import {useSelector} from 'react-redux';
 
 const Stack = createStackNavigator();
 const RegisterStackNavigation = () => {
+  const insets = useSelector(state => state.insets.insets);
   return (
     <SafeAreaView
       style={{flex: 1, backgroundColor: '#fff'}}
@@ -19,7 +22,11 @@ const RegisterStackNavigation = () => {
             const state = navigation.getState();
             if (state.index === 0) {
               navigation.getParent().setOptions({
-                tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+                tabBarStyle: {
+                  height: globalVariable.tabBarHeight + insets.bottom,
+                  ...globalStyles.tab_bar,
+                  ...globalStyles.shadow,
+                },
               });
             }
           }}

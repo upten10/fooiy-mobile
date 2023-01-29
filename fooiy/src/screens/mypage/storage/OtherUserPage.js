@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
@@ -91,7 +92,12 @@ const OtherUserPage = props => {
             />
           </ImageBackground>
         ) : (
-          <Image source={{uri: item.image[0]}} style={styles.feedImage} />
+          <FastImage
+            source={{
+              uri: item.image[0],
+            }}
+            style={styles.feedImage}
+          />
         )}
       </TouchableOpacity>
     );
@@ -111,7 +117,7 @@ const OtherUserPage = props => {
           scrollEventThrottle={16}
           bounces={true}
           numColumns={3}
-          scrollToOverflowEnabled
+          // scrollToOverflowEnabled
           ListHeaderComponent={() => OtherUserPageProfile(otherUserInfo)}
           ListFooterComponent={() => <View style={styles.emptyComp}></View>}
         />

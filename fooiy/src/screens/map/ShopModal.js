@@ -31,6 +31,7 @@ const ShopModal = props => {
       shop_name: shop.shop_name,
       shop_address: shop.address,
       other_account_id,
+      score: shop.score,
       onBackdropPress: onBackdropPress,
     };
   });

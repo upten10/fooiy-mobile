@@ -5,7 +5,7 @@ import {View, StyleSheet, Image, FlatList} from 'react-native';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
-import {UI_Feed} from '../../common_ui/feed/Feed';
+import UI_Feed from '../../common_ui/feed/UI_Feed';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 
 const Feed = props => {
@@ -68,7 +68,7 @@ const Feed = props => {
   const ListEmptyComponent = () => {
     return noFeedImage ? (
       <View>
-        <Image source={{uri: noFeedImage}} style={styles.test} />
+        <Image source={{uri: noFeedImage}} />
       </View>
     ) : null;
   };

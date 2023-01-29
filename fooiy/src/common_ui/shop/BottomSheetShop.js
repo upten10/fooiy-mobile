@@ -16,7 +16,9 @@ const BottomSheetShop = item => {
           shop_id: item.public_id,
           shop_name: item.shop_name,
           shop_address: item.shop_address,
-          type: 'mypage',
+          ...(item.score || {
+            type: 'mypage',
+          }),
           ...(item.other_account_id && {
             other_account_id: item.other_account_id,
           }),
@@ -29,15 +31,17 @@ const BottomSheetShop = item => {
         <View style={styles.shop_info_container}>
           <View style={styles.shop_detail_container}>
             <Text style={styles.shop_detail_feeds_count}>
-              {item.feed_count}개의 피드가 있어요
+              {item.score
+                ? `만족 예상률 ${item.score}%`
+                : `${item.feed_count}개의 피드가 있어요`}
             </Text>
             <Text style={styles.shop_detail_name}>{item.shop_name}</Text>
             <Text style={styles.shop_detail_price}>{item.menu_price}</Text>
           </View>
           <View style={styles.category_list_container}>
             {category_list
-              ? category_list.map(category => (
-                  <View style={styles.category_container}>
+              ? category_list.map((category, index) => (
+                  <View key={index} style={styles.category_container}>
                     <Text style={styles.category}>{category}</Text>
                   </View>
                 ))
