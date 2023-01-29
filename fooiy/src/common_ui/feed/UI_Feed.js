@@ -27,6 +27,7 @@ import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import KakaoShareLink from 'react-native-kakao-share-link';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
 
 const {width} = Dimensions.get('screen');
 const PROFILE_IMAGE_WIDTH = width * 0.1;
@@ -217,8 +218,10 @@ const UI_Feed = (item, props) => {
         style={styles.header_container}
         activeOpacity={0.8}
         onPress={() => onPressProfileImg(item.stackName)}>
-        <Image
-          source={{uri: item.profile_image}}
+        <FastImage
+          source={{
+            uri: item.profile_image,
+          }}
           style={styles.profile_image}
         />
         <Text style={styles.nickname}>{item.nickname}</Text>
@@ -237,7 +240,12 @@ const UI_Feed = (item, props) => {
                 />
               </ImageBackground>
             ) : (
-              <Image source={{uri: item.image[0]}} style={styles.image} />
+              <FastImage
+                source={{
+                  uri: item.image[0],
+                }}
+                style={styles.image}
+              />
             )}
             <AnimatedLottieView
               source={require('../../../assets/lottie/fork.json')}

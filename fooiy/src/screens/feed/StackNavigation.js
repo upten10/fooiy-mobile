@@ -15,7 +15,7 @@ const StackNavigation = () => {
   const insets = useSelector(state => state.insets.insets);
   return (
     <Stack.Navigator
-      initialRouteName="FeedStackNavigation"
+      initialRouteName="Feed"
       screenOptions={{headerShown: false}}>
       <Stack.Screen
         name="Feed"
@@ -75,7 +75,7 @@ const StackNavigation = () => {
         component={MypageFeedDetail}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
-            tabBarStyle: {display: 'none'},
+            // tabBarStyle: {display: 'none'},
           });
         }}
       />

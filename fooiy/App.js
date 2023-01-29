@@ -24,16 +24,14 @@ const App = () => {
   useFlipper(navigationRef);
 
   return (
-    <React.StrictMode>
-      <SafeAreaProvider>
-        <Provider store={store}>
-          <NavigationContainer linking={linking} ref={navigationRef}>
-            <RootNavigator />
-            <StatusBar barStyle={'dark-content'} />
-          </NavigationContainer>
-        </Provider>
-      </SafeAreaProvider>
-    </React.StrictMode>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <NavigationContainer linking={linking} ref={navigationRef}>
+          <RootNavigator />
+          <StatusBar barStyle={'dark-content'} />
+        </NavigationContainer>
+      </Provider>
+    </SafeAreaProvider>
   );
 };
 

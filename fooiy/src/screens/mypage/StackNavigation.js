@@ -22,7 +22,7 @@ const MypageStackNavigation = props => {
   const insets = useSelector(state => state.insets.insets);
   return (
     <Stack.Navigator
-      initialRouteName="MypageStackNavigation"
+      initialRouteName="Mypage"
       screenOptions={{headerShown: false}}>
       <Stack.Screen
         name="Mypage"

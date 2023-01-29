@@ -68,7 +68,7 @@ const Feed = props => {
   const ListEmptyComponent = () => {
     return noFeedImage ? (
       <View>
-        <Image source={{uri: noFeedImage}} style={styles.test} />
+        <Image source={{uri: noFeedImage}} />
       </View>
     ) : null;
   };

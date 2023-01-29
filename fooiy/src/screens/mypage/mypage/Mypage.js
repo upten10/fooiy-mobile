@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, Image, FlatList, ImageBackground} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
@@ -86,7 +87,13 @@ const Mypage = props => {
             />
           </ImageBackground>
         ) : (
-          <Image source={{uri: item.image[0]}} style={styles.feedImage} />
+          // <Image source={{uri: item.image[0]}} style={styles.feedImage} />
+          <FastImage
+            source={{
+              uri: item.image[0],
+            }}
+            style={styles.feedImage}
+          />
         )}
       </TouchableOpacity>
     );
