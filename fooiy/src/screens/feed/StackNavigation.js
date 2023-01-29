@@ -7,6 +7,7 @@ import OtherUserPage from '../mypage/storage/OtherUserPage';
 import OtherUserFeedDetail from '../mypage/storage/OtherUserFeedDetail';
 import Register from '../register/Register';
 import Shop from '../../common_ui/shop/Shop';
+import Search from '../../common_ui/Search/Search';
 import {useSelector} from 'react-redux';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -91,6 +92,13 @@ const StackNavigation = () => {
               ...globalStyles.shadow,
             },
           });
+        }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
         }}
       />
     </Stack.Navigator>

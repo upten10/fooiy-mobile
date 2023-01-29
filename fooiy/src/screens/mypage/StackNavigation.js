@@ -13,6 +13,7 @@ import ProfileImg from './setting/ProfileImg';
 import EditName from './setting/EditName';
 import Withdraw from './setting/Withdraw';
 import WithdrawConfirm from './setting/WithdrawConfirm';
+import Search from '../../common_ui/Search/Search';
 import {useSelector} from 'react-redux';
 import {globalVariable} from '../../common/globalVariable';
 import Shop from '../../common_ui/shop/Shop';
@@ -104,6 +105,13 @@ const MypageStackNavigation = props => {
       <Stack.Screen name="Suggestion" component={Suggestion} />
       <Stack.Screen name="Withdraw" component={Withdraw} />
       <Stack.Screen name="WithdrawConfirm" component={WithdrawConfirm} />
+      <Stack.Screen
+          name="Search"
+          component={Search}
+          listeners={({navigation, route}) => {
+            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          }}
+        />
     </Stack.Navigator>
   );
 };

@@ -14,7 +14,7 @@ import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import MapMarker from './MapMarker';
 import {useDebounce} from '../../common/hooks/useDebounce';
 
-const NaverMap = () => {
+const NaverMap = props => {
   //map ref 초기화
   const mapView = useRef(null);
   const {debounceCallback, isLoading} = useDebounce({time: 500});
@@ -164,6 +164,18 @@ const NaverMap = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screenLocation]);
+
+  useEffect(() => {
+    props.center
+      ? setCenter({
+          ...{
+            longitude: props.center.longitude * 1,
+            latitude: props.center.latitude * 1,
+          },
+          zoom: 16,
+        })
+      : checkGrant();
+  }, [props.center]);
 
   return (
     <View>

@@ -22,11 +22,13 @@ import EditName from '../screens/mypage/setting/EditName';
 import FindWay from '../common_ui/shop/FindWay';
 import Menu from '../common_ui/shop/Menu';
 import Shop from '../common_ui/shop/Shop';
+import Search from '../common_ui/Search/Search';
+import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
+import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
 
 const Stack = createStackNavigator();
-const RootNavigator = () => {
-  const navigation = useNavigation();
 
+const RootNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="Login"
@@ -65,9 +67,16 @@ const RootNavigator = () => {
       {/* <Stack.Screen name="Setting" component={Setting} /> */}
       {/* <Stack.Screen name="EditName" component={EditName} /> */}
       <Stack.Screen name="MypageMap" component={MypageMap} />
+      <Stack.Screen name="OtherUserPage" component={OtherUserPage} />
+      <Stack.Screen
+        name="OtherUserFeedDetail"
+        component={OtherUserFeedDetail}
+      />
 
       {/* 지도에서 피드로 들어갔다가 뒤로 가면 피드 스택으로 넘어가서 바꿨어용~ */}
       <Stack.Screen name="Shop" component={Shop} />
+
+      <Stack.Screen name="Search" component={Search} />
     </Stack.Navigator>
   );
 };
