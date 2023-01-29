@@ -41,9 +41,7 @@ const EditName = () => {
     await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
       nickname: name,
     })
-      .then(res =>
-        dispatch(userInfoAction.editIntro(res.data.payload.account_info)),
-      )
+      .then(res => dispatch(userInfoAction.edit(res.data.payload.account_info)))
       .then(navigation.goBack());
   };
 

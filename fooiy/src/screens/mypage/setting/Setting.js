@@ -26,6 +26,7 @@ import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loginActions} from '../../../redux/reducer/login';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import MktSwitch from './MktSwitch';
 
 const Setting = props => {
   const navigation = useNavigation();
@@ -44,13 +45,12 @@ const Setting = props => {
 
   const [isFocused, setIsFocused] = useState(false);
   const [curIntro, setCurIntro] = useState(userInfoRedux.introduction);
-  const [curNickName, setCurNickName] = useState(userInfoRedux.nickname);
 
   const editIntro = async () => {
     await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
       introduction: curIntro === '' ? ' ' : curIntro,
     }).then(res => {
-      dispatch(userInfoAction.editIntro(res.data.payload.account_info));
+      dispatch(userInfoAction.edit(res.data.payload.account_info));
     });
   };
 
@@ -155,7 +155,7 @@ const Setting = props => {
                       </View>
                       <View>
                         {elem.text === '마케팅 수신 알림' ? (
-                          <ToggleOn />
+                          <MktSwitch />
                         ) : (
                           <ArrowIcon />
                         )}

@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {Notification, Search} from '../../../assets/icons/svg';
+import {Logo} from '../../../assets/icons/svg';
 
 export const DefaultHeader = () => {
   const navigation = useNavigation();
@@ -13,10 +14,7 @@ export const DefaultHeader = () => {
   return (
     <View>
       <View style={styles.header_container}>
-        <Image
-          source={require('../../../assets/logo.png')}
-          style={styles.logo}
-        />
+        <Logo />
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             style={{marginRight: 16}}
@@ -43,9 +41,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginRight: 16,
-  },
-  logo: {
-    height: 28,
-    width: 60,
   },
 });

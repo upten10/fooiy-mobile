@@ -12,7 +12,7 @@ import {StackHeader} from '../headers/StackHeader';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {globalVariable} from '../../common/globalVariable';
 import {RenderLoader} from '../RenderLoader';
-import {UI_Feed} from '../feed/Feed';
+import UI_Feed from '../feed/UI_Feed';
 import {useNavigation} from '@react-navigation/native';
 import {apiUrl} from '../../common/Enums';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';

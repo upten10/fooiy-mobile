@@ -6,7 +6,7 @@ import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {UI_Feed} from '../../../common_ui/feed/Feed';
+import UI_Feed from '../../../common_ui/feed/UI_Feed';
 import {RenderLoader} from '../../../common_ui/RenderLoader';
 import {SafeAreaView} from 'react-native-safe-area-context';
 

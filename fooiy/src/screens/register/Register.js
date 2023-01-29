@@ -8,7 +8,6 @@ import {
   Alert,
   Linking,
   Platform,
-  SafeAreaView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
@@ -22,6 +21,7 @@ import {
   Cancel,
 } from '../../../assets/icons/svg';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const width = Dimensions.get('window').width;
 

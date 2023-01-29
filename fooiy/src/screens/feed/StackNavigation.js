@@ -8,12 +8,15 @@ import OtherUserFeedDetail from '../mypage/storage/OtherUserFeedDetail';
 import Register from '../register/Register';
 import Shop from '../../common_ui/shop/Shop';
 import Search from '../../common_ui/Search/Search';
+import {useSelector} from 'react-redux';
+import {globalVariable} from '../../common/globalVariable';
 
 const Stack = createStackNavigator();
 const StackNavigation = () => {
+  const insets = useSelector(state => state.insets.insets);
   return (
     <Stack.Navigator
-      initialRouteName="FeedStackNavigation"
+      initialRouteName="Feed"
       screenOptions={{headerShown: false}}>
       <Stack.Screen
         name="Feed"
@@ -22,7 +25,11 @@ const StackNavigation = () => {
           const state = navigation.getState();
           if (state.index === 0) {
             navigation.getParent().setOptions({
-              tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+              tabBarStyle: {
+                height: globalVariable.tabBarHeight + insets.bottom,
+                ...globalStyles.tab_bar,
+                ...globalStyles.shadow,
+              },
             });
           }
         }}
@@ -31,7 +38,9 @@ const StackNavigation = () => {
         name="Shop"
         component={Shop}
         listeners={({navigation, route}) => {
-          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
         }}
       />
       <Stack.Screen
@@ -39,8 +48,12 @@ const StackNavigation = () => {
         component={OtherUserPage}
         listeners={({navigation, route}) => {
           const state = navigation.getState();
-          navigation.getParent().setOptions({
-            tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+          navigation.setOptions({
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
           });
         }}
       />
@@ -49,8 +62,12 @@ const StackNavigation = () => {
         component={OtherUserFeedDetail}
         listeners={({navigation, route}) => {
           const state = navigation.getState();
-          navigation.getParent().setOptions({
-            tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+          navigation.setOptions({
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
           });
         }}
       />
@@ -58,7 +75,9 @@ const StackNavigation = () => {
         name="FeedDetail"
         component={MypageFeedDetail}
         listeners={({navigation, route}) => {
-          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+          navigation.getParent().setOptions({
+            // tabBarStyle: {display: 'none'},
+          });
         }}
       />
       <Stack.Screen
@@ -67,7 +86,11 @@ const StackNavigation = () => {
         listeners={({navigation, route}) => {
           const state = navigation.getState();
           navigation.getParent().setOptions({
-            tabBarStyle: {...globalStyles.tab_bar, ...globalStyles.shadow},
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
           });
         }}
       />

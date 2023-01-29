@@ -14,10 +14,12 @@ import {throttle} from 'lodash';
 import ShopModal from '../../map/ShopModal';
 import MypageMapMarker from './MypageMapMarker';
 import AndroidMypageMapMarker from './AndroidMypageMapMarker';
+import {useDebounce} from '../../../common/hooks/useDebounce';
 
 // 다른 유저 페이지에서 접근 시 props에 account_id랑 nickname 들어있음
 const MypageMap = props => {
   const mapView = useRef(null);
+  const {debounceCallback, isLoading} = useDebounce({time: 500});
   const account_id =
     props.route.params !== undefined ? props.route.params.account_id : null;
 
@@ -31,12 +33,13 @@ const MypageMap = props => {
 
   useEffect(() => {
     checkGrant();
-    getFeedMarkerList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    getFeedMarkerList(screenLocation);
+    if (screenLocation.length !== 0) {
+      getFeedMarkerList(screenLocation);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screenLocation]);
 
@@ -46,13 +49,11 @@ const MypageMap = props => {
     setClickedIndex(null);
   };
 
-  const throttled = throttle(e => {
-    setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
-    setZoomLevel(e.zoom);
-  }, 5000);
-
   const onCameraChange = e => {
-    throttled(e);
+    debounceCallback(() => {
+      setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
+      setZoomLevel(e.zoom);
+    });
   };
 
   const checkGrant = async () => {

@@ -62,10 +62,10 @@ const RootNavigator = () => {
       <Stack.Screen name="RegisterFeed" component={RegisterFeed} />
 
       {/* mypage */}
-      <Stack.Screen name="Mypage" component={Mypage} />
+      {/* <Stack.Screen name="Mypage" component={Mypage} /> */}
       <Stack.Screen name="FooiyTI" component={FooiyTI} />
-      <Stack.Screen name="Setting" component={Setting} />
-      <Stack.Screen name="EditName" component={EditName} />
+      {/* <Stack.Screen name="Setting" component={Setting} /> */}
+      {/* <Stack.Screen name="EditName" component={EditName} /> */}
       <Stack.Screen name="MypageMap" component={MypageMap} />
       <Stack.Screen name="OtherUserPage" component={OtherUserPage} />
       <Stack.Screen

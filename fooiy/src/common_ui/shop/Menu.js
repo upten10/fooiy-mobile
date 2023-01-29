@@ -19,11 +19,9 @@ const Menu = props => {
 
   const mainList = menuList.filter(item => item.price > 55555);
   const sideList = menuList.filter(item => item.price < 55556);
-
   console.log(mainList, 'mainList');
   console.log(sideList, 'sideList');
   console.log(menuList);
-
   useEffect(() => {
     getMenuList();
   }, []);

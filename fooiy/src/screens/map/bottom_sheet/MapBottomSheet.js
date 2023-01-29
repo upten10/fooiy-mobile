@@ -6,6 +6,7 @@ import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import BottomSheetShop from '../../../common_ui/shop/BottomSheetShop';
+import {fooiyFont} from '../../../common/globalStyles';
 
 const MapBottomSheet = props => {
   const {screenLocation} = props;
@@ -96,7 +97,7 @@ const MapBottomSheet = props => {
       ref={sheetRef}
       snapPoints={snapPoints}
       onChange={handleSheetChange}>
-      <Text style={styles.title}>주변 음식점 리스트</Text>
+      <Text style={styles.title}>주변 맛집 리스트</Text>
       <BottomSheetFlatList
         data={shops}
         ListEmptyComponent={ListEmptyComponent}
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     marginVertical: 5,
-    fontSize: 16,
+    ...fooiyFont.Subtitle2,
   },
   empty_shop_image: {
     width: globalVariable.width,

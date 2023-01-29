@@ -9,12 +9,11 @@ export const userInfoSlice = createSlice({
     init: (state, action) => {
       state.value = action.payload;
     },
-    editIntro: (state, action) => {
+    edit: (state, action) => {
       state.value = action.payload;
     },
     isExist: (state, action) => {
       if ('introduction' in state.userInfo.value) {
-        console.log(true);
         return true;
       }
       return false;

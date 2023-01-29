@@ -14,6 +14,8 @@ export const apiUrl = {
 
   // 문의 등록
   SUGGESTION: 'archives/suggestion/',
+  // 주소 필터 리스트
+  STORAGE_ADRESS: 'archives/filter/address/',
 
   // 피드 리스트
   FEED_LIST: 'feeds/feed/',
@@ -37,12 +39,11 @@ export const apiUrl = {
   REGISTER_RECORD: 'feeds/record/',
 
   // 음식점 지도 리스트
-  MAP_SHOP_MARKER: 'shops/shop/shop_map_picker/',
+  MAP_SHOP_LIST: 'shops/shop/shop_map_picker/',
   // 개척, 근처 매장 리스트
   SHOP_NEARBY: 'shops/shop/nearby/',
   // 개척, 메뉴 리스트
   SHOP_MENU: 'shops/menu/',
-
   // 음식점 검색
   SHOP_SEARCH: 'search/shop/',
   // 위치 검색
@@ -51,4 +52,8 @@ export const apiUrl = {
   ACCOUNT_SEARCH: 'search/account/',
   // 계정 랭커
   ACCOUNT_RANKER: 'accounts/ranking/',
+  // 음식점 지도 마커
+  MAP_SHOP_MARKER: 'shops/shop/shop_map_marker/',
+  // 음식점 지도 마커 상세
+  MAP_SHOP_MARKER_DETAIL: 'shops/shop/shop_map_marker_detail/',
 };
