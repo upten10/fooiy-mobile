@@ -7,7 +7,7 @@ import {Map_shop} from '../../../assets/icons/svg';
 export const StackHeader = props => {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.header_container}>
         {props.shop ? (
           <View style={styles.shop_detail}>

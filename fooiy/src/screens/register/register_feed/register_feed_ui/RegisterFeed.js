@@ -307,7 +307,7 @@ const RegisterFeed = props => {
         })}
         behavior={Platform.select({
           ios: 'padding',
-          android: 'absolute',
+          android: 'padding',
         })}>
         <TouchableOpacity
           activeOpacity={0.8}

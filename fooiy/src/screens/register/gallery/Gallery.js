@@ -20,7 +20,6 @@ import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import cloneDeep from 'lodash/cloneDeep';
 import {check, PERMISSIONS} from 'react-native-permissions';
-import Geolocation from 'react-native-geolocation-service';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor} from '../../../common/globalStyles';
 

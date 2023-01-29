@@ -1,12 +1,11 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import NaverMap from './NaverMap';
-import {LocationPermission} from '../../common/Permission';
 
-const Map = () => {
+const Map = props => {
   return (
     <View style={{flex: 1}}>
-      <NaverMap />
+      <NaverMap center={props.route.params} />
     </View>
   );
 };

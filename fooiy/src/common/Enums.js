@@ -42,4 +42,13 @@ export const apiUrl = {
   SHOP_NEARBY: 'shops/shop/nearby/',
   // 개척, 메뉴 리스트
   SHOP_MENU: 'shops/menu/',
+
+  // 음식점 검색
+  SHOP_SEARCH: 'search/shop/',
+  // 위치 검색
+  SPOT_SEARCH: 'search/spot/',
+  // 계정 검색
+  ACCOUNT_SEARCH: 'search/account/',
+  // 계정 랭커
+  ACCOUNT_RANKER: 'accounts/ranking/',
 };
