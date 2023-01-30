@@ -86,3 +86,6 @@ export {default as TasteEvaluation99} from './TasteEvaluation/taste_evaluation_9
 export {default as TasteEvaluationDescription} from './TasteEvaluation/taste_evaluation_description.svg';
 export {default as CommonShop} from './Header/icon_common_shop.svg';
 export {default as CafeShop} from './Header/icon_cafe_shop.svg';
+export {default as Change} from './Camera/Change.svg';
+export {default as FlashOn} from './Camera/FlashOn.svg';
+export {default as FlashOff} from './Camera/FlashOff.svg';

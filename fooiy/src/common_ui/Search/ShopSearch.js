@@ -141,7 +141,7 @@ const ShopSearch = () => {
         <View style={{flexDirection: 'row'}}>
           {shop_category_list.map((item, index) => {
             return (
-              <View style={styles.category_container}>
+              <View style={styles.category_container} key={index}>
                 <Text style={{...fooiyFont.Caption1_1, paddingHorizontal: 8}}>
                   {item}
                 </Text>
@@ -161,7 +161,7 @@ const ShopSearch = () => {
             data={shop}
             renderItem={ShopItem}
             ListEmptyComponent={ListEmptyComponent}
-            keyExtractor={(shop, index) => index.toString()}
+            keyExtractor={item => String(item.public_id)}
             numColumns={2}
             columnWrapperStyle={{
               justifyContent: 'space-between',
@@ -270,10 +270,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 16,
     height: 48,
-    marginBottom: -8,
   },
   init_container: {
-    marginTop: 24,
+    marginTop: 16,
     padding: 16,
     backgroundColor: fooiyColor.P50,
     borderRadius: 8,
