@@ -1,10 +1,18 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {Notification, Search} from '../../../assets/icons/svg';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  ArrowIconBottomGray,
+  CafeShop,
+  CommonShop,
+  Notification,
+  Search,
+} from '../../../assets/icons/svg';
 import {Logo} from '../../../assets/icons/svg';
+import {globalVariable} from '../../common/globalVariable';
 
-export const DefaultHeader = () => {
+export const FeedHeader = props => {
+  const {category, open, setOpen} = props;
   const navigation = useNavigation();
 
   const search = () => {
@@ -14,7 +22,19 @@ export const DefaultHeader = () => {
   return (
     <View>
       <View style={styles.header_container}>
-        <Logo />
+        <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen(!open)}>
+          <View style={styles.logo}>
+            <Logo />
+            <View style={styles.category}>
+              {category === globalVariable.category_cafe ? (
+                <CafeShop />
+              ) : (
+                <CommonShop />
+              )}
+            </View>
+            <ArrowIconBottomGray />
+          </View>
+        </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             style={{marginRight: 16}}
@@ -42,5 +62,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginRight: 16,
+  },
+  logo: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  category: {
+    width: 28,
+    marginLeft: 4,
   },
 });

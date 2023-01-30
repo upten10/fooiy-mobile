@@ -141,7 +141,7 @@ const ShopSearch = () => {
         <View style={{flexDirection: 'row'}}>
           {shop_category_list.map((item, index) => {
             return (
-              <View style={styles.category_container}>
+              <View style={styles.category_container} key={index}>
                 <Text style={{...fooiyFont.Caption1_1, paddingHorizontal: 8}}>
                   {item}
                 </Text>

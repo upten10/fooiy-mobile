@@ -132,6 +132,7 @@ const UI_Feed = item => {
         nickname={item.nickname}
         profile_image={item.profile_image}
         fooiyti={item.fooiyti}
+        rank={item.rank}
       />
 
       <FeedImage
