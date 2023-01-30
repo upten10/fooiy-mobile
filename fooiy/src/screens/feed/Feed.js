@@ -94,6 +94,7 @@ const Feed = props => {
           renderItem={({item}) => (
             <UI_Feed {...item} parent={props.route.name} />
           )}
+          updateCellsBatchingPeriod={5}
           removeClippedSubviews={true}
           keyExtractor={item => String(item.id)}
           onEndReached={loadMoreItem}

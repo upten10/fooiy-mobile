@@ -3,6 +3,7 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   ArrowIconBottomGray,
+  ArrowIconTopGray,
   CafeShop,
   CommonShop,
   Notification,
@@ -32,7 +33,7 @@ export const FeedHeader = props => {
                 <CommonShop />
               )}
             </View>
-            <ArrowIconBottomGray />
+            {open ? <ArrowIconTopGray /> : <ArrowIconBottomGray />}
           </View>
         </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>

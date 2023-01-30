@@ -20,17 +20,39 @@ const UI_Feed = item => {
 
   const dispatch = useDispatch();
   const [disableShopButton, setDisableShopButton] = useState(false);
-  const [likeIcon, setLikeIcon] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [storeIcon, setStoreIcon] = useState(false);
-
+  const [likeIcon, setLikeIcon] = useState(item.is_liked);
+  const [likeCount, setLikeCount] = useState(item.count_liked);
+  const [storeIcon, setStoreIcon] = useState(item.is_store);
   const {debounceCallback, isLoading} = useDebounce({time: 1500});
+  const feeds = useSelector(state => state.feeds.feeds.value);
+  const feed = feeds.find(e => e.id === item.id);
 
-  const debounceLike = async (liked, count) => {
-    if (feed.is_liked === (await liked)) {
-      feed.is_liked = !(await liked);
-      feed.count_liked = await count;
-      dispatch(feedsAction.setChanged(feeds));
+  const debounceLike = async liked => {
+    if (feed === undefined && item.is_liked === (await liked)) {
+      dispatch(
+        feedsAction.append({
+          id: item.id,
+          count_liked: item.is_liked
+            ? item.count_liked - 1
+            : item.count_liked + 1,
+          is_liked: !item.is_liked,
+          is_store: item.is_store,
+        }),
+      );
+      await ApiManagerV2.patch(apiUrl.FEED_LIKE, {
+        feed_id: item.id,
+      });
+    } else if (feed.is_liked === (await liked)) {
+      dispatch(
+        feedsAction.append({
+          id: feed.id,
+          count_liked: feed.is_liked
+            ? feed.count_liked - 1
+            : feed.count_liked + 1,
+          is_liked: !feed.is_liked,
+          is_store: feed.is_store,
+        }),
+      );
       await ApiManagerV2.patch(apiUrl.FEED_LIKE, {
         feed_id: item.id,
       });
@@ -38,45 +60,40 @@ const UI_Feed = item => {
   };
 
   const debounceStore = async stored => {
-    if (feed.is_store === (await stored)) {
-      feed.is_store = !(await stored);
-      dispatch(feedsAction.setChanged(feeds));
-      // axios fetch
+    if (feed === undefined && item.is_store === (await stored)) {
+      dispatch(
+        feedsAction.append({
+          id: item.id,
+          count_liked: item.count_liked,
+          is_liked: item.is_liked,
+          is_store: !item.is_store,
+        }),
+      );
+      await ApiManagerV2.patch(apiUrl.FEED_STORAGE, {
+        feed_id: item.id,
+      });
+    } else if (feed.is_store === (await stored)) {
+      dispatch(
+        feedsAction.append({
+          id: feed.id,
+          count_liked: feed.count_liked,
+          is_liked: feed.is_liked,
+          is_store: !feed.is_store,
+        }),
+      );
       await ApiManagerV2.patch(apiUrl.FEED_STORAGE, {
         feed_id: item.id,
       });
     }
   };
 
-  const feed_redux = {
-    id: item.id,
-    count_liked: item.count_liked,
-    is_liked: item.is_liked,
-    is_store: item.is_store,
-  };
-
-  useEffect(() => {}, []);
-
-  dispatch(feedsAction.append(feed_redux));
-
-  const feeds = useSelector(state => state.feeds.feeds.value);
-  const feed = feeds.find(e => e.id === item.id);
-
   useEffect(() => {
-    setLikeIcon(feed.is_liked);
-    setLikeCount(
-      feed.is_liked === item.is_liked
-        ? item.count_liked
-        : feed.is_liked
-        ? item.count_liked + 1
-        : item.count_liked - 1,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [feed.is_liked]);
-
-  useEffect(() => {
-    setStoreIcon(feed.is_store);
-  }, [feed.is_store]);
+    if (feed !== undefined) {
+      setLikeIcon(feed.is_liked);
+      setLikeCount(feed.count_liked);
+      setStoreIcon(feed.is_store);
+    }
+  }, [feed]);
 
   useEffect(() => {
     item.disable_shop_button && setDisableShopButton(item.disable_shop_button);
@@ -86,7 +103,7 @@ const UI_Feed = item => {
     likeIcon ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
     setLikeIcon(!likeIcon);
     debounceCallback(() => {
-      debounceLike(likeIcon, likeCount);
+      debounceLike(likeIcon);
     });
   };
   const onClickStoreIcon = () => {

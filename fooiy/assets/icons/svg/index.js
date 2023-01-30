@@ -24,6 +24,7 @@ export {default as Camera_Profile} from './Icon_Camera.svg';
 export {default as ArrowIconBottom} from './Icon_arrrow_bottom.svg';
 export {default as ArrowIconBottomGray} from './Icon_arrrow_bottom_gray.svg';
 export {default as ArrowIconTop} from './Icon_arrrow_top.svg';
+export {default as ArrowIconTopGray} from './Icon_arrrow_top_gray.svg';
 export {default as Check} from './Check.svg';
 export {default as Uncheck} from './Uncheck.svg';
 export {default as Current_Location} from './Current_Location.svg';
