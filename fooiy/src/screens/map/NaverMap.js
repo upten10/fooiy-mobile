@@ -13,6 +13,9 @@ import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import MapMarker from './MapMarker';
 import {useDebounce} from '../../common/hooks/useDebounce';
+import {fooiyColor} from '../../common/globalStyles';
+import {useSelector} from 'react-redux';
+import MapHeader from './MapHeader';
 
 const NaverMap = props => {
   //map ref 초기화
@@ -179,6 +182,7 @@ const NaverMap = props => {
 
   return (
     <View>
+      <MapHeader />
       <NaverMapView
         ref={mapView}
         style={styles.map}

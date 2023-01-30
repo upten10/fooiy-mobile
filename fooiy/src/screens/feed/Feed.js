@@ -94,6 +94,7 @@ const Feed = props => {
           onEndReached={loadMoreItem}
           ListEmptyComponent={ListEmptyComponent}
           onEndReachedThreshold={2}
+          removeClippedSubviews={true}
         />
       </View>
     </SafeAreaView>
