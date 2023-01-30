@@ -1,12 +1,13 @@
-import {React, useEffect, useState, useRef} from 'react';
+import {React, useEffect, useState, useRef, useCallback} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, StyleSheet, Image, FlatList} from 'react-native';
+import {View, StyleSheet, Image, FlatList, Text} from 'react-native';
 
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
 import UI_Feed from '../../common_ui/feed/UI_Feed';
-import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
+import {FeedHeader} from '../../common_ui/headers/FeedHeader';
+import SelectCategoryModal from './SelectCategoryModal';
 
 const Feed = props => {
   const [feeds, setFeeds] = useState([]);
@@ -14,6 +15,8 @@ const Feed = props => {
   const [totalCount, setTotalCount] = useState(0);
   const [noFeedImage, setNoFeedImage] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [category, setCategory] = useState('');
+  const [open, setOpen] = useState(true);
 
   const onRefresh = () => {
     if (!refreshing) {
@@ -42,12 +45,12 @@ const Feed = props => {
     flatListRef.current.scrollToIndex({index: 0, animated: true});
   };
 
-  const getFeedList = async data => {
+  const getFeedList = async () => {
     await ApiManagerV2.get(apiUrl.FEED_LIST, {
       params: {
         limit: globalVariable.FeedLimit,
         offset: offset,
-        address_depth1: '',
+        category: category,
       },
     }).then(res => {
       if (res.data.payload.feed_list) {
@@ -76,11 +79,12 @@ const Feed = props => {
   useEffect(() => {
     getFeedList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
+  }, [offset, category]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <DefaultHeader />
+      <FeedHeader category={category} setOpen={setOpen} open={open} />
+
       <View style={styles.container}>
         <FlatList
           ref={flatListRef}
@@ -97,6 +101,17 @@ const Feed = props => {
           onEndReachedThreshold={2}
         />
       </View>
+      {open && (
+        <SelectCategoryModal
+          currentCategory={category}
+          setCategory={setCategory}
+          setOpen={setOpen}
+          setFeeds={setFeeds}
+          setOffset={setOffset}
+          toTop={toTop}
+          setTotalCount={setTotalCount}
+        />
+      )}
     </SafeAreaView>
   );
 };

@@ -1,13 +1,15 @@
 import React, {memo} from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, View, Platform} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 
 import FastImage from 'react-native-fast-image';
 import {fooiyFont, fooiyColor} from '../../common/globalStyles';
 
+import Rank from '../Rank';
+
 const FeedProfile = props => {
-  const {nickname, profile_image, fooiyti, account_id} = props;
+  const {nickname, profile_image, fooiyti, account_id, rank} = props;
   const navigation = useNavigation();
   const onPressProfileImg = () => {
     navigation.push('OtherUserPage', {
@@ -25,8 +27,17 @@ const FeedProfile = props => {
         }}
         style={styles.profile_image}
       />
-      <Text style={styles.nickname}>{nickname}</Text>
-      <Text style={styles.fooiyti}>{fooiyti}</Text>
+      <View>
+        <Text style={styles.nickname}>{nickname}</Text>
+        <View style={styles.profile_detail_container}>
+          <Rank
+            containerStyle={{marginLeft: 8}}
+            rank={rank}
+            font={fooiyFont.Subtitle4}
+          />
+          <Text style={styles.fooiyti}>{fooiyti}</Text>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -41,13 +52,17 @@ const styles = StyleSheet.create({
   },
   profile_image: {
     borderRadius: 100,
-    width: 32,
-    height: 32,
+    width: 40,
+    height: 40,
   },
   nickname: {
     marginLeft: 8,
+    marginBottom: 2,
     ...fooiyFont.Subtitle3,
     color: fooiyColor.G800,
+  },
+  profile_detail_container: {
+    flexDirection: 'row',
   },
   fooiyti: {
     paddingHorizontal: 6,
@@ -56,7 +71,18 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: fooiyColor.P500,
-    color: fooiyColor.P500,
+    borderColor: fooiyColor.G200,
+    color: fooiyColor.G600,
+  },
+  rank_container: {
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rank: {
+    paddingHorizontal: 6,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    color: fooiyColor.W,
   },
 });

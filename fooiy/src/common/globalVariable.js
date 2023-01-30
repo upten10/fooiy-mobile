@@ -10,4 +10,5 @@ export const globalVariable = {
   app_version: '1.2.0',
   default_longitude: 127.002736308322,
   default_latitude: 37.5833730477478,
+  category_cafe: 'BAKERY/CAFE',
 };
