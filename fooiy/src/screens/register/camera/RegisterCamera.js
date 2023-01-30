@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Dimensions,
@@ -14,19 +14,24 @@ import {CameraPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {check, PERMISSIONS} from 'react-native-permissions';
 import {Linking} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {fooiyColor} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {Change, FlashOn, FlashOff} from '../../../../assets/icons/svg';
 
 const RegisterCamera = props => {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const camera = useRef(null);
   const devices = useCameraDevices();
-  const device = devices.back;
+  const [position, setPosition] = useState(true);
+  const [flash, setFlash] = useState(false);
+  const device = position ? devices.back : devices.front;
   const width = Dimensions.get('window').width;
-  const height = Dimensions.get('window').height;
 
   const takePhotoOptions = {
     qualityPrioritization: 'speed',
-    flash: 'off',
+    flash: flash ? 'on' : 'off',
     exif: true,
     width: width,
     height: width,
@@ -75,20 +80,60 @@ const RegisterCamera = props => {
     return <View style={{flex: 1, backgroundColor: '#666'}} />;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={{backgroundColor: fooiyColor.W}}
+      edges={Platform.OS === 'ios' ? 'top' : null}>
       <StackHeader title="카메라" />
-      <Camera
-        ref={camera}
-        style={{width: width, height: width}}
-        device={device}
-        isActive={true}
-        photo={true}
-        enableZoomGesture={true}
-      />
-      <View style={[styles.take_photo_box, {height: height - width - 156}]}>
-        <TouchableOpacity onPress={takePhoto} activeOpacity={0.8}>
-          <View style={styles.take_photo} />
-        </TouchableOpacity>
+      <View style={{}}>
+        <Camera
+          ref={camera}
+          style={{width: globalVariable.width, height: globalVariable.width}}
+          device={device}
+          isActive={true}
+          photo={true}
+          enableZoomGesture={true}
+        />
+        <View
+          style={{
+            width: '100%',
+            height:
+              globalVariable.height - 56 - insets.top - globalVariable.width,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            paddingHorizontal: 16,
+          }}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => setPosition(!position)}>
+            <Change />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={takePhoto}
+            activeOpacity={0.8}
+            style={{
+              width: 72,
+              height: 72,
+              borderWidth: 2,
+              borderRadius: 36,
+              borderColor: fooiyColor.G600,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                width: 60,
+                height: 60,
+                backgroundColor: fooiyColor.G600,
+                borderRadius: 30,
+              }}></View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => setFlash(!flash)}>
+            {flash ? <FlashOn /> : <FlashOff />}
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -96,20 +141,4 @@ const RegisterCamera = props => {
 
 export default RegisterCamera;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  take_photo_box: {
-    width: '100%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  take_photo: {
-    width: 50,
-    height: 50,
-    backgroundColor: '#777',
-  },
-});
+const styles = StyleSheet.create({});

@@ -45,7 +45,7 @@ export const apiUrl = {
   // 개척, 메뉴 리스트
   SHOP_MENU: 'shops/menu/',
   // 음식점 검색
-  SHOP_SEARCH: 'search/shop/',
+  SHOP_SEARCH: 'search/shops/',
   // 위치 검색
   SPOT_SEARCH: 'search/spot/',
   // 계정 검색

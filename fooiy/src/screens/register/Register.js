@@ -81,7 +81,7 @@ const Register = props => {
     toggleModal();
   };
   return (
-    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
+    <View>
       <StackHeader title="사진 등록" style={{color: 'black'}} />
       <TouchableOpacity
         onPress={register_photo}
@@ -150,7 +150,7 @@ const Register = props => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

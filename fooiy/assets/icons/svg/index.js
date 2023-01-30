@@ -83,3 +83,6 @@ export {default as TasteEvaluation50} from './TasteEvaluation/taste_evaluation_5
 export {default as TasteEvaluation70} from './TasteEvaluation/taste_evaluation_70.svg';
 export {default as TasteEvaluation99} from './TasteEvaluation/taste_evaluation_99.svg';
 export {default as TasteEvaluationDescription} from './TasteEvaluation/taste_evaluation_description.svg';
+export {default as Change} from './Camera/Change.svg';
+export {default as FlashOn} from './Camera/FlashOn.svg';
+export {default as FlashOff} from './Camera/FlashOff.svg';
