@@ -22,6 +22,7 @@ export {default as Album} from './Album.svg';
 export {default as Cancel} from './Cancel.svg';
 export {default as Camera_Profile} from './Icon_Camera.svg';
 export {default as ArrowIconBottom} from './Icon_arrrow_bottom.svg';
+export {default as ArrowIconBottomGray} from './Icon_arrrow_bottom_gray.svg';
 export {default as ArrowIconTop} from './Icon_arrrow_top.svg';
 export {default as Check} from './Check.svg';
 export {default as Uncheck} from './Uncheck.svg';
@@ -83,3 +84,5 @@ export {default as TasteEvaluation50} from './TasteEvaluation/taste_evaluation_5
 export {default as TasteEvaluation70} from './TasteEvaluation/taste_evaluation_70.svg';
 export {default as TasteEvaluation99} from './TasteEvaluation/taste_evaluation_99.svg';
 export {default as TasteEvaluationDescription} from './TasteEvaluation/taste_evaluation_description.svg';
+export {default as CommonShop} from './Header/icon_common_shop.svg';
+export {default as CafeShop} from './Header/icon_cafe_shop.svg';
