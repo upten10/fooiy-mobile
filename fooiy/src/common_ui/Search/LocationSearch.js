@@ -137,7 +137,7 @@ const LocationSearch = () => {
             data={spot}
             renderItem={SpotItem}
             ListEmptyComponent={ListEmptyComponent}
-            keyExtractor={(spot, index) => index.toString()}
+            keyExtractor={item => String(item.id)}
             scrollEventThrottle={16}
             bounces={true}
             scrollToOverflowEnabled
@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 16,
   },
   input: {
     width: '100%',

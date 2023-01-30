@@ -90,7 +90,8 @@ const Feed = props => {
           renderItem={({item}) => (
             <UI_Feed {...item} parent={props.route.name} />
           )}
-          keyExtractor={(feeds, index) => index.toString()}
+          removeClippedSubviews={true}
+          keyExtractor={item => String(item.id)}
           onEndReached={loadMoreItem}
           ListEmptyComponent={ListEmptyComponent}
           onEndReachedThreshold={2}
