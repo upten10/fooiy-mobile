@@ -32,6 +32,9 @@ const NaverMap = props => {
   const [depth, setDepth] = useState(4);
   const [shopMarkers, setShopMarkers] = useState([]);
 
+  //control
+  const [isCafe, setIsCafe] = useState(false);
+
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const onCameraChange = e => {
     debounceCallback(() => {
@@ -173,11 +176,12 @@ const NaverMap = props => {
           zoom: 16,
         })
       : checkGrant();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.center]);
 
   return (
     <View>
-      <MapHeader />
+      <MapHeader isCafe={isCafe} setIsCafe={setIsCafe} />
       <NaverMapView
         ref={mapView}
         style={styles.map}

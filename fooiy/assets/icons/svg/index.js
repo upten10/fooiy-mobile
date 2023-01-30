@@ -83,3 +83,8 @@ export {default as TasteEvaluation50} from './TasteEvaluation/taste_evaluation_5
 export {default as TasteEvaluation70} from './TasteEvaluation/taste_evaluation_70.svg';
 export {default as TasteEvaluation99} from './TasteEvaluation/taste_evaluation_99.svg';
 export {default as TasteEvaluationDescription} from './TasteEvaluation/taste_evaluation_description.svg';
+export {default as SearchDark} from './Icon_Search_Dark.svg';
+export {default as CafeShopDark} from './Icon_Cafe_Shop_Dark.svg';
+export {default as CafeShopLight} from './Icon_Cafe_Shop_Light.svg';
+export {default as CommonShopDark} from './Icon_Common_Shop_Dark.svg';
+export {default as CommonShopLight} from './Icon_Common_Shop_Light.svg';
