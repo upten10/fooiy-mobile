@@ -319,7 +319,6 @@ const styles = StyleSheet.create({
   user_info: {
     flexDirection: 'row',
     marginTop: 4,
-    height: 18,
     alignItems: 'center',
   },
   info_text: {
