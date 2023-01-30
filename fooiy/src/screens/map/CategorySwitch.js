@@ -7,11 +7,21 @@ import {
   CommonShopDark,
   CommonShopLight,
 } from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {fooiyColor, fooiyFont, globalStyles} from '../../common/globalStyles';
+import {useDebounce} from '../../common/hooks/useDebounce';
 
 const CategorySwitch = props => {
   const swipeable = useRef(null);
-  const {isCafe, setIsCafe} = props;
+  const {isCafe, setIsCafe, setShopMarkers} = props;
+  const {debounceCallback, isLoading} = useDebounce({time: 1000});
+
+  const onSwipe = isCafe => {
+    // debounceCallback(() => {
+    setIsCafe(isCafe);
+    setShopMarkers([]);
+    // });
+  };
+
   const renderRightActions = (dragX, index) => {
     const trans = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
@@ -38,8 +48,8 @@ const CategorySwitch = props => {
             childrenContainerStyle={{flexDirection: 'row'}}
             overshootLeft={false}
             ref={swipeable}
-            onSwipeableWillOpen={() => setIsCafe(true)}
-            onSwipeableWillClose={() => setIsCafe(false)}
+            onSwipeableWillOpen={() => onSwipe(true)}
+            onSwipeableWillClose={() => onSwipe(false)}
             renderLeftActions={dragX => renderRightActions(dragX)}>
             <Pressable
               onPress={() => swipeable.current.openLeft()}
@@ -78,6 +88,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 12,
+    ...globalStyles.shadow,
   },
   swipeContainer: {
     position: 'absolute',

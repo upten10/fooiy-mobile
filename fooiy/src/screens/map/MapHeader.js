@@ -3,7 +3,12 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
-import {SearchDark} from '../../../assets/icons/svg';
+import {
+  ArrowIconBottom,
+  ArrowIconBottomDark,
+  ArrowIconBottomGray,
+  SearchDark,
+} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont, globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import CategorySwitch from './CategorySwitch';
@@ -11,7 +16,7 @@ import CategorySwitch from './CategorySwitch';
 const MapHeader = props => {
   const insets = useSelector(state => state.insets.insets);
   const navigation = useNavigation();
-  const {isCafe, setIsCafe} = props;
+  const {isCafe, setIsCafe, setShopMarkers, shopCount, sheetRef} = props;
 
   return (
     <View
@@ -36,6 +41,7 @@ const MapHeader = props => {
           alignItems: 'center',
           paddingHorizontal: 16,
           // paddingVertical: 18,
+          ...globalStyles.shadow,
         }}>
         <Text
           style={{
@@ -51,13 +57,41 @@ const MapHeader = props => {
         style={{
           width: '100%',
           paddingHorizontal: 16,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}>
         {/* 맛집 카페 버튼 */}
-        <CategorySwitch isCafe={isCafe} setIsCafe={setIsCafe} />
+        <CategorySwitch
+          isCafe={isCafe}
+          setIsCafe={setIsCafe}
+          setShopMarkers={setShopMarkers}
+        />
         {/* 필터 */}
-        <Pressable>
-          <Text>주변 카페 n개</Text>
-        </Pressable>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            sheetRef.current.expand();
+          }}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: fooiyColor.W,
+            borderRadius: 24,
+            paddingHorizontal: 16,
+            paddingVertical: 10,
+            ...globalStyles.shadow,
+          }}>
+          <Text
+            style={{
+              ...fooiyFont.Subtitle3,
+              color: fooiyColor.G800,
+              marginRight: 4,
+            }}>
+            주변 {isCafe ? '카페' : '맛집'} {shopCount}개
+          </Text>
+          <ArrowIconBottomDark />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -74,6 +108,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
-    ...globalStyles.shadow,
   },
 });

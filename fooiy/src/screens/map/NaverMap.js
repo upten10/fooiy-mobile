@@ -16,10 +16,13 @@ import {useDebounce} from '../../common/hooks/useDebounce';
 import {fooiyColor} from '../../common/globalStyles';
 import {useSelector} from 'react-redux';
 import MapHeader from './MapHeader';
+import {LocationDarkIcon} from '../../../assets/icons/svg';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const NaverMap = props => {
   //map ref 초기화
   const mapView = useRef(null);
+  const sheetRef = useRef(null);
   const {debounceCallback, isLoading} = useDebounce({time: 500});
 
   // 클릭 된 마커 키
@@ -34,6 +37,7 @@ const NaverMap = props => {
 
   //control
   const [isCafe, setIsCafe] = useState(false);
+  const [shopCount, setShopCount] = useState(0);
 
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const onCameraChange = e => {
@@ -115,8 +119,16 @@ const NaverMap = props => {
   // 현위치 버튼 컴포넌트
   const LocationBtn = () => {
     return (
-      <Pressable style={styles.button} onPress={onClickLocationBtn}>
-        <Text style={styles.text}>{'현위치'}</Text>
+      <Pressable
+        style={[
+          styles.button,
+          {
+            bottom:
+              78 + globalVariable.tabBarHeight + useSafeAreaInsets().bottom,
+          },
+        ]}
+        onPress={onClickLocationBtn}>
+        <LocationDarkIcon />
       </Pressable>
     );
   };
@@ -128,7 +140,7 @@ const NaverMap = props => {
         latitude_left_bottom: data[0].latitude,
         latitude_right_top: data[1].latitude,
         longitude_right_top: data[1].longitude,
-        // shop_category: ,
+        shop_category: isCafe ? globalVariable.category_cafe : null,
         depth: depth,
       },
     })
@@ -138,6 +150,7 @@ const NaverMap = props => {
             setShopMarkers(res.data.payload.shop_list.regions);
           } else {
             setShopMarkers(res.data.payload.shop_list);
+            setShopCount(res.data.payload.shop_count);
           }
         } else {
           setShopMarkers([]);
@@ -164,7 +177,7 @@ const NaverMap = props => {
       getShopMarkerList(screenLocation);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screenLocation]);
+  }, [screenLocation, isCafe]);
 
   useEffect(() => {
     props.center
@@ -181,7 +194,13 @@ const NaverMap = props => {
 
   return (
     <View>
-      <MapHeader isCafe={isCafe} setIsCafe={setIsCafe} />
+      <MapHeader
+        isCafe={isCafe}
+        setIsCafe={setIsCafe}
+        setShopMarkers={setShopMarkers}
+        shopCount={shopCount}
+        sheetRef={sheetRef}
+      />
       <NaverMapView
         ref={mapView}
         style={styles.map}
@@ -236,7 +255,11 @@ const NaverMap = props => {
       {isModalVisible ? (
         <ShopModal onBackdropPress={toggleModal} shops_info={clickedShop} />
       ) : null}
-      <MapBottomSheet screenLocation={screenLocation} />
+      <MapBottomSheet
+        screenLocation={screenLocation}
+        isCafe={isCafe}
+        sheetRef={sheetRef}
+      />
     </View>
   );
 };
@@ -249,13 +272,14 @@ const styles = StyleSheet.create({
     height: globalVariable.height,
   },
   button: {
+    width: 40,
+    height: 40,
     position: 'absolute',
-    bottom: globalVariable.height / 5,
-    left: globalVariable.width / 1.25,
+    right: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'white',
-    borderRadius: 6,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    borderRadius: 100,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -270,12 +294,5 @@ const styles = StyleSheet.create({
         elevation: 6,
       },
     }),
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: '#FE5B5C',
   },
 });

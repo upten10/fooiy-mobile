@@ -94,3 +94,5 @@ export {default as CafeShop} from './Header/icon_cafe_shop.svg';
 export {default as Change} from './Camera/Change.svg';
 export {default as FlashOn} from './Camera/FlashOn.svg';
 export {default as FlashOff} from './Camera/FlashOff.svg';
+export {default as ArrowIconBottomDark} from './Icon_arrrow_bottom_dark.svg';
+export {default as LocationDarkIcon} from './Icon_location.svg';
