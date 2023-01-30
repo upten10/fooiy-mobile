@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  StyleSheet,
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {
@@ -58,13 +59,7 @@ const UserSearch = () => {
   const ListEmptyComponent = () => {
     return (
       <View>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 16,
-            height: 48,
-          }}>
+        <View style={styles.empty_container}>
           <Text style={{...fooiyFont.Body1, color: fooiyColor.G600}}>
             검색 결과가 없어요
           </Text>
@@ -73,14 +68,7 @@ const UserSearch = () => {
           </Text>
         </View>
         <View>
-          <Text
-            style={{
-              ...fooiyFont.Subtitle1,
-              color: fooiyColor.G800,
-              marginBottom: 16,
-            }}>
-            오늘의 푸이랭커
-          </Text>
+          <Text style={styles.fooyi_ranker}>오늘의 푸이랭커</Text>
         </View>
         <FlatList
           data={ranker}
@@ -103,10 +91,7 @@ const UserSearch = () => {
     return (
       <TouchableOpacity
         key={index}
-        style={{
-          backgroundColor: fooiyColor.W,
-          marginBottom: 16,
-        }}
+        style={{backgroundColor: fooiyColor.W, marginBottom: 16}}
         activeOpacity={0.8}
         onPress={() =>
           navigation.navigate('OtherUserPage', {
@@ -115,61 +100,35 @@ const UserSearch = () => {
         }>
         <View
           style={{
-            flexDirection: 'row',
             height: 56,
+            flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Image
-            source={{uri: profile_image}}
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 36,
-              marginRight: 8,
-            }}
-          />
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-            }}>
-            <Text
-              style={{
-                ...fooiyFont.Subtitle3,
-                color: fooiyColor.G800,
-              }}>
+          <Image source={{uri: profile_image}} style={styles.profile_image} />
+          <View style={{justifyContent: 'center', alignItems: 'flex-start'}}>
+            <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G800}}>
               {nickname}
             </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 4,
-                height: 18,
-                alignItems: 'center',
-              }}>
+            <View style={styles.user_info}>
               <Text
-                style={{
-                  ...fooiyFont.Subtitle4,
-                  color: fooiyColor.P500,
-                  borderWidth: 1,
-                  borderColor: fooiyColor.P500,
-                  borderRadius: 4,
-                  paddingHorizontal: 6,
-                  marginRight: 4,
-                  textAlign: 'center',
-                }}>
+                style={[
+                  styles.info_text,
+                  {
+                    marginRight: 4,
+                    color: fooiyColor.P500,
+                    borderColor: fooiyColor.P500,
+                  },
+                ]}>
                 {fooiyti}
               </Text>
               <Text
-                style={{
-                  ...fooiyFont.Subtitle4,
-                  color: fooiyColor.G400,
-                  borderWidth: 1,
-                  borderColor: fooiyColor.G400,
-                  borderRadius: 4,
-                  paddingHorizontal: 6,
-                  textAlign: 'center',
-                }}>
+                style={[
+                  styles.info_text,
+                  {
+                    color: fooiyColor.G400,
+                    borderColor: fooiyColor.G400,
+                  },
+                ]}>
                 피드 {count}
               </Text>
             </View>
@@ -189,10 +148,7 @@ const UserSearch = () => {
     return (
       <TouchableOpacity
         key={index}
-        style={{
-          backgroundColor: fooiyColor.W,
-          marginBottom: 16,
-        }}
+        style={{backgroundColor: fooiyColor.W, marginBottom: 16}}
         activeOpacity={0.8}
         onPress={() =>
           navigation.navigate('OtherUserPage', {
@@ -201,8 +157,8 @@ const UserSearch = () => {
         }>
         <View
           style={{
-            flexDirection: 'row',
             height: 56,
+            flexDirection: 'row',
             alignItems: 'center',
           }}>
           <View style={{marginRight: 8}}>
@@ -213,68 +169,34 @@ const UserSearch = () => {
             ) : index === 2 ? (
               <Ranker_3rd />
             ) : (
-              <Text
-                style={{
-                  ...fooiyFont.Subtitle1,
-                  color: fooiyColor.G400,
-                  width: 48,
-                  textAlign: 'center',
-                }}>
-                {index + 1}
-              </Text>
+              <Text style={styles.rank}>{index + 1}</Text>
             )}
           </View>
-          <Image
-            source={{uri: profile_image}}
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 36,
-              marginRight: 8,
-            }}
-          />
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-            }}>
-            <Text
-              style={{
-                ...fooiyFont.Subtitle3,
-                color: fooiyColor.G800,
-              }}>
+          <Image source={{uri: profile_image}} style={styles.profile_image} />
+          <View style={{justifyContent: 'center', alignItems: 'flex-start'}}>
+            <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G800}}>
               {nickname}
             </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 4,
-                height: 18,
-                alignItems: 'center',
-              }}>
+            <View style={styles.user_info}>
               <Text
-                style={{
-                  ...fooiyFont.Subtitle4,
-                  color: fooiyColor.P500,
-                  borderWidth: 1,
-                  borderColor: fooiyColor.P500,
-                  borderRadius: 4,
-                  paddingHorizontal: 6,
-                  marginRight: 4,
-                  textAlign: 'center',
-                }}>
+                style={[
+                  styles.info_text,
+                  {
+                    marginRight: 4,
+                    color: fooiyColor.P500,
+                    borderColor: fooiyColor.P500,
+                  },
+                ]}>
                 {fooiyti}
               </Text>
               <Text
-                style={{
-                  ...fooiyFont.Subtitle4,
-                  color: fooiyColor.G400,
-                  borderWidth: 1,
-                  borderColor: fooiyColor.G400,
-                  borderRadius: 4,
-                  paddingHorizontal: 6,
-                  textAlign: 'center',
-                }}>
+                style={[
+                  styles.info_text,
+                  {
+                    color: fooiyColor.G400,
+                    borderColor: fooiyColor.G400,
+                  },
+                ]}>
                 피드 {count}
               </Text>
             </View>
@@ -308,14 +230,7 @@ const UserSearch = () => {
       return (
         <>
           <View>
-            <Text
-              style={{
-                ...fooiyFont.Subtitle1,
-                color: fooiyColor.G800,
-                marginBottom: 16,
-              }}>
-              오늘의 푸이랭커
-            </Text>
+            <Text style={styles.fooyi_ranker}>오늘의 푸이랭커</Text>
           </View>
           <FlatList
             data={ranker}
@@ -346,14 +261,7 @@ const UserSearch = () => {
           backgroundColor: fooiyColor.W,
           height: '100%',
         }}>
-        <View
-          style={{
-            marginTop: 24,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 24,
-          }}>
+        <View style={styles.input_container}>
           <TextInput
             placeholder="보고 싶은 유저를 검색해보세요"
             placeholderTextColor={fooiyColor.G400}
@@ -367,88 +275,25 @@ const UserSearch = () => {
             value={value}
             style={
               focus && value !== ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    borderColor: fooiyColor.G400,
-                    ...fooiyFont.Body1,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    color: fooiyColor.B,
-                  }
+                ? styles.input
                 : focus && value === ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Subtitle2,
-                    color: fooiyColor.G400,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G400,
-                  }
+                ? [
+                    {...fooiyFont.Subtitle2, color: fooiyColor.G400},
+                    styles.input,
+                  ]
                 : !focus && value !== ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Body1,
-                    color: fooiyColor.B,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G400,
-                  }
-                : {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Subtitle2,
-                    color: fooiyColor.G400,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G200,
-                  }
+                ? styles.input
+                : [
+                    {
+                      ...fooiyFont.Subtitle2,
+                      color: fooiyColor.G400,
+                      borderColor: fooiyColor.G200,
+                    },
+                    styles.input,
+                  ]
             }
           />
-          <Search
-            style={{
-              position: 'absolute',
-              right: 16,
-            }}
-          />
+          <Search style={{position: 'absolute', right: 16}} />
         </View>
         <MainUI />
       </View>
@@ -457,3 +302,66 @@ const UserSearch = () => {
 };
 
 export default UserSearch;
+
+const styles = StyleSheet.create({
+  empty_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+    height: 48,
+  },
+  profile_image: {
+    width: 56,
+    height: 56,
+    borderRadius: 36,
+    marginRight: 8,
+  },
+  user_info: {
+    flexDirection: 'row',
+    marginTop: 4,
+    height: 18,
+    alignItems: 'center',
+  },
+  info_text: {
+    ...fooiyFont.Subtitle4,
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    textAlign: 'center',
+  },
+  fooyi_ranker: {
+    ...fooiyFont.Subtitle1,
+    color: fooiyColor.G800,
+    marginBottom: 16,
+  },
+  rank: {
+    ...fooiyFont.Subtitle1,
+    color: fooiyColor.G400,
+    width: 48,
+    textAlign: 'center',
+  },
+  input_container: {
+    marginTop: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  input: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: fooiyColor.G400,
+    borderRadius: 8,
+    height: 56,
+    padding: 16,
+    ...fooiyFont.Body1,
+    color: fooiyColor.B,
+    ...Platform.select({
+      ios: {
+        lineHeight: 0,
+      },
+      android: {
+        lineHeight: 24,
+      },
+    }),
+  },
+});

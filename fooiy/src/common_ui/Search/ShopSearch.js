@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  StyleSheet,
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {Notice, Search} from '../../../assets/icons/svg';
@@ -55,13 +56,7 @@ const ShopSearch = () => {
   const ListEmptyComponent = () => {
     return (
       <View>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 16,
-            height: 48,
-          }}>
+        <View style={styles.empty_container}>
           <Text style={{...fooiyFont.Body1, color: fooiyColor.G600}}>
             검색 결과가 없어요
           </Text>
@@ -69,13 +64,7 @@ const ShopSearch = () => {
             철자와 띄어쓰기를 확인해보세요!
           </Text>
         </View>
-        <View
-          style={{
-            marginTop: 24,
-            padding: 16,
-            backgroundColor: fooiyColor.P50,
-            borderRadius: 8,
-          }}>
+        <View style={styles.init_container}>
           <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G600}}>
             이렇게 검색해 보세요!
           </Text>
@@ -127,16 +116,7 @@ const ShopSearch = () => {
         }>
         {/* img */}
         <View style={{width: imageWidth, height: imageWidth, marginBottom: 8}}>
-          <View
-            style={{
-              position: 'absolute',
-              zIndex: 1,
-              backgroundColor: fooiyColor.P500,
-              paddingHorizontal: 8,
-              paddingVertical: 4,
-              borderTopLeftRadius: 16,
-              borderBottomRightRadius: 16,
-            }}>
+          <View style={styles.fooiyti_container}>
             <Text style={{...fooiyFont.Subtitle4, color: fooiyColor.W}}>
               {score}%
             </Text>
@@ -161,15 +141,7 @@ const ShopSearch = () => {
         <View style={{flexDirection: 'row'}}>
           {shop_category_list.map((item, index) => {
             return (
-              <View
-                style={{
-                  backgroundColor: fooiyColor.G50,
-                  height: 28,
-                  borderRadius: 8,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginRight: 4,
-                }}>
+              <View style={styles.category_container}>
                 <Text style={{...fooiyFont.Caption1_1, paddingHorizontal: 8}}>
                   {item}
                 </Text>
@@ -206,13 +178,7 @@ const ShopSearch = () => {
       // 처음 들어왔을 때
       return (
         <>
-          <View
-            style={{
-              marginTop: 16,
-              padding: 16,
-              backgroundColor: fooiyColor.P50,
-              borderRadius: 8,
-            }}>
+          <View style={styles.init_container}>
             <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G600}}>
               이렇게 검색해 보세요!
             </Text>
@@ -256,13 +222,7 @@ const ShopSearch = () => {
           backgroundColor: fooiyColor.W,
           height: '100%',
         }}>
-        <View
-          style={{
-            marginTop: 24,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
+        <View style={styles.input_container}>
           <TextInput
             placeholder="먹고 싶은 음식을 검색해보세요"
             placeholderTextColor={fooiyColor.G400}
@@ -276,88 +236,25 @@ const ShopSearch = () => {
             value={value}
             style={
               focus && value !== ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    borderColor: fooiyColor.G400,
-                    ...fooiyFont.Body1,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    color: fooiyColor.B,
-                  }
+                ? styles.input
                 : focus && value === ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Subtitle2,
-                    color: fooiyColor.G400,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G400,
-                  }
+                ? [
+                    {...fooiyFont.Subtitle2, color: fooiyColor.G400},
+                    styles.input,
+                  ]
                 : !focus && value !== ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Body1,
-                    color: fooiyColor.B,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G400,
-                  }
-                : {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Subtitle2,
-                    color: fooiyColor.G400,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G200,
-                  }
+                ? styles.input
+                : [
+                    {
+                      ...fooiyFont.Subtitle2,
+                      color: fooiyColor.G400,
+                      borderColor: fooiyColor.G200,
+                    },
+                    styles.input,
+                  ]
             }
           />
-          <Search
-            style={{
-              position: 'absolute',
-              right: 16,
-            }}
-          />
+          <Search style={{position: 'absolute', right: 16}} />
         </View>
         <MainUI />
       </View>
@@ -366,3 +263,60 @@ const ShopSearch = () => {
 };
 
 export default ShopSearch;
+
+const styles = StyleSheet.create({
+  empty_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+    height: 48,
+    marginBottom: -8,
+  },
+  init_container: {
+    marginTop: 24,
+    padding: 16,
+    backgroundColor: fooiyColor.P50,
+    borderRadius: 8,
+  },
+  fooiyti_container: {
+    position: 'absolute',
+    zIndex: 1,
+    backgroundColor: fooiyColor.P500,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderTopLeftRadius: 16,
+    borderBottomRightRadius: 16,
+  },
+  category_container: {
+    backgroundColor: fooiyColor.G50,
+    height: 28,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 4,
+  },
+  input_container: {
+    marginTop: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  input: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: fooiyColor.G400,
+    borderRadius: 8,
+    height: 56,
+    padding: 16,
+    ...fooiyFont.Body1,
+    color: fooiyColor.B,
+    ...Platform.select({
+      ios: {
+        lineHeight: 0,
+      },
+      android: {
+        lineHeight: 24,
+      },
+    }),
+  },
+});

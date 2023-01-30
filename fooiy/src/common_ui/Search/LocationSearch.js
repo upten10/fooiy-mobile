@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  StyleSheet,
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {
@@ -53,13 +54,7 @@ const LocationSearch = () => {
   const ListEmptyComponent = () => {
     return (
       <View>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 16,
-            height: 48,
-          }}>
+        <View style={styles.empty_container}>
           <Text style={{...fooiyFont.Body1, color: fooiyColor.G600}}>
             검색 결과가 없어요
           </Text>
@@ -67,12 +62,7 @@ const LocationSearch = () => {
             철자와 띄어쓰기를 확인해보세요!
           </Text>
         </View>
-        <View
-          style={{
-            padding: 16,
-            backgroundColor: fooiyColor.P50,
-            borderRadius: 8,
-          }}>
+        <View style={styles.init_container}>
           <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G600}}>
             이렇게 검색해 보세요!
           </Text>
@@ -114,48 +104,23 @@ const LocationSearch = () => {
             params: {longitude: longitude, latitude: latitude},
           })
         }>
-        <View
-          style={{
-            flexDirection: 'row',
-            height: 74,
-            alignItems: 'center',
-            borderBottomWidth: 1,
-            borderBottomColor: fooiyColor.G200,
-          }}>
-          <View
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 36,
-              borderWidth: 1,
-              backgroundColor: fooiyColor.G600,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginRight: 8,
-            }}>
+        <View style={styles.result_container}>
+          <View style={styles.result_type}>
             {type === 'subway' ? (
-              <Subway style={{}} />
+              <Subway />
             ) : type === 'landmark' ? (
-              <Landmark style={{}} />
+              <Landmark />
             ) : type === 'district' ? (
-              <District style={{}} />
+              <District />
             ) : type === 'university' ? (
-              <University style={{}} />
+              <University />
             ) : null}
           </View>
           <View>
-            <Text
-              style={{
-                ...fooiyFont.Subtitle2,
-                color: fooiyColor.G800,
-              }}>
+            <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.G800}}>
               {name}
             </Text>
-            <Text
-              style={{
-                ...fooiyFont.Caption1,
-                color: fooiyColor.G400,
-              }}>
+            <Text style={{...fooiyFont.Caption1, color: fooiyColor.G400}}>
               {address}
             </Text>
           </View>
@@ -184,12 +149,7 @@ const LocationSearch = () => {
       // 처음 들어왔을 때
       return (
         <>
-          <View
-            style={{
-              padding: 16,
-              backgroundColor: fooiyColor.P50,
-              borderRadius: 8,
-            }}>
+          <View style={styles.init_container}>
             <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G600}}>
               이렇게 검색해 보세요!
             </Text>
@@ -229,14 +189,7 @@ const LocationSearch = () => {
           backgroundColor: fooiyColor.W,
           height: '100%',
         }}>
-        <View
-          style={{
-            marginTop: 24,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 16,
-          }}>
+        <View style={styles.input_container}>
           <TextInput
             ref={test}
             placeholder="보고 싶은 위치를 검색해보세요"
@@ -251,88 +204,25 @@ const LocationSearch = () => {
             value={value}
             style={
               focus && value !== ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    borderColor: fooiyColor.G400,
-                    ...fooiyFont.Body1,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    color: fooiyColor.B,
-                  }
+                ? styles.input
                 : focus && value === ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Subtitle2,
-                    color: fooiyColor.G400,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G400,
-                  }
+                ? [
+                    {...fooiyFont.Subtitle2, color: fooiyColor.G400},
+                    styles.input,
+                  ]
                 : !focus && value !== ''
-                ? {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Body1,
-                    color: fooiyColor.B,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G400,
-                  }
-                : {
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    height: 56,
-                    padding: 16,
-                    ...fooiyFont.Subtitle2,
-                    color: fooiyColor.G400,
-                    ...Platform.select({
-                      ios: {
-                        lineHeight: 0,
-                      },
-                      android: {
-                        lineHeight: 24,
-                      },
-                    }),
-                    borderColor: fooiyColor.G200,
-                  }
+                ? styles.input
+                : [
+                    {
+                      ...fooiyFont.Subtitle2,
+                      color: fooiyColor.G400,
+                      borderColor: fooiyColor.G200,
+                    },
+                    styles.input,
+                  ]
             }
           />
-          <Search
-            style={{
-              position: 'absolute',
-              right: 16,
-            }}
-          />
+          <Search style={{position: 'absolute', right: 16}} />
         </View>
         <MainUI />
       </View>
@@ -341,3 +231,58 @@ const LocationSearch = () => {
 };
 
 export default LocationSearch;
+
+const styles = StyleSheet.create({
+  empty_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+    height: 48,
+  },
+  init_container: {
+    padding: 16,
+    backgroundColor: fooiyColor.P50,
+    borderRadius: 8,
+  },
+  result_container: {
+    flexDirection: 'row',
+    height: 74,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: fooiyColor.G200,
+  },
+  result_type: {
+    width: 36,
+    height: 36,
+    borderRadius: 36,
+    borderWidth: 1,
+    backgroundColor: fooiyColor.G600,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+  },
+  input_container: {
+    marginTop: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  input: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: fooiyColor.G400,
+    borderRadius: 8,
+    height: 56,
+    padding: 16,
+    ...fooiyFont.Body1,
+    color: fooiyColor.B,
+    ...Platform.select({
+      ios: {
+        lineHeight: 0,
+      },
+      android: {
+        lineHeight: 24,
+      },
+    }),
+  },
+});
