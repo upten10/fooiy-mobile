@@ -73,7 +73,7 @@ const UserSearch = () => {
         <FlatList
           data={ranker}
           renderItem={RankerItem}
-          keyExtractor={(user, index) => index.toString()}
+          keyExtractor={item => String(item.public_id)}
           scrollEventThrottle={16}
           bounces={true}
           scrollToOverflowEnabled
@@ -217,7 +217,7 @@ const UserSearch = () => {
             data={user}
             renderItem={UserItem}
             ListEmptyComponent={ListEmptyComponent}
-            keyExtractor={(user, index) => index.toString()}
+            keyExtractor={item => String(item.public_id)}
             scrollEventThrottle={16}
             bounces={true}
             scrollToOverflowEnabled
@@ -235,7 +235,7 @@ const UserSearch = () => {
           <FlatList
             data={ranker}
             renderItem={RankerItem}
-            keyExtractor={(ranker, index) => index.toString()}
+            keyExtractor={item => String(item.public_id)}
             scrollEventThrottle={16}
             bounces={true}
             scrollToOverflowEnabled
@@ -307,8 +307,8 @@ const styles = StyleSheet.create({
   empty_container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 16,
     height: 48,
+    marginBottom: 16,
   },
   profile_image: {
     width: 56,
@@ -345,6 +345,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 16,
   },
   input: {
     width: '100%',

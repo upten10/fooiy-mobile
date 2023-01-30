@@ -154,11 +154,6 @@ const NaverMap = props => {
   };
 
   useEffect(() => {
-    checkGrant();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     if (screenLocation.length !== 0) {
       getShopMarkerList(screenLocation);
     }
