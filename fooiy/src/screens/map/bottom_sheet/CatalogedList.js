@@ -5,7 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
-import BottomSheetShop from '../../../common_ui/shop/BottomSheetShop';
+import ShopListUI from '../../../common_ui/shop/ShopListUI';
 
 const CatalogedList = props => {
   const insets = useSafeAreaInsets();
@@ -101,7 +101,7 @@ const CatalogedList = props => {
       ListEmptyComponent={listEmptyComponent}
       ListFooterComponent={listFooterComponent}
       keyExtractor={(item, index) => index.toString()}
-      renderItem={({item}) => <BottomSheetShop {...item} />}
+      renderItem={({item}) => <ShopListUI {...item} />}
       onEndReached={loadMoreItem}
       numColumns={2}
       showsVerticalScrollIndicator={false}

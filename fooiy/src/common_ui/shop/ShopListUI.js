@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
-const BottomSheetShop = item => {
+const ShopListUI = item => {
   const {
     index,
     address,
@@ -78,7 +78,7 @@ const BottomSheetShop = item => {
   );
 };
 
-export default BottomSheetShop;
+export default ShopListUI;
 
 const styles = StyleSheet.create({
   fooiyti_container: {
