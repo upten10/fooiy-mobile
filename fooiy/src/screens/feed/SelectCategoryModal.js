@@ -21,9 +21,6 @@ const SelectCategoryModal = props => {
   const changeCategory = category => {
     toTop();
     if (currentCategory !== category) {
-      setFeeds([]);
-      setOffset(0);
-      setTotalCount(0);
       setCategory(category);
     }
     setOpen(false);

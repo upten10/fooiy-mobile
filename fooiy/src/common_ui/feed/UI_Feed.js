@@ -15,11 +15,10 @@ import TasteEvaluationModal from './TasteEvaluationModal';
 import {useDebounce} from '../../common/hooks/useDebounce';
 
 const UI_Feed = item => {
-  // feed redux
+  const [disableShopButton, setDisableShopButton] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const dispatch = useDispatch();
-  const [disableShopButton, setDisableShopButton] = useState(false);
   const [likeIcon, setLikeIcon] = useState(item.is_liked);
   const [likeCount, setLikeCount] = useState(item.count_liked);
   const [storeIcon, setStoreIcon] = useState(item.is_store);

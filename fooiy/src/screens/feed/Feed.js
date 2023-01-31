@@ -8,6 +8,7 @@ import {globalVariable} from '../../common/globalVariable';
 import UI_Feed from '../../common_ui/feed/UI_Feed';
 import {FeedHeader} from '../../common_ui/headers/FeedHeader';
 import SelectCategoryModal from './SelectCategoryModal';
+import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 
 const Feed = props => {
   const [feeds, setFeeds] = useState([]);
@@ -18,17 +19,21 @@ const Feed = props => {
   const [category, setCategory] = useState('');
   const [open, setOpen] = useState(true);
 
+  useEffect(() => {
+    setTimeout(function () {
+      setOpen(false);
+    }, 3000);
+  }, []);
+
   const onRefresh = () => {
     if (!refreshing) {
-      setOffset(0);
-      setFeeds([]);
       getRefreshData();
     }
   };
 
   const getRefreshData = async () => {
     setRefreshing(true);
-    await getFeedList();
+    await getFeedList(0);
     setRefreshing(false);
   };
 
@@ -45,17 +50,23 @@ const Feed = props => {
     flatListRef.current.scrollToIndex({index: 0, animated: true});
   };
 
-  const getFeedList = async () => {
+  const getFeedList = async data => {
+    setOffset(data);
     await ApiManagerV2.get(apiUrl.FEED_LIST, {
       params: {
         limit: globalVariable.FeedLimit,
-        offset: offset,
+        offset: data,
         category: category,
       },
     }).then(res => {
       if (res.data.payload.feed_list) {
-        setFeeds([...feeds, ...res.data.payload.feed_list.results]);
-        setTotalCount(res.data.payload.feed_list.total_count);
+        if (data === 0) {
+          setFeeds(res.data.payload.feed_list.results);
+        } else {
+          setFeeds([...feeds, ...res.data.payload.feed_list.results]);
+        }
+        totalCount !== 0 &&
+          setTotalCount(res.data.payload.feed_list.total_count);
       } else {
         setNoFeedImage(res.data.payload.image);
       }
@@ -63,8 +74,9 @@ const Feed = props => {
     // .catch(function (error) => console.log(error));
   };
   const loadMoreItem = () => {
-    if (totalCount > offset) {
+    if (totalCount > offset + globalVariable.FeedLimit) {
       setOffset(offset + globalVariable.FeedLimit);
+      getFeedList(offset + globalVariable.FeedLimit);
     }
   };
 
@@ -76,10 +88,22 @@ const Feed = props => {
     ) : null;
   };
 
+  const ListHeaderComponent = useCallback(() => {
+    return (
+      category !== globalVariable.category_cafe && (
+        <View style={{height: 80}}>
+          <Text>메뉴상담소</Text>
+        </View>
+      )
+    );
+  }, [category]);
+
   useEffect(() => {
-    getFeedList();
+    setFeeds([]);
+    getFeedList(0);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset, category]);
+  }, [category]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -94,8 +118,10 @@ const Feed = props => {
           renderItem={({item}) => (
             <UI_Feed {...item} parent={props.route.name} />
           )}
-          updateCellsBatchingPeriod={5}
+          updateCellsBatchingPeriod={3}
           removeClippedSubviews={true}
+          ListHeaderComponent={ListHeaderComponent}
+          ListFooterComponent={FlatListFooter}
           keyExtractor={item => String(item.id)}
           onEndReached={loadMoreItem}
           ListEmptyComponent={ListEmptyComponent}
