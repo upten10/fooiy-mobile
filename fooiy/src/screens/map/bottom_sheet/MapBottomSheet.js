@@ -1,5 +1,5 @@
 import React, {useCallback, useRef, useMemo, useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
 import BottomSheet, {TouchableOpacity} from '@gorhom/bottom-sheet';
 
 import {globalVariable} from '../../../common/globalVariable';
@@ -58,9 +58,8 @@ const MapBottomSheet = props => {
       onChange={handleSheetChange}>
       <Text style={styles.title}>주변 {isCafe ? '카페' : '맛집'} 리스트</Text>
       <View style={styles.bodyContainer}>
-        <TouchableOpacity
+        <Pressable
           style={styles.categoryTab}
-          activeOpacity={0.8}
           onPress={() => {
             categoryList.current.scrollToIndex({
               index: 0,
@@ -76,10 +75,9 @@ const MapBottomSheet = props => {
             }}>
             내 푸이티아이순
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           style={styles.categoryTab}
-          activeOpacity={0.8}
           onPress={() => {
             categoryList.current.scrollToIndex({
               index: 1,
@@ -94,7 +92,7 @@ const MapBottomSheet = props => {
             }}>
             전체 인기순
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <View style={{width: globalVariable.width}}>
         <View
