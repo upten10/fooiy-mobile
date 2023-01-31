@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -91,7 +91,7 @@ const Storage = () => {
     });
   };
 
-  const Filter = () => {
+  const Filter = useCallback(() => {
     return (
       <DropDownPicker
         items={items}
@@ -110,7 +110,7 @@ const Storage = () => {
         dropDownContainerStyle={filter_styles.dropDownContainer}
       />
     );
-  };
+  }, [items, open, value]);
 
   const StorageItem = item => {
     const {

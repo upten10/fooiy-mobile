@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
@@ -183,10 +183,18 @@ const styles = StyleSheet.create({
   cancelBtnText: {
     ...fooiyFont.Button,
     color: fooiyColor.W,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
   },
   confirmBtnText: {
     ...fooiyFont.Button,
     color: fooiyColor.G600,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
   },
 });
 

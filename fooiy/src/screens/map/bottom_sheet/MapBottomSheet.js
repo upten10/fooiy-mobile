@@ -7,17 +7,24 @@ import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
 import BottomSheetShop from '../../../common_ui/shop/BottomSheetShop';
 import {fooiyFont} from '../../../common/globalStyles';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const MapBottomSheet = props => {
-  const {screenLocation} = props;
-  const sheetRef = useRef(null);
+  const {screenLocation, isCafe, sheetRef} = props;
   const [shops, setShops] = useState([]);
   const [isOpend, setIsOpend] = useState(false);
   const offset = useRef(0).current;
   const [emptyShopImage, setEmptyShopImage] = useState('');
   const totalCount = useRef(0).current;
+  const insets = useSafeAreaInsets();
 
-  const snapPoints = useMemo(() => ['17%', '93%'], []);
+  const snapPoints = useMemo(
+    () => [
+      globalVariable.tabBarHeight + 54 + insets.bottom,
+      globalVariable.height - 8 - insets.top,
+    ],
+    [insets.top, insets.bottom],
+  );
 
   const handleSheetChange = useCallback(
     index => {
@@ -96,8 +103,9 @@ const MapBottomSheet = props => {
     <BottomSheet
       ref={sheetRef}
       snapPoints={snapPoints}
+      containerStyle={{zIndex: 5}}
       onChange={handleSheetChange}>
-      <Text style={styles.title}>주변 맛집 리스트</Text>
+      <Text style={styles.title}>주변 {isCafe ? '카페' : '맛집'} 리스트</Text>
       <BottomSheetFlatList
         data={shops}
         ListEmptyComponent={ListEmptyComponent}

@@ -85,8 +85,15 @@ export {default as TasteEvaluation50} from './TasteEvaluation/taste_evaluation_5
 export {default as TasteEvaluation70} from './TasteEvaluation/taste_evaluation_70.svg';
 export {default as TasteEvaluation99} from './TasteEvaluation/taste_evaluation_99.svg';
 export {default as TasteEvaluationDescription} from './TasteEvaluation/taste_evaluation_description.svg';
+export {default as SearchDark} from './Icon_Search_Dark.svg';
+export {default as CafeShopDark} from './Icon_Cafe_Shop_Dark.svg';
+export {default as CafeShopLight} from './Icon_Cafe_Shop_Light.svg';
+export {default as CommonShopDark} from './Icon_Common_Shop_Dark.svg';
+export {default as CommonShopLight} from './Icon_Common_Shop_Light.svg';
 export {default as CommonShop} from './Header/icon_common_shop.svg';
 export {default as CafeShop} from './Header/icon_cafe_shop.svg';
 export {default as Change} from './Camera/Change.svg';
 export {default as FlashOn} from './Camera/FlashOn.svg';
 export {default as FlashOff} from './Camera/FlashOff.svg';
+export {default as ArrowIconBottomDark} from './Icon_arrrow_bottom_dark.svg';
+export {default as LocationDarkIcon} from './Icon_location.svg';

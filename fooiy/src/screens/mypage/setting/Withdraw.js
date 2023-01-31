@@ -27,6 +27,8 @@ const Withdraw = () => {
   const [clickedIndex, setClickedIndex] = useState(-1);
   const [inputValue, setInputValue] = useState('');
   const [btnActivate, setBtnActivate] = useState(false);
+  const [isEnterKeyboard, setIsEnterKeyboard] = useState(false);
+  console.log(isEnterKeyboard);
 
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -83,13 +85,13 @@ const Withdraw = () => {
     );
   };
   return (
-    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={50}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView
-          style={{
-            backgroundColor: fooiyColor.W,
-            height: '100%',
-          }}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView
+        style={{
+          backgroundColor: fooiyColor.W,
+          height: '100%',
+        }}>
+        <KeyboardAvoidingView behavior={'position'}>
           <StackHeader title="회원 탈퇴" />
           {/* Body */}
           <View style={BodyStyles(insets.top, insets.bottom).bodyContainer}>
@@ -151,9 +153,9 @@ const Withdraw = () => {
               </Text>
             </TouchableOpacity>
           </View>
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -239,6 +241,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 8,
+    marginBottom: 16,
   },
   changeBtnOff: {
     backgroundColor: fooiyColor.G100,
