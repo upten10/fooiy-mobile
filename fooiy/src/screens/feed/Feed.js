@@ -65,7 +65,7 @@ const Feed = props => {
         } else {
           setFeeds([...feeds, ...res.data.payload.feed_list.results]);
         }
-        totalCount !== 0 &&
+        totalCount === 0 &&
           setTotalCount(res.data.payload.feed_list.total_count);
       } else {
         setNoFeedImage(res.data.payload.image);
@@ -126,7 +126,6 @@ const Feed = props => {
           onEndReached={loadMoreItem}
           ListEmptyComponent={ListEmptyComponent}
           onEndReachedThreshold={2}
-          removeClippedSubviews={true}
         />
       </View>
       {open && (
