@@ -20,6 +20,7 @@ const Mypage = props => {
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(-1);
   const [noFeedImage, setNoFeedImage] = useState('');
+  const [goTop, setGoTop] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -33,10 +34,14 @@ const Mypage = props => {
   const tabNavigation = props.navigation.getParent();
   const stackNavigation = props.navigation;
   tabNavigation?.addListener('tabPress', e => {
-    if (stackNavigation.getState().index === 0) {
+    if (
+      stackNavigation.getState().index === 0 &&
+      flatListRef.current !== null
+    ) {
       toTop();
     }
   });
+
   const toTop = () => {
     flatListRef.current.scrollToOffset({
       offset: 0,
