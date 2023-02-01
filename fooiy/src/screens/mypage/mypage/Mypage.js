@@ -13,13 +13,20 @@ import {DefaultHeader} from '../../../common_ui/headers/DefaultHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import MypageProfile from './MypageProfile';
 
+const limit = 12;
+
 const Mypage = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
-  const [lastIndex, setLastIndex] = useState(-1);
+  const [totalCount, setTotalCount] = useState(-1);
   const [noFeedImage, setNoFeedImage] = useState('');
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getFeedList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const flatListRef = useRef(null);
 
@@ -40,15 +47,7 @@ const Mypage = props => {
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    if (lastIndex === -1 || offset < lastIndex) {
-      getFeedList();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
-
   const getFeedList = async data => {
-    const limit = 20;
     await ApiManagerV2.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
         offset: offset,
@@ -56,17 +55,25 @@ const Mypage = props => {
         type: 'image',
       },
     }).then(res => {
-      if (
-        res.data.payload.feed_list.total_count === 0 &&
-        res.data.payload.image
-      ) {
-        setNoFeedImage(res.data.payload.image);
-      } else if (lastIndex === -1 || offset < lastIndex) {
-        setLastIndex(res.data.payload.feed_list.total_count);
+      if (res.data.payload.image === undefined) {
         setFeeds([...feeds, ...res.data.payload.feed_list.results]);
-        setOffset(offset + limit);
+        if (totalCount === -1) {
+          setOffset(offset + limit);
+          setTotalCount(res.data.payload.feed_list.total_count);
+        }
+      } else {
+        setNoFeedImage(res.data.payload.image);
       }
     });
+  };
+
+  const loadMoreFeeds = () => {
+    if (totalCount > offset) {
+      if (totalCount + limit > offset) {
+        setOffset(offset + limit);
+        getFeedList();
+      }
+    }
   };
 
   const renderItem = useCallback(({item, index}) => {
@@ -112,6 +119,7 @@ const Mypage = props => {
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           scrollEventThrottle={16}
+          onEndReached={loadMoreFeeds}
           bounces={true}
           numColumns={3}
           scrollToOverflowEnabled
