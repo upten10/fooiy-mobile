@@ -97,14 +97,15 @@ const CatalogedList = props => {
       key={item}
       ref={curList}
       data={shops}
-      ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={listEmptyComponent}
+      ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={listFooterComponent}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({item}) => <ShopListUI {...item} />}
       onEndReached={loadMoreItem}
       numColumns={2}
       showsVerticalScrollIndicator={false}
+      removeClippedSubviews={true}
     />
   );
 };

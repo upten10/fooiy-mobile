@@ -55,15 +55,25 @@ const ShopListUI = item => {
       </View>
       {/* shop info */}
       <View style={{marginBottom: 8}}>
-        <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.B}}>
+        <Text
+          style={{
+            ...fooiyFont.Subtitle2,
+            color: fooiyColor.B,
+            width: imageWidth,
+          }}>
           {name}
         </Text>
-        <Text style={{...fooiyFont.Body2, color: fooiyColor.G800}}>
+        <Text
+          style={{
+            ...fooiyFont.Body2,
+            color: fooiyColor.G800,
+            width: imageWidth,
+          }}>
           {menu_price}
         </Text>
       </View>
       {/* category */}
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', width: imageWidth}}>
         {shop_category_list.map((item, index) => {
           return (
             <View style={styles.category_container} key={index}>
