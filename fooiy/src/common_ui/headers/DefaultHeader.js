@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {Notification, Search} from '../../../assets/icons/svg';
+import {Notification, Search_Icon} from '../../../assets/icons/svg';
 import {Logo} from '../../../assets/icons/svg';
 
 export const DefaultHeader = () => {
@@ -25,7 +25,7 @@ export const DefaultHeader = () => {
             onPress={() => {
               search();
             }}>
-            <Search />
+            <Search_Icon />
           </TouchableOpacity>
         </View>
       </View>

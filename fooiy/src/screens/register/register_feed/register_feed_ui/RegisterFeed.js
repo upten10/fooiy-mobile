@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {globalVariable} from '../../../../common/globalVariable';
 import {StackHeader} from '../../../../common_ui/headers/StackHeader';
@@ -19,7 +20,6 @@ import FooiytiRating from './FooiytiRating';
 import {ApiManagerV2} from '../../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
-import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 
 const RegisterFeed = props => {
   const {photo_list, shop, menu, address} = props.route.params;
@@ -47,8 +47,8 @@ const RegisterFeed = props => {
   const valueSet = [90, 70, 50, 30, 10];
   const totalValueSet = [10, 30, 50, 70, 99];
   const navigation = useNavigation();
-
   const commentRef = useRef();
+
   const checkShopInput = () => {
     return shopValue ? true : false;
   };
@@ -99,12 +99,7 @@ const RegisterFeed = props => {
   const onClickRegister = async () => {
     const match = /\.(\w+)$/.exec(photo_list[0].filename ?? '');
     // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
-    const type =
-      photo_list[0].type === 'image'
-        ? match
-          ? `image/${match[1]}`
-          : `image`
-        : photo_list[0].type;
+    const type = Platform.OS === 'ios' ? `image.jpg` : `image/jpeg`;
     const formData = new FormData();
     formData.append('account', accountValue);
     shop && menu
@@ -156,13 +151,12 @@ const RegisterFeed = props => {
   };
 
   return (
-    <SafeAreaView
-      style={{backgroundColor: fooiyColor.W, flex: 1, paddingBottom: 16}}>
+    <SafeAreaView style={styles.container}>
       <StackHeader title="피드 등록" />
       <ScrollView
         bounces={false}
         showsVerticalScrollIndicator={false}
-        style={styles.container}>
+        style={styles.view}>
         {/* 음식점 */}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
@@ -172,6 +166,7 @@ const RegisterFeed = props => {
                 holders="음식점 이름을 적어주세요"
                 title="음식점"
                 checkInput={checkShopInput}
+                value={shopValue}
               />
             )}
             {/* 위치 */}
@@ -181,6 +176,7 @@ const RegisterFeed = props => {
                 holders="대략적인 위치를 적어주세요"
                 title="위치"
                 checkInput={checkLocationInput}
+                value={locationValue}
               />
             )}
 
@@ -191,6 +187,7 @@ const RegisterFeed = props => {
                 holders="메뉴 이름을 적어주세요"
                 title="메뉴"
                 checkInput={checkMenuInput}
+                value={menuValue}
               />
             )}
             {/* 푸이티아이 평가 */}
@@ -245,7 +242,7 @@ const RegisterFeed = props => {
             </View>
             {/* 맛 평가 */}
             <View>
-              <Text style={styles.total_evaluation}>전체 맛 평가</Text>
+              <Text style={styles.total_evaluation}>종합 만족도</Text>
               <FooiytiRating
                 left={''}
                 right={''}
@@ -279,16 +276,16 @@ const RegisterFeed = props => {
                   spellCheck={false}
                   onChangeText={setComment}
                   maxLength={500}
+                  value={comment}
                 />
               </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.commnet_notice}>
-          <Text style={styles.commnet_notice_title}>코멘트 작성 안내사항</Text>
           <View style={{flexDirection: 'row'}}>
             <Notice style={styles.comment_notice_icon} />
-            <Text style={styles.commnet_notice_text}>
+            <Text style={[styles.commnet_notice_text, {marginBottom: 8}]}>
               욕설, 비방 등의 코멘트는 지양해주세요.
             </Text>
           </View>
@@ -299,16 +296,6 @@ const RegisterFeed = props => {
             </Text>
           </View>
         </View>
-      </ScrollView>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.select({
-          ios: 16,
-          android: 16,
-        })}
-        behavior={Platform.select({
-          ios: 'padding',
-          android: 'padding',
-        })}>
         <TouchableOpacity
           activeOpacity={0.8}
           style={
@@ -336,7 +323,7 @@ const RegisterFeed = props => {
             피드 등록
           </Text>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -346,12 +333,17 @@ export default RegisterFeed;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: fooiyColor.W,
+    flex: 1,
+    paddingBottom: Platform.select({ios: 0, android: 16}),
+  },
+  view: {
+    backgroundColor: fooiyColor.W,
     height: '100%',
     paddingHorizontal: 16,
   },
   fooiyti_evaluation: {
     ...fooiyFont.Subtitle1,
-    marginTop: 36,
+    marginTop: 16,
   },
   total_evaluation: {
     ...fooiyFont.Subtitle1,
@@ -395,7 +387,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     padding: 16,
     ...fooiyFont.Body1,
-    lineHeight: 0,
+    lineHeight: Platform.select({ios: 0, android: null}),
     width: '90%',
     height: '100%',
     fontSize: 14,
@@ -409,22 +401,15 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
   },
-  commnet_notice_title: {
-    ...fooiyFont.Subtitle3,
-    color: fooiyColor.G600,
-  },
   comment_notice_icon: {
     ...fooiyFont.Subtitle3,
-    marginTop: 8,
     color: fooiyColor.G600,
   },
   commnet_notice_text: {
     marginLeft: 8,
     color: fooiyColor.G600,
-    marginTop: 8,
   },
   register_btn_active: {
-    marginHorizontal: 16,
     width: globalVariable.width - 32,
     borderRadius: 8,
     alignItems: 'center',
@@ -433,7 +418,6 @@ const styles = StyleSheet.create({
     height: 56,
   },
   register_btn_deactive: {
-    marginHorizontal: 16,
     width: globalVariable.width - 32,
     borderRadius: 8,
     alignItems: 'center',

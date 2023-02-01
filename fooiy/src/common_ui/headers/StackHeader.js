@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     right: 15,
   },
   next_name: {
-    fontSize: 16,
-    color: '#FF5C5C',
+    ...fooiyFont.Subtitle2,
+    color: fooiyColor.P500,
   },
   go_back_logo: {
     width: 24,

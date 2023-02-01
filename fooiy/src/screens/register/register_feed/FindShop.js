@@ -5,21 +5,24 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
-import {Search} from '../../../../assets/icons/svg';
+import {Search_Icon} from '../../../../assets/icons/svg';
 
 const FindShop = props => {
   const [shopList, setShopList] = useState([]);
   const [searchShop, setSearchShop] = useState([]);
-  const insets = useSafeAreaInsets();
+  const [isFocus, setFocused] = useState(false);
+  const [value, setValue] = useState('');
   const navigation = useNavigation();
 
   const getShopList = async () => {
@@ -32,11 +35,6 @@ const FindShop = props => {
         setSearchShop(res.data.payload.shop_list.results);
     });
   };
-
-  useEffect(() => {
-    getShopList();
-  }, []);
-
   const onChangeText = text => {
     const nextData = shopList.filter(
       shopList => shopList.name.indexOf(text) > -1,
@@ -44,16 +42,13 @@ const FindShop = props => {
     setSearchShop(nextData);
   };
 
+  useEffect(() => {
+    getShopList();
+  }, []);
+
   return (
-    <SafeAreaView
-      style={{backgroundColor: fooiyColor.W, flex: 1, paddingBottom: 16}}>
-      <ScrollView
-        style={
-          {
-            // height: globalVariable.height - insets.top - insets.bottom - 56 - 16,
-            // marginBottom: 16,
-          }
-        }>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
         <StackHeader title="음식점 선택" />
         <View style={styles.top_text_view}>
           <Text style={styles.top_text}>방문한 음식점을{'\n'}선택해주세요</Text>
@@ -61,59 +56,75 @@ const FindShop = props => {
         <View style={styles.search_view}>
           <TextInput
             placeholder="음식점을 검색해보세요!"
-            style={styles.search_input}
+            style={
+              value !== ''
+                ? styles.input_value
+                : isFocus
+                ? [styles.input_blur, {borderColor: fooiyColor.G400}]
+                : styles.input_blur
+            }
             maxLength={20}
             autoCapitalize="none"
             autoCorrect={false}
             spellCheck={false}
             placeholderTextColor={fooiyColor.G400}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
             onChangeText={text => {
+              setValue(text);
               onChangeText(text);
             }}
           />
-          <Search style={styles.search_icon} />
+          <Search_Icon style={styles.search_icon} />
         </View>
-        {searchShop &&
-          searchShop.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('FindMenu', {
-                    photo_list: props.route.params.photo_list,
-                    shop: item,
-                    menu: null,
-                    address: props.route.params.address,
-                  })
-                }>
-                <View style={styles.shop_view}>
-                  <Text style={styles.shop_name}>{item.name}</Text>
-                  <Text style={styles.shop_address}>{item.address}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-      </ScrollView>
-      <View>
-        <TouchableOpacity
-          style={styles.no_shop_btn}
-          onPress={() => {
-            navigation.navigate('RegisterFeed', {
-              photo_list: props.route.params.photo_list,
-              shop: null,
-              menu: null,
-              address: props.route.params.address,
-            });
-          }}>
-          <Text style={styles.no_shop_text}>방문한 음식점이 없어요</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        <ScrollView>
+          {searchShop &&
+            searchShop.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('FindMenu', {
+                      photo_list: props.route.params.photo_list,
+                      shop: item,
+                      menu: null,
+                      address: props.route.params.address,
+                    })
+                  }>
+                  <View style={styles.shop_view}>
+                    <Text style={styles.shop_name}>{item.name}</Text>
+                    <Text style={styles.shop_address}>{item.address}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+        </ScrollView>
+        <View>
+          <TouchableOpacity
+            style={styles.no_shop_btn}
+            onPress={() => {
+              navigation.navigate('RegisterFeed', {
+                photo_list: props.route.params.photo_list,
+                shop: null,
+                menu: null,
+                address: props.route.params.address,
+              });
+            }}>
+            <Text style={styles.no_shop_text}>방문한 음식점이 없어요</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
 export default FindShop;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: fooiyColor.W,
+    flex: 1,
+    paddingBottom: Platform.select({ios: 0, android: 16}),
+  },
   top_text_view: {
     width: '100%',
     height: 64,
@@ -134,15 +145,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  search_input: {
+  input_value: {
     width: '100%',
     height: '100%',
-    backgroundColor: fooiyColor.G50,
+    borderWidth: 1,
     borderRadius: 8,
-    ...fooiyFont.Subtitle3,
     padding: 16,
     justifyContent: 'center',
-    lineHeight: 0,
+    borderColor: fooiyColor.G400,
+    ...fooiyFont.Body1,
+  },
+  input_blur: {
+    width: '100%',
+    height: '100%',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 16,
+    justifyContent: 'center',
+    borderColor: fooiyColor.G200,
+    ...fooiyFont.Subtitle2,
   },
   search_icon: {
     width: 24,

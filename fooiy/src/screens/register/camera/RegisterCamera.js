@@ -84,7 +84,7 @@ const RegisterCamera = props => {
       style={{backgroundColor: fooiyColor.W}}
       edges={Platform.OS === 'ios' ? 'top' : null}>
       <StackHeader title="카메라" />
-      <View style={{}}>
+      <View>
         <Camera
           ref={camera}
           style={{width: globalVariable.width, height: globalVariable.width}}
@@ -94,15 +94,13 @@ const RegisterCamera = props => {
           enableZoomGesture={true}
         />
         <View
-          style={{
-            width: '100%',
-            height:
-              globalVariable.height - 56 - insets.top - globalVariable.width,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            paddingHorizontal: 16,
-          }}>
+          style={[
+            styles.bottom_container,
+            {
+              height:
+                globalVariable.height - 56 - insets.top - globalVariable.width,
+            },
+          ]}>
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => setPosition(!position)}>
@@ -111,22 +109,8 @@ const RegisterCamera = props => {
           <TouchableOpacity
             onPress={takePhoto}
             activeOpacity={0.8}
-            style={{
-              width: 72,
-              height: 72,
-              borderWidth: 2,
-              borderRadius: 36,
-              borderColor: fooiyColor.G600,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View
-              style={{
-                width: 60,
-                height: 60,
-                backgroundColor: fooiyColor.G600,
-                borderRadius: 30,
-              }}></View>
+            style={styles.btn_border}>
+            <View style={styles.btn_inside}></View>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.8}
@@ -141,4 +125,27 @@ const RegisterCamera = props => {
 
 export default RegisterCamera;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  bottom_container: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+  },
+  btn_border: {
+    width: 72,
+    height: 72,
+    borderWidth: 2,
+    borderRadius: 36,
+    borderColor: fooiyColor.G600,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btn_inside: {
+    width: 60,
+    height: 60,
+    backgroundColor: fooiyColor.G600,
+    borderRadius: 30,
+  },
+});

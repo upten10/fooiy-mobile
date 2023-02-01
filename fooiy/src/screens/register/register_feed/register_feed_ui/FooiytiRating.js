@@ -11,34 +11,15 @@ import Animated, {
 import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {globalVariable} from '../../../../common/globalVariable';
 import {SliderEI_0} from '../../../../../assets/icons/svg';
-import {SliderEI_1} from '../../../../../assets/icons/svg';
-import {SliderEI_2} from '../../../../../assets/icons/svg';
-import {SliderEI_3} from '../../../../../assets/icons/svg';
-import {SliderEI_4} from '../../../../../assets/icons/svg';
-import {SliderSN_0} from '../../../../../assets/icons/svg';
-import {SliderSN_1} from '../../../../../assets/icons/svg';
-import {SliderSN_2} from '../../../../../assets/icons/svg';
-import {SliderSN_3} from '../../../../../assets/icons/svg';
-import {SliderSN_4} from '../../../../../assets/icons/svg';
-import {SliderTF_0} from '../../../../../assets/icons/svg';
-import {SliderTF_1} from '../../../../../assets/icons/svg';
-import {SliderTF_2} from '../../../../../assets/icons/svg';
-import {SliderTF_3} from '../../../../../assets/icons/svg';
-import {SliderTF_4} from '../../../../../assets/icons/svg';
-import {SliderAC_0} from '../../../../../assets/icons/svg';
-import {SliderAC_1} from '../../../../../assets/icons/svg';
-import {SliderAC_2} from '../../../../../assets/icons/svg';
-import {SliderAC_3} from '../../../../../assets/icons/svg';
-import {SliderAC_4} from '../../../../../assets/icons/svg';
 import {SliderTOTAL_0} from '../../../../../assets/icons/svg';
 import {SliderTOTAL_1} from '../../../../../assets/icons/svg';
 import {SliderTOTAL_2} from '../../../../../assets/icons/svg';
 import {SliderTOTAL_3} from '../../../../../assets/icons/svg';
 import {SliderTOTAL_4} from '../../../../../assets/icons/svg';
 
-const leftBarColor = 'red';
-const rightBarColor = 'blue';
-const imogiSize = 40;
+const leftBarColor = fooiyColor.G50;
+const rightBarColor = fooiyColor.G50;
+const imogiSize = 16;
 
 function FooiytiRating(props) {
   const {
@@ -58,47 +39,8 @@ function FooiytiRating(props) {
   const panX = useSharedValue(fooiytiRatingWidth / 2); // 사용자의 드래그 위치를 저장하는 변수
 
   const FooiytiImogi = () => {
-    if (type === 'EI' && fooiytiRating === 0) {
-      return <SliderEI_0 />;
-    } else if (type === 'EI' && fooiytiRating === 1) {
-      return <SliderEI_1 />;
-    } else if (type === 'EI' && fooiytiRating === 2) {
-      return <SliderEI_2 />;
-    } else if (type === 'EI' && fooiytiRating === 3) {
-      return <SliderEI_3 />;
-    } else if (type === 'EI' && fooiytiRating === 4) {
-      return <SliderEI_4 />;
-    } else if (type === 'SN' && fooiytiRating === 0) {
-      return <SliderSN_0 />;
-    } else if (type === 'SN' && fooiytiRating === 1) {
-      return <SliderSN_1 />;
-    } else if (type === 'SN' && fooiytiRating === 2) {
-      return <SliderSN_2 />;
-    } else if (type === 'SN' && fooiytiRating === 3) {
-      return <SliderSN_3 />;
-    } else if (type === 'SN' && fooiytiRating === 4) {
-      return <SliderSN_4 />;
-    } else if (type === 'TF' && fooiytiRating === 0) {
-      return <SliderTF_0 />;
-    } else if (type === 'TF' && fooiytiRating === 1) {
-      return <SliderTF_1 />;
-    } else if (type === 'TF' && fooiytiRating === 2) {
-      return <SliderTF_2 />;
-    } else if (type === 'TF' && fooiytiRating === 3) {
-      return <SliderTF_3 />;
-    } else if (type === 'TF' && fooiytiRating === 4) {
-      return <SliderTF_4 />;
-    } else if (type === 'AC' && fooiytiRating === 0) {
-      return <SliderAC_0 />;
-    } else if (type === 'AC' && fooiytiRating === 1) {
-      return <SliderAC_1 />;
-    } else if (type === 'AC' && fooiytiRating === 2) {
-      return <SliderAC_2 />;
-    } else if (type === 'AC' && fooiytiRating === 3) {
-      return <SliderAC_3 />;
-    } else if (type === 'AC' && fooiytiRating === 4) {
-      return <SliderAC_4 />;
-    } else if (type === 'TOTAL' && fooiytiRating === 0) {
+    if (type !== 'TOTAL') return <SliderEI_0 />;
+    else if (type === 'TOTAL' && fooiytiRating === 0) {
       return <SliderTOTAL_0 />;
     } else if (type === 'TOTAL' && fooiytiRating === 1) {
       return <SliderTOTAL_1 />;
@@ -182,6 +124,10 @@ function FooiytiRating(props) {
         //   panX.value = gestureState.x0 + gestureState.dx - rootViewPosX; // 사용자의 초기 터치 위치 + 이동 위치 - rootView의 x 위치
         // },
         onPanResponderMove: (event, gestureState) => {
+          panX.value = gestureState.x0 + gestureState.dx - margin - 16;
+        },
+
+        onPanResponderRelease: (event, gestureState) => {
           const rate = Math.round(
             (gestureState.x0 + gestureState.dx - margin - 16) / step,
           );
@@ -192,11 +138,13 @@ function FooiytiRating(props) {
           } else {
             setFooiytiRating(rate);
           }
+          panX.value = withTiming(rate * step, {duration: 300}); // 별점에 맞게 Animated.View의 width를 조절합니다.
+          // 별점을 저장합니다.
 
-          panX.value = gestureState.x0 + gestureState.dx - margin - 16;
+          // props.setScrollEnabled(true); // onPanResponderGrant와 반대로 설정합니다.
+          // props.setPointerEvent("auto");
         },
-
-        onPanResponderRelease: (event, gestureState) => {
+        onPanResponderEnd: (event, gestureState) => {
           const rate = Math.round(
             (gestureState.x0 + gestureState.dx - margin - 16) / step,
           );
@@ -268,6 +216,15 @@ function FooiytiRating(props) {
         <Animated.View style={[styles.imogi, imogiStyle]} pointerEvents="none">
           <View {...panResponders.panHandlers}>
             <FooiytiImogi />
+            {/* <View
+              style={{
+                width: 16,
+                height: 16,
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: fooiyColor.P700,
+                backgroundColor: fooiyColor.P500,
+              }}></View> */}
           </View>
         </Animated.View>
         <View
@@ -280,14 +237,13 @@ function FooiytiRating(props) {
 
 const styles = StyleSheet.create({
   rootContainer: {
-    marginTop: 24,
+    marginTop: 16,
     height: 40,
     width: '100%',
     flexDirection: 'row',
   },
   left_view: {
     position: 'absolute',
-    height: 36,
   },
   left_text: {
     ...fooiyFont.Subtitle2,
@@ -303,12 +259,11 @@ const styles = StyleSheet.create({
   right_view: {
     position: 'absolute',
     right: 0,
-    color: fooiyColor.G600,
     alignItems: 'flex-end',
-    height: 36,
   },
   right_text: {
     ...fooiyFont.Subtitle2,
+    color: fooiyColor.G600,
     height: 24,
     alignItems: 'center',
   },
@@ -320,11 +275,11 @@ const styles = StyleSheet.create({
   fooiytiRatingContainer: {
     flexDirection: 'row',
     marginTop: 19,
-    height: 2,
+    height: 1,
   },
   leftBackground: {
     position: 'absolute',
-    backgroundColor: leftBarColor,
+    backgroundColor: fooiyColor.G200,
     height: '100%',
     width: '100%',
     alignSelf: 'center',
@@ -332,7 +287,7 @@ const styles = StyleSheet.create({
   },
   rightBackground: {
     position: 'absolute',
-    backgroundColor: rightBarColor,
+    backgroundColor: fooiyColor.G200,
     height: '100%',
     width: '100%',
     alignSelf: 'center',
@@ -349,7 +304,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 16,
     height: 16,
-    borderRadius: 100,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: fooiyColor.G200,
   },
   hide_pan: {
     height: 40,
