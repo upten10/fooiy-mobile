@@ -24,7 +24,7 @@ const Rank = props => {
               ? ['#1B9FBF', '#B1FAD7']
               : ['#FF332F', '#FFE600']
           }
-          style={[containerStyle, styles.rank_container, {height: height}]}>
+          style={[{height: height}, styles.rank_container, containerStyle]}>
           <Text style={[{...font}, styles.rank]}>{rank}</Text>
         </LinearGradient>
       </View>

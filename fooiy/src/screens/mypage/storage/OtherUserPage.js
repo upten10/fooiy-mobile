@@ -26,9 +26,6 @@ const OtherUserPage = props => {
   const [noFeedImage, setNoFeedImage] = useState('');
   const [otherUserInfo, setOtherUserInfo] = useState({});
 
-  console.log('offset: ', offset);
-  console.log('totalCount: ', totalCount);
-
   const other_account_id = props.route.params.other_account_id;
 
   const navigation = useNavigation();
@@ -58,7 +55,6 @@ const OtherUserPage = props => {
         other_account_id,
       },
     }).then(res => {
-      console.log('Get');
       if (res.data.payload.image === undefined) {
         setFeeds([...feeds, ...res.data.payload.feed_list.results]);
         if (totalCount === -1) {
