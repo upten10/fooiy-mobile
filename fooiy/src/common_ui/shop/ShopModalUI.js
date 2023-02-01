@@ -4,7 +4,7 @@ import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
-const BottomSheetShop = item => {
+const ShopModalUI = item => {
   const category_list = item.category_list;
   const navigation = useNavigation();
 
@@ -53,7 +53,7 @@ const BottomSheetShop = item => {
   );
 };
 
-export default BottomSheetShop;
+export default ShopModalUI;
 
 const styles = StyleSheet.create({
   container: {

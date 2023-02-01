@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {FlatList, Platform, StyleSheet, Text, View} from 'react-native';
 import {globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
-import BottomSheetShop from '../../common_ui/shop/BottomSheetShop';
+import ShopModalUI from '../../common_ui/shop/ShopModalUI';
 const ShopModal = props => {
   const [current, setCurrent] = useState(0);
   const shopRef = useRef(null);
@@ -75,7 +75,7 @@ const ShopModal = props => {
         }}
         renderItem={({item, index}) => (
           <View style={styles.shop_container}>
-            <BottomSheetShop {...item} key={index} />
+            <ShopModalUI {...item} key={index} />
           </View>
         )}
       />
