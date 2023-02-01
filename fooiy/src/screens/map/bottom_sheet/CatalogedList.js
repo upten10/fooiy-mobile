@@ -42,7 +42,7 @@ const CatalogedList = props => {
         latitude_right_top: data[1].latitude,
         longitude_right_top: data[1].longitude,
         ...(isCafe ? {shop_category: globalVariable.category_cafe} : null),
-        type: item,
+        filter: item,
       },
     })
       .then(res => {

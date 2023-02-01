@@ -9,7 +9,7 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {loginActions} from '../../../redux/reducer/login';
 
 const WithdrawConfirm = props => {
@@ -17,7 +17,7 @@ const WithdrawConfirm = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {reason} = props.route.params;
+  const {reason, userInfo} = props.route.params;
 
   const onPressCancel = () => {
     navigation.popToTop();
@@ -27,7 +27,6 @@ const WithdrawConfirm = props => {
     await ApiManagerV2.delete(apiUrl.WITHDRAW, {
       params: {reason},
     })
-      // .then(res => console.log(JSON.stringify(res)))
       .then(dispatch(loginActions.setLogin(false)))
       .then(navigation.popToTop());
     AsyncStorage.clear();
@@ -56,28 +55,8 @@ const WithdrawConfirm = props => {
           <View>
             {/* 경고 타이틀 */}
             <View style={styles.noticeTitleContainer}>
-              <Text style={styles.noticeTitleText}>자랑스러운 개척 타이틀</Text>
-            </View>
-            {/* 경고 내용 */}
-            <View style={styles.noticeDetailContainer}>
-              {/* 경고 내용 설명 */}
-              <View>
-                <Text style={styles.noticeDetailText}>
-                  지금까지 모은 개척 타이틀
-                </Text>
-              </View>
-              {/* 경고 내용 갯수 */}
-              <View>
-                <Text style={styles.noticeDetailRightText}>n개 즉시소멸</Text>
-              </View>
-            </View>
-          </View>
-          {/* 경고 */}
-          <View>
-            {/* 경고 타이틀 */}
-            <View style={styles.noticeTitleContainer}>
               <Text style={styles.noticeTitleText}>
-                푸이와 함께한 소중한 기록
+                푸이와 함께한 소중한 추억
               </Text>
             </View>
             {/* 경고 내용 */}
@@ -85,12 +64,14 @@ const WithdrawConfirm = props => {
               {/* 경고 내용 설명 */}
               <View>
                 <Text style={styles.noticeDetailText}>
-                  지금까지 기록한 추억
+                  지금까지 기록한 피드
                 </Text>
               </View>
               {/* 경고 내용 갯수 */}
               <View>
-                <Text style={styles.noticeDetailRightText}>n개 즉시소멸</Text>
+                <Text style={styles.noticeDetailRightText}>
+                  {userInfo.userInfoRedux.feed_count}개 즉시소멸
+                </Text>
               </View>
             </View>
           </View>

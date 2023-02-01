@@ -16,7 +16,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 
-const Withdraw = () => {
+const Withdraw = props => {
   const checkBoxData = [
     '사용을 잘 안해요',
     '가고싶은 음식점이 없어요',
@@ -28,7 +28,6 @@ const Withdraw = () => {
   const [inputValue, setInputValue] = useState('');
   const [btnActivate, setBtnActivate] = useState(false);
   const [isEnterKeyboard, setIsEnterKeyboard] = useState(false);
-  console.log(isEnterKeyboard);
 
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -38,6 +37,7 @@ const Withdraw = () => {
       inputValue.length >= 10 ? setBtnActivate(true) : setBtnActivate(false);
     } else if (clickedIndex !== -1 && clickedIndex !== 3) {
       setBtnActivate(true);
+      Keyboard.dismiss();
     } else {
       setBtnActivate(false);
     }
@@ -51,19 +51,20 @@ const Withdraw = () => {
     if (clickedIndex === 3) {
       navigation.navigate('WithdrawConfirm', {
         reason: inputValue,
+        userInfo: props.route.params,
       });
     } else {
       navigation.navigate('WithdrawConfirm', {
         reason: checkBoxData[clickedIndex],
+        userInfo: props.route.params,
       });
     }
   };
 
   const checkBox = (text, index) => {
     return (
-      <View>
+      <View key={index}>
         <TouchableOpacity
-          key={index}
           style={
             clickedIndex === index
               ? [styles.checkBox, styles.checkedCheckBox]
