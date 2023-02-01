@@ -26,6 +26,7 @@ const FeedShopInfo = props => {
     menu_price,
     disableShopButton,
     setModalVisible,
+    is_confirm,
   } = props;
   const navigation = useNavigation();
 
@@ -34,14 +35,16 @@ const FeedShopInfo = props => {
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() => {
-          !disableShopButton &&
-            navigation.push('Shop', {
-              shop_id: shop_id,
-              shop_name: shop_name,
-              shop_address: shop_address,
-              shop_longitude: longitude,
-              shop_latitude: latitude,
-            });
+          if (!is_confirm) {
+            !disableShopButton &&
+              navigation.push('Shop', {
+                shop_id: shop_id,
+                shop_name: shop_name,
+                shop_address: shop_address,
+                shop_longitude: longitude,
+                shop_latitude: latitude,
+              });
+          }
         }}>
         <View style={styles.shop_info_container}>
           <View style={styles.shop_info}>

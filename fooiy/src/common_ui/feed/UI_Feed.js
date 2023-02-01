@@ -99,38 +99,44 @@ const UI_Feed = item => {
   }, [item.disable_shop_button]);
 
   const onClickLikeIcon = () => {
-    likeIcon ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
-    setLikeIcon(!likeIcon);
-    debounceCallback(() => {
-      debounceLike(likeIcon);
-    });
+    if (!item.is_confirm) {
+      likeIcon ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
+      setLikeIcon(!likeIcon);
+      debounceCallback(() => {
+        debounceLike(likeIcon);
+      });
+    }
   };
   const onClickStoreIcon = () => {
-    setStoreIcon(!storeIcon);
-    debounceCallback(() => {
-      debounceStore(storeIcon);
-    });
+    if (!item.is_confirm) {
+      setStoreIcon(!storeIcon);
+      debounceCallback(() => {
+        debounceStore(storeIcon);
+      });
+    }
   };
 
   const onClickShareIcon = async () => {
-    try {
-      const response = await KakaoShareLink.sendLocation({
-        address: item.shop_address,
-        addressTitle: item.shop_name,
-        content: {
-          title: item.shop_name,
-          imageUrl: item.image[0],
-          link: {
-            androidExecutionParams: [{key: 'feed_id', value: item.id}],
-            iosExecutionParams: [{key: 'feed_id', value: item.id}],
+    if (!item.is_confirm) {
+      try {
+        const response = await KakaoShareLink.sendLocation({
+          address: item.shop_address,
+          addressTitle: item.shop_name,
+          content: {
+            title: item.shop_name,
+            imageUrl: item.image[0],
+            link: {
+              androidExecutionParams: [{key: 'feed_id', value: item.id}],
+              iosExecutionParams: [{key: 'feed_id', value: item.id}],
+            },
+            description: item.menu_name + ' ' + item.menu_price,
           },
-          description: item.menu_name + ' ' + item.menu_price,
-        },
-      });
-      console.log(response);
-    } catch (e) {
-      console.error(e);
-      console.error(e.message);
+        });
+        console.log(response);
+      } catch (e) {
+        console.error(e);
+        console.error(e.message);
+      }
     }
   };
 
@@ -180,6 +186,7 @@ const UI_Feed = item => {
         menu_price={item.menu_price}
         disableShopButton={disableShopButton}
         setModalVisible={setModalVisible}
+        is_confirm={item.is_confirm}
       />
 
       <FeedComment comment={item.comment} created_at={item.created_at} />

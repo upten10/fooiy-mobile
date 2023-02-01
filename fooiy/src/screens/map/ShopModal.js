@@ -1,9 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, Platform, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import ShopModalUI from '../../common_ui/shop/ShopModalUI';
 const ShopModal = props => {
+  const insets = useSafeAreaInsets();
   const [current, setCurrent] = useState(0);
   const shopRef = useRef(null);
   const {onBackdropPress, shops_info, other_account_id} = props;
@@ -47,7 +49,11 @@ const ShopModal = props => {
   };
 
   return (
-    <View style={styles.modal_container}>
+    <View
+      style={[
+        styles.modal_container,
+        {bottom: globalVariable.tabBarHeight + 54 + insets.bottom + 24},
+      ]}>
       {shops.length > 1 ? (
         <View style={styles.shop_list_indicator}>
           <Text style={styles.shop_list_indicator_text}>
@@ -88,10 +94,6 @@ export default ShopModal;
 const styles = StyleSheet.create({
   modal_container: {
     position: 'absolute',
-    bottom: Platform.select({
-      ios: globalVariable.height * 0.2,
-      android: 122,
-    }),
     ...globalStyles.shadow,
   },
   shop_container: {
