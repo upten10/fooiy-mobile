@@ -54,6 +54,7 @@ const AndroidMapMarker = props => {
           getShopMarkerDetail({latitude, longitude});
           setModalVisible(true);
         }}
+        isHideCollidedMarkers={true}
       />
     </>
   );

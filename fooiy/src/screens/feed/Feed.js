@@ -105,20 +105,21 @@ const Feed = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
+  const renderItem = useCallback(item => {
+    return <UI_Feed {...item.item} />;
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <FeedHeader category={category} setOpen={setOpen} open={open} />
-
       <View style={styles.container}>
         <FlatList
           ref={flatListRef}
           data={feeds}
           onRefresh={onRefresh}
           refreshing={refreshing}
-          renderItem={({item}) => (
-            <UI_Feed {...item} parent={props.route.name} />
-          )}
-          updateCellsBatchingPeriod={3}
+          renderItem={renderItem}
+          updateCellsBatchingPeriod={100}
           removeClippedSubviews={true}
           ListHeaderComponent={ListHeaderComponent}
           ListFooterComponent={FlatListFooter}

@@ -1,14 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
-import {
-  ArrowIconBottom,
-  ArrowIconBottomDark,
-  ArrowIconBottomGray,
-  SearchDark,
-} from '../../../assets/icons/svg';
+import {ArrowIconBottomDark, SearchDark} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont, globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import CategorySwitch from './CategorySwitch';
@@ -16,7 +11,7 @@ import CategorySwitch from './CategorySwitch';
 const MapHeader = props => {
   const insets = useSelector(state => state.insets.insets);
   const navigation = useNavigation();
-  const {isCafe, setIsCafe, setShopMarkers, shopCount, sheetRef} = props;
+  const {isCafe, setIsCafe, setShopMarkers, shopCount, sheetRef, depth} = props;
 
   return (
     <View
@@ -68,30 +63,32 @@ const MapHeader = props => {
           setShopMarkers={setShopMarkers}
         />
         {/* 필터 */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            sheetRef.current.expand();
-          }}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: fooiyColor.W,
-            borderRadius: 24,
-            paddingHorizontal: 16,
-            paddingVertical: 10,
-            ...globalStyles.shadow,
-          }}>
-          <Text
+        {depth === 1 ? null : (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              sheetRef.current.expand();
+            }}
             style={{
-              ...fooiyFont.Subtitle3,
-              color: fooiyColor.G800,
-              marginRight: 4,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: fooiyColor.W,
+              borderRadius: 24,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+              ...globalStyles.shadow,
             }}>
-            주변 {isCafe ? '카페' : '맛집'} {shopCount}개
-          </Text>
-          <ArrowIconBottomDark />
-        </TouchableOpacity>
+            <Text
+              style={{
+                ...fooiyFont.Subtitle3,
+                color: fooiyColor.G800,
+                marginRight: 4,
+              }}>
+              주변 {isCafe ? '카페' : '맛집'} {shopCount}개
+            </Text>
+            <ArrowIconBottomDark />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

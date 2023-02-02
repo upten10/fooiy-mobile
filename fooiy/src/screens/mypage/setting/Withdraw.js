@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -88,12 +89,22 @@ const Withdraw = props => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView
-        style={{
-          backgroundColor: fooiyColor.W,
-          height: '100%',
-        }}>
-        <KeyboardAvoidingView behavior={'position'}>
+        style={{backgroundColor: fooiyColor.W}}
+        edges={Platform.select({
+          ios: 'bottom',
+          android: null,
+        })}>
+        <View
+          style={{zIndex: 1, backgroundColor: fooiyColor.W, height: insets.top}}
+        />
+        <View style={{zIndex: 1}}>
           <StackHeader title="회원 탈퇴" />
+        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.select({
+            ios: 'position',
+            android: 'position',
+          })}>
           {/* Body */}
           <View style={BodyStyles(insets.top, insets.bottom).bodyContainer}>
             {/* Title */}

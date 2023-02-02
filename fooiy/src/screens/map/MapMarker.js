@@ -19,31 +19,34 @@ export default props => {
     onPressClusterMarker,
   } = props;
   return depth === 1 ? (
-    <Marker
-      image={require('../../../assets/icons/marker/cluster_marker.png')}
-      coordinate={{latitude: latitude * 1, longitude: longitude * 1}}
-      style={styles.clusterMarker}
-      caption={{
-        text: `${name}`,
-        textSize: 12,
-        offset: -53,
-        color: fooiyColor.P500,
-      }}
-      subCaption={{
-        text: `${count}`,
-        textSize: 18,
-        color: fooiyColor.P500,
-      }}
-      anchor={{x: 0.3, y: 0.5}}
-      onClick={() => onPressClusterMarker(id)}
-    />
-  ) : depth === 2 ? null : (
+    name === undefined ? null : (
+      <Marker
+        image={require('../../../assets/icons/marker/cluster_marker.png')}
+        coordinate={{latitude: latitude * 1, longitude: longitude * 1}}
+        style={styles.clusterMarker}
+        caption={{
+          text: `${name}`,
+          textSize: 12,
+          offset: -53,
+          color: fooiyColor.P500,
+        }}
+        subCaption={{
+          text: `${count}`,
+          textSize: 18,
+          color: fooiyColor.P500,
+        }}
+        anchor={{x: 0.3, y: 0.5}}
+        onClick={() => onPressClusterMarker(id)}
+      />
+    )
+  ) : depth === 2 ? null : getShopMarkerDetail === undefined ? null : (
     <>
       <Marker
         image={require('../../../assets/icons/marker/marker_clicked.png')}
         coordinate={{latitude: latitude * 1, longitude: longitude * 1}}
         style={styles.markerClicked}
         hidden={clickedIndex === id ? false : true}
+        zIndex={1}
       />
       <Marker
         image={require('../../../assets/icons/marker/marker.png')}
@@ -55,6 +58,7 @@ export default props => {
           getShopMarkerDetail({latitude, longitude});
           setModalVisible(true);
         }}
+        isHideCollidedMarkers={true}
       />
     </>
   );
