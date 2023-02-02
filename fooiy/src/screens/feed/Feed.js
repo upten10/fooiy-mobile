@@ -9,6 +9,8 @@ import UI_Feed from '../../common_ui/feed/UI_Feed';
 import {FeedHeader} from '../../common_ui/headers/FeedHeader';
 import SelectCategoryModal from './SelectCategoryModal';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
+import MoreVertModal from '../../common_ui/modal/MoreVertModal';
+import {fooiyColor} from '../../common/globalStyles';
 
 const Feed = props => {
   const [feeds, setFeeds] = useState([]);
@@ -18,6 +20,32 @@ const Feed = props => {
   const [refreshing, setRefreshing] = useState(false);
   const [category, setCategory] = useState('');
   const [open, setOpen] = useState(true);
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [feed_id, setFeedId] = useState(false);
+  const openModal = id => {
+    setFeedId(id);
+    setIsOpenModal(true);
+  };
+  const toggleModal = () => {
+    setIsOpenModal(false);
+  };
+  const buttons = [
+    {
+      name: '수정',
+      domain: '피드',
+      onClick: () => console.log(1),
+      isNext: false,
+      textColor: fooiyColor.G800,
+    },
+    {
+      name: '삭제',
+      domain: '피드',
+      onClick: () => console.log(2),
+      isNext: true,
+      textColor: fooiyColor.P700,
+    },
+  ];
 
   useEffect(() => {
     setTimeout(function () {
@@ -73,6 +101,7 @@ const Feed = props => {
     });
     // .catch(function (error) => console.log(error));
   };
+
   const loadMoreItem = () => {
     if (totalCount > offset + globalVariable.FeedLimit) {
       setOffset(offset + globalVariable.FeedLimit);
@@ -105,6 +134,12 @@ const Feed = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
+  const renderItem = useCallback(({item}) => {
+    return (
+      <UI_Feed {...item} parent={props.route.name} openModal={openModal} />
+    );
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <FeedHeader category={category} setOpen={setOpen} open={open} />
@@ -115,10 +150,9 @@ const Feed = props => {
           data={feeds}
           onRefresh={onRefresh}
           refreshing={refreshing}
-          renderItem={({item}) => (
-            <UI_Feed {...item} parent={props.route.name} />
-          )}
-          updateCellsBatchingPeriod={3}
+          renderItem={renderItem}
+          // https://reactnative.dev/docs/optimizing-flatlist-configuration#updatecellsbatchingperiod
+          updateCellsBatchingPeriod={150}
           removeClippedSubviews={true}
           ListHeaderComponent={ListHeaderComponent}
           ListFooterComponent={FlatListFooter}
@@ -126,6 +160,8 @@ const Feed = props => {
           onEndReached={loadMoreItem}
           ListEmptyComponent={ListEmptyComponent}
           onEndReachedThreshold={2}
+          maxToRenderPerBatch={6}
+
         />
       </View>
       {open && (
@@ -139,6 +175,11 @@ const Feed = props => {
           setTotalCount={setTotalCount}
         />
       )}
+      <MoreVertModal
+        buttons={buttons}
+        isModalVisible={isOpenModal}
+        toggleModal={toggleModal}
+      />
     </SafeAreaView>
   );
 };

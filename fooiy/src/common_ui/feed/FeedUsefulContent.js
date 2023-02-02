@@ -11,17 +11,21 @@ import {
 } from '../../../assets/icons/svg';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {useNavigation} from '@react-navigation/native';
 
 const FeedUsefulContent = props => {
   const {
+    account_id,
+    feed_id,
     onClickLikeIcon,
     likeIcon,
     likeCount,
     onClickStoreIcon,
     onClickShareIcon,
     storeIcon,
+    count_comment,
   } = props;
-
+  const navigation = useNavigation();
   return (
     <View style={styles.content}>
       <View style={styles.ic_fork}>
@@ -39,14 +43,25 @@ const FeedUsefulContent = props => {
         <View style={styles.ic_comment}>
           <TouchableOpacity
             activeOpacity={0.8}
+            onPress={() =>
+              navigation.navigate('FeedComment', {
+                feed_id: feed_id,
+                feed_account_id: account_id,
+              })
+            }
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
             <Comment />
           </TouchableOpacity>
+          {count_comment !== 0 && (
+            <View style={styles.comment_count_container}>
+              <Text style={styles.comment_count}>{count_comment}</Text>
+            </View>
+          )}
         </View>
         <View style={styles.ic_share}>
           <TouchableOpacity
             activeOpacity={0.8}
-            hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+            hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}
             onPress={onClickShareIcon}>
             <Share />
           </TouchableOpacity>
@@ -98,6 +113,25 @@ const styles = StyleSheet.create({
     height: 24,
     alignItems: 'center',
     marginRight: 16,
+  },
+  comment_count_container: {
+    position: 'absolute',
+    bottom: 16,
+    left: 14,
+    borderRadius: 1000,
+    width: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    borderWidth: 1,
+    borderColor: fooiyColor.W,
+    backgroundColor: fooiyColor.P500,
+  },
+  comment_count: {
+    ...fooiyFont.Caption2,
+    color: fooiyColor.W,
+    textAlign: 'center',
   },
   ic_share: {
     width: 24,
