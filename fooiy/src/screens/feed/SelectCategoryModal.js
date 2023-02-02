@@ -8,15 +8,7 @@ import {CafeShop, CommonShop} from '../../../assets/icons/svg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const SelectCategoryModal = props => {
-  const {
-    currentCategory,
-    setCategory,
-    setFeeds,
-    setOffset,
-    setTotalCount,
-    setOpen,
-    toTop,
-  } = props;
+  const {currentCategory, setCategory, setOpen, toTop} = props;
   const insets = useSafeAreaInsets();
   const changeCategory = category => {
     toTop();

@@ -25,6 +25,7 @@ import Shop from '../common_ui/shop/Shop';
 import Search from '../common_ui/Search/Search';
 import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
 import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
+import FeedComment from '../screens/feed/FeedComment';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +47,7 @@ const RootNavigator = () => {
 
       {/* feed */}
       <Stack.Screen name="Feed" component={Feed} />
+      <Stack.Screen name="FeedComment" component={FeedComment} />
 
       {/* shop */}
       <Stack.Screen name="FindWay" component={FindWay} />
