@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
+import elapsedTime from '../../common/helpers/elapsedTime';
 
-const FeedComment = props => {
-  const {comment, created_at} = props;
+const FeedDescription = props => {
+  const {description, created_at} = props;
   const [line, setLine] = useState(3);
   const [moreTextActive, setMoreTextActive] = useState(false);
   const isOverLines = lines => {
@@ -13,36 +14,16 @@ const FeedComment = props => {
     }
   };
 
-  const elapsedTime = date => {
-    const start = new Date(date);
-    const end = new Date();
-    const diff = (end - start) / 1000;
-    const times = [
-      {name: '년', milliSeconds: 60 * 60 * 24 * 365},
-      {name: '개월', milliSeconds: 60 * 60 * 24 * 30},
-      {name: '일', milliSeconds: 60 * 60 * 24},
-      {name: '시간', milliSeconds: 60 * 60},
-      {name: '분', milliSeconds: 60},
-    ];
-
-    for (const value of times) {
-      const betweenTime = Math.floor(diff / value.milliSeconds);
-      if (betweenTime > 0) {
-        return `${betweenTime}${value.name} 전`;
-      }
-    }
-    return '방금 전';
-  };
   return (
     <View style={styles.container}>
-      {comment && (
+      {description && (
         <Text
           numberOfLines={line}
-          style={styles.comment}
+          style={styles.description}
           onTextLayout={({nativeEvent: {lines}}) => {
             isOverLines(lines.length);
           }}>
-          {comment}
+          {description}
         </Text>
       )}
 
@@ -63,14 +44,14 @@ const FeedComment = props => {
   );
 };
 
-export default FeedComment;
+export default FeedDescription;
 
 const styles = StyleSheet.create({
   container: {
     width: globalVariable.width - 32,
     marginHorizontal: 16,
   },
-  comment: {
+  description: {
     marginTop: 16,
     ...fooiyFont.Body2,
     color: fooiyColor.G800,

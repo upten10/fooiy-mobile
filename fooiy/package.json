@@ -40,6 +40,7 @@
     "react-native-gesture-handler": "^2.8.0",
     "react-native-image-crop-tools": "^1.6.2",
     "react-native-kakao-share-link": "^1.0.6",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-modal": "^13.0.1",
     "react-native-nmap": "github:fooiy-v2/react-native-naver-map",

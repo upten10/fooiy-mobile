@@ -9,8 +9,9 @@ import FeedProfile from './FeedProfile';
 import FeedImage from './FeedImage';
 import FeedUsefulContent from './FeedUsefulContent';
 import FeedShopInfo from './FeedShopInfo';
-import FeedComment from './FeedComment';
+import FeedDescription from './FeedDescription';
 import TasteEvaluationModal from './TasteEvaluationModal';
+import Margin from '../Margin';
 
 import {useDebounce} from '../../common/hooks/useDebounce';
 
@@ -148,14 +149,20 @@ const UI_Feed = item => {
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
       />
+      <Margin h={16} />
       {/* 프로필 사진 */}
-      <FeedProfile
-        account_id={item.account_id}
-        nickname={item.nickname}
-        profile_image={item.profile_image}
-        fooiyti={item.fooiyti}
-        rank={item.rank}
-      />
+      <View style={{paddingRight: 16}}>
+        <FeedProfile
+          account_id={item.account_id}
+          nickname={item.nickname}
+          profile_image={item.profile_image}
+          fooiyti={item.fooiyti}
+          rank={item.rank}
+          openModal={item.openModal}
+          id={item.id}
+        />
+      </View>
+      <Margin h={16} />
 
       <FeedImage
         images={item.image}
@@ -167,12 +174,15 @@ const UI_Feed = item => {
 
       {/* 유용한 기능 포크, 댓글 등등 */}
       <FeedUsefulContent
+        account_id={item.account_id}
+        feed_id={item.id}
         onClickLikeIcon={onClickLikeIcon}
         likeIcon={likeIcon}
         likeCount={likeCount}
         onClickShareIcon={onClickShareIcon}
         onClickStoreIcon={onClickStoreIcon}
         storeIcon={storeIcon}
+        count_comment={item.count_comment}
       />
 
       <FeedShopInfo
@@ -189,7 +199,10 @@ const UI_Feed = item => {
         is_confirm={item.is_confirm}
       />
 
-      <FeedComment comment={item.comment} created_at={item.created_at} />
+      <FeedDescription
+        description={item.description}
+        created_at={item.created_at}
+      />
     </View>
   );
 };
