@@ -1,21 +1,20 @@
 import React, {useCallback, useRef, useMemo, useState} from 'react';
-import {StyleSheet, View, Text, Image, ActivityIndicator} from 'react-native';
-import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
+import BottomSheet, {TouchableOpacity} from '@gorhom/bottom-sheet';
 
-import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
-import BottomSheetShop from '../../../common_ui/shop/BottomSheetShop';
-import {fooiyFont} from '../../../common/globalStyles';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {FlatList} from 'react-native-gesture-handler';
+import CatalogedList from './CatalogedList';
 
 const MapBottomSheet = props => {
   const {screenLocation, isCafe, sheetRef} = props;
-  const [shops, setShops] = useState([]);
+
+  const categoryList = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const [isOpend, setIsOpend] = useState(false);
-  const offset = useRef(0).current;
-  const [emptyShopImage, setEmptyShopImage] = useState('');
-  const totalCount = useRef(0).current;
   const insets = useSafeAreaInsets();
 
   const snapPoints = useMemo(
@@ -29,13 +28,8 @@ const MapBottomSheet = props => {
   const handleSheetChange = useCallback(
     index => {
       if (index === 0) {
-        offset.current = 0;
-        totalCount.current = 0;
-        setShops([]);
-        setEmptyShopImage('');
         setIsOpend(false);
       } else {
-        getShopList(screenLocation);
         setIsOpend(true);
       }
     },
@@ -43,60 +37,17 @@ const MapBottomSheet = props => {
     [screenLocation],
   );
 
-  const getShopList = async data => {
-    await ApiManagerV2.get(apiUrl.MAP_SHOP_LIST, {
-      params: {
-        limit: globalVariable.MapBottomSheetLimit,
-        offset: offset,
-        longitude_left_bottom: data[0].longitude,
-        latitude_left_bottom: data[0].latitude,
-        latitude_right_top: data[1].latitude,
-        longitude_right_top: data[1].longitude,
-      },
-    })
-      .then(res => {
-        if (res.data.payload.shop_list) {
-          setShops([...shops, ...res.data.payload.shop_list.results]);
-          totalCount.current = res.data.payload.shop_list.total_count;
-        } else if (res.data.payload.image) {
-          setEmptyShopImage(res.data.payload.image);
-        }
-      })
-      .catch(e => console.log(e));
-  };
-
-  const loadMoreItem = () => {
-    if (totalCount > offset.current) {
-      offset.current = offset.current + globalVariable.MapBottomSheetLimit;
-      getShopList(screenLocation);
-    }
-  };
-
-  const ListEmptyComponent = () => {
-    if (isOpend) {
-      return (
-        <View>
-          {emptyShopImage ? (
-            <Image
-              source={{uri: emptyShopImage}}
-              style={styles.empty_shop_image}
-            />
-          ) : (
-            <View style={styles.indicator_container}>
-              <ActivityIndicator size="large" style={styles.loader} />
-            </View>
-          )}
-        </View>
-      );
-    }
-  };
-
-  const ListFooterComponent = () => {
-    return <View style={styles.footer} />;
-  };
-
-  const ItemSeparatorComponent = () => {
-    return <View style={styles.item_separator_line} />;
+  const renderScene = ['personalize', 'popular'];
+  const renderItem = item => {
+    return (
+      <CatalogedList
+        {...item}
+        isCafe={isCafe}
+        isOpend={isOpend}
+        screenLocation={screenLocation}
+        setCurrentIndex={setCurrentIndex}
+      />
+    );
   };
 
   return (
@@ -106,15 +57,75 @@ const MapBottomSheet = props => {
       containerStyle={{zIndex: 5}}
       onChange={handleSheetChange}>
       <Text style={styles.title}>주변 {isCafe ? '카페' : '맛집'} 리스트</Text>
-      <BottomSheetFlatList
-        data={shops}
-        ListEmptyComponent={ListEmptyComponent}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-        ListFooterComponent={ListFooterComponent}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => <BottomSheetShop {...item} />}
-        onEndReached={loadMoreItem}
-        contentContainerStyle={styles.contentContainer}
+      <View style={styles.bodyContainer}>
+        <Pressable
+          style={styles.categoryTab}
+          onPress={() => {
+            categoryList.current.scrollToIndex({
+              index: 0,
+              animated: true,
+              viewOffset: 100,
+            });
+            setCurrentIndex(0);
+          }}>
+          <Text
+            style={{
+              ...fooiyFont.Subtitle1,
+              color: currentIndex === 0 ? fooiyColor.G800 : fooiyColor.G400,
+            }}>
+            내 푸이티아이순
+          </Text>
+        </Pressable>
+        <Pressable
+          style={styles.categoryTab}
+          onPress={() => {
+            categoryList.current.scrollToIndex({
+              index: 1,
+              animated: true,
+            });
+            setCurrentIndex(1);
+          }}>
+          <Text
+            style={{
+              ...fooiyFont.Subtitle1,
+              color: currentIndex === 1 ? fooiyColor.G800 : fooiyColor.G400,
+            }}>
+            전체 인기순
+          </Text>
+        </Pressable>
+      </View>
+      <View style={{width: globalVariable.width}}>
+        <View
+          style={[
+            styles.indicator,
+            {
+              marginLeft:
+                currentIndex === 0
+                  ? (globalVariable.width / 2 - 62) / 2
+                  : globalVariable.width - (globalVariable.width / 2 - 68),
+            },
+          ]}
+        />
+      </View>
+      <FlatList
+        ref={categoryList}
+        data={renderScene}
+        renderItem={renderItem}
+        numColumns={1}
+        horizontal
+        pagingEnabled
+        // bounces={false}
+        showsHorizontalScrollIndicator={false}
+        ItemSeparatorComponent={() => <View style={{width: 16 - 7.5}}></View>}
+        ListHeaderComponent={() => <View style={{width: 16 - 7.5}}></View>}
+        ListFooterComponent={() => <View style={{width: 16 - 7.5}}></View>}
+        onMomentumScrollEnd={event => {
+          const index = Math.floor(
+            (Math.floor(event.nativeEvent.contentOffset.x) * 2) /
+              Math.floor(event.nativeEvent.layoutMeasurement.width),
+          );
+          setCurrentIndex(index);
+        }}
       />
     </BottomSheet>
   );
@@ -123,37 +134,26 @@ const MapBottomSheet = props => {
 export default MapBottomSheet;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    backgroundColor: 'white',
-  },
-  itemContainer: {
-    padding: 6,
-    margin: 6,
-    backgroundColor: '#eee',
+  bodyContainer: {
+    flexDirection: 'row',
+    backgroundColor: fooiyColor.W,
+    paddingBottom: 12,
   },
   title: {
     alignSelf: 'center',
-    marginVertical: 5,
+    marginTop: 5,
+    marginBottom: 12,
     ...fooiyFont.Subtitle2,
   },
-  empty_shop_image: {
-    width: globalVariable.width,
-    height: globalVariable.width,
+  categoryTab: {
+    width: globalVariable.width / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  item_separator_line: {
-    width: globalVariable.width - 30,
-    alignSelf: 'center',
-    backgroundColor: '#fdd',
-    height: 1,
-  },
-  footer: {
-    height: globalVariable.tabBarHeight,
-  },
-  loader: {
-    marginVertical: 50,
-    alignSelf: 'center',
+  indicator: {
+    width: 62,
+    height: 4,
+    backgroundColor: fooiyColor.B,
+    borderRadius: 4,
   },
 });

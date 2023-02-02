@@ -161,6 +161,7 @@ const Feed = props => {
           ListEmptyComponent={ListEmptyComponent}
           onEndReachedThreshold={2}
           maxToRenderPerBatch={6}
+
         />
       </View>
       {open && (

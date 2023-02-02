@@ -18,6 +18,7 @@ import {useSelector} from 'react-redux';
 import MapHeader from './MapHeader';
 import {LocationDarkIcon} from '../../../assets/icons/svg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import AndroidMapMarker from './AndroidMapMarker';
 
 const NaverMap = props => {
   //map ref 초기화
@@ -211,44 +212,36 @@ const NaverMap = props => {
         minZoomLevel={5}
         maxZoomLevel={18}
         rotateGesturesEnabled={false}
-        onCameraChange={e => onCameraChange(e)}
-        // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-        // onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
-      >
-        {/* {shopMarkers.map((marker, index) => {
-          return (
-            <CustomMarker
-              marker={marker}
-              index={index}
-              depth={depth}
-              clickedIndex={clickedIndex}
-              is_plural={
-                shopMarkers[index].shops_info
-                  ? shopMarkers[index].shops_info.length
-                  : 1
-              }
-              is_yummy={
-                shopMarkers[index].shops_info
-                  ? shopMarkers[index].shops_info.is_yummy
-                  : false
-              }
-              onClickMarker={onClickMarker}
-            />
-          );
-        })} */}
-        {shopMarkers.map(item => {
-          return (
-            <MapMarker
-              key={item.id}
-              {...item}
-              setClickedIndex={setClickedIndex}
-              clickedIndex={clickedIndex}
-              getShopMarkerDetail={getShopMarkerDetail}
-              setModalVisible={setModalVisible}
-              depth={depth}
-              onPressClusterMarker={onPressClusterMarker}
-            />
-          );
+        onCameraChange={e => onCameraChange(e)}>
+        {Platform.select({
+          ios: shopMarkers.map(item => {
+            return (
+              <MapMarker
+                key={item.id}
+                {...item}
+                setClickedIndex={setClickedIndex}
+                clickedIndex={clickedIndex}
+                getShopMarkerDetail={getShopMarkerDetail}
+                setModalVisible={setModalVisible}
+                depth={depth}
+                onPressClusterMarker={onPressClusterMarker}
+              />
+            );
+          }),
+          android: shopMarkers.map(item => {
+            return (
+              <AndroidMapMarker
+                key={item.id}
+                {...item}
+                setClickedIndex={setClickedIndex}
+                clickedIndex={clickedIndex}
+                getShopMarkerDetail={getShopMarkerDetail}
+                setModalVisible={setModalVisible}
+                depth={depth}
+                onPressClusterMarker={onPressClusterMarker}
+              />
+            );
+          }),
         })}
       </NaverMapView>
       <LocationBtn />
