@@ -13,7 +13,7 @@ import {
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {
   ArrowIconRight,
-  Search,
+  Search_Icon,
   Ranker_1st,
   Ranker_2nd,
   Ranker_3rd,
@@ -274,26 +274,14 @@ const UserSearch = () => {
             onChangeText={setValue}
             value={value}
             style={
-              focus && value !== ''
-                ? styles.input
-                : focus && value === ''
-                ? [
-                    {...fooiyFont.Subtitle2, color: fooiyColor.G400},
-                    styles.input,
-                  ]
-                : !focus && value !== ''
-                ? styles.input
-                : [
-                    {
-                      ...fooiyFont.Subtitle2,
-                      color: fooiyColor.G400,
-                      borderColor: fooiyColor.G200,
-                    },
-                    styles.input,
-                  ]
+              value !== ''
+                ? styles.input_value
+                : focus
+                ? [styles.input_blur, {borderColor: fooiyColor.G400}]
+                : styles.input_blur
             }
           />
-          <Search style={{position: 'absolute', right: 16}} />
+          <Search_Icon style={{position: 'absolute', right: 16}} />
         </View>
         <MainUI />
       </View>
@@ -346,7 +334,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  input: {
+  input_value: {
     width: '100%',
     borderWidth: 1,
     borderColor: fooiyColor.G400,
@@ -355,13 +343,16 @@ const styles = StyleSheet.create({
     padding: 16,
     ...fooiyFont.Body1,
     color: fooiyColor.B,
-    ...Platform.select({
-      ios: {
-        lineHeight: 0,
-      },
-      android: {
-        lineHeight: 24,
-      },
-    }),
+    lineHeight: Platform.select({ios: 0, android: null}),
+  },
+  input_blur: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: fooiyColor.G200,
+    borderRadius: 8,
+    height: 56,
+    padding: 16,
+    ...fooiyFont.Subtitle2,
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
 });

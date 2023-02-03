@@ -1,79 +1,77 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Touchable,
-} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {View, Text, StyleSheet, TextInput} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Notice} from '../../../../../assets/icons/svg';
 import {Clear} from '../../../../../assets/icons/svg';
-import {check} from 'react-native-permissions';
+
 const Input = props => {
-  const {holders, onChangeText, title, checkInput} = props;
+  const {holders, onChangeText, value, title, checkInput} = props;
   const [isFocus, setFocused] = useState(false);
   const textInputRef = useRef();
 
-  const onFocus = () => {
-    setFocused(true);
-  };
-  const onBlur = () => {
-    setFocused(false);
-  };
-
   return (
-    <View>
+    <View style={{marginBottom: 20}}>
       <Text style={styles.title}>{title}</Text>
       <View
         style={
-          checkInput() ? styles.focus_active_view : styles.focus_deactive_view
+          checkInput()
+            ? styles.input_container
+            : isFocus
+            ? styles.input_container
+            : [styles.input_container, {borderColor: fooiyColor.G200}]
         }>
         <TextInput
           ref={textInputRef}
           style={
             checkInput()
-              ? styles.focus_active_input
-              : styles.focus_deactive_input
+              ? [
+                  styles.input,
+                  {
+                    ...fooiyFont.Body1,
+                    lineHeight: Platform.OS === 'ios' ? 0 : 24,
+                  },
+                ]
+              : [
+                  styles.input,
+                  {
+                    ...fooiyFont.Subtitle2,
+                    lineHeight: Platform.OS === 'ios' ? 0 : 24,
+                  },
+                ]
           }
           placeholder={holders}
-          multiline={false}
-          textAlignVertical="top"
           autoCapitalize={false}
           autoCorrect={false}
           spellCheck={false}
           onChangeText={onChangeText}
-          maxLength={100}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          maxLength={20}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           placeholderTextColor={fooiyColor.G400}
+          value={value}
         />
-        {isFocus && (
+        {isFocus && checkInput() ? (
           <TouchableOpacity
-            style={styles.focus_active_icon}
-            hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+            hitSlop={{top: 16, bottom: 16, left: 16, right: 16}}
             onPress={() => {
               textInputRef.current.clear(), onChangeText('');
             }}>
             <Clear />
           </TouchableOpacity>
+        ) : (
+          <View style={{width: 24, height: 24}}></View>
         )}
       </View>
       {title === '위치' ? (
         <View style={styles.location_notice}>
-          <Text style={styles.location_notice_text}>위치 작성 안내사항</Text>
           <View style={{flexDirection: 'row'}}>
             <Notice style={styles.location_notice_icon} />
-            <Text style={styles.location_notice_text_1}>
-              정확한 위치를 몰라도 대략적인 위치를 적어주세요.
+            <Text style={styles.location_notice_text}>
+              정확한 위치를 몰라도 대략적인 위치를 적어주세요.{'\n'}ex)강남역
+              9번 출구 편의점 옆
             </Text>
           </View>
-          <Text style={styles.location_notice_text_2}>
-            ex)강남역 9번 출구 편의점 옆
-          </Text>
         </View>
       ) : null}
     </View>
@@ -87,46 +85,22 @@ const styles = StyleSheet.create({
     ...fooiyFont.Subtitle1,
     marginTop: 16,
   },
-  focus_active_view: {
+  input_container: {
     marginTop: 16,
-    justifyContent: 'center',
-    width: '100%',
+    paddingRight: 16,
     flexDirection: 'row',
+    width: '100%',
+    height: 56,
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 8,
     borderColor: fooiyColor.G400,
   },
-  focus_deactive_view: {
-    marginTop: 16,
-    justifyContent: 'center',
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: fooiyColor.G200,
-  },
-  focus_active_input: {
+  input: {
+    flex: 1,
+    height: 54,
     padding: 16,
-    ...fooiyFont.Body1,
-    lineHeight: 0,
-    width: '90%',
-  },
-  focus_deactive_input: {
-    padding: 16,
-    ...fooiyFont.Subtitle2,
-    lineHeight: 0,
-    color: fooiyColor.G400,
-    width: '90%',
-  },
-  focus_active_icon: {
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
-    marginRight: 16,
   },
   location_notice: {
     width: '100%',
@@ -136,18 +110,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   location_notice_text: {
-    ...fooiyFont.Subtitle3,
-    marginBottom: 8,
-    color: fooiyColor.G600,
-  },
-  location_notice_text_1: {
     ...fooiyFont.Caption1,
     marginLeft: 8,
-    color: fooiyColor.G600,
-  },
-  location_notice_text_2: {
-    ...fooiyFont.Caption1,
-    marginLeft: 26,
     color: fooiyColor.G600,
   },
   location_notice_icon: {

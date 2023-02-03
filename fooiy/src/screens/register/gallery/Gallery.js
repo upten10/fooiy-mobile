@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  Button,
   StyleSheet,
   Platform,
   Alert,
@@ -20,8 +19,9 @@ import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import cloneDeep from 'lodash/cloneDeep';
 import {check, PERMISSIONS} from 'react-native-permissions';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {fooiyColor} from '../../../common/globalStyles';
 
 const Gallery = props => {
   const navigation = useNavigation();
@@ -84,7 +84,6 @@ const Gallery = props => {
 
   // 갤러리에서 사진 받아오기
   const getGalleryPhotos = async () => {
-    Platform.OS === 'ios';
     check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(res => {
       if (res === 'blocked' || res === 'denied') {
         Alert.alert(
@@ -98,7 +97,7 @@ const Gallery = props => {
       }
     });
     const params = {
-      first: 12,
+      first: 40,
       assetType: 'Photos',
       ...(galleryCursor && {after: galleryCursor}),
     };
@@ -149,7 +148,7 @@ const Gallery = props => {
 
   const selectPhoto = index => {
     if (selectedPhotoIndexList.findIndex(element => element === index) === -1) {
-      if (selectedPhotoIndexList.length === 5) {
+      if (selectedPhotoIndexList.length === 3) {
         return;
       }
       setSelectedPhotoList([...selectedPhotoIndexList, index]);
@@ -165,12 +164,11 @@ const Gallery = props => {
   }, []);
 
   const SelectedPhoto = useCallback(() => {
-    const width = globalVariable.width;
     if (selectedPhotoIndexList.length === 0) {
       return;
     }
     return (
-      <View style={styles.selected_photo_corp_container}>
+      <View style={styles.square}>
         {cropPhoto ? (
           <View>
             <CropView
@@ -182,33 +180,32 @@ const Gallery = props => {
                   : galleryList[selectedPhotoIndexList[selectIndex]].node.image
                       .uri
               }
-              style={styles.crop_photo}
+              style={styles.crop_view}
               onImageCrop={res => {
                 galleryList[
                   selectedPhotoIndexList[selectIndex]
-                ].node.image.uri = res.uri;
+                ].node.image.uri = 'file://' + res.uri;
                 setCropPhoto(false);
               }}
-              keepAspectRatio
-              aspectRatio={{width: 9, height: 9}}
+              keepAspectRatio={true}
+              aspectRatio={{width: 1, height: 1}}
             />
-            <View style={{height: width / 10, flexDirection: 'row'}}>
-              <Button
-                title="저장"
-                onPress={() => cropViewRef.current.saveImage(true)}
-              />
-              <Button
-                title="우회전"
-                onPress={() => cropViewRef.current.rotateImage(true)}
-              />
-              <Button
-                title="좌회전"
-                onPress={() => cropViewRef.current.rotateImage(false)}
-              />
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <TouchableOpacity
+                style={[styles.rotate_icon, {left: 16}]}
+                onPress={() => cropViewRef.current.rotateImage(false)}>
+                <TurnLeft />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.rotate_icon, {right: 16}]}
+                onPress={() => cropViewRef.current.rotateImage(true)}>
+                <TurnRight />
+              </TouchableOpacity>
             </View>
           </View>
         ) : (
-          <View style={styles.container}>
+          <View style={{flex: 1}}>
             <Image
               source={{
                 uri: galleryList[selectedPhotoIndexList[selectIndex]]
@@ -216,32 +213,7 @@ const Gallery = props => {
                       .uri
                   : null,
               }}
-              style={styles.selected_photo}
-            />
-            <View
-              style={{height: width / 10, flexDirection: 'row', bottom: 70}}>
-              <Button title="편집" onPress={() => setCropPhoto(true)} />
-            </View>
-            <FlatList
-              data={selectedPhotoIndexList}
-              keyExtractor={index => index.toString()}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              style={styles.selected_photo_list}
-              renderItem={({item, index}) => {
-                return (
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      setSelectIndex(index);
-                    }}>
-                    <Image
-                      source={{uri: galleryList[item].node.image.uri}}
-                      style={styles.selected_photo_list_item}
-                    />
-                  </TouchableOpacity>
-                );
-              }}
+              style={styles.square}
             />
           </View>
         )}
@@ -251,26 +223,72 @@ const Gallery = props => {
   }, [selectedPhotoIndexList, cropPhoto, selectIndex]);
 
   return (
-    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
+    <SafeAreaView
+      style={{backgroundColor: fooiyColor.W, flex: 1}}
+      edges={Platform.OS === 'ios' ? 'top' : null}>
       <StackHeader title="앨범" next={go_next} />
       {selectedPhotoIndexList.length !== 0 ? (
         <SelectedPhoto />
       ) : (
-        <View style={[styles.crop_photo, {backgroundColor: '#cccc'}]}></View>
+        <View style={styles.crop_view}></View>
       )}
-
+      <View style={styles.mid_view}>
+        <FlatList
+          data={selectedPhotoIndexList}
+          keyExtractor={index => index.toString()}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item, index}) => {
+            return (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  setSelectIndex(index);
+                }}>
+                <Image
+                  source={{uri: galleryList[item].node.image.uri}}
+                  style={styles.select_image}
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
+        {cropPhoto ? (
+          <TouchableOpacity
+            onPress={() =>
+              selectedPhotoIndexList.length !== 0
+                ? cropViewRef.current.saveImage(true)
+                : setCropPhoto(false)
+            }
+            style={styles.mid_text}>
+            <Text style={{...fooiyFont.Button, color: fooiyColor.P500}}>
+              저장
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => setCropPhoto(!cropPhoto)}
+            style={styles.mid_text}>
+            <Text style={{...fooiyFont.Button, color: fooiyColor.P500}}>
+              편집
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <FlatList
         data={galleryOriginalList}
-        style={{height: height - width - 56}}
+        style={{
+          height: height - width - 56,
+        }}
         keyExtractor={(item, index) => index.toString()}
-        onEndReachedThreshold={0.7}
-        numColumns={3}
+        onEndReachedThreshold={4}
+        numColumns={4}
         onEndReached={() => {
           getGalleryPhotos();
         }}
         renderItem={({item, index}) => {
           return (
-            <View style={styles.container}>
+            <View>
               {item.node ? (
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -282,19 +300,25 @@ const Gallery = props => {
                   ) === -1 ? (
                     <Image
                       source={{uri: item.node.image.uri}}
-                      style={styles.gallery_photos}
+                      style={styles.gallery_item}
                     />
                   ) : (
                     <View>
                       <Image
                         source={{uri: item.node.image.uri}}
-                        style={styles.gallery_photos}
+                        style={styles.gallery_item}
                       />
-                      <Text style={styles.selected_photo_index}>
-                        {selectedPhotoIndexList.findIndex(
-                          element => element === index,
-                        ) + 1}
-                      </Text>
+                      <View style={styles.item_index}>
+                        <Text
+                          style={{
+                            ...fooiyFont.Caption2,
+                            color: fooiyColor.W,
+                          }}>
+                          {selectedPhotoIndexList.findIndex(
+                            element => element === index,
+                          ) + 1}
+                        </Text>
+                      </View>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -310,41 +334,63 @@ const Gallery = props => {
 export default Gallery;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  selected_photo_corp_container: {
+  square: {
     width: globalVariable.width,
-    height: globalVariable.width * 1.1,
+    height: globalVariable.width,
   },
-  gallery_photos: {
-    width: globalVariable.width / 3,
-    height: globalVariable.width / 3,
+  crop_view: {
+    width: globalVariable.width,
+    height: globalVariable.width,
+    backgroundColor: fooiyColor.G100,
+  },
+  rotate_icon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255, 255, 255,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: 64,
+  },
+  mid_view: {
+    height: 80,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 8,
+  },
+  select_image: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    marginLeft: 8,
+  },
+  mid_text: {
+    height: 32,
     borderWidth: 1,
-    borderColor: '#fff',
+    borderRadius: 8,
+    borderColor: fooiyColor.P500,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    right: 16,
   },
-  crop_photo: {
-    width: globalVariable.width,
-    height: globalVariable.width,
+  gallery_item: {
+    width: globalVariable.width / 4,
+    height: globalVariable.width / 4,
+    borderWidth: 1,
+    borderColor: fooiyColor.W,
   },
-  selected_photo: {
-    width: globalVariable.width,
-    height: globalVariable.width,
-    resizeMode: 'contain',
-  },
-  selected_photo_index: {
+  item_index: {
     position: 'absolute',
     right: 0,
-  },
-  selected_photo_list: {
-    position: 'absolute',
-    bottom: 10,
-    width: globalVariable.width,
-  },
-  selected_photo_list_item: {
-    width: globalVariable.width / 6,
-    height: globalVariable.width / 6,
-    borderRadius: 20,
-    marginLeft: 10,
+    margin: 4,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: fooiyColor.W,
+    backgroundColor: fooiyColor.P500,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -5,16 +5,18 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
-import {Search} from '../../../../assets/icons/svg';
+import {Search_Icon} from '../../../../assets/icons/svg';
 
 const FindMenu = props => {
   const shop_id = props.route.params.shop.shop_id
@@ -25,24 +27,21 @@ const FindMenu = props => {
     : props.route.params.shop.shop_address;
   const [menuList, setMenuList] = useState([]);
   const [searchMenu, setSearchMenu] = useState([]);
-  const insets = useSafeAreaInsets();
+  const [isFocus, setFocused] = useState(false);
+  const [value, setValue] = useState('');
   const navigation = useNavigation();
 
   const getMenuList = async () => {
     await ApiManagerV2.get(apiUrl.SHOP_MENU, {
       params: {
+        type: 'select_menu',
         shop_id: shop_id,
       },
     }).then(res => {
-      setMenuList(res.data.payload.menu_list),
-        setSearchMenu(res.data.payload.menu_list);
+      setMenuList(res.data.payload.menu_list);
+      setSearchMenu(res.data.payload.menu_list);
     });
   };
-
-  useEffect(() => {
-    getMenuList();
-  }, []);
-
   const onChangeText = text => {
     const nextData = menuList.filter(
       menuList => menuList.name.indexOf(text) > -1,
@@ -50,16 +49,13 @@ const FindMenu = props => {
     setSearchMenu(nextData);
   };
 
+  useEffect(() => {
+    getMenuList();
+  }, []);
+
   return (
-    <SafeAreaView
-      style={{backgroundColor: fooiyColor.W, flex: 1, paddingBottom: 16}}>
-      <ScrollView
-        style={
-          {
-            // height: globalVariable.height - insets.top - insets.bottom - 56 - 16,
-            // marginBottom: 16,
-          }
-        }>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
         <StackHeader title="메뉴 선택" />
         <View style={styles.top_text_view}>
           <Text style={styles.top_text}>메뉴를{'\n'}선택해주세요</Text>
@@ -67,59 +63,75 @@ const FindMenu = props => {
         <View style={styles.search_view}>
           <TextInput
             placeholder="메뉴를 검색해보세요!"
-            style={styles.search_input}
+            style={
+              value !== ''
+                ? styles.input_value
+                : isFocus
+                ? [styles.input_blur, {borderColor: fooiyColor.G400}]
+                : styles.input_blur
+            }
             maxLength={20}
             autoCapitalize="none"
             autoCorrect={false}
             spellCheck={false}
             placeholderTextColor={fooiyColor.G400}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
             onChangeText={text => {
+              setValue(text);
               onChangeText(text);
             }}
           />
-          <Search style={styles.search_icon} />
+          <Search_Icon style={styles.search_icon} />
         </View>
-        {searchMenu &&
-          searchMenu.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('RegisterFeed', {
-                    photo_list: props.route.params.photo_list,
-                    shop: props.route.params.shop,
-                    menu: item,
-                    address: address,
-                  })
-                }>
-                <View style={styles.menu_view}>
-                  <Text style={styles.menu_name}>{item.name}</Text>
-                  <Text style={styles.menu_price}>{item.price}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-      </ScrollView>
-      <View>
-        <TouchableOpacity
-          style={styles.no_menu_btn}
-          onPress={() => {
-            navigation.navigate('RegisterFeed', {
-              photo_list: props.route.params.photo_list,
-              shop: props.route.params.shop,
-              menu: null,
-              address: address,
-            });
-          }}>
-          <Text style={styles.no_menu_text}>먹은 메뉴가 없어요</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        <ScrollView>
+          {searchMenu &&
+            searchMenu.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('RegisterFeed', {
+                      photo_list: props.route.params.photo_list,
+                      shop: props.route.params.shop,
+                      menu: item,
+                      address: address,
+                    })
+                  }>
+                  <View style={styles.menu_view}>
+                    <Text style={styles.menu_name}>{item.name}</Text>
+                    <Text style={styles.menu_price}>{item.price}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+        </ScrollView>
+        <View>
+          <TouchableOpacity
+            style={styles.no_menu_btn}
+            onPress={() => {
+              navigation.navigate('RegisterFeed', {
+                photo_list: props.route.params.photo_list,
+                shop: props.route.params.shop,
+                menu: null,
+                address: address,
+              });
+            }}>
+            <Text style={styles.no_menu_text}>먹은 메뉴가 없어요</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
 export default FindMenu;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: fooiyColor.W,
+    flex: 1,
+    paddingBottom: Platform.select({ios: 0, android: 16}),
+  },
   top_text_view: {
     width: '100%',
     height: 64,
@@ -140,15 +152,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  search_input: {
+  input_value: {
     width: '100%',
     height: '100%',
-    backgroundColor: fooiyColor.G50,
+    borderWidth: 1,
     borderRadius: 8,
-    ...fooiyFont.Subtitle3,
     padding: 16,
     justifyContent: 'center',
-    lineHeight: 0,
+    borderColor: fooiyColor.G400,
+    ...fooiyFont.Body1,
+  },
+  input_blur: {
+    width: '100%',
+    height: '100%',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 16,
+    justifyContent: 'center',
+    borderColor: fooiyColor.G200,
+    ...fooiyFont.Subtitle2,
   },
   search_icon: {
     width: 24,
