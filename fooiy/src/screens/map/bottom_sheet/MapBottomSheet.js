@@ -1,6 +1,6 @@
 import React, {useCallback, useRef, useMemo, useState} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
-import BottomSheet, {TouchableOpacity} from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import {globalVariable} from '../../../common/globalVariable';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';

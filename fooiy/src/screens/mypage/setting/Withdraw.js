@@ -25,10 +25,13 @@ const Withdraw = props => {
     '기타',
   ];
 
+  Keyboard.addListener('keyboardDidShow', e => {
+    e.endCoordinates.height;
+  });
+
   const [clickedIndex, setClickedIndex] = useState(-1);
   const [inputValue, setInputValue] = useState('');
   const [btnActivate, setBtnActivate] = useState(false);
-  const [isEnterKeyboard, setIsEnterKeyboard] = useState(false);
 
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -118,34 +121,34 @@ const Withdraw = props => {
               </Text>
             </View>
             {/* checkbox */}
-            <View>
-              {checkBoxData.map((item, index) => {
-                return checkBox(item, index);
-              })}
-              <View
-                style={
-                  clickedIndex === 3
-                    ? styles.yesGuitarContainer
-                    : styles.noGuitarContainer
-                }>
-                <View style={styles.textInputContainer}>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholder="아쉬운 점에 대해 말씀해주세요. (최소 10자 이상)"
-                    multiline
-                    autoCapitalize={false}
-                    autoCorrect={false}
-                    spellCheck={false}
-                    textAlignVertical="top"
-                    onChangeText={setInputValue}
-                    maxLength={300}
-                  />
-                </View>
-                <Text style={styles.textInputLength}>
-                  ({inputValue.length}/300)
-                </Text>
+            {/* <View> */}
+            {checkBoxData.map((item, index) => {
+              return checkBox(item, index);
+            })}
+            <View
+              style={
+                clickedIndex === 3
+                  ? styles.yesGuitarContainer
+                  : styles.noGuitarContainer
+              }>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="아쉬운 점에 대해 말씀해주세요. (최소 10자 이상)"
+                  multiline
+                  autoCapitalize={false}
+                  autoCorrect={false}
+                  spellCheck={false}
+                  textAlignVertical="top"
+                  onChangeText={setInputValue}
+                  maxLength={300}
+                />
               </View>
+              <Text style={styles.textInputLength}>
+                ({inputValue.length}/300)
+              </Text>
             </View>
+            {/* </View> */}
             {/* Btn */}
             <TouchableOpacity
               style={
@@ -211,6 +214,10 @@ const styles = StyleSheet.create({
   checkBoxText: {
     ...fooiyFont.Button,
     color: fooiyColor.G300,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: 20,
+    }),
   },
   checkedCheckBoxText: {
     color: fooiyColor.P500,
