@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -25,13 +25,12 @@ const Withdraw = props => {
     '기타',
   ];
 
-  Keyboard.addListener('keyboardDidShow', e => {
-    e.endCoordinates.height;
-  });
+  const textInput = useRef(null);
 
   const [clickedIndex, setClickedIndex] = useState(-1);
   const [inputValue, setInputValue] = useState('');
   const [btnActivate, setBtnActivate] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -40,8 +39,9 @@ const Withdraw = props => {
     if (clickedIndex === 3) {
       inputValue.length >= 10 ? setBtnActivate(true) : setBtnActivate(false);
     } else if (clickedIndex !== -1 && clickedIndex !== 3) {
+      setInputValue('');
       setBtnActivate(true);
-      Keyboard.dismiss();
+      // Keyboard.dismiss();
     } else {
       setBtnActivate(false);
     }
@@ -65,34 +65,35 @@ const Withdraw = props => {
     }
   };
 
-  const checkBox = (text, index) => {
+  const CheckBox = props => {
+    const {index, item} = props;
     return (
-      <View key={index}>
-        <TouchableOpacity
+      <TouchableOpacity
+        key={index}
+        style={
+          clickedIndex === index
+            ? [styles.checkBox, styles.checkedCheckBox]
+            : styles.checkBox
+        }
+        activeOpacity={0.8}
+        onPress={() => onPressCheckBox(index)}>
+        <Text
           style={
             clickedIndex === index
-              ? [styles.checkBox, styles.checkedCheckBox]
-              : styles.checkBox
-          }
-          activeOpacity={0.8}
-          onPress={() => onPressCheckBox(index)}>
-          <Text
-            style={
-              clickedIndex === index
-                ? [styles.checkBoxText, styles.checkedCheckBoxText]
-                : styles.checkBoxText
-            }>
-            {text}
-          </Text>
-          {clickedIndex === index ? <Check /> : <Uncheck />}
-        </TouchableOpacity>
-      </View>
+              ? [styles.checkBoxText, styles.checkedCheckBoxText]
+              : styles.checkBoxText
+          }>
+          {item}
+        </Text>
+        {clickedIndex === index ? <Check /> : <Uncheck />}
+      </TouchableOpacity>
     );
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView
-        style={{backgroundColor: fooiyColor.W}}
+        style={{backgroundColor: fooiyColor.W, flex: 1}}
         edges={Platform.select({
           ios: 'bottom',
           android: null,
@@ -104,6 +105,10 @@ const Withdraw = props => {
           <StackHeader title="회원 탈퇴" />
         </View>
         <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.select({
+            ios: null,
+            android: 30,
+          })}
           behavior={Platform.select({
             ios: 'position',
             android: 'position',
@@ -121,34 +126,38 @@ const Withdraw = props => {
               </Text>
             </View>
             {/* checkbox */}
-            {/* <View> */}
-            {checkBoxData.map((item, index) => {
-              return checkBox(item, index);
-            })}
-            <View
-              style={
-                clickedIndex === 3
-                  ? styles.yesGuitarContainer
-                  : styles.noGuitarContainer
-              }>
-              <View style={styles.textInputContainer}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="아쉬운 점에 대해 말씀해주세요. (최소 10자 이상)"
-                  multiline
-                  autoCapitalize={false}
-                  autoCorrect={false}
-                  spellCheck={false}
-                  textAlignVertical="top"
-                  onChangeText={setInputValue}
-                  maxLength={300}
-                />
+            <View>
+              {checkBoxData.map((item, index) => {
+                return <CheckBox item={item} index={index} />;
+              })}
+
+              <View
+                style={
+                  clickedIndex === 3
+                    ? styles.yesGuitarContainer
+                    : styles.noGuitarContainer
+                }>
+                <View style={styles.textInputContainer}>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="아쉬운 점에 대해 말씀해주세요. (최소 10자 이상)"
+                    multiline
+                    autoCapitalize={false}
+                    autoCorrect={false}
+                    spellCheck={false}
+                    textAlignVertical="top"
+                    onChangeText={setInputValue}
+                    maxLength={300}
+                    value={inputValue}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                  />
+                </View>
+                <Text style={styles.textInputLength}>
+                  ({inputValue.length}/300)
+                </Text>
               </View>
-              <Text style={styles.textInputLength}>
-                ({inputValue.length}/300)
-              </Text>
             </View>
-            {/* </View> */}
             {/* Btn */}
             <TouchableOpacity
               style={
@@ -253,7 +262,10 @@ const styles = StyleSheet.create({
   },
   changeBtn: {
     position: 'absolute',
-    bottom: 0,
+    bottom: Platform.select({
+      ios: 0,
+      android: 20,
+    }),
     width: '100%',
     height: 56,
     backgroundColor: fooiyColor.P500,

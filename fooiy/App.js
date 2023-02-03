@@ -8,7 +8,7 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from '@react-navigation/native';
-import {StatusBar} from 'react-native';
+import {KeyboardAvoidingView, Platform, StatusBar} from 'react-native';
 import {useFlipper} from '@react-navigation/devtools';
 
 const App = () => {
