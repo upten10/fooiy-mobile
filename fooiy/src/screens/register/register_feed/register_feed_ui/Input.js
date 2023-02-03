@@ -25,8 +25,20 @@ const Input = props => {
           ref={textInputRef}
           style={
             checkInput()
-              ? [styles.input, {...fooiyFont.Body1}]
-              : [styles.input, {...fooiyFont.Subtitle2}]
+              ? [
+                  styles.input,
+                  {
+                    ...fooiyFont.Body1,
+                    lineHeight: Platform.OS === 'ios' ? 0 : 24,
+                  },
+                ]
+              : [
+                  styles.input,
+                  {
+                    ...fooiyFont.Subtitle2,
+                    lineHeight: Platform.OS === 'ios' ? 0 : 24,
+                  },
+                ]
           }
           placeholder={holders}
           autoCapitalize={false}

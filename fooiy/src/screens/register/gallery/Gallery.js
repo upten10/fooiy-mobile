@@ -259,12 +259,19 @@ const Gallery = props => {
               selectedPhotoIndexList.length !== 0
                 ? cropViewRef.current.saveImage(true)
                 : setCropPhoto(false)
-            }>
-            <Text style={styles.mid_text}>저장</Text>
+            }
+            style={styles.mid_text}>
+            <Text style={{...fooiyFont.Button, color: fooiyColor.P500}}>
+              저장
+            </Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => setCropPhoto(!cropPhoto)}>
-            <Text style={styles.mid_text}>편집</Text>
+          <TouchableOpacity
+            onPress={() => setCropPhoto(!cropPhoto)}
+            style={styles.mid_text}>
+            <Text style={{...fooiyFont.Button, color: fooiyColor.P500}}>
+              편집
+            </Text>
           </TouchableOpacity>
         )}
       </View>
@@ -360,14 +367,12 @@ const styles = StyleSheet.create({
   },
   mid_text: {
     height: 32,
-    ...fooiyFont.Button,
-    color: fooiyColor.P500,
-    marginRight: 16,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: fooiyColor.P500,
     paddingHorizontal: 10,
     paddingVertical: 8,
+    right: 16,
   },
   gallery_item: {
     width: globalVariable.width / 4,

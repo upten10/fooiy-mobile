@@ -20,6 +20,7 @@ import FooiytiRating from './FooiytiRating';
 import {ApiManagerV2} from '../../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
+import TotalRating from './TotalRating';
 
 const RegisterFeed = props => {
   const {photo_list, shop, menu, address} = props.route.params;
@@ -149,7 +150,6 @@ const RegisterFeed = props => {
 
     postRegister(formData);
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <StackHeader title="피드 등록" />
@@ -192,67 +192,63 @@ const RegisterFeed = props => {
             )}
             {/* 푸이티아이 평가 */}
             <Text style={styles.fooiyti_evaluation}>푸이티아이 평가</Text>
-            <View>
+            <View
+              style={{
+                justifyContent: 'center',
+                marginTop: 16,
+              }}>
               <FooiytiRating
-                left={'E'}
-                right={'I'}
-                leftText={'자극적인'}
-                rightText={'순한'}
-                fooiytiRating={fooiytiRatingEI}
+                left={{en: 'E', kor: '자극적인'}}
+                right={{en: 'I', kor: '순한'}}
                 setFooiytiRating={setFooiytiRatingEI}
-                type={'EI'}
-                margin={56}
               />
             </View>
-            <View>
+            <View
+              style={{
+                justifyContent: 'center',
+                marginTop: 16,
+              }}>
               <FooiytiRating
-                left={'S'}
-                right={'N'}
-                leftText={'짠'}
-                rightText={'싱거운'}
-                fooiytiRating={fooiytiRatingSN}
+                left={{en: 'S', kor: '짠'}}
+                right={{en: 'N', kor: '싱거운'}}
                 setFooiytiRating={setFooiytiRatingSN}
-                type={'SN'}
-                margin={56}
               />
             </View>
-            <View>
+            <View
+              style={{
+                justifyContent: 'center',
+                marginTop: 16,
+              }}>
               <FooiytiRating
-                left={'T'}
-                right={'F'}
-                leftText={'담백한'}
-                rightText={'느끼한'}
-                fooiytiRating={fooiytiRatingTF}
+                left={{en: 'T', kor: '담백한'}}
+                right={{en: 'F', kor: '느끼한'}}
                 setFooiytiRating={setFooiytiRatingTF}
-                type={'TF'}
-                margin={56}
               />
             </View>
-            <View>
+            <View
+              style={{
+                justifyContent: 'center',
+                marginTop: 16,
+              }}>
               <FooiytiRating
-                left={'A'}
-                right={'C'}
-                leftText={'어른'}
-                rightText={'초딩'}
-                fooiytiRating={fooiytiRatingAC}
+                left={{en: 'A', kor: '어른'}}
+                right={{en: 'C', kor: '초딩'}}
                 setFooiytiRating={setFooiytiRatingAC}
-                type={'AC'}
-                margin={56}
               />
             </View>
-            {/* 맛 평가 */}
+            {/* 종합 만족도 */}
             <View>
               <Text style={styles.total_evaluation}>종합 만족도</Text>
-              <FooiytiRating
-                left={''}
-                right={''}
-                leftText={''}
-                rightText={''}
-                fooiytiRating={totalRating}
-                setFooiytiRating={setTotalRating}
-                type={'TOTAL'}
-                margin={40}
-              />
+              <View
+                style={{
+                  justifyContent: 'center',
+                  marginTop: 16,
+                }}>
+                <TotalRating
+                  totalRating={totalRating}
+                  setTotalRating={setTotalRating}
+                />
+              </View>
             </View>
             {/* 코멘트 */}
             <View>

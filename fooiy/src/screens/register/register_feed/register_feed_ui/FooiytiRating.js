@@ -1,317 +1,184 @@
-import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react';
-import {View, StyleSheet, PanResponder, Image, Text} from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  useDerivedValue,
-  interpolate,
-  Extrapolate,
-  withTiming,
-} from 'react-native-reanimated';
+import React, {useState, useRef} from 'react';
+import {
+  Animated,
+  Dimensions,
+  PanResponder,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
-import {globalVariable} from '../../../../common/globalVariable';
-import {SliderEI_0} from '../../../../../assets/icons/svg';
-import {SliderTOTAL_0} from '../../../../../assets/icons/svg';
-import {SliderTOTAL_1} from '../../../../../assets/icons/svg';
-import {SliderTOTAL_2} from '../../../../../assets/icons/svg';
-import {SliderTOTAL_3} from '../../../../../assets/icons/svg';
-import {SliderTOTAL_4} from '../../../../../assets/icons/svg';
 
-const leftBarColor = fooiyColor.G50;
-const rightBarColor = fooiyColor.G50;
-const imogiSize = 16;
+const BOX = 234 / 5;
+const CIRCLE = 18;
 
 function FooiytiRating(props) {
-  const {
-    left,
-    right,
-    leftText,
-    rightText,
-    fooiytiRating,
-    setFooiytiRating,
-    type,
-    margin,
-  } = props;
-  const [rootViewPosX, setRootViewPosX] = useState(0);
+  const {left, right, setFooiytiRating} = props;
+  const [step, setStep] = useState(2);
+  const circleAnim = useRef(new Animated.Value(0)).current;
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: () => true,
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderStart: (evt, gestureState) => {
+      circleAnim.setValue(step * BOX - 93.6);
+    },
+    onPanResponderMove: (evt, gestureState) => {
+      gestureState.dx + step * BOX - 93.6 < 110 &&
+        gestureState.dx + step * BOX - 93.6 > -110 &&
+        circleAnim.setValue(gestureState.dx + step * BOX - 93.6);
+    },
+    onPanResponderEnd: (evt, gestureState) => {
+      if (gestureState.dx + step * BOX - 93.6 < -110) {
+        const fooiytiStep = 0;
+        const toValue = fooiytiStep * BOX - 93.6;
+        setStep(fooiytiStep);
+        setFooiytiRating(fooiytiStep);
+        Animated.spring(circleAnim, {
+          toValue,
+          friction: 7,
+          tension: 50,
+          duration: 100,
+          useNativeDriver: true,
+        }).start();
+      } else if (gestureState.dx + step * BOX - 93.6 > 110) {
+        const fooiytiStep = 4;
+        const toValue = fooiytiStep * BOX - 93.6;
+        setStep(fooiytiStep);
+        setFooiytiRating(fooiytiStep);
+        Animated.spring(circleAnim, {
+          toValue,
+          friction: 7,
+          tension: 50,
+          duration: 100,
+          useNativeDriver: true,
+        }).start();
+      } else {
+        const fooiytiStep = step + Math.round(gestureState.dx / 50);
+        const toValue = fooiytiStep * BOX - 93.6;
+        setStep(fooiytiStep);
+        setFooiytiRating(fooiytiStep);
+        Animated.spring(circleAnim, {
+          toValue,
+          friction: 7,
+          tension: 50,
+          duration: 100,
+          useNativeDriver: true,
+        }).start();
+      }
+    },
+  });
 
-  const fooiytiRatingWidth = globalVariable.width - margin * 2 - 40;
-  const step = useMemo(() => fooiytiRatingWidth * 0.25, [fooiytiRatingWidth]);
-  const panX = useSharedValue(fooiytiRatingWidth / 2); // 사용자의 드래그 위치를 저장하는 변수
-
-  const FooiytiImogi = () => {
-    if (type !== 'TOTAL') return <SliderEI_0 />;
-    else if (type === 'TOTAL' && fooiytiRating === 0) {
-      return <SliderTOTAL_0 />;
-    } else if (type === 'TOTAL' && fooiytiRating === 1) {
-      return <SliderTOTAL_1 />;
-    } else if (type === 'TOTAL' && fooiytiRating === 2) {
-      return <SliderTOTAL_2 />;
-    } else if (type === 'TOTAL' && fooiytiRating === 3) {
-      return <SliderTOTAL_3 />;
-    } else if (type === 'TOTAL' && fooiytiRating === 4) {
-      return <SliderTOTAL_4 />;
-    }
+  const onPress = index => {
+    setStep(index);
+    setFooiytiRating(index);
+    Animated.spring(circleAnim, {
+      toValue: index * BOX - 93.6,
+      friction: 7,
+      tension: 50,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
   };
-  const position = [0 * step, 1 * step, 2 * step, 3 * step, 4 * step];
-  // 왼쪽 푸이티아이 비율 표시하는 부분 넓이
-  const leftRatingWidth = useDerivedValue(() => {
-    return interpolate(
-      panX.value,
-      [0, fooiytiRatingWidth],
-      [0, fooiytiRatingWidth],
-      Extrapolate.CLAMP,
-    );
-  }, []);
-  const leftFooiytiStyle = useAnimatedStyle(() => {
-    return {
-      width: leftRatingWidth.value,
-    };
-  }, []);
-
-  // 오른쪽 푸이티아이 비율 표시하는 부분 넓이
-  const rightRatingWidth = useDerivedValue(() => {
-    return interpolate(
-      fooiytiRatingWidth - panX.value,
-      [0, fooiytiRatingWidth],
-      [0, fooiytiRatingWidth],
-      Extrapolate.CLAMP,
-    );
-  }, []);
-  const rightFooiytiStyle = useAnimatedStyle(() => {
-    return {
-      width: rightRatingWidth.value,
-      marginLeft: panX.value > 0 ? panX.value : 0,
-    };
-  }, []);
-
-  // 이모지 스타일
-  const imogiStyle = useAnimatedStyle(() => {
-    if (panX.value > 0 && panX.value < fooiytiRatingWidth) {
-      return {
-        marginLeft: panX.value - imogiSize / 2 + 8,
-      };
-    }
-  }, []);
-
-  const dot1Style = useAnimatedStyle(() => {
-    return {
-      marginLeft: position[1],
-      backgroundColor: panX.value >= position[1] ? leftBarColor : rightBarColor,
-    };
-  }, []);
-  const dot2Style = useAnimatedStyle(() => {
-    return {
-      marginLeft: position[2],
-      backgroundColor: panX.value >= position[2] ? leftBarColor : rightBarColor,
-    };
-  }, []);
-  const dot3Style = useAnimatedStyle(() => {
-    return {
-      marginLeft: position[3],
-      backgroundColor: panX.value >= position[3] ? leftBarColor : rightBarColor,
-    };
-  }, []);
-
-  const panResponders = useMemo(
-    () =>
-      PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: () => false,
-        onPanResponderTerminationRequest: () => false,
-        // onPanResponderGrant: (event, gestureState) => {
-        //   // props.setScrollEnabled(false); // scrollView와 함께 사용할 때 scrollEnabled를 false로 지정하는 게 좋습니다.
-        //   // props.setPointerEvent("none"); // 다른 component에 의해 responder가 전환된다면 grant 발생 시 다른 컴포넌트의 pointerEvent에 none을 지정하는 게 좋습니다.
-        //   panX.value = gestureState.x0 + gestureState.dx - rootViewPosX; // 사용자의 초기 터치 위치 + 이동 위치 - rootView의 x 위치
-        // },
-        onPanResponderMove: (event, gestureState) => {
-          panX.value = gestureState.x0 + gestureState.dx - margin - 16;
-        },
-
-        onPanResponderRelease: (event, gestureState) => {
-          const rate = Math.round(
-            (gestureState.x0 + gestureState.dx - margin - 16) / step,
-          );
-          if (rate < 0) {
-            setFooiytiRating(0);
-          } else if (rate > 4) {
-            setFooiytiRating(4);
-          } else {
-            setFooiytiRating(rate);
-          }
-          panX.value = withTiming(rate * step, {duration: 300}); // 별점에 맞게 Animated.View의 width를 조절합니다.
-          // 별점을 저장합니다.
-
-          // props.setScrollEnabled(true); // onPanResponderGrant와 반대로 설정합니다.
-          // props.setPointerEvent("auto");
-        },
-        onPanResponderEnd: (event, gestureState) => {
-          const rate = Math.round(
-            (gestureState.x0 + gestureState.dx - margin - 16) / step,
-          );
-          if (rate < 0) {
-            setFooiytiRating(0);
-          } else if (rate > 4) {
-            setFooiytiRating(4);
-          } else {
-            setFooiytiRating(rate);
-          }
-          panX.value = withTiming(rate * step, {duration: 300}); // 별점에 맞게 Animated.View의 width를 조절합니다.
-          // 별점을 저장합니다.
-
-          // props.setScrollEnabled(true); // onPanResponderGrant와 반대로 설정합니다.
-          // props.setPointerEvent("auto");
-        },
-        onShouldBlockNativeResponder: () => {
-          return false;
-        },
-      }),
-    [rootViewPosX],
-  );
-
-  const rootContainerOnLayout = useCallback(e => {
-    // root Component onLayout으로 root View의 position x를 계산합니다.
-    const {x} = e.nativeEvent.layout;
-
-    setRootViewPosX(x);
-  }, []);
 
   return (
-    <View style={styles.rootContainer} onLayout={rootContainerOnLayout}>
-      <View style={styles.left_view}>
-        <Text style={styles.left_text}>{left}</Text>
-        <Text style={styles.left_sub_text}>{leftText}</Text>
-      </View>
-      <View style={styles.right_view}>
-        <Text style={styles.right_text}>{right}</Text>
-        <Text style={styles.right_sub_text}>{rightText}</Text>
-      </View>
+    <View style={{}}>
       <View
-        style={[
-          styles.fooiytiRatingContainer,
-          {
-            marginLeft: margin,
-            marginRight: margin,
-            width: globalVariable.width - margin * 2,
-          },
-        ]}>
-        <Animated.View
-          style={[styles.leftBackground, leftFooiytiStyle]}
-          pointerEvents="none"
-        />
-        <Animated.View
-          style={[styles.rightBackground, rightFooiytiStyle]}
-          pointerEvents="none"
-        />
-        <View style={[styles.dot, {backgroundColor: leftBarColor}]} />
-        <Animated.View style={[styles.dot, dot1Style]} />
-        <Animated.View style={[styles.dot, dot2Style]} />
-        <Animated.View style={[styles.dot, dot3Style]} />
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: 40,
+        }}>
         <View
-          style={[
-            styles.dot,
-            {backgroundColor: rightBarColor, marginLeft: position[4]},
-          ]}
-        />
-
-        <Animated.View style={[styles.imogi, imogiStyle]} pointerEvents="none">
-          <View {...panResponders.panHandlers}>
-            <FooiytiImogi />
-            {/* <View
-              style={{
-                width: 16,
-                height: 16,
-                borderRadius: 8,
-                borderWidth: 1,
-                borderColor: fooiyColor.P700,
-                backgroundColor: fooiyColor.P500,
-              }}></View> */}
+          style={{
+            width: 40,
+            height: 40,
+            justifyContent: 'center',
+          }}>
+          <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.G600}}>
+            {left.en}
+          </Text>
+          <Text style={{...fooiyFont.Caption2, color: fooiyColor.G400}}>
+            {left.kor}
+          </Text>
+        </View>
+        {/* Slider */}
+        <View
+          style={{
+            width: BOX * 5,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          {/* 가운데 선 */}
+          <View
+            style={{
+              position: 'absolute',
+              borderBottomWidth: 1,
+              borderColor: fooiyColor.G200,
+              width: BOX * 4,
+              top: 20,
+            }}
+          />
+          {/* 가운데 선 */}
+          {/* 점 5개 */}
+          <View style={{flexDirection: 'row'}}>
+            {[...Array(5)].map((value, index) => (
+              <TouchableWithoutFeedback onPress={() => onPress(index)}>
+                <View
+                  key={index}
+                  style={{
+                    width: BOX,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      width: CIRCLE,
+                      height: CIRCLE,
+                      borderRadius: CIRCLE / 2,
+                      backgroundColor: fooiyColor.G50,
+                      borderColor: fooiyColor.G200,
+                      borderWidth: 1,
+                    }}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
+            ))}
           </View>
-        </Animated.View>
+          <Animated.View
+            {...panResponder.panHandlers}
+            style={{
+              width: CIRCLE,
+              height: CIRCLE,
+              borderRadius: CIRCLE / 2,
+              borderWidth: 1,
+              backgroundColor: fooiyColor.P500,
+              borderColor: fooiyColor.P700,
+              position: 'absolute',
+              transform: [{translateX: circleAnim}],
+            }}
+          />
+          {/* 점 5개 */}
+        </View>
+        {/* Slider */}
         <View
-          style={[styles.hide_pan, {width: fooiytiRatingWidth + 16}]}
-          {...panResponders.panHandlers}></View>
+          style={{
+            width: 40,
+            height: 40,
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+          }}>
+          <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.G600}}>
+            {right.en}
+          </Text>
+          <Text style={{...fooiyFont.Caption2, color: fooiyColor.G400}}>
+            {right.kor}
+          </Text>
+        </View>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  rootContainer: {
-    marginTop: 16,
-    height: 40,
-    width: '100%',
-    flexDirection: 'row',
-  },
-  left_view: {
-    position: 'absolute',
-  },
-  left_text: {
-    ...fooiyFont.Subtitle2,
-    color: fooiyColor.G600,
-    height: 24,
-    alignItems: 'center',
-  },
-  left_sub_text: {
-    ...fooiyFont.Caption2,
-    color: fooiyColor.G400,
-    height: 12,
-  },
-  right_view: {
-    position: 'absolute',
-    right: 0,
-    alignItems: 'flex-end',
-  },
-  right_text: {
-    ...fooiyFont.Subtitle2,
-    color: fooiyColor.G600,
-    height: 24,
-    alignItems: 'center',
-  },
-  right_sub_text: {
-    ...fooiyFont.Caption2,
-    color: fooiyColor.G400,
-    height: 12,
-  },
-  fooiytiRatingContainer: {
-    flexDirection: 'row',
-    marginTop: 19,
-    height: 1,
-  },
-  leftBackground: {
-    position: 'absolute',
-    backgroundColor: fooiyColor.G200,
-    height: '100%',
-    width: '100%',
-    alignSelf: 'center',
-    maxWidth: '100%',
-  },
-  rightBackground: {
-    position: 'absolute',
-    backgroundColor: fooiyColor.G200,
-    height: '100%',
-    width: '100%',
-    alignSelf: 'center',
-    maxWidth: '100%',
-  },
-  imogi: {
-    justifyContent: 'center',
-    position: 'absolute',
-    alignSelf: 'center',
-    height: '100%',
-  },
-  dot: {
-    alignSelf: 'center',
-    position: 'absolute',
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: fooiyColor.G200,
-  },
-  hide_pan: {
-    height: 40,
-    alignSelf: 'center',
-  },
-});
 
 export default FooiytiRating;
