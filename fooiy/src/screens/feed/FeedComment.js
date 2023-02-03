@@ -40,6 +40,10 @@ const FeedComment = props => {
   const [workingComment, setWorkingComment] = useState({});
 
   const [isWorking, setIsWorking] = useState(false);
+  const [workingState, setWorkingState] = useState('');
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [blurCondition, setBlurCondition] = useState(0);
+
   const [buttons, setButtons] = useState([
     {
       name: '신고',
@@ -49,7 +53,6 @@ const FeedComment = props => {
       textColor: fooiyColor.P700,
     },
   ]);
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const openModal = async (
     comment_id,
     account_id,
@@ -75,22 +78,30 @@ const FeedComment = props => {
     }
   };
   const toggleModal = () => {
-    setWorkingComment({});
+    // setWorkingComment({});
     setIsOpenModal(false);
   };
   const openWorkingModal = () => {
+    setIsOpenModal(false);
     setIsWorking(true);
+    setIsFocus(true);
+    setWorkingState('update');
+    Platform.OS === 'android' && textInputRef.current.focus();
   };
   const dismissKeyboard = () => {
-    setIsWorking(false);
-    setWorkingComment({});
-    textInputRef.current.blur();
+    setIsOpenModal(false);
+    setIsFocus(false);
+    setWorkingState('');
   };
-  const onClickPatchComment = async () => {
-    // setIsOpenModal(false);
+  const onClickPatchComment = () => {
+    setIsOpenModal(false);
     setIsWorking(true);
-    textInputRef.current.foucs();
+    setIsFocus(true);
   };
+
+  useEffect(() => {
+    isFocused ? textInputRef.current.focus() : textInputRef.current.blur();
+  }, [isFocused]);
 
   const userInfoRedux = useSelector(state => state.userInfo.value);
   useEffect(() => {
@@ -99,9 +110,9 @@ const FeedComment = props => {
         {
           name: '수정',
           domain: '댓글',
-          onClick: () => onClickPatchComment(),
+          onClick: () => openWorkingModal(),
           isNext: false,
-          textColor: fooiyColor.G800,
+          textColor: fooiyColor.G600,
         },
         {
           name: '삭제',
@@ -121,12 +132,52 @@ const FeedComment = props => {
           textColor: fooiyColor.P700,
         },
       ]);
+    } else {
+      setButtons([
+        {
+          name: '신고',
+          domain: '댓글',
+          onClick: () => deleteComment(),
+          isNext: true,
+          textColor: fooiyColor.P700,
+        },
+      ]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workingComment, feed_account_id]);
 
   const insets = useSafeAreaInsets();
-  const getCommentList = async () => {
+
+  const onBlur = () => {
+    setWorkingState('');
+    setIsFocus(false);
+    setIsOpenModal(false);
+    setIsWorking(false);
+    // blurCondition >= 1 ? setIsWorking(false) : isWorking && setIsFocus(true);
+    // setIsWorking(false);
+    setWorkingComment({});
+  };
+
+  const toIndex = index => {
+    setIsWorking(true);
+    setIsFocus(true);
+    // openWorkingModal(true);
+    flatListRef.current.scrollToIndex({index: index, animated: true});
+  };
+
+  const loadMoreItem = () => {
+    if (totalCount > offset + globalVariable.FeedLimit) {
+      setOffset(offset + globalVariable.FeedLimit);
+      getCommentList(offset + globalVariable.FeedLimit, comments);
+    }
+  };
+
+  useEffect(() => {
+    getCommentList(offset, comments);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getCommentList = async (offset, comments) => {
     await ApiManagerV2.get(apiUrl.FEED_COMMENT, {
       params: {
         limit: globalVariable.FeedLimit,
@@ -143,29 +194,6 @@ const FeedComment = props => {
     // .catch(function (error) => console.log(error));
   };
 
-  const onBlur = () => {
-    setIsFocus(false);
-    setIsWorking(false);
-    setWorkingComment({});
-  };
-
-  useEffect(() => {
-    onBlur();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const toIndex = index => {
-    openWorkingModal(true);
-    textInputRef.current.focus();
-    flatListRef.current.scrollToIndex({index: index, animated: true});
-  };
-
-  const loadMoreItem = () => {
-    if (totalCount > offset + globalVariable.FeedLimit) {
-      setOffset(offset + globalVariable.FeedLimit);
-    }
-  };
-
   const registerComment = async () => {
     console.log(feed_id, workingComment.comment_id, value);
     value.length !== 0 &&
@@ -175,10 +203,10 @@ const FeedComment = props => {
         content: value,
       })
         .then(res => {
-          console.log(res);
           textInputRef.current.clear();
           setValue('');
-          res.data.payload === 'success' ? updateComments() : dismissKeyboard();
+          res.data.payload === 'success' && updateComments();
+          dismissKeyboard();
         })
         .catch(e => dismissKeyboard()));
   };
@@ -187,10 +215,12 @@ const FeedComment = props => {
     await ApiManagerV2.patch(apiUrl.FEED_COMMENT, {
       feed_id: feed_id,
       comment_id: workingComment.comment_id,
-      content: value, // 바꿔야함
+      content: value,
     }).then(res => {
-      toggleModal();
+      textInputRef.current.clear();
+      setWorkingState('');
       res.data.payload === 'success' && updateComments();
+      dismissKeyboard();
     });
   };
 
@@ -198,55 +228,23 @@ const FeedComment = props => {
     await ApiManagerV2.delete(
       apiUrl.FEED_COMMENT + `${workingComment.comment_id}/`,
       {
-        feed_id: feed_id,
+        parmas: {feed_id},
       },
     ).then(res => {
       toggleModal();
       res.data.payload === 'success' && updateComments();
+      dismissKeyboard();
     });
   };
 
   const updateComments = async () => {
+    setWorkingComment({});
     const findIndex = comments.findIndex(
       e => e.comment_id === workingComment.comment_id,
     );
-    const updateIndex =
-      findIndex !== -1
-        ? findIndex
-        : comments.length !== 0
-        ? comments.length
-        : -1;
-    if (updateIndex === -1) {
-      getCommentList(false);
-    } else {
-      setComments(
-        comments.splice(0, updateIndex === 0 ? comments.length : updateIndex),
-      );
-      if (updateIndex === 0) {
-        await ApiManagerV2.get(apiUrl.FEED_COMMENT, {
-          params: {
-            limit: globalVariable.FeedLimit,
-            offset: 0,
-            feed_id: feed_id,
-          },
-        }).then(res => {
-          if (res.data.payload.comment_list) {
-            dismissKeyboard();
-            setOffset(0);
-            setComments(res.data.payload.comment_list.results);
-            setTotalCount(res.data.payload.comment_list.total_count);
-          }
-        });
-      } else {
-        setOffset(updateIndex);
-      }
-    }
+    const updateIndex = findIndex !== -1 ? findIndex : comments.length;
+    getCommentList(updateIndex, comments.slice(undefined, updateIndex));
   };
-
-  useEffect(() => {
-    getCommentList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -319,7 +317,9 @@ const FeedComment = props => {
           />
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => registerComment()}>
+            onPress={() =>
+              workingState === 'update' ? patchComment() : registerComment()
+            }>
             {value.length === 0 ? (
               <RegistComment style={styles.register_comment} />
             ) : (
@@ -330,11 +330,14 @@ const FeedComment = props => {
       </KeyboardAvoidingView>
 
       {isWorking && <WorkingCommentModal workingComment={workingComment} />}
-      <MoreVertModal
-        buttons={buttons}
-        isModalVisible={isOpenModal}
-        toggleModal={toggleModal}
-      />
+      {!isWorking && (
+        <MoreVertModal
+          buttons={buttons}
+          isModalVisible={isOpenModal}
+          toggleModal={toggleModal}
+          isWorking={isWorking}
+        />
+      )}
     </SafeAreaView>
   );
 };
