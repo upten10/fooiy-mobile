@@ -11,10 +11,10 @@ import {
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {Map} from '../../../../assets/icons/svg';
+import Rank from '../../../common_ui/Rank';
 
 const OtherUserPageProfile = props => {
   const navigation = useNavigation();
-
   return (
     <View style={styles.rootContainer} pointerEvents="box-none">
       <View style={styles.container}>
@@ -31,6 +31,12 @@ const OtherUserPageProfile = props => {
             <View style={styles.userInfoContainer}>
               {/* 푸이티아이 */}
               <View style={styles.userInfoDetail}>
+                {/* 랭크 */}
+                <Rank
+                  containerStyle={{height: 28, marginRight: 8, borderRadius: 8}}
+                  rank={props.rank}
+                  font={fooiyFont.Subtitle3}
+                />
                 <TouchableOpacity
                   style={styles.fooiyTIContainer}
                   activeOpacity={0.8}
@@ -105,50 +111,35 @@ const styles = StyleSheet.create({
   },
   userInfoDetail: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
   },
   fooiyTIContainer: {
     marginRight: 8,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: fooiyColor.P500,
+    borderColor: fooiyColor.G200,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   fooiyTI: {
-    ...Platform.select({
-      ios: {
-        ...fooiyFont.Button,
-        color: fooiyColor.P500,
-        lineHeight: 0,
-      },
-      android: {
-        ...fooiyFont.Button,
-        color: fooiyColor.P500,
-        lineHeight: 18,
-      },
-    }),
+    ...fooiyFont.Subtitle3,
+    color: fooiyColor.G600,
   },
   profileInfoCountContainer: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: fooiyColor.G400,
+    borderColor: fooiyColor.G200,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   profileInfoCount: {
-    ...Platform.select({
-      ios: {
-        ...fooiyFont.Button,
-        color: fooiyColor.G400,
-        lineHeight: 0,
-      },
-      android: {
-        ...fooiyFont.Button,
-        color: fooiyColor.G400,
-        lineHeight: 18,
-      },
-    }),
+    ...fooiyFont.Subtitle3,
+    color: fooiyColor.G600,
   },
   userName: {
     ...fooiyFont.Subtitle1,

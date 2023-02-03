@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Image,
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -17,7 +18,7 @@ import {
 } from '../../../../assets/icons/svg';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {globalVariable} from '../../../common/globalVariable';
-import {fooiyColor} from '../../../common/globalStyles';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {useDispatch, useSelector} from 'react-redux';
@@ -139,7 +140,7 @@ const Setting = props => {
                   }>
                   <View key={index} style={styles.setting}>
                     <View>
-                      <Text>{elem.text}</Text>
+                      <Text style={styles.settingText}>{elem.text}</Text>
                     </View>
                     <View style={styles.rightCol}>
                       <View>
@@ -230,10 +231,14 @@ const styles = StyleSheet.create({
     borderColor: fooiyColor.G200,
     borderRadius: 8,
     height: 56,
-    color: fooiyColor.G400,
-    fontSize: 16,
-    fontWeight: '600',
     padding: 16,
+    paddingRight: 16 + 24,
+    ...fooiyFont.Subtitle2,
+    color: fooiyColor.G400,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
   },
   introFocus: {
     borderColor: fooiyColor.G400,
@@ -264,19 +269,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
+  settingText: {
+    ...fooiyFont.Subtitle3,
+    color: fooiyColor.G600,
+  },
   rightCol: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   rightFooiyti: {
+    ...fooiyFont.Body2,
     color: fooiyColor.P500,
-    fontWeight: '400',
-    fontSize: 14,
     marginRight: 8,
   },
   rightNickname: {
-    fontSize: 14,
-    fontWeight: '400',
+    ...fooiyFont.Body2,
     color: fooiyColor.G600,
   },
   logoutContainer: {
@@ -290,8 +297,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   logoutText: {
+    ...fooiyFont.Button,
     color: fooiyColor.G600,
-    fontWeight: '600',
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
   },
   footerContainer: {
     flexDirection: 'row',

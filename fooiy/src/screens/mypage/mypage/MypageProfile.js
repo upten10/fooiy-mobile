@@ -12,8 +12,9 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {useDispatch, useSelector} from 'react-redux';
 import {Archive, Map, Settings} from '../../../../assets/icons/svg';
+import Rank from '../../../common_ui/Rank';
 
-const MypageProfile = params => {
+const MypageProfile = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -27,9 +28,9 @@ const MypageProfile = params => {
           <View style={styles.infoContainer}>
             {/* 프로필사진 */}
             <View style={styles.profileImageContainer}>
-              {params.otherUserInfo ? (
+              {props.otherUserInfo ? (
                 <Image
-                  source={{uri: params.otherUserInfo.profile_image}}
+                  source={{uri: props.otherUserInfo.profile_image}}
                   style={styles.profileImage}
                 />
               ) : (
@@ -44,16 +45,22 @@ const MypageProfile = params => {
             <View style={styles.userInfoContainer}>
               {/* 푸이티아이 */}
               <View style={styles.userInfoDetail}>
+                {/* 랭크 */}
+                <Rank
+                  containerStyle={{height: 28, marginRight: 8, borderRadius: 8}}
+                  rank={userInfoRedux.rank}
+                  font={fooiyFont.Subtitle3}
+                />
                 <TouchableOpacity
                   style={styles.fooiyTIContainer}
                   activeOpacity={0.8}
                   onPress={() => {
                     navigation.navigate('FooiyTI');
                   }}>
-                  {params.otherUserInfo ? (
+                  {props.otherUserInfo ? (
                     <Text style={styles.fooiyTI}>
-                      {params.otherUserInfo.fooiyti !== null
-                        ? params.otherUserInfo.fooiyti
+                      {props.otherUserInfo.fooiyti !== null
+                        ? props.otherUserInfo.fooiyti
                         : 'OOOO'}
                     </Text>
                   ) : (
@@ -66,9 +73,9 @@ const MypageProfile = params => {
                 </TouchableOpacity>
                 {/* 피드 갯수 */}
                 <View style={styles.profileInfoCountContainer}>
-                  {params.otherUserInfo ? (
+                  {props.otherUserInfo ? (
                     <Text style={styles.profileInfoCount}>
-                      총 {params.otherUserInfo.feed_count}개
+                      총 {props.otherUserInfo.feed_count}개
                     </Text>
                   ) : (
                     <Text style={styles.profileInfoCount}>
@@ -79,9 +86,9 @@ const MypageProfile = params => {
               </View>
               {/* 닉네임 */}
               <View>
-                {params.otherUserInfo ? (
+                {props.otherUserInfo ? (
                   <Text style={styles.userName}>
-                    {params.otherUserInfo.nickname}
+                    {props.otherUserInfo.nickname}
                   </Text>
                 ) : (
                   <Text style={styles.userName}>{userInfoRedux.nickname}</Text>
@@ -90,10 +97,10 @@ const MypageProfile = params => {
             </View>
           </View>
           <View>
-            {params.otherUserInfo
-              ? params.otherUserInfo.introduction && (
+            {props.otherUserInfo
+              ? props.otherUserInfo.introduction && (
                   <Text style={styles.introduction}>
-                    {params.otherUserInfo.introduction}
+                    {props.otherUserInfo.introduction}
                   </Text>
                 )
               : userInfoRedux.introduction && (
@@ -104,7 +111,7 @@ const MypageProfile = params => {
           </View>
         </View>
         {/* 버튼 */}
-        {params.otherUserInfo ? (
+        {props.otherUserInfo ? (
           <TouchableOpacity
             style={styles.otherBtnContainer}
             activeOpacity={0.8}
@@ -179,54 +186,35 @@ const styles = StyleSheet.create({
   },
   userInfoDetail: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
   },
   fooiyTIContainer: {
     marginRight: 8,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: fooiyColor.P500,
+    borderColor: fooiyColor.G200,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },
   fooiyTI: {
-    ...Platform.select({
-      ios: {
-        ...fooiyFont.Button,
-        color: fooiyColor.P500,
-        lineHeight: 0,
-      },
-      android: {
-        ...fooiyFont.Button,
-        color: fooiyColor.P500,
-        lineHeight: 18,
-      },
-    }),
+    ...fooiyFont.Subtitle3,
+    color: fooiyColor.G600,
   },
   profileInfoCountContainer: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: fooiyColor.G400,
+    borderColor: fooiyColor.G200,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },
   profileInfoCount: {
-    ...Platform.select({
-      ios: {
-        ...fooiyFont.Button,
-        color: fooiyColor.G400,
-        lineHeight: 0,
-      },
-      android: {
-        ...fooiyFont.Button,
-        color: fooiyColor.G400,
-        lineHeight: 18,
-      },
-    }),
+    ...fooiyFont.Subtitle3,
+    color: fooiyColor.G600,
   },
   userName: {
     ...fooiyFont.Subtitle1,

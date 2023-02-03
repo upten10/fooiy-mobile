@@ -3,7 +3,11 @@ import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
-import {fooiyColor, globalStyles} from '../../../common/globalStyles';
+import {
+  fooiyColor,
+  fooiyFont,
+  globalStyles,
+} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
@@ -44,8 +48,8 @@ const FooiyTI = props => {
             <View style={styles.percentageBarTextContainer}>
               <Text
                 style={[
-                  left[1] > right[1] ? styles.higherText : styles.lowerText,
                   styles.fooiytiText,
+                  left[1] > right[1] ? styles.higherText : styles.lowerText,
                   styles.fooiytiTextLeft,
                 ]}>
                 {left[0]}
@@ -65,8 +69,8 @@ const FooiyTI = props => {
             <View style={styles.percentageBarTextContainer}>
               <Text
                 style={[
-                  left[1] < right[1] ? styles.higherText : styles.lowerText,
                   styles.fooiytiText,
+                  left[1] < right[1] ? styles.higherText : styles.lowerText,
                   styles.fooiytiTextRight,
                 ]}>
                 {right[0]}
@@ -76,15 +80,15 @@ const FooiyTI = props => {
           <View style={styles.percentageBarSecondRow}>
             <Text
               style={[
-                left[1] > right[1] ? styles.higherText : styles.lowerText,
                 styles.fooiytiPercentText,
+                left[1] > right[1] ? styles.higherText : styles.lowerText,
               ]}>
               {left[1] + '%'}
             </Text>
             <Text
               style={[
-                left[1] < right[1] ? styles.higherText : styles.lowerText,
                 styles.fooiytiPercentText,
+                left[1] < right[1] ? styles.higherText : styles.lowerText,
               ]}>
               {right[1] + '%'}
             </Text>
@@ -146,13 +150,11 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   fooiytiNickname: {
-    fontSize: 14,
-    fontWeight: '600',
+    ...fooiyFont.Subtitle3,
     color: fooiyColor.G600,
   },
   fooiyti: {
-    fontSize: 36,
-    fontWeight: '600',
+    ...fooiyFont.H1,
     color: fooiyColor.P500,
   },
   resultPercentageContainer: {
@@ -173,8 +175,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   resultPercentageText: {
-    fontWeight: '600',
-    fontSize: 14,
+    ...fooiyFont.Subtitle3,
     color: fooiyColor.G600,
   },
   PercentageBarContainer: {
@@ -190,8 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   fooiytiText: {
-    fontSize: 24,
-    fontWeight: '600',
+    ...fooiyFont.H3,
   },
   fooiytiTextLeft: {
     marginRight: 28,
@@ -200,8 +200,7 @@ const styles = StyleSheet.create({
     marginLeft: 28,
   },
   fooiytiPercentText: {
-    fontSize: 14,
-    fontWeight: '600',
+    ...fooiyFont.Subtitle3,
   },
   higherText: {
     color: fooiyColor.P500,

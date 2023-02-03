@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -37,7 +37,7 @@ const Suggestion = () => {
     {value: 'AD', label: '광고 제의'},
     {value: 'ETC', label: '기타 피드백'},
   ]);
-  const Category = () => {
+  const Category = useCallback(() => {
     return (
       <DropDownPicker
         items={items}
@@ -55,14 +55,14 @@ const Suggestion = () => {
         dropDownContainerStyle={styles.dropDownContainer}
       />
     );
-  };
+  }, [items, value, open]);
 
   const postSuggestion = async data => {
     const {type, content} = data;
     await ApiManagerV2.post(apiUrl.SUGGESTION, {
       content,
       type,
-    }).then(res => console.log(JSON.stringify(res)));
+    }).then(console.log('문의함 전송 완료'));
   };
 
   const onPressBtn = () => {

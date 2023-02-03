@@ -21,6 +21,8 @@ export const apiUrl = {
   FEED_LIST: 'feeds/feed/',
   // 매장 피드 리스트
   SHOP_LIST: 'feeds/feed/shop/',
+  // 피드 댓글
+  FEED_COMMENT: 'feeds/feed/comment/',
   // 피드 좋아요 등록, 취소
   FEED_LIKE: 'feeds/feed/like/',
   // 피드 보관 등록, 취소 (PATCH) && 피드 보관 리스트 (GET)
@@ -39,7 +41,7 @@ export const apiUrl = {
   REGISTER_RECORD: 'feeds/record/',
 
   // 음식점 지도 리스트
-  MAP_SHOP_LIST: 'shops/shop/shop_map_picker/',
+  MAP_SHOP_LIST: 'shops/shop/shop_map_list/',
   // 개척, 근처 매장 리스트
   SHOP_NEARBY: 'shops/shop/nearby/',
   // 개척, 메뉴 리스트

@@ -18,7 +18,8 @@ export const DefaultHeader = () => {
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             style={{marginRight: 16}}
-            onPress={() => props.notification()}>
+            // onPress={() => props.notification()}
+          >
             <Notification />
           </TouchableOpacity>
           <TouchableOpacity

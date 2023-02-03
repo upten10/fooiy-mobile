@@ -17,10 +17,12 @@ import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import OtherUserPageProfile from './OtherUserPageProfile';
 
+const limit = 12;
+
 const OtherUserPage = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
-  const [lastIndex, setLastIndex] = useState(-1);
+  const [totalCount, setTotalCount] = useState(-1);
   const [noFeedImage, setNoFeedImage] = useState('');
   const [otherUserInfo, setOtherUserInfo] = useState({});
 
@@ -30,15 +32,9 @@ const OtherUserPage = props => {
 
   useEffect(() => {
     getAccountInfo();
+    getFeedList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (lastIndex === -1 || offset < lastIndex) {
-      getFeedList();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
 
   const getAccountInfo = async data => {
     await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
@@ -51,7 +47,6 @@ const OtherUserPage = props => {
   };
 
   const getFeedList = async data => {
-    const limit = 20;
     await ApiManagerV2.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
         offset: offset,
@@ -60,17 +55,25 @@ const OtherUserPage = props => {
         other_account_id,
       },
     }).then(res => {
-      if (
-        res.data.payload.feed_list.total_count === 0 &&
-        res.data.payload.image
-      ) {
-        setNoFeedImage(res.data.payload.image);
-      } else if (lastIndex === -1 || offset < lastIndex) {
-        setLastIndex(res.data.payload.feed_list.total_count);
+      if (res.data.payload.image === undefined) {
         setFeeds([...feeds, ...res.data.payload.feed_list.results]);
-        setOffset(offset + limit);
+        if (totalCount === -1) {
+          setOffset(offset + limit);
+          setTotalCount(res.data.payload.feed_list.total_count);
+        }
+      } else {
+        setNoFeedImage(res.data.payload.image);
       }
     });
+  };
+
+  const loadMoreFeeds = () => {
+    if (totalCount > offset) {
+      if (totalCount + limit > offset) {
+        setOffset(offset + limit);
+        getFeedList();
+      }
+    }
   };
 
   const renderItem = useCallback(({item, index}) => {
@@ -118,6 +121,7 @@ const OtherUserPage = props => {
           bounces={true}
           numColumns={3}
           // scrollToOverflowEnabled
+          onEndReached={loadMoreFeeds}
           ListHeaderComponent={() => OtherUserPageProfile(otherUserInfo)}
           ListFooterComponent={() => <View style={styles.emptyComp}></View>}
         />
