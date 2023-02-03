@@ -1,6 +1,5 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import SplashScreen from 'react-native-splash-screen';
 import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import RootNavigator from './src/navigation/RootNavigator';
@@ -8,7 +7,7 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from '@react-navigation/native';
-import {KeyboardAvoidingView, Platform, StatusBar} from 'react-native';
+import {StatusBar} from 'react-native';
 import {useFlipper} from '@react-navigation/devtools';
 
 const App = () => {

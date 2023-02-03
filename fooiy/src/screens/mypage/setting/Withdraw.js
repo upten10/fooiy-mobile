@@ -105,6 +105,7 @@ const Withdraw = props => {
           <StackHeader title="회원 탈퇴" />
         </View>
         <KeyboardAvoidingView
+          style={{flex: 1}}
           keyboardVerticalOffset={Platform.select({
             ios: null,
             android: 30,
