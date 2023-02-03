@@ -56,7 +56,9 @@ const Setting = props => {
   };
 
   const onPressWithdraw = () => {
-    navigation.navigate('Withdraw');
+    navigation.navigate('Withdraw', {
+      userInfoRedux,
+    });
   };
 
   const onIntroFocus = () => {

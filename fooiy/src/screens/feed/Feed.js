@@ -143,7 +143,6 @@ const Feed = props => {
   return (
     <SafeAreaView style={styles.container}>
       <FeedHeader category={category} setOpen={setOpen} open={open} />
-
       <View style={styles.container}>
         <FlatList
           ref={flatListRef}
@@ -161,7 +160,6 @@ const Feed = props => {
           ListEmptyComponent={ListEmptyComponent}
           onEndReachedThreshold={2}
           maxToRenderPerBatch={6}
-
         />
       </View>
       {open && (

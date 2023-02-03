@@ -21,6 +21,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AndroidMapMarker from './AndroidMapMarker';
 
 const NaverMap = props => {
+  const depthOneScreenLocation = [
+    {latitude: 30.397517566296486, longitude: 124.91716542482237},
+    {latitude: 40.26662580495315, longitude: 130.52104864676795},
+  ];
   //map ref 초기화
   const mapView = useRef(null);
   const sheetRef = useRef(null);
@@ -39,6 +43,12 @@ const NaverMap = props => {
   //control
   const [isCafe, setIsCafe] = useState(false);
   const [shopCount, setShopCount] = useState(0);
+
+  useEffect(() => {
+    if (depth <= 2) {
+      toggleModal();
+    }
+  }, [depth]);
 
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const onCameraChange = e => {
@@ -137,10 +147,14 @@ const NaverMap = props => {
   const getShopMarkerList = async data => {
     await ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER, {
       params: {
-        longitude_left_bottom: data[0].longitude,
-        latitude_left_bottom: data[0].latitude,
-        latitude_right_top: data[1].latitude,
-        longitude_right_top: data[1].longitude,
+        longitude_left_bottom:
+          depth === 1 ? depthOneScreenLocation[0].longitude : data[0].longitude,
+        latitude_left_bottom:
+          depth === 1 ? depthOneScreenLocation[0].latitude : data[0].latitude,
+        latitude_right_top:
+          depth === 1 ? depthOneScreenLocation[1].latitude : data[1].latitude,
+        longitude_right_top:
+          depth === 1 ? depthOneScreenLocation[1].longitude : data[1].longitude,
         shop_category: isCafe ? globalVariable.category_cafe : null,
         depth: depth,
       },
@@ -201,6 +215,7 @@ const NaverMap = props => {
         setShopMarkers={setShopMarkers}
         shopCount={shopCount}
         sheetRef={sheetRef}
+        depth={depth}
       />
       <NaverMapView
         ref={mapView}
@@ -211,6 +226,7 @@ const NaverMap = props => {
         zoomControl={false}
         minZoomLevel={5}
         maxZoomLevel={18}
+        useTextureView={true}
         rotateGesturesEnabled={false}
         onCameraChange={e => onCameraChange(e)}>
         {Platform.select({

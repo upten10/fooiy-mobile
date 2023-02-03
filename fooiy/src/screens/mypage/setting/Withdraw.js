@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -16,7 +17,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 
-const Withdraw = () => {
+const Withdraw = props => {
   const checkBoxData = [
     '사용을 잘 안해요',
     '가고싶은 음식점이 없어요',
@@ -24,11 +25,12 @@ const Withdraw = () => {
     '기타',
   ];
 
+  const textInput = useRef(null);
+
   const [clickedIndex, setClickedIndex] = useState(-1);
   const [inputValue, setInputValue] = useState('');
   const [btnActivate, setBtnActivate] = useState(false);
-  const [isEnterKeyboard, setIsEnterKeyboard] = useState(false);
-  console.log(isEnterKeyboard);
+  const [isFocused, setIsFocused] = useState(false);
 
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -37,7 +39,9 @@ const Withdraw = () => {
     if (clickedIndex === 3) {
       inputValue.length >= 10 ? setBtnActivate(true) : setBtnActivate(false);
     } else if (clickedIndex !== -1 && clickedIndex !== 3) {
+      setInputValue('');
       setBtnActivate(true);
+      // Keyboard.dismiss();
     } else {
       setBtnActivate(false);
     }
@@ -51,48 +55,65 @@ const Withdraw = () => {
     if (clickedIndex === 3) {
       navigation.navigate('WithdrawConfirm', {
         reason: inputValue,
+        userInfo: props.route.params,
       });
     } else {
       navigation.navigate('WithdrawConfirm', {
         reason: checkBoxData[clickedIndex],
+        userInfo: props.route.params,
       });
     }
   };
 
-  const checkBox = (text, index) => {
+  const CheckBox = props => {
+    const {index, item} = props;
     return (
-      <View>
-        <TouchableOpacity
-          key={index}
+      <TouchableOpacity
+        key={index}
+        style={
+          clickedIndex === index
+            ? [styles.checkBox, styles.checkedCheckBox]
+            : styles.checkBox
+        }
+        activeOpacity={0.8}
+        onPress={() => onPressCheckBox(index)}>
+        <Text
           style={
             clickedIndex === index
-              ? [styles.checkBox, styles.checkedCheckBox]
-              : styles.checkBox
-          }
-          activeOpacity={0.8}
-          onPress={() => onPressCheckBox(index)}>
-          <Text
-            style={
-              clickedIndex === index
-                ? [styles.checkBoxText, styles.checkedCheckBoxText]
-                : styles.checkBoxText
-            }>
-            {text}
-          </Text>
-          {clickedIndex === index ? <Check /> : <Uncheck />}
-        </TouchableOpacity>
-      </View>
+              ? [styles.checkBoxText, styles.checkedCheckBoxText]
+              : styles.checkBoxText
+          }>
+          {item}
+        </Text>
+        {clickedIndex === index ? <Check /> : <Uncheck />}
+      </TouchableOpacity>
     );
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView
-        style={{
-          backgroundColor: fooiyColor.W,
-          height: '100%',
-        }}>
-        <KeyboardAvoidingView behavior={'position'}>
+        style={{backgroundColor: fooiyColor.W, flex: 1}}
+        edges={Platform.select({
+          ios: 'bottom',
+          android: null,
+        })}>
+        <View
+          style={{zIndex: 1, backgroundColor: fooiyColor.W, height: insets.top}}
+        />
+        <View style={{zIndex: 1}}>
           <StackHeader title="회원 탈퇴" />
+        </View>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          keyboardVerticalOffset={Platform.select({
+            ios: null,
+            android: 30,
+          })}
+          behavior={Platform.select({
+            ios: 'position',
+            android: 'position',
+          })}>
           {/* Body */}
           <View style={BodyStyles(insets.top, insets.bottom).bodyContainer}>
             {/* Title */}
@@ -108,8 +129,9 @@ const Withdraw = () => {
             {/* checkbox */}
             <View>
               {checkBoxData.map((item, index) => {
-                return checkBox(item, index);
+                return <CheckBox item={item} index={index} />;
               })}
+
               <View
                 style={
                   clickedIndex === 3
@@ -127,6 +149,9 @@ const Withdraw = () => {
                     textAlignVertical="top"
                     onChangeText={setInputValue}
                     maxLength={300}
+                    value={inputValue}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
                   />
                 </View>
                 <Text style={styles.textInputLength}>
@@ -199,6 +224,10 @@ const styles = StyleSheet.create({
   checkBoxText: {
     ...fooiyFont.Button,
     color: fooiyColor.G300,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: 20,
+    }),
   },
   checkedCheckBoxText: {
     color: fooiyColor.P500,
@@ -234,7 +263,10 @@ const styles = StyleSheet.create({
   },
   changeBtn: {
     position: 'absolute',
-    bottom: 0,
+    bottom: Platform.select({
+      ios: 0,
+      android: 20,
+    }),
     width: '100%',
     height: 56,
     backgroundColor: fooiyColor.P500,

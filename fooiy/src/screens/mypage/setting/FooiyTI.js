@@ -99,10 +99,11 @@ const FooiyTI = props => {
   };
 
   return (
-    <SafeAreaView
-      style={{flex: 1, backgroundColor: '#FFF', paddingHorizontal: 16}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: fooiyColor.W}}>
       <StackHeader title="푸이티아이" />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{paddingHorizontal: 16}}>
         <View style={styles.container}>
           <View style={styles.fooiytiContainer}>
             <Text style={styles.fooiytiNickname}>
@@ -221,12 +222,12 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   reBtnContainer: {
-    width: '100%',
+    width: globalVariable.width,
+    alignItems: 'center',
     height: 56,
-    marginBottom: 34,
   },
   reBtn: {
-    width: '100%',
+    width: globalVariable.width - 32,
     height: '100%',
     backgroundColor: fooiyColor.P500,
     justifyContent: 'center',

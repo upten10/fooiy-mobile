@@ -106,12 +106,12 @@ const MypageStackNavigation = props => {
       <Stack.Screen name="Withdraw" component={Withdraw} />
       <Stack.Screen name="WithdrawConfirm" component={WithdrawConfirm} />
       <Stack.Screen
-          name="Search"
-          component={Search}
-          listeners={({navigation, route}) => {
-            navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
-          }}
-        />
+        name="Search"
+        component={Search}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+        }}
+      />
     </Stack.Navigator>
   );
 };
