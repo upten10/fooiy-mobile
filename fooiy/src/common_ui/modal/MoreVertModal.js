@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, View, TouchableOpacity, Platform} from 'react-native';
 import Modal from 'react-native-modal';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
@@ -7,7 +7,7 @@ import Margin from '../Margin';
 
 const MoreVertModal = props => {
   const insets = useSafeAreaInsets();
-  const {buttons, isModalVisible, toggleModal} = props;
+  const {buttons, isModalVisible, toggleModal, isWorking} = props;
   const [currentStage, setCurrentStage] = useState('');
 
   useEffect(() => {
@@ -40,42 +40,44 @@ const MoreVertModal = props => {
   };
 
   return (
-    <Modal
-      style={styles.modal_container}
-      isVisible={isModalVisible}
-      onBackdropPress={toggleModal}>
-      <View style={styles.container}>
-        {currentStage === '' ? (
-          buttons.map((button, index) => {
-            return <SelectButtons key={index} button={button} />;
-          })
-        ) : (
-          <View style={styles.next_container}>
-            <Text style={styles.next_title}>
-              {buttons[0].domain}을 {currentStage}하시겠습니까?
-            </Text>
-            <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity activeOpacity={0.8} onPress={toggleModal}>
-                <View style={styles.next_cancel_button}>
-                  <Text style={styles.next_cancel_button_text}>취소</Text>
-                </View>
-              </TouchableOpacity>
-              <Margin w={8} />
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={
-                  buttons.find(button => button.name === currentStage).onClick
-                }>
-                <View style={styles.next_button}>
-                  <Text style={styles.next_button_text}>{currentStage}</Text>
-                </View>
-              </TouchableOpacity>
+    !isWorking && (
+      <Modal
+        style={styles.modal_container}
+        isVisible={isModalVisible}
+        onBackdropPress={toggleModal}>
+        <View style={styles.container}>
+          {currentStage === '' ? (
+            buttons.map((button, index) => {
+              return <SelectButtons key={index} button={button} />;
+            })
+          ) : (
+            <View style={styles.next_container}>
+              <Text style={styles.next_title}>
+                {buttons[0].domain}을 {currentStage}하시겠습니까?
+              </Text>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity activeOpacity={0.8} onPress={toggleModal}>
+                  <View style={styles.next_cancel_button}>
+                    <Text style={styles.next_cancel_button_text}>취소</Text>
+                  </View>
+                </TouchableOpacity>
+                <Margin w={8} />
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={
+                    buttons.find(button => button.name === currentStage).onClick
+                  }>
+                  <View style={styles.next_button}>
+                    <Text style={styles.next_button_text}>{currentStage}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      </View>
-      <View style={{backgroundColor: fooiyColor.W, height: insets.bottom}} />
-    </Modal>
+          )}
+        </View>
+        <View style={{backgroundColor: fooiyColor.W, height: insets.bottom}} />
+      </Modal>
+    )
   );
 };
 
@@ -97,12 +99,13 @@ const styles = StyleSheet.create({
     height: 56,
     backgroundColor: fooiyColor.W,
     justifyContent: 'center',
-    borderRadius: 16,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: fooiyColor.G200,
   },
   button: {
     ...fooiyFont.Button,
+    lineHeight: Platform.select({ios: 0, android: 16}),
     textAlign: 'center',
   },
   next_container: {
@@ -126,6 +129,7 @@ const styles = StyleSheet.create({
   next_cancel_button_text: {
     ...fooiyFont.Button,
     color: fooiyColor.G600,
+    lineHeight: Platform.select({ios: 0, android: 16}),
     textAlign: 'center',
   },
   next_button: {
@@ -134,6 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: fooiyColor.P500,
     borderRadius: 8,
     justifyContent: 'center',
+    textAlign: 'center',
   },
   next_button_text: {
     ...fooiyFont.Button,
