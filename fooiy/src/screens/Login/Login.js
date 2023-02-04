@@ -36,7 +36,9 @@ const Login = () => {
   const [auth, setAuth] = useState('');
 
   const getAccountInfo = async data => {
-    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res => {
+    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
+      params: {},
+    }).then(res => {
       dispatch(userInfoAction.init(res.data.payload.account_info));
     });
   };

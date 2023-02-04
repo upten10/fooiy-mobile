@@ -102,6 +102,7 @@ const Storage = () => {
         setOpen={setOpen}
         setValue={setValue}
         maxHeight={336}
+        placeholder={'지역 필터'}
         style={filter_styles.categoryContainer}
         labelStyle={filter_styles.dropDownTitle}
         textStyle={filter_styles.dropDownValue}
@@ -302,6 +303,8 @@ const filter_styles = StyleSheet.create({
     borderColor: fooiyColor.G200,
     paddingHorizontal: 16,
     paddingVertical: 7,
+    borderBottomEndRadius: 8,
+    borderBottomStartRadius: 8,
   },
   dropDownTitle: {
     color: fooiyColor.B,

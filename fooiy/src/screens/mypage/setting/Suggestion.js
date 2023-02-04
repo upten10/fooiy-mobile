@@ -318,6 +318,8 @@ const styles = StyleSheet.create({
     borderColor: fooiyColor.G200,
     paddingHorizontal: 16,
     paddingVertical: 7,
+    borderBottomEndRadius: 8,
+    borderBottomStartRadius: 8,
   },
   dropDownTitle: {
     color: fooiyColor.B,

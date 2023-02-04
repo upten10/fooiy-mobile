@@ -7,7 +7,7 @@ import {
   CafeShop,
   CommonShop,
   Notification,
-  Search,
+  Search_Icon,
 } from '../../../assets/icons/svg';
 import {Logo} from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
@@ -47,7 +47,7 @@ export const FeedHeader = props => {
             onPress={() => {
               search();
             }}>
-            <Search />
+            <Search_Icon />
           </TouchableOpacity>
         </View>
       </View>
