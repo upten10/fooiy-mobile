@@ -69,7 +69,6 @@ const Withdraw = props => {
     const {index, item} = props;
     return (
       <TouchableOpacity
-        key={index}
         style={
           clickedIndex === index
             ? [styles.checkBox, styles.checkedCheckBox]
@@ -129,7 +128,7 @@ const Withdraw = props => {
             {/* checkbox */}
             <View>
               {checkBoxData.map((item, index) => {
-                return <CheckBox item={item} index={index} />;
+                return <CheckBox key={index} item={item} index={index} />;
               })}
 
               <View
