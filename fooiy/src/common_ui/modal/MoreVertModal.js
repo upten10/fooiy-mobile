@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: fooiyColor.W,
     borderTopStartRadius: 16,
     borderTopEndRadius: 16,
+    paddingBottom: Platform.OS === 'android' ? 16 : 0,
   },
   button_container: {
     marginHorizontal: 16,
@@ -144,5 +145,6 @@ const styles = StyleSheet.create({
     ...fooiyFont.Button,
     color: fooiyColor.W,
     textAlign: 'center',
+    lineHeight: Platform.select({ios: 0, android: 16}),
   },
 });

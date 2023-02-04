@@ -23,6 +23,8 @@ export const apiUrl = {
   SHOP_LIST: 'feeds/feed/shop/',
   // 피드 댓글
   FEED_COMMENT: 'feeds/feed/comment/',
+  // 피드 댓글 신고
+  FEED_COMMENT_REPORT: 'feeds/feed/comment/report/',
   // 피드 좋아요 등록, 취소
   FEED_LIKE: 'feeds/feed/like/',
   // 피드 보관 등록, 취소 (PATCH) && 피드 보관 리스트 (GET)
