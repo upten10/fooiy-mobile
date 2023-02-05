@@ -1,9 +1,10 @@
 import React, {memo, useEffect, useRef, useState} from 'react';
-import {ActivityIndicator, Image, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import ShopListUI from '../../../common_ui/shop/ShopListUI';
 
@@ -68,10 +69,14 @@ const CatalogedList = props => {
       return (
         <View style={styles.emptyShopContainer}>
           {emptyShopImage ? (
-            <Image
-              source={{uri: emptyShopImage}}
-              style={styles.empty_shop_image}
-            />
+            <Text
+              style={{
+                ...fooiyFont.Body1,
+                color: fooiyColor.G600,
+                textAlign: 'center',
+              }}>
+              주변에 맛집이 없어요.{'\n'}지도에서 위치를 이동해보세요!
+            </Text>
           ) : (
             <View style={styles.indicator_container}>
               <ActivityIndicator size="large" style={styles.loader} />
@@ -114,8 +119,8 @@ export default memo(CatalogedList);
 
 const styles = StyleSheet.create({
   emptyShopContainer: {
-    width: globalVariable.width,
-    height: globalVariable.width,
+    width: globalVariable.width - 17,
+    marginTop: 24,
     justifyContent: 'center',
   },
   empty_shop_image: {
