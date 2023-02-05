@@ -7,6 +7,8 @@ import {
   Text,
   Button,
   StyleSheet,
+  Alert,
+  Linking,
 } from 'react-native';
 import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -24,7 +26,9 @@ import {apiUrl} from '../../../common/Enums';
 import {useDispatch} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {fooiyColor} from '../../../common/globalStyles';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {check, PERMISSIONS} from 'react-native-permissions';
+import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
 
 const ProfileImg = () => {
   const insets = useSafeAreaInsets();
@@ -62,10 +66,10 @@ const ProfileImg = () => {
       // 사진 하나는 골라야한다는 경고 로직 추가
       console.warn('프사 안고름');
     } else {
-      const photo =
-        Platform.OS === 'ios'
-          ? galleryOriginalListIOS[selectIndex].node.image
-          : galleryList[selectIndex].node.image;
+      const photo = galleryList[selectIndex].node.image;
+      // Platform.OS === 'ios'
+      // ? galleryOriginalListIOS[selectIndex].node.image
+      // : galleryList[selectIndex].node.image;
 
       const match = /\.(\w+)$/.exec(photo.filename ?? '');
       // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
@@ -82,13 +86,24 @@ const ProfileImg = () => {
         name: photo.filename !== null ? photo.filename : 'image.jpg',
         type,
       });
-
       patchProfileImg(formData);
     }
   };
 
   // 갤러리에서 사진 받아오기
   const getGalleryPhotos = async () => {
+    check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(res => {
+      if (res === 'blocked' || res === 'denied') {
+        Alert.alert(
+          '서비스 이용 알림',
+          '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+          [
+            {text: '닫기', onPress: navigation.goBack},
+            {text: '설정', onPress: Linking.openSettings},
+          ],
+        );
+      }
+    });
     const params = {
       first: 12,
       assetType: 'Photos',
@@ -157,7 +172,7 @@ const ProfileImg = () => {
       return;
     }
     return (
-      <View style={styles.selected_photo_corp_container}>
+      <View style={styles.square}>
         {cropPhoto ? (
           <View>
             <CropView
@@ -167,42 +182,38 @@ const ProfileImg = () => {
                   ? galleryOriginalListIOS[selectIndex].node.image.uri
                   : galleryList[selectIndex].node.image.uri
               }
-              style={styles.crop_photo}
+              style={styles.crop_view}
               onImageCrop={res => {
-                galleryList[selectIndex].node.image.uri = res.uri;
+                galleryList[selectIndex].node.image.uri = 'file://' + res.uri;
                 setCropPhoto(false);
               }}
-              keepAspectRatio
-              aspectRatio={{width: 9, height: 9}}
+              keepAspectRatio={true}
+              aspectRatio={{width: 1, height: 1}}
             />
-            <View style={{height: width / 10, flexDirection: 'row'}}>
-              <Button
-                title="저장"
-                onPress={() => cropViewRef.current.saveImage(true)}
-              />
-              <Button
-                title="우회전"
-                onPress={() => cropViewRef.current.rotateImage(true)}
-              />
-              <Button
-                title="좌회전"
-                onPress={() => cropViewRef.current.rotateImage(false)}
-              />
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <TouchableOpacity
+                style={[styles.rotate_icon, {left: 16}]}
+                onPress={() => cropViewRef.current.rotateImage(false)}>
+                <TurnLeft />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.rotate_icon, {right: 16}]}
+                onPress={() => cropViewRef.current.rotateImage(true)}>
+                <TurnRight />
+              </TouchableOpacity>
             </View>
           </View>
         ) : (
-          <View style={styles.container}>
+          <View style={{flex: 1}}>
             <Image
               source={{
                 uri: galleryList[selectIndex]
                   ? galleryList[selectIndex].node.image.uri
                   : null,
               }}
-              style={styles.selected_photo}
+              style={styles.square}
             />
-            <View style={{height: width / 10, flexDirection: 'row', bottom: 0}}>
-              <Button title="편집" onPress={() => setCropPhoto(true)} />
-            </View>
           </View>
         )}
       </View>
@@ -211,37 +222,102 @@ const ProfileImg = () => {
   }, [cropPhoto, selectIndex]);
 
   return (
-    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
-      <StackHeader title="앨범" enroll={enroll} />
+    <SafeAreaView
+      style={{backgroundColor: fooiyColor.W, flex: 1}}
+      edges={Platform.OS === 'ios' ? 'top' : null}>
+      <StackHeader title="앨범" next={enroll} />
       {selectIndex !== -1 ? (
         <SelectedPhoto />
       ) : (
-        <View
-          style={[styles.crop_photo, {backgroundColor: fooiyColor.W}]}></View>
+        <View style={styles.crop_view}></View>
       )}
-
+      <View style={styles.mid_view}>
+        {/* <FlatList
+          data={selectedPhotoIndexList}
+          keyExtractor={index => index.toString()}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item, index}) => {
+            return (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  setSelectIndex(index);
+                }}>
+                <Image
+                  source={{uri: galleryList[item].node.image.uri}}
+                  style={styles.select_image}
+                />
+              </TouchableOpacity>
+            );
+          }}
+        /> */}
+        {cropPhoto ? (
+          <TouchableOpacity
+            onPress={() =>
+              selectIndex !== -1
+                ? cropViewRef.current.saveImage(true)
+                : setCropPhoto(false)
+            }
+            style={styles.mid_text}>
+            <Text style={{...fooiyFont.Button, color: fooiyColor.P500}}>
+              저장
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => setCropPhoto(!cropPhoto)}
+            style={styles.mid_text}>
+            <Text style={{...fooiyFont.Button, color: fooiyColor.P500}}>
+              편집
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <FlatList
         data={galleryOriginalList}
-        style={BodyStyles(insets.top, insets.bottom).bodyContainer}
+        style={{
+          height: height - width - 56,
+        }}
         keyExtractor={(item, index) => index.toString()}
-        onEndReachedThreshold={0.7}
-        numColumns={3}
+        onEndReachedThreshold={4}
+        numColumns={4}
         onEndReached={() => {
           getGalleryPhotos();
         }}
         renderItem={({item, index}) => {
           return (
-            <View style={styles.container}>
+            <View>
               {item.node ? (
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
                     selectPhoto(index);
                   }}>
-                  <Image
-                    source={{uri: item.node.image.uri}}
-                    style={styles.gallery_photos}
-                  />
+                  {galleryList.findIndex(element => element === index) ===
+                  -1 ? (
+                    <Image
+                      source={{uri: item.node.image.uri}}
+                      style={styles.gallery_item}
+                    />
+                  ) : (
+                    <View>
+                      <Image
+                        source={{uri: item.node.image.uri}}
+                        style={styles.gallery_item}
+                      />
+                      <View style={styles.item_index}>
+                        <Text
+                          style={{
+                            ...fooiyFont.Caption2,
+                            color: fooiyColor.W,
+                          }}>
+                          {galleryList.findIndex(element => element === index) +
+                            1}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -255,34 +331,63 @@ const ProfileImg = () => {
 export default ProfileImg;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  selected_photo_corp_container: {
+  square: {
     width: globalVariable.width,
-    height: globalVariable.width * 0.9,
+    height: globalVariable.width,
   },
-  gallery_photos: {
-    width: globalVariable.width / 3,
-    height: globalVariable.width / 3,
+  crop_view: {
+    width: globalVariable.width,
+    height: globalVariable.width,
+    backgroundColor: fooiyColor.G100,
+  },
+  rotate_icon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255, 255, 255,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: 64,
+  },
+  mid_view: {
+    height: 80,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingLeft: 8,
+  },
+  select_image: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    marginLeft: 8,
+  },
+  mid_text: {
+    height: 32,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: fooiyColor.P500,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    right: 16,
+  },
+  gallery_item: {
+    width: globalVariable.width / 4,
+    height: globalVariable.width / 4,
     borderWidth: 1,
     borderColor: fooiyColor.W,
   },
-  crop_photo: {
-    width: globalVariable.width,
-    height: globalVariable.width * 0.8,
-  },
-  selected_photo: {
-    width: globalVariable.width,
-    height: globalVariable.width * 0.8,
-    resizeMode: 'contain',
+  item_index: {
+    position: 'absolute',
+    right: 0,
+    margin: 4,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: fooiyColor.W,
+    backgroundColor: fooiyColor.P500,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
-
-const BodyStyles = (topSafeAreaHeight, bottomSafeAreaHeight) =>
-  StyleSheet.create({
-    bodyContainer: {
-      height:
-        globalVariable.height - (topSafeAreaHeight + bottomSafeAreaHeight + 72),
-    },
-  });
