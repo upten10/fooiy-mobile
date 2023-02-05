@@ -128,10 +128,12 @@ const OtherUserPage = props => {
       ) : (
         <View>
           <OtherUserPageProfile otherUserInfo={otherUserInfo} />
-          <Image
-            source={{uri: noFeedImage}}
-            style={{width: '100%', height: 50}}
-          />
+          <View style={{alignItems: 'center'}}>
+            <FastImage
+              source={require('../../../../assets/image/empty_notice.png')}
+              style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
+            />
+          </View>
         </View>
       )}
     </SafeAreaView>

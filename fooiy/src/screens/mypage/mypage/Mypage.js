@@ -1,13 +1,20 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, Image, FlatList, ImageBackground} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  ImageBackground,
+  Text,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {fooiyColor} from '../../../common/globalStyles';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {DefaultHeader} from '../../../common_ui/headers/DefaultHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
@@ -134,10 +141,21 @@ const Mypage = props => {
       ) : (
         <View>
           <MypageProfile />
-          <Image
-            source={{uri: noFeedImage}}
-            style={{width: '100%', height: 50}}
-          />
+          <View style={{alignItems: 'center'}}>
+            <FastImage
+              source={require('../../../../assets/image/empty_notice.png')}
+              style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
+            />
+            <Text
+              style={{
+                ...fooiyFont.Body1,
+                color: fooiyColor.G600,
+                textAlign: 'center',
+              }}>
+              아직 등록한 피드가 없어요.{'\n'}
+              방문한 음식점을 등록해보세요!
+            </Text>
+          </View>
         </View>
       )}
     </SafeAreaView>
