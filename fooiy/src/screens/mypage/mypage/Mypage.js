@@ -9,7 +9,10 @@ import {
   Text,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
@@ -123,7 +126,7 @@ const Mypage = props => {
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <DefaultHeader />
+      <DefaultHeader flatListRef={flatListRef} toTop={toTop} />
       {noFeedImage === '' ? (
         <FlatList
           ref={flatListRef}
