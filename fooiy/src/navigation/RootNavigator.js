@@ -26,10 +26,14 @@ import Search from '../common_ui/Search/Search';
 import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
 import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
 import FeedComment from '../screens/feed/FeedComment';
+import {globalVariable} from '../common/globalVariable';
+import {globalStyles} from '../common/globalStyles';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 
 const RootNavigator = () => {
+  const insets = useSafeAreaInsets();
   return (
     <Stack.Navigator
       initialRouteName="Login"

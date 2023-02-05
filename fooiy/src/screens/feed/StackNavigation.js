@@ -47,8 +47,7 @@ const StackNavigation = () => {
         name="OtherUserPage"
         component={OtherUserPage}
         listeners={({navigation, route}) => {
-          const state = navigation.getState();
-          navigation.setOptions({
+          navigation.getParent().setOptions({
             tabBarStyle: {
               height: globalVariable.tabBarHeight + insets.bottom,
               ...globalStyles.tab_bar,
@@ -61,8 +60,7 @@ const StackNavigation = () => {
         name="OtherUserFeedDetail"
         component={OtherUserFeedDetail}
         listeners={({navigation, route}) => {
-          const state = navigation.getState();
-          navigation.setOptions({
+          navigation.getParent().setOptions({
             tabBarStyle: {
               height: globalVariable.tabBarHeight + insets.bottom,
               ...globalStyles.tab_bar,
@@ -76,7 +74,11 @@ const StackNavigation = () => {
         component={MypageFeedDetail}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
-            // tabBarStyle: {display: 'none'},
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
           });
         }}
       />
