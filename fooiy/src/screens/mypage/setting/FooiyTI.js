@@ -101,9 +101,7 @@ const FooiyTI = props => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: fooiyColor.W}}>
       <StackHeader title="푸이티아이" />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{paddingHorizontal: 16}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.fooiytiContainer}>
             <Text style={styles.fooiytiNickname}>
@@ -121,13 +119,13 @@ const FooiyTI = props => {
               />
             ))}
           </View>
-          <View style={styles.resultImgContainer}>
-            <Image
-              source={{uri: userInfoRedux.fooiyti_result_image}}
-              style={styles.resultImg}
-              resizeMode={'contain'}
-            />
-          </View>
+        </View>
+        <View style={styles.resultImgContainer}>
+          <Image
+            source={{uri: userInfoRedux.fooiyti_result_image}}
+            style={styles.resultImg}
+            resizeMode={'center'}
+          />
         </View>
       </ScrollView>
       <View style={styles.reBtnContainer}>
@@ -145,6 +143,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     marginTop: 16,
+    paddingHorizontal: 16,
   },
   fooiytiContainer: {
     alignItems: 'center',
@@ -160,11 +159,12 @@ const styles = StyleSheet.create({
   },
   resultPercentageContainer: {
     width: '100%',
-    marginBottom: 28,
+    marginBottom: 16,
   },
   resultImgContainer: {
     width: '100%',
-    height: (globalVariable.width - 32) / 0.548780487804878,
+    // height: (globalVariable.width - 32) / 0.548780487804878,
+    height: globalVariable.width * 1.819,
   },
   resultImg: {
     width: '100%',
