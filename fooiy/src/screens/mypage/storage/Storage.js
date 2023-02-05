@@ -272,6 +272,7 @@ const item_styles = StyleSheet.create({
   },
   shopInfoContainer: {
     marginBottom: 8,
+    width: 164,
   },
   shopInfoName: {
     ...fooiyFont.Subtitle2,
@@ -295,6 +296,7 @@ const item_styles = StyleSheet.create({
   profileNicknameText: {
     ...fooiyFont.Caption1,
     color: fooiyColor.G600,
+    width: 138,
   },
 });
 

@@ -110,7 +110,11 @@ const Setting = props => {
               <Camera_Profile style={styles.cameraIcon} />
             </TouchableOpacity>
             <View>
-              <Text style={styles.nickName}>{userInfoRedux.nickname}</Text>
+              <Text style={styles.nickName}>
+                {userInfoRedux.nickname.length > 15
+                  ? userInfoRedux.nickname.substr(0, 15) + '...'
+                  : userInfoRedux.nickname}
+              </Text>
             </View>
           </View>
           {/* 소개 */}
@@ -152,7 +156,9 @@ const Setting = props => {
                           </Text>
                         ) : elem.text === '닉네임 변경' ? (
                           <Text style={styles.rightNickname}>
-                            {userInfoRedux.nickname}
+                            {userInfoRedux.nickname.length > 10
+                              ? userInfoRedux.nickname.substr(0, 10) + '...'
+                              : userInfoRedux.nickname}
                           </Text>
                         ) : null}
                       </View>
@@ -199,6 +205,7 @@ const styles = StyleSheet.create({
   profileRowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 24,
     width: '100%',
   },
@@ -222,6 +229,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: fooiyColor.B,
+    width: globalVariable.width - 120,
   },
   introContainer: {
     justifyContent: 'center',
