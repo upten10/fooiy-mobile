@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -21,6 +21,8 @@ const imageWidth = (globalVariable.width - 32 - 15) / 2;
 const Storage = () => {
   const navigation = useNavigation();
   const limit = 12;
+
+  const flatListRef = useRef(null);
 
   const [offset, setOffset] = useState(0);
   const [feeds, setFeeds] = useState([]);
@@ -56,6 +58,17 @@ const Storage = () => {
     setNoFeedImage('');
     setOffset(0);
   }, [value]);
+
+  const toTop = () => {
+    console.log('top');
+    if (flatListRef.current !== null) {
+      flatListRef.current.scrollToOffset({
+        offset: 0,
+        animated: true,
+        viewPosition: 1,
+      });
+    }
+  };
 
   const getStoredShopList = async () => {
     await ApiManagerV2.get(apiUrl.FEED_STORAGE, {
@@ -173,7 +186,7 @@ const Storage = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StackHeader title="보관함" />
+      <StackHeader title="보관함" toTop={toTop} />
       {/* 바디 */}
       <View style={styles.bodyContainer}>
         {/* 지역 필터 */}
@@ -188,6 +201,7 @@ const Storage = () => {
             </View>
           ) : (
             <FlatList
+              ref={flatListRef}
               data={feeds}
               renderItem={StorageItem}
               keyExtractor={(feeds, index) => index.toString()}

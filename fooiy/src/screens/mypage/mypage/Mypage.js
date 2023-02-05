@@ -30,7 +30,6 @@ const Mypage = props => {
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(-1);
   const [noFeedImage, setNoFeedImage] = useState('');
-  const [goTop, setGoTop] = useState(false);
 
   const dispatch = useDispatch();
 
