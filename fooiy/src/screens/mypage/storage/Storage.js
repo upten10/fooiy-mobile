@@ -109,6 +109,8 @@ const Storage = () => {
         selectedItemContainerStyle={filter_styles.dropDownSelected}
         listItemContainerStyle={filter_styles.dropDownItem}
         dropDownContainerStyle={filter_styles.dropDownContainer}
+        description={'지역 필터'}
+        descriptionStyle={filter_styles.description}
       />
     );
   }, [items, open, value]);
@@ -305,18 +307,19 @@ const filter_styles = StyleSheet.create({
     paddingVertical: 7,
     borderBottomEndRadius: 8,
     borderBottomStartRadius: 8,
+    height: 56,
+  },
+  description: {
+    ...fooiyFont.Subtitle4,
+    color: fooiyColor.G400,
   },
   dropDownTitle: {
+    ...fooiyFont.Subtitle2,
     color: fooiyColor.B,
-    fontWeight: '600',
-    fontSize: 16,
-    lineHeight: 24,
   },
   dropDownValue: {
+    ...fooiyFont.Body1,
     color: fooiyColor.B,
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 24,
   },
   dropDownSelected: {
     backgroundColor: fooiyColor.G50,
