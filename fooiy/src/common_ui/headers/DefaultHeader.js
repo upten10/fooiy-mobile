@@ -18,7 +18,7 @@ export const DefaultHeader = props => {
   return (
     <View>
       <View style={styles.header_container}>
-        {flatListRef.current !== null ? (
+        {flatListRef !== undefined ? (
           <TouchableWithoutFeedback
             onPress={() => {
               console.log('header');

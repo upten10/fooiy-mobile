@@ -46,15 +46,16 @@ export {default as Ranker_2nd} from './Ranker/Ranker_2nd.svg';
 export {default as Ranker_3rd} from './Ranker/Ranker_3rd.svg';
 export {default as Logo} from './Logo.svg';
 export {default as GoBackArrow} from './Go_Back_Arrow.svg';
-export {default as TabBarMap} from './tab_bar_map.svg';
-export {default as TabBarMapFocus} from './tab_bar_map_focus.svg';
-export {default as TabBarFeed} from './tab_bar_feed.svg';
-export {default as TabBarFeedFocus} from './tab_bar_feed_focus.svg';
-export {default as TabBarSuggestion} from './tab_bar_suggestion.svg';
-export {default as TabBarSuggestionFocus} from './tab_bar_suggestion_focus.svg';
-export {default as TabBarMypage} from './tab_bar_mypage.svg';
-export {default as TabBarMypageFocus} from './tab_bar_mypage_focus.svg';
-export {default as TabBarRegister} from './tab_bar_register.svg';
+
+export {default as TabBarMap} from './TabBar/tab_bar_map.svg';
+export {default as TabBarMapFocus} from './TabBar/tab_bar_map_focus.svg';
+export {default as TabBarFeed} from './TabBar/tab_bar_feed.svg';
+export {default as TabBarFeedFocus} from './TabBar/tab_bar_feed_focus.svg';
+export {default as TabBarParty} from './TabBar/tab_bar_party.svg';
+export {default as TabBarPartyFocus} from './TabBar/tab_bar_party_focus.svg';
+export {default as TabBarMypage} from './TabBar/tab_bar_mypage.svg';
+export {default as TabBarMypageFocus} from './TabBar/tab_bar_mypage_focus.svg';
+
 export {default as TasteEvaluation10} from './TasteEvaluation/taste_evaluation_10.svg';
 export {default as TasteEvaluation30} from './TasteEvaluation/taste_evaluation_30.svg';
 export {default as TasteEvaluation50} from './TasteEvaluation/taste_evaluation_50.svg';
@@ -83,3 +84,5 @@ export {default as LocationDarkIcon} from './Icon_location.svg';
 export {default as RegistCommentFocused} from './RegistCommentFocused.svg';
 export {default as RegistComment} from './RegistComment.svg';
 export {default as WhiteClear} from './Icon_clear_white.svg';
+
+export {default as PartyIcon} from './Icon_party.svg';

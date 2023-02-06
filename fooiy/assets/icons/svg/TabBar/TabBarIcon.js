@@ -7,9 +7,9 @@ import {
   TabBarMapFocus,
   TabBarMypage,
   TabBarMypageFocus,
-  TabBarSuggestion,
-  TabBarSuggestionFocus,
-} from '.';
+  TabBarParty,
+  TabBarPartyFocus,
+} from '..';
 
 const TabBarIcon = props => {
   const name = props.name;
@@ -30,15 +30,15 @@ const TabBarIcon = props => {
     case '등록':
       return (
         <Image
-          source={require('../navigation/tab_bar_register.png')}
+          source={require('../../navigation/tab_bar_register.png')}
           style={{width: 50, height: 50}}
         />
       );
     case '파티':
       if (isFocused) {
-        return <TabBarSuggestionFocus />;
+        return <TabBarPartyFocus />;
       } else {
-        return <TabBarSuggestion />;
+        return <TabBarParty />;
       }
     case '내 정보':
       if (isFocused) {

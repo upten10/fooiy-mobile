@@ -9,10 +9,7 @@ import {
   Text,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
@@ -20,7 +17,6 @@ import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {DefaultHeader} from '../../../common_ui/headers/DefaultHeader';
-import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import MypageProfile from './MypageProfile';
 
 const limit = 12;
