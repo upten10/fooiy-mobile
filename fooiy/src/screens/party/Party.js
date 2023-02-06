@@ -15,9 +15,11 @@ import {apiUrl} from '../../common/Enums';
 import ShopListUI from '../../common_ui/shop/ShopListUI';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {globalVariable} from '../../common/globalVariable';
+import {useNavigation} from '@react-navigation/native';
 
 const Party = props => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   const [partyList, setPartyList] = useState([]);
 
@@ -34,11 +36,7 @@ const Party = props => {
   };
 
   const onPressCreate = async () => {
-    await ApiManagerV2.post(apiUrl.CREATE_PARTY, {
-      party_name: '두재정모임',
-    }).then(res => {
-      console.log(JSON.stringify(res));
-    });
+    navigation.navigate('PartyCreate');
   };
 
   const listHeaderComponent = () => {

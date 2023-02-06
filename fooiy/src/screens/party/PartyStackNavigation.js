@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 import {globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import Party from './Party';
+import PartyCreate from './PartyCreate';
 
 const Stack = createStackNavigator();
 const PartyStackNavigation = props => {
@@ -26,6 +27,15 @@ const PartyStackNavigation = props => {
               },
             });
           }
+        }}
+      />
+      <Stack.Screen
+        name="PartyCreate"
+        component={PartyCreate}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
         }}
       />
     </Stack.Navigator>

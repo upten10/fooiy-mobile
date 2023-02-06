@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {PartyCrown} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -79,18 +80,24 @@ const ShopListUI = item => {
           }}>
           {name.length >= 10 ? name.substr(0, 10) + '...' : name}
         </Text>
-        <Text
-          style={{
-            ...fooiyFont.Body2,
-            color: fooiyColor.G800,
-            width: imageWidth,
-          }}>
-          {menu_price !== undefined
-            ? menu_price
-            : owner.length >= 10
-            ? owner.substr(0, 10) + '...'
-            : owner}
-        </Text>
+        <View style={{flexDirection: 'row'}}>
+          {owner !== undefined ? (
+            <View style={{marginRight: 4}}>
+              <PartyCrown />
+            </View>
+          ) : null}
+          <Text
+            style={{
+              ...fooiyFont.Body2,
+              color: fooiyColor.G800,
+            }}>
+            {menu_price !== undefined
+              ? menu_price
+              : owner.length >= 10
+              ? owner.substr(0, 10) + '...'
+              : owner}
+          </Text>
+        </View>
       </View>
       {/* category */}
       <View style={{flexDirection: 'row', width: imageWidth}}>
