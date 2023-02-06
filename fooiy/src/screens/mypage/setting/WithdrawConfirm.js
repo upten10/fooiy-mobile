@@ -142,7 +142,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 0,
+    bottom: Platform.select({
+      ios: 0,
+      android: 20,
+    }),
+    marginBottom: 16,
     width: '100%',
   },
   btn: {

@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     ...fooiyFont.Subtitle1,
+    width: globalVariable.width - 128,
   },
   introduction: {
     ...fooiyFont.Body2,

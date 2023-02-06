@@ -51,8 +51,8 @@ const MypageStackNavigation = props => {
         }}
       />
       <Stack.Screen
-        name="OtherUserFeedDetail"
-        component={OtherUserFeedDetail}
+        name="OtherUserPage"
+        component={OtherUserPage}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
             tabBarStyle: {
@@ -64,8 +64,8 @@ const MypageStackNavigation = props => {
         }}
       />
       <Stack.Screen
-        name="OtherUserPage"
-        component={OtherUserPage}
+        name="OtherUserFeedDetail"
+        component={OtherUserFeedDetail}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
             tabBarStyle: {

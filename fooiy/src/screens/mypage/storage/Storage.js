@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -21,6 +21,8 @@ const imageWidth = (globalVariable.width - 32 - 15) / 2;
 const Storage = () => {
   const navigation = useNavigation();
   const limit = 12;
+
+  const flatListRef = useRef(null);
 
   const [offset, setOffset] = useState(0);
   const [feeds, setFeeds] = useState([]);
@@ -56,6 +58,17 @@ const Storage = () => {
     setNoFeedImage('');
     setOffset(0);
   }, [value]);
+
+  const toTop = () => {
+    console.log('top');
+    if (flatListRef.current !== null) {
+      flatListRef.current.scrollToOffset({
+        offset: 0,
+        animated: true,
+        viewPosition: 1,
+      });
+    }
+  };
 
   const getStoredShopList = async () => {
     await ApiManagerV2.get(apiUrl.FEED_STORAGE, {
@@ -102,12 +115,15 @@ const Storage = () => {
         setOpen={setOpen}
         setValue={setValue}
         maxHeight={336}
+        placeholder={'지역 필터'}
         style={filter_styles.categoryContainer}
         labelStyle={filter_styles.dropDownTitle}
         textStyle={filter_styles.dropDownValue}
         selectedItemContainerStyle={filter_styles.dropDownSelected}
         listItemContainerStyle={filter_styles.dropDownItem}
         dropDownContainerStyle={filter_styles.dropDownContainer}
+        description={'지역 필터'}
+        descriptionStyle={filter_styles.description}
       />
     );
   }, [items, open, value]);
@@ -170,7 +186,7 @@ const Storage = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StackHeader title="보관함" />
+      <StackHeader title="보관함" toTop={toTop} />
       {/* 바디 */}
       <View style={styles.bodyContainer}>
         {/* 지역 필터 */}
@@ -185,6 +201,7 @@ const Storage = () => {
             </View>
           ) : (
             <FlatList
+              ref={flatListRef}
               data={feeds}
               renderItem={StorageItem}
               keyExtractor={(feeds, index) => index.toString()}
@@ -269,6 +286,7 @@ const item_styles = StyleSheet.create({
   },
   shopInfoContainer: {
     marginBottom: 8,
+    width: 164,
   },
   shopInfoName: {
     ...fooiyFont.Subtitle2,
@@ -292,6 +310,7 @@ const item_styles = StyleSheet.create({
   profileNicknameText: {
     ...fooiyFont.Caption1,
     color: fooiyColor.G600,
+    width: 138,
   },
 });
 
@@ -302,18 +321,21 @@ const filter_styles = StyleSheet.create({
     borderColor: fooiyColor.G200,
     paddingHorizontal: 16,
     paddingVertical: 7,
+    borderBottomEndRadius: 8,
+    borderBottomStartRadius: 8,
+    height: 56,
+  },
+  description: {
+    ...fooiyFont.Subtitle4,
+    color: fooiyColor.G400,
   },
   dropDownTitle: {
+    ...fooiyFont.Subtitle2,
     color: fooiyColor.B,
-    fontWeight: '600',
-    fontSize: 16,
-    lineHeight: 24,
   },
   dropDownValue: {
+    ...fooiyFont.Body1,
     color: fooiyColor.B,
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 24,
   },
   dropDownSelected: {
     backgroundColor: fooiyColor.G50,

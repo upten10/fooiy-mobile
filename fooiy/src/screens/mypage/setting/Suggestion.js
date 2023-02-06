@@ -11,7 +11,11 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {fooiyColor, globalStyles} from '../../../common/globalStyles';
+import {
+  fooiyColor,
+  fooiyFont,
+  globalStyles,
+} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {Notice} from '../../../../assets/icons/svg';
@@ -53,6 +57,8 @@ const Suggestion = () => {
         selectedItemContainerStyle={styles.dropDownSelected}
         listItemContainerStyle={styles.dropDownItem}
         dropDownContainerStyle={styles.dropDownContainer}
+        description={'카테고리'}
+        descriptionStyle={styles.description}
       />
     );
   }, [items, value, open]);
@@ -104,8 +110,8 @@ const Suggestion = () => {
         <View style={BodyStyles(insets.top, insets.bottom).bodyContainer}>
           {/* text */}
           <View>
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionText}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.titleText}>
                 소중한 의견을{'\n'}남겨주세요
               </Text>
             </View>
@@ -206,14 +212,18 @@ const styles = StyleSheet.create({
     backgroundColor: fooiyColor.W,
     height: globalVariable.height,
   },
-  descriptionContainer: {
+  titleContainer: {
     marginBottom: 24,
   },
-  descriptionText: {
+  titleText: {
     fontSize: 24,
     fontWeight: '600',
     lineHeight: 32,
     color: fooiyColor.B,
+  },
+  description: {
+    ...fooiyFont.Subtitle4,
+    color: fooiyColor.G400,
   },
   categoryPlaceHolder: {
     fontSize: 12,
@@ -318,18 +328,17 @@ const styles = StyleSheet.create({
     borderColor: fooiyColor.G200,
     paddingHorizontal: 16,
     paddingVertical: 7,
+    borderBottomEndRadius: 8,
+    borderBottomStartRadius: 8,
+    height: 56,
   },
   dropDownTitle: {
+    ...fooiyFont.Subtitle2,
     color: fooiyColor.B,
-    fontWeight: '600',
-    fontSize: 16,
-    lineHeight: 24,
   },
   dropDownValue: {
+    ...fooiyFont.Body1,
     color: fooiyColor.B,
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 24,
   },
   dropDownSelected: {
     backgroundColor: fooiyColor.G50,

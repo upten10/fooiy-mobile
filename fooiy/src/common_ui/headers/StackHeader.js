@@ -1,10 +1,15 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {GoBackArrow, Map_shop} from '../../../assets/icons/svg';
+import {globalVariable} from '../../common/globalVariable';
 export const StackHeader = props => {
+  const {toTop} = props;
   const navigation = useNavigation();
   return (
     <View>
@@ -17,7 +22,17 @@ export const StackHeader = props => {
         ) : // It is for account stack header
         props.title ? (
           <View style={styles.header_container}>
-            <Text style={styles.title_name}>{props.title}</Text>
+            {toTop === undefined ? (
+              <Text style={styles.title_name}>{props.title}</Text>
+            ) : (
+              <TouchableWithoutFeedback
+                hitSlop={{top: 16, bottom: 16}}
+                onPress={() => {
+                  toTop();
+                }}>
+                <Text style={styles.title_name}>{props.title}</Text>
+              </TouchableWithoutFeedback>
+            )}
           </View>
         ) : props.menu ? (
           <View style={styles.menu_container}>
@@ -83,7 +98,7 @@ const styles = StyleSheet.create({
   },
   go_back_container: {
     height: 56,
-    paddingLeft: 10,
+    paddingLeft: 16,
     position: 'absolute',
     justifyContent: 'center',
   },
@@ -113,6 +128,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: fooiyColor.B,
+    width: globalVariable.width - 56 * 2,
+    textAlign: 'center',
   },
 
   shop_address: {
