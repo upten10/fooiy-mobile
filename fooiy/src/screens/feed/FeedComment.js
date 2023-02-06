@@ -16,18 +16,23 @@ import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
 import {apiUrl} from '../../common/Enums';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import UI_Comment from '../../common_ui/feed/UI_Comment';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {RegistComment, RegistCommentFocused} from '../../../assets/icons/svg';
+import {
+  RegistComment,
+  RegistCommentFocused,
+  WhiteClear,
+} from '../../../assets/icons/svg';
 import MoreVertModal from '../../common_ui/modal/MoreVertModal';
 import ListEmptyTextComponent from '../../common_ui/empty_component/ListEmptyTextComponent';
 import {useSelector} from 'react-redux';
 import WorkingCommentModal from './WorkingCommentModal';
+import checkFeedAuthorization from './functions/checkFeedAuthorization';
 
 const FeedComment = props => {
   const flatListRef = useRef(null);
   const textInputRef = useRef(null);
+  const insets = useSafeAreaInsets();
 
   const {feed_id, feed_account_id} = props.route.params;
   const [comments, setComments] = useState([]);
@@ -42,18 +47,13 @@ const FeedComment = props => {
   const [isWorking, setIsWorking] = useState(false);
   const [workingState, setWorkingState] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [blurCondition, setBlurCondition] = useState(0);
+  const [textlineHeight, setTextlineHeight] = useState(24);
+  const [textInputHeight, setTextInputHeight] = useState(68);
+  const [buttons, setButtons] = useState([{}]);
+  const [keyboardFlag, setKeyboardFlag] = useState(false);
 
-  const [buttons, setButtons] = useState([
-    {
-      name: '신고',
-      domain: '댓글',
-      onClick: () => deleteComment(),
-      isNext: true,
-      textColor: fooiyColor.P700,
-    },
-  ]);
-  const openModal = async (
+  //****** modal & textinput function ******//
+  const openModal = (
     comment_id,
     account_id,
     profile_image,
@@ -63,7 +63,9 @@ const FeedComment = props => {
     content,
   ) => {
     if (isWorking) {
-      setIsOpenModal(false);
+      setIsWorking(false);
+      setWorkingState('');
+      setWorkingComment({});
     } else {
       setWorkingComment({
         account_id: account_id,
@@ -77,8 +79,12 @@ const FeedComment = props => {
       setIsOpenModal(true);
     }
   };
+  const clearIsWorking = () => {
+    setWorkingComment({});
+    setWorkingState('');
+    setIsWorking(false);
+  };
   const toggleModal = () => {
-    // setWorkingComment({});
     setIsOpenModal(false);
   };
   const openWorkingModal = () => {
@@ -86,97 +92,26 @@ const FeedComment = props => {
     setIsWorking(true);
     setIsFocus(true);
     setWorkingState('update');
-    Platform.OS === 'android' && textInputRef.current.focus();
   };
   const dismissKeyboard = () => {
     setIsOpenModal(false);
     setIsFocus(false);
-    setWorkingState('');
   };
-  const onClickPatchComment = () => {
-    setIsOpenModal(false);
-    setIsWorking(true);
-    setIsFocus(true);
-  };
-
-  useEffect(() => {
-    isFocused ? textInputRef.current.focus() : textInputRef.current.blur();
-  }, [isFocused]);
-
-  const userInfoRedux = useSelector(state => state.userInfo.value);
-  useEffect(() => {
-    if (workingComment.account_id === userInfoRedux.public_id) {
-      setButtons([
-        {
-          name: '수정',
-          domain: '댓글',
-          onClick: () => openWorkingModal(),
-          isNext: false,
-          textColor: fooiyColor.G600,
-        },
-        {
-          name: '삭제',
-          domain: '댓글',
-          onClick: () => deleteComment(),
-          isNext: true,
-          textColor: fooiyColor.P700,
-        },
-      ]);
-    } else if (userInfoRedux.public_id === feed_account_id) {
-      setButtons([
-        {
-          name: '삭제',
-          domain: '댓글',
-          onClick: () => deleteComment(),
-          isNext: true,
-          textColor: fooiyColor.P700,
-        },
-      ]);
-    } else {
-      setButtons([
-        {
-          name: '신고',
-          domain: '댓글',
-          onClick: () => deleteComment(),
-          isNext: true,
-          textColor: fooiyColor.P700,
-        },
-      ]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [workingComment, feed_account_id]);
-
-  const insets = useSafeAreaInsets();
 
   const onBlur = () => {
-    setWorkingState('');
     setIsFocus(false);
     setIsOpenModal(false);
-    setIsWorking(false);
-    // blurCondition >= 1 ? setIsWorking(false) : isWorking && setIsFocus(true);
-    // setIsWorking(false);
-    setWorkingComment({});
   };
 
   const toIndex = index => {
+    setWorkingState('');
     setIsWorking(true);
     setIsFocus(true);
-    // openWorkingModal(true);
     flatListRef.current.scrollToIndex({index: index, animated: true});
   };
+  //****** modal & textinput function ******//
 
-  const loadMoreItem = () => {
-    if (totalCount > offset + globalVariable.FeedLimit) {
-      setOffset(offset + globalVariable.FeedLimit);
-      getCommentList(offset + globalVariable.FeedLimit, comments);
-    }
-  };
-
-  useEffect(() => {
-    getCommentList(offset, comments);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  //****** api function ******//
   const getCommentList = async (offset, comments) => {
     await ApiManagerV2.get(apiUrl.FEED_COMMENT, {
       params: {
@@ -192,6 +127,12 @@ const FeedComment = props => {
       }
     });
     // .catch(function (error) => console.log(error));
+  };
+  const loadMoreItem = () => {
+    if (totalCount > offset + globalVariable.FeedLimit) {
+      setOffset(offset + globalVariable.FeedLimit);
+      getCommentList(offset + globalVariable.FeedLimit, comments);
+    }
   };
 
   const registerComment = async () => {
@@ -236,15 +177,72 @@ const FeedComment = props => {
       dismissKeyboard();
     });
   };
+  const reportComment = async () => {
+    await ApiManagerV2.get(apiUrl.FEED_COMMENT_REPORT, {
+      params: {
+        comment_id: workingComment.comment_id,
+      },
+    }).then(res => {
+      toggleModal();
+      console.log(workingComment.comment_id);
+      res.data.payload === 'success';
+    });
+  };
 
   const updateComments = async () => {
+    clearIsWorking();
     setWorkingComment({});
+    setValue('');
+    setTextlineHeight(24);
+    setTextInputHeight(68);
     const findIndex = comments.findIndex(
       e => e.comment_id === workingComment.comment_id,
     );
     const updateIndex = findIndex !== -1 ? findIndex : comments.length;
     getCommentList(updateIndex, comments.slice(undefined, updateIndex));
   };
+  //****** api function ******//
+
+  const textInputLayout = useCallback(
+    e => {
+      if (e.nativeEvent.contentSize.height === 24) {
+        setTextlineHeight(24);
+        setTextInputHeight(68);
+      } else if (e.nativeEvent.contentSize.height === 48) {
+        setTextlineHeight(48);
+        setTextInputHeight(80);
+      } else if (e.nativeEvent.contentSize.height === 72) {
+        setTextlineHeight(72);
+        setTextInputHeight(104);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [value],
+  );
+
+  Keyboard.addListener('keyboardDidShow', () => {});
+
+  const userInfoRedux = useSelector(state => state.userInfo.value);
+  useEffect(() => {
+    checkFeedAuthorization(
+      setButtons,
+      '댓글',
+      feed_account_id,
+      userInfoRedux,
+      workingComment,
+      openWorkingModal,
+      deleteComment,
+      reportComment,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workingComment, feed_account_id]);
+  useEffect(() => {
+    isFocused ? textInputRef.current.focus() : textInputRef.current.blur();
+  }, [isFocused]);
+  useEffect(() => {
+    getCommentList(offset, comments);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -254,7 +252,10 @@ const FeedComment = props => {
 
       <View
         style={{
-          height: globalVariable.height - insets.top - insets.bottom - 56 - 68,
+          height: Platform.select({
+            ios: globalVariable.height - insets.bottom - insets.top - 56,
+            android: globalVariable.height - 56,
+          }),
           backgroundColor: fooiyColor.W,
         }}>
         <FlatList
@@ -272,20 +273,61 @@ const FeedComment = props => {
             />
           )}
           removeClippedSubviews={true}
-          ListFooterComponent={FlatListFooter}
+          ListFooterComponent={<View style={styles.flat_footer} />}
           ListEmptyComponent={ListEmptyTextComponent(
             '아직 댓글이 없어요.\n가장 먼저 댓글을 남겨보세요.',
           )}
           keyExtractor={item => String(item.comment_id)}
           onEndReached={loadMoreItem}
-          onEndReachedThreshold={2}
+          onEndReachedThreshold={0}
         />
       </View>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.select({
+          ios: 0,
+          android: 16,
+        })}
+        behavior={Platform.select({
+          ios: 'position',
+          android: 'position',
+        })}
+        enabled>
+        {isWorking && (
+          <View
+            style={[
+              {
+                bottom: textInputHeight + 8,
+              },
+              styles.working_indicator_container,
+            ]}>
+            <View
+              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              {workingState === 'update' ? (
+                <Text style={styles.working_indicator_text}>
+                  해당 댓글 수정 중
+                </Text>
+              ) : (
+                <Text style={styles.working_indicator_text}>
+                  {workingComment.nickname} 답글 남기는 중
+                </Text>
+              )}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+                onPress={() => clearIsWorking()}>
+                <View style={{paddingRight: 16}}>
+                  <WhiteClear />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </KeyboardAvoidingView>
 
       <KeyboardAvoidingView
         keyboardVerticalOffset={Platform.select({
           ios: 0,
-          android: 0,
+          android: 16,
         })}
         behavior={Platform.select({
           ios: 'position',
@@ -295,17 +337,27 @@ const FeedComment = props => {
           style={[
             styles.textInputContainerBlur,
             isFocused ? styles.textInputContainerFocus : null,
+            {
+              height: textInputHeight,
+              marginBottom: isFocused ? 0 : -16,
+            },
           ]}>
           <TextInput
             ref={textInputRef}
+            onContentSizeChange={textInputLayout}
             placeholder="댓글을 입력해주세요"
+            defaultValue={''}
+            autoFocus={Platform.OS === 'android' && true}
             placeholderTextColor={fooiyColor.G400}
             style={[
-              {...fooiyFont.Body2},
+              {
+                ...fooiyFont.Body2,
+                width: globalVariable.width - 84,
+                height: textlineHeight,
+              },
               isFocused ? styles.textInputFocus : styles.textInputBlur,
             ]}
             multiline
-            numberOfLines={3}
             textAlignVertical="center"
             autoCapitalize={false}
             autoCorrect={false}
@@ -371,14 +423,16 @@ const styles = StyleSheet.create({
   },
 
   textInputContainerBlur: {
+    position: 'absolute',
     backgroundColor: fooiyColor.W,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
+    bottom: 0,
     height: 68,
     padding: 16,
-    marginBottom: Platform.OS === 'android' ? 16 : 0,
+    // marginBottom: Platform.OS === 'android' ? 16 : 0,
     borderWidth: 1,
     borderBottomWidth: 0,
     borderTopLeftRadius: 16,
@@ -410,5 +464,27 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: fooiyColor.G200,
+  },
+
+  working_indicator_container: {
+    position: 'absolute',
+    height: 44,
+    justifyContent: 'center',
+    width: globalVariable.width - 32,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    backgroundColor: fooiyColor.G800,
+  },
+  working_indicator_text: {
+    ...fooiyFont.Body2,
+    color: fooiyColor.W,
+    paddingLeft: 16,
+    textAlign: 'center',
+  },
+  flat_footer: {
+    height: Platform.select({
+      ios: globalVariable.tabBarHeight + 16,
+      android: globalVariable.tabBarHeight + 40,
+    }),
   },
 });
