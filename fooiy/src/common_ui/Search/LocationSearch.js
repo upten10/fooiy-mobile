@@ -142,6 +142,7 @@ const LocationSearch = () => {
             bounces={true}
             scrollToOverflowEnabled
             showsVerticalScrollIndicator={false}
+            ListFooterComponent={<View style={{marginBottom: 16}} />}
           />
         </>
       );

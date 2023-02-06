@@ -171,6 +171,7 @@ const ShopSearch = () => {
             bounces={true}
             scrollToOverflowEnabled
             showsVerticalScrollIndicator={false}
+            ListFooterComponent={<View style={{marginBottom: 16}} />}
           />
         </>
       );
@@ -297,6 +298,7 @@ const styles = StyleSheet.create({
     padding: 16,
     ...fooiyFont.Body1,
     color: fooiyColor.B,
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
   input_blur: {
     width: '100%',
@@ -306,5 +308,6 @@ const styles = StyleSheet.create({
     height: 56,
     padding: 16,
     ...fooiyFont.Subtitle2,
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
 });

@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
@@ -7,12 +6,13 @@ import {
   CafeShop,
   CommonShop,
   Notification,
+  Logo,
   Search_Icon,
 } from '../../../assets/icons/svg';
-import {Logo} from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
+import {useNavigation} from '@react-navigation/native';
 
-export const FeedHeader = props => {
+const FeedHeader = props => {
   const {category, open, setOpen} = props;
   const navigation = useNavigation();
 
@@ -54,6 +54,8 @@ export const FeedHeader = props => {
     </View>
   );
 };
+
+export default FeedHeader;
 
 const styles = StyleSheet.create({
   header_container: {
