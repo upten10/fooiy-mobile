@@ -41,7 +41,7 @@ const Party = props => {
     });
   };
 
-  const flatListHeader = () => {
+  const listHeaderComponent = () => {
     return (
       <View style={styles.list_header_container}>
         {/* 왼쪽 */}
@@ -57,6 +57,32 @@ const Party = props => {
             <Text style={styles.create_btn_text}>파티 생성</Text>
           </View>
         </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const ListEmptyComponent = () => {
+    return (
+      <View
+        style={{
+          height:
+            globalVariable.height -
+            insets.top -
+            56 -
+            insets.bottom -
+            globalVariable.tabBarHeight -
+            56 -
+            20,
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            ...fooiyFont.Body1,
+            color: fooiyColor.G600,
+            textAlign: 'center',
+          }}>
+          아직 가입한 파티가 없어요.{'\n'}새로운 파티를 생성하거나 가입해보세요!
+        </Text>
       </View>
     );
   };
@@ -77,8 +103,9 @@ const Party = props => {
         }}>
         <FlatList
           data={partyList}
-          // ListEmptyComponent={listEmptyComponent}
-          ListHeaderComponent={flatListHeader}
+          ListHeaderComponent={listHeaderComponent}
+          ListEmptyComponent={ListEmptyComponent}
+          scrollEnabled={partyList.length === 0 ? false : true}
           // ListFooterComponent={listFooterComponent}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => <ShopListUI {...item} />}
