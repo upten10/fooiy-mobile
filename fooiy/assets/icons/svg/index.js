@@ -82,3 +82,4 @@ export {default as ArrowIconBottomDark} from './Icon_arrrow_bottom_dark.svg';
 export {default as LocationDarkIcon} from './Icon_location.svg';
 export {default as RegistCommentFocused} from './RegistCommentFocused.svg';
 export {default as RegistComment} from './RegistComment.svg';
+export {default as WhiteClear} from './Icon_clear_white.svg';

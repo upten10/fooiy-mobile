@@ -1,17 +1,8 @@
-import React, {memo, useEffect, useState} from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Platform,
-  Keyboard,
-} from 'react-native';
+import React from 'react';
+import {Text, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Modal from 'react-native-modal';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
 import Rank from '../../common_ui/Rank';
 // import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 // import Margin from '../Margin';
@@ -42,7 +33,7 @@ const WorkingCommentModal = props => {
           </View>
         </View>
         <View style={styles.content_container}>
-          <Text>{workingComment.content}</Text>
+          <Text style={{...fooiyFont.Body2}}>{workingComment.content}</Text>
         </View>
       </View>
     </SafeAreaView>

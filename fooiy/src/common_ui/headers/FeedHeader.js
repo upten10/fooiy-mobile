@@ -7,12 +7,12 @@ import {
   CafeShop,
   CommonShop,
   Notification,
-  Search,
+  Search_Icon,
 } from '../../../assets/icons/svg';
 import {Logo} from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
 
-export const FeedHeader = props => {
+const FeedHeader = props => {
   const {category, open, setOpen} = props;
   const navigation = useNavigation();
 
@@ -47,13 +47,15 @@ export const FeedHeader = props => {
             onPress={() => {
               search();
             }}>
-            <Search />
+            <Search_Icon />
           </TouchableOpacity>
         </View>
       </View>
     </View>
   );
 };
+
+export default FeedHeader;
 
 const styles = StyleSheet.create({
   header_container: {

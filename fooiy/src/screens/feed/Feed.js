@@ -6,7 +6,7 @@ import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
 import UI_Feed from '../../common_ui/feed/UI_Feed';
-import {FeedHeader} from '../../common_ui/headers/FeedHeader';
+import FeedHeader from '../../common_ui/headers/FeedHeader';
 import SelectCategoryModal from './SelectCategoryModal';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import MoreVertModal from '../../common_ui/modal/MoreVertModal';
