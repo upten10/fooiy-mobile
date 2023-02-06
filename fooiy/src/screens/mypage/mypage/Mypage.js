@@ -1,12 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  Image,
   FlatList,
+  Image,
   ImageBackground,
+  StyleSheet,
   Text,
+  View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {TouchableOpacity} from 'react-native-gesture-handler';

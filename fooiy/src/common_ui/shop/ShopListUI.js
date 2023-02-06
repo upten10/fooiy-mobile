@@ -15,9 +15,33 @@ const ShopListUI = item => {
     score,
     shop_category_list,
     thumbnail,
+
+    party_id,
+    owner,
+    owner_id,
+    image,
+    feed_count,
+    account_count,
+    is_subscribe,
   } = item;
   const navigation = useNavigation();
   const imageWidth = (globalVariable.width - 32 - 15) / 2;
+
+  const onPress = () => {
+    if (public_id !== undefined) {
+      navigation.navigate('Shop', {
+        shop_id: public_id,
+        shop_name: name,
+        shop_address: address,
+        // 수정 필요
+        shop_longitude: 127.11729911704028,
+        shop_latitude: 37.32417435738688,
+        // 수정 필요
+      });
+    } else if (party_id !== undefined) {
+      console.log(party_id);
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -28,27 +52,19 @@ const ShopListUI = item => {
         paddingBottom: 24,
       }}
       activeOpacity={0.8}
-      onPress={() =>
-        navigation.navigate('Shop', {
-          shop_id: public_id,
-          shop_name: name,
-          shop_address: address,
-          // 수정 필요
-          shop_longitude: 127.11729911704028,
-          shop_latitude: 37.32417435738688,
-          // 수정 필요
-        })
-      }>
+      onPress={onPress}>
       {/* img */}
       <View style={{width: imageWidth, height: imageWidth, marginBottom: 8}}>
-        <View style={styles.fooiyti_container}>
-          <Text style={{...fooiyFont.Subtitle4, color: fooiyColor.W}}>
-            {score}%
-          </Text>
-        </View>
+        {score !== undefined ? (
+          <View style={styles.fooiyti_container}>
+            <Text style={{...fooiyFont.Subtitle4, color: fooiyColor.W}}>
+              {score}%
+            </Text>
+          </View>
+        ) : null}
         <View>
           <FastImage
-            source={{uri: thumbnail}}
+            source={{uri: thumbnail !== undefined ? thumbnail : image}}
             style={{width: '100%', height: '100%', borderRadius: 16}}
           />
         </View>
@@ -61,7 +77,7 @@ const ShopListUI = item => {
             color: fooiyColor.B,
             width: imageWidth,
           }}>
-          {name}
+          {name.length >= 10 ? name.substr(0, 10) + '...' : name}
         </Text>
         <Text
           style={{
@@ -69,20 +85,52 @@ const ShopListUI = item => {
             color: fooiyColor.G800,
             width: imageWidth,
           }}>
-          {menu_price}
+          {menu_price !== undefined
+            ? menu_price
+            : owner.length >= 10
+            ? owner.substr(0, 10) + '...'
+            : owner}
         </Text>
       </View>
       {/* category */}
       <View style={{flexDirection: 'row', width: imageWidth}}>
-        {shop_category_list.map((item, index) => {
-          return (
-            <View style={styles.category_container} key={index}>
-              <Text style={{...fooiyFont.Caption1_1, paddingHorizontal: 8}}>
-                {item}
+        {shop_category_list !== undefined ? (
+          shop_category_list.map((item, index) => {
+            return (
+              <View style={styles.category_container} key={index}>
+                <Text style={{...fooiyFont.Caption1_1, paddingHorizontal: 8}}>
+                  {item}
+                </Text>
+              </View>
+            );
+          })
+        ) : (
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                paddingHorizontal: 8,
+                paddingVertical: 6,
+                backgroundColor: fooiyColor.G50,
+                borderRadius: 8,
+                marginRight: 4,
+              }}>
+              <Text style={{...fooiyFont.Caption1_1, color: fooiyColor.G600}}>
+                피드 {feed_count}개
               </Text>
             </View>
-          );
-        })}
+            <View
+              style={{
+                paddingHorizontal: 8,
+                paddingVertical: 6,
+                backgroundColor: fooiyColor.G50,
+                borderRadius: 8,
+              }}>
+              <Text style={{...fooiyFont.Caption1_1, color: fooiyColor.G600}}>
+                파티원 {account_count}명
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );

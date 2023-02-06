@@ -60,4 +60,9 @@ export const apiUrl = {
   MAP_SHOP_MARKER: 'shops/shop/shop_map_marker/',
   // 음식점 지도 마커 상세
   MAP_SHOP_MARKER_DETAIL: 'shops/shop/shop_map_marker_detail/',
+
+  // 가입한 파티 리스트
+  MY_PARTY_LIST: 'party/accounts/',
+  // 파티 생성
+  CREATE_PARTY: 'party/accounts/',
 };
