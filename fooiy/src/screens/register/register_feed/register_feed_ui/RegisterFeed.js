@@ -8,6 +8,7 @@ import {
   Keyboard,
   ScrollView,
   Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {globalVariable} from '../../../../common/globalVariable';
 import {StackHeader} from '../../../../common_ui/headers/StackHeader';
@@ -15,12 +16,13 @@ import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Notice} from '../../../../../assets/icons/svg';
 import Input from './Input';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import FooiytiRating from './FooiytiRating';
 import {ApiManagerV2} from '../../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
 import TotalRating from './TotalRating';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const RegisterFeed = props => {
   const {photo_list, shop, menu, address} = props.route.params;
@@ -48,6 +50,7 @@ const RegisterFeed = props => {
   const valueSet = [90, 70, 50, 30, 10];
   const totalValueSet = [10, 30, 50, 70, 99];
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const commentRef = useRef();
 
   const checkShopInput = () => {
@@ -153,10 +156,11 @@ const RegisterFeed = props => {
   return (
     <SafeAreaView style={styles.container}>
       <StackHeader title="피드 등록" />
-      <ScrollView
+      <KeyboardAwareScrollView
+        extraScrollHeight={insets.top}
+        style={styles.view}
         bounces={false}
-        showsVerticalScrollIndicator={false}
-        style={styles.view}>
+        showsVerticalScrollIndicator={false}>
         {/* 음식점 */}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
@@ -192,44 +196,28 @@ const RegisterFeed = props => {
             )}
             {/* 푸이티아이 평가 */}
             <Text style={styles.fooiyti_evaluation}>푸이티아이 평가</Text>
-            <View
-              style={{
-                justifyContent: 'center',
-                marginTop: 16,
-              }}>
+            <View style={styles.fooiyti_view}>
               <FooiytiRating
                 left={{en: 'E', kor: '자극적인'}}
                 right={{en: 'I', kor: '순한'}}
                 setFooiytiRating={setFooiytiRatingEI}
               />
             </View>
-            <View
-              style={{
-                justifyContent: 'center',
-                marginTop: 16,
-              }}>
+            <View style={styles.fooiyti_view}>
               <FooiytiRating
                 left={{en: 'S', kor: '짠'}}
                 right={{en: 'N', kor: '싱거운'}}
                 setFooiytiRating={setFooiytiRatingSN}
               />
             </View>
-            <View
-              style={{
-                justifyContent: 'center',
-                marginTop: 16,
-              }}>
+            <View style={styles.fooiyti_view}>
               <FooiytiRating
                 left={{en: 'T', kor: '담백한'}}
                 right={{en: 'F', kor: '느끼한'}}
                 setFooiytiRating={setFooiytiRatingTF}
               />
             </View>
-            <View
-              style={{
-                justifyContent: 'center',
-                marginTop: 16,
-              }}>
+            <View style={styles.fooiyti_view}>
               <FooiytiRating
                 left={{en: 'A', kor: '어른'}}
                 right={{en: 'C', kor: '초딩'}}
@@ -239,11 +227,7 @@ const RegisterFeed = props => {
             {/* 종합 만족도 */}
             <View>
               <Text style={styles.total_evaluation}>종합 만족도</Text>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  marginTop: 16,
-                }}>
+              <View style={styles.fooiyti_view}>
                 <TotalRating
                   totalRating={totalRating}
                   setTotalRating={setTotalRating}
@@ -319,7 +303,7 @@ const RegisterFeed = props => {
             피드 등록
           </Text>
         </TouchableOpacity>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
@@ -330,15 +314,17 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: fooiyColor.W,
     flex: 1,
-    paddingBottom: Platform.select({ios: 0, android: 16}),
   },
   view: {
     backgroundColor: fooiyColor.W,
-    height: '100%',
     paddingHorizontal: 16,
   },
   fooiyti_evaluation: {
     ...fooiyFont.Subtitle1,
+    marginTop: 16,
+  },
+  fooiyti_view: {
+    justifyContent: 'center',
     marginTop: 16,
   },
   total_evaluation: {
@@ -412,6 +398,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: fooiyColor.P500,
     height: 56,
+    marginBottom: Platform.OS === 'ios' ? 0 : 16,
   },
   register_btn_deactive: {
     width: globalVariable.width - 32,
@@ -420,6 +407,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: fooiyColor.G100,
     height: 56,
+    marginBottom: Platform.OS === 'ios' ? 0 : 16,
   },
   register_btn_text_active: {
     ...fooiyFont.Button,

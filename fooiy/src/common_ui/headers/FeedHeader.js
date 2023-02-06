@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
@@ -7,10 +6,11 @@ import {
   CafeShop,
   CommonShop,
   Notification,
-  Search,
+  Logo,
+  Search_Icon,
 } from '../../../assets/icons/svg';
-import {Logo} from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
+import {useNavigation} from '@react-navigation/native';
 
 export const FeedHeader = props => {
   const {category, open, setOpen} = props;
@@ -47,7 +47,7 @@ export const FeedHeader = props => {
             onPress={() => {
               search();
             }}>
-            <Search />
+            <Search_Icon />
           </TouchableOpacity>
         </View>
       </View>

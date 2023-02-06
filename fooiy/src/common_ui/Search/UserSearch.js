@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -222,6 +222,7 @@ const UserSearch = () => {
             bounces={true}
             scrollToOverflowEnabled
             showsVerticalScrollIndicator={false}
+            ListFooterComponent={<View style={{marginBottom: 16}} />}
           />
         </>
       );

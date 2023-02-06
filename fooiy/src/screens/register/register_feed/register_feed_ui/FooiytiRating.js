@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react';
 import {
   Animated,
-  Dimensions,
   PanResponder,
+  StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -81,20 +81,9 @@ function FooiytiRating(props) {
   };
 
   return (
-    <View style={{}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 40,
-        }}>
-        <View
-          style={{
-            width: 40,
-            height: 40,
-            justifyContent: 'center',
-          }}>
+    <View>
+      <View style={styles.container}>
+        <View style={styles.fooiyti}>
           <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.G600}}>
             {left.en}
           </Text>
@@ -102,73 +91,22 @@ function FooiytiRating(props) {
             {left.kor}
           </Text>
         </View>
-        {/* Slider */}
-        <View
-          style={{
-            width: BOX * 5,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          {/* 가운데 선 */}
-          <View
-            style={{
-              position: 'absolute',
-              borderBottomWidth: 1,
-              borderColor: fooiyColor.G200,
-              width: BOX * 4,
-              top: 20,
-            }}
-          />
-          {/* 가운데 선 */}
-          {/* 점 5개 */}
+        <View style={styles.slider}>
           <View style={{flexDirection: 'row'}}>
             {[...Array(5)].map((value, index) => (
               <TouchableWithoutFeedback onPress={() => onPress(index)}>
-                <View
-                  key={index}
-                  style={{
-                    width: BOX,
-                    height: 40,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <View
-                    style={{
-                      width: CIRCLE,
-                      height: CIRCLE,
-                      borderRadius: CIRCLE / 2,
-                      backgroundColor: fooiyColor.G50,
-                      borderColor: fooiyColor.G200,
-                      borderWidth: 1,
-                    }}
-                  />
+                <View key={index} style={styles.track}>
+                  <View style={styles.track_mark} />
                 </View>
               </TouchableWithoutFeedback>
             ))}
           </View>
           <Animated.View
             {...panResponder.panHandlers}
-            style={{
-              width: CIRCLE,
-              height: CIRCLE,
-              borderRadius: CIRCLE / 2,
-              borderWidth: 1,
-              backgroundColor: fooiyColor.P500,
-              borderColor: fooiyColor.P700,
-              position: 'absolute',
-              transform: [{translateX: circleAnim}],
-            }}
+            style={[styles.pointer, {transform: [{translateX: circleAnim}]}]}
           />
-          {/* 점 5개 */}
         </View>
-        {/* Slider */}
-        <View
-          style={{
-            width: 40,
-            height: 40,
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-          }}>
+        <View style={[styles.fooiyti, {alignItems: 'flex-end'}]}>
           <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.G600}}>
             {right.en}
           </Text>
@@ -182,3 +120,46 @@ function FooiytiRating(props) {
 }
 
 export default FooiytiRating;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 40,
+  },
+  fooiyti: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+  },
+  slider: {
+    width: BOX * 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  track: {
+    width: BOX,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  track_mark: {
+    width: CIRCLE,
+    height: CIRCLE,
+    borderRadius: CIRCLE / 2,
+    backgroundColor: fooiyColor.G50,
+    borderColor: fooiyColor.G200,
+    borderWidth: 1,
+  },
+  pointer: {
+    width: CIRCLE,
+    height: CIRCLE,
+    borderRadius: CIRCLE / 2,
+    borderWidth: 1,
+    backgroundColor: fooiyColor.P500,
+    borderColor: fooiyColor.P700,
+    position: 'absolute',
+  },
+});
