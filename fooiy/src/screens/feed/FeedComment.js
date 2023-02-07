@@ -28,6 +28,7 @@ import ListEmptyTextComponent from '../../common_ui/empty_component/ListEmptyTex
 import {useSelector} from 'react-redux';
 import WorkingCommentModal from './WorkingCommentModal';
 import checkFeedAuthorization from './functions/checkFeedAuthorization';
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 
 const FeedComment = props => {
   const flatListRef = useRef(null);
@@ -50,7 +51,6 @@ const FeedComment = props => {
   const [textlineHeight, setTextlineHeight] = useState(24);
   const [textInputHeight, setTextInputHeight] = useState(68);
   const [buttons, setButtons] = useState([{}]);
-  const [keyboardFlag, setKeyboardFlag] = useState(false);
 
   //****** modal & textinput function ******//
   const openModal = (
@@ -107,7 +107,7 @@ const FeedComment = props => {
     setWorkingState('');
     setIsWorking(true);
     setIsFocus(true);
-    flatListRef.current.scrollToIndex({index: index, animated: true});
+    // flatListRef.current.scrollToIndex({index: index, animated: true});
   };
   //****** modal & textinput function ******//
 
@@ -258,9 +258,8 @@ const FeedComment = props => {
           }),
           backgroundColor: fooiyColor.W,
         }}>
-        <FlatList
+        <KeyboardAwareFlatList
           onScrollBeginDrag={dismissKeyboard}
-          ref={flatListRef}
           data={comments}
           renderItem={({item, index}) => (
             <UI_Comment
@@ -282,17 +281,18 @@ const FeedComment = props => {
           onEndReachedThreshold={0}
         />
       </View>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.select({
-          ios: 0,
-          android: 16,
-        })}
-        behavior={Platform.select({
-          ios: 'position',
-          android: 'position',
-        })}
-        enabled>
-        {isWorking && (
+
+      {Platform.OS === 'ios' && isWorking ? (
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.select({
+            ios: 0,
+            android: null,
+          })}
+          behavior={Platform.select({
+            ios: 'position',
+            android: null,
+          })}
+          enabled>
           <View
             style={[
               {
@@ -321,25 +321,102 @@ const FeedComment = props => {
               </TouchableOpacity>
             </View>
           </View>
-        )}
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      ) : Platform.OS === 'android' && isWorking ? (
+        <View
+          style={[
+            {
+              bottom: textInputHeight + 8,
+            },
+            styles.working_indicator_container,
+          ]}>
+          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+            {workingState === 'update' ? (
+              <Text style={styles.working_indicator_text}>
+                해당 댓글 수정 중
+              </Text>
+            ) : (
+              <Text style={styles.working_indicator_text}>
+                {workingComment.nickname} 답글 남기는 중
+              </Text>
+            )}
+            <TouchableOpacity
+              activeOpacity={0.8}
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+              onPress={() => clearIsWorking()}>
+              <View style={{paddingRight: 16}}>
+                <WhiteClear />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : null}
 
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.select({
-          ios: 0,
-          android: 16,
-        })}
-        behavior={Platform.select({
-          ios: 'position',
-          android: 'position',
-        })}>
+      {Platform.OS === 'ios' ? (
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.select({
+            ios: 0,
+            android: null,
+          })}
+          behavior={Platform.select({
+            ios: 'position',
+            android: null,
+          })}>
+          <View
+            style={[
+              styles.textInputContainerBlur,
+              isFocused ? styles.textInputContainerFocus : null,
+              {
+                height: textInputHeight,
+                // marginBottom: isFocused ? 0 : -16,
+              },
+            ]}>
+            <TextInput
+              ref={textInputRef}
+              onContentSizeChange={textInputLayout}
+              placeholder="댓글을 입력해주세요"
+              defaultValue={''}
+              autoFocus={Platform.OS === 'android' && true}
+              placeholderTextColor={fooiyColor.G400}
+              style={[
+                {
+                  ...fooiyFont.Body2,
+                  width: globalVariable.width - 84,
+                  height: textlineHeight,
+                },
+                isFocused ? styles.textInputFocus : styles.textInputBlur,
+              ]}
+              multiline
+              textAlignVertical="center"
+              autoCapitalize={false}
+              autoCorrect={false}
+              spellCheck={false}
+              onFocus={() => setIsFocus(true)}
+              onBlur={onBlur}
+              onChangeText={setValue}
+              value={value}
+            />
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() =>
+                workingState === 'update' ? patchComment() : registerComment()
+              }>
+              {value.length === 0 ? (
+                <RegistComment style={styles.register_comment} />
+              ) : (
+                <RegistCommentFocused style={styles.register_comment} />
+              )}
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      ) : (
         <View
           style={[
             styles.textInputContainerBlur,
             isFocused ? styles.textInputContainerFocus : null,
             {
               height: textInputHeight,
-              marginBottom: isFocused ? 0 : -16,
+              // marginBottom: isFocused ? 0 : -16,
             },
           ]}>
           <TextInput
@@ -379,7 +456,7 @@ const FeedComment = props => {
             )}
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      )}
 
       {isWorking && <WorkingCommentModal workingComment={workingComment} />}
       {!isWorking && (

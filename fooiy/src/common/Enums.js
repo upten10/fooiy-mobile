@@ -19,6 +19,8 @@ export const apiUrl = {
 
   // 피드 리스트
   FEED_LIST: 'feeds/feed/',
+  // 피드 신고
+  FEED_REPORT: 'feeds/feed/report/',
   // 매장 피드 리스트
   SHOP_LIST: 'feeds/feed/shop/',
   // 피드 댓글
@@ -41,6 +43,8 @@ export const apiUrl = {
   REGISTER_PIONEER: 'feeds/pioneer/',
   // 기록 등록
   REGISTER_RECORD: 'feeds/record/',
+  // 기록 등록
+  UPDATE_FEED: 'feeds/feed/modify/',
 
   // 음식점 지도 리스트
   MAP_SHOP_LIST: 'shops/shop/shop_map_list/',
@@ -60,4 +64,7 @@ export const apiUrl = {
   MAP_SHOP_MARKER: 'shops/shop/shop_map_marker/',
   // 음식점 지도 마커 상세
   MAP_SHOP_MARKER_DETAIL: 'shops/shop/shop_map_marker_detail/',
+
+  //
+  MY_PARTY_LIST: 'party/accounts/',
 };
