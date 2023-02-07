@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
@@ -7,15 +8,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {PartyIcon} from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
-import ShopListUI from '../../common_ui/shop/ShopListUI';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
-import {useNavigation} from '@react-navigation/native';
+import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
+import ShopListUI from '../../common_ui/shop/ShopListUI';
 
 const Party = props => {
   const insets = useSafeAreaInsets();
@@ -25,7 +25,7 @@ const Party = props => {
 
   useEffect(() => {
     getPartyList();
-  }, []);
+  }, [props.route.params]);
 
   const getPartyList = async () => {
     await ApiManagerV2.get(apiUrl.MY_PARTY_LIST, {
@@ -35,8 +35,8 @@ const Party = props => {
     });
   };
 
-  const onPressCreate = async () => {
-    navigation.navigate('PartyCreate');
+  const onPressCreate = () => {
+    navigation.navigate('PartyCreateName');
   };
 
   const listHeaderComponent = () => {

@@ -87,3 +87,4 @@ export {default as WhiteClear} from './Icon_clear_white.svg';
 
 export {default as PartyIcon} from './Party/Icon_party.svg';
 export {default as PartyCrown} from './Party/Icon_crown.svg';
+export {default as PartyCreateComplete} from './Party/Icon_check_big.svg';

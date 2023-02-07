@@ -1,19 +1,25 @@
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import Party from './Party';
 import PartyCreate from './PartyCreate';
+import PartyCreateFinishScreen from './PartyCreateFinishScreen';
 
-const Stack = createStackNavigator();
+const PartyStack = createStackNavigator();
+
 const PartyStackNavigation = props => {
   const insets = useSelector(state => state.insets.insets);
+
   return (
-    <Stack.Navigator
+    <PartyStack.Navigator
       initialRouteName="Party"
       screenOptions={{headerShown: false}}>
-      <Stack.Screen
+      <PartyStack.Screen
         name="Party"
         component={Party}
         listeners={({navigation, route}) => {
@@ -29,8 +35,8 @@ const PartyStackNavigation = props => {
           }
         }}
       />
-      <Stack.Screen
-        name="PartyCreate"
+      <PartyStack.Screen
+        name="PartyCreateName"
         component={PartyCreate}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
@@ -38,7 +44,46 @@ const PartyStackNavigation = props => {
           });
         }}
       />
-    </Stack.Navigator>
+      <PartyStack.Screen
+        name="PartyCreateIntro"
+        component={PartyCreate}
+        options={{
+          cardStyleInterpolator:
+            CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
+        }}
+      />
+      <PartyStack.Screen
+        name="PartyCreateImg"
+        component={PartyCreate}
+        options={{
+          cardStyleInterpolator:
+            CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
+        }}
+      />
+      <PartyStack.Screen
+        name="PartyCreateFinishScreen"
+        component={PartyCreateFinishScreen}
+        options={{
+          cardStyleInterpolator:
+            CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
+        }}
+      />
+    </PartyStack.Navigator>
   );
 };
 
