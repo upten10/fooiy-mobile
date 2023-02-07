@@ -26,6 +26,7 @@ import Search from '../common_ui/Search/Search';
 import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
 import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
 import FeedComment from '../screens/feed/FeedComment';
+import ModifyFeed from '../screens/feed/ModifyFeed';
 import {globalVariable} from '../common/globalVariable';
 import {globalStyles} from '../common/globalStyles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -52,6 +53,7 @@ const RootNavigator = () => {
       {/* feed */}
       <Stack.Screen name="Feed" component={Feed} />
       <Stack.Screen name="FeedComment" component={FeedComment} />
+      <Stack.Screen name="ModifyFeed" component={ModifyFeed} />
 
       {/* shop */}
       <Stack.Screen name="FindWay" component={FindWay} />

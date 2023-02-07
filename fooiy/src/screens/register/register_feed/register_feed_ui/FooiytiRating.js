@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   Animated,
   PanResponder,
@@ -13,8 +13,15 @@ const BOX = 234 / 5;
 const CIRCLE = 18;
 
 function FooiytiRating(props) {
-  const {left, right, setFooiytiRating} = props;
+  const {firstValue, left, right, setFooiytiRating} = props;
   const [step, setStep] = useState(2);
+
+  useEffect(() => {
+    if (firstValue) {
+      onPress(firstValue);
+    }
+  }, []);
+
   const circleAnim = useRef(new Animated.Value(0)).current;
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
@@ -137,7 +144,6 @@ const styles = StyleSheet.create({
     width: BOX * 5,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
   },
   track: {
     width: BOX,

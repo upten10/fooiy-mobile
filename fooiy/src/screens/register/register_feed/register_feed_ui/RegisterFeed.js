@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
     padding: 16,
     ...fooiyFont.Body1,
     lineHeight: Platform.select({ios: 0, android: null}),
-    width: '90%',
+    width: '100%',
     height: '100%',
     fontSize: 14,
     fontWeight: '400',
