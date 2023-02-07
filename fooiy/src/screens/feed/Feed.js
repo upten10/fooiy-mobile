@@ -11,8 +11,37 @@ import SelectCategoryModal from './SelectCategoryModal';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import MoreVertModal from '../../common_ui/modal/MoreVertModal';
 import {fooiyColor} from '../../common/globalStyles';
+import messaging from '@react-native-firebase/messaging';
+import {requestNotifications, RESULTS} from 'react-native-permissions';
 
 const Feed = props => {
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    requestUserPermission();
+  }, [requestUserPermission]);
+
+  const requestUserPermission = useCallback(async () => {
+    const {status} = await requestNotifications([]);
+    // const authStatus = await messaging().requestPermission();
+    const enabled = status === RESULTS.GRANTED;
+
+    enabled &&
+      (await messaging()
+        .getToken()
+        .then(res => {
+          setToken(res);
+        }));
+  }, []);
+  const patchFCM = async () => {
+    await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
+      fcm_token: token,
+    });
+  };
+  useEffect(() => {
+    patchFCM();
+  }, [token]);
+
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);

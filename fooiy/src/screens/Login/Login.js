@@ -66,7 +66,7 @@ const Login = () => {
       os: Platform.OS,
       app_version: globalVariable.app_version,
       device_id: DEVICEID,
-      fcm_token: '123',
+      fcm_token: '0',
     }).then(res => {
       setAuth(res.data.payload.account_info.account_token);
     });
@@ -93,7 +93,7 @@ const Login = () => {
       os: Platform.OS,
       app_version: '1.2.0',
       device_id: DEVICEID,
-      fcm_token: '123',
+      fcm_token: '0',
     }).then(res => {
       setAuth(res.data.payload.account_info.account_token);
     });

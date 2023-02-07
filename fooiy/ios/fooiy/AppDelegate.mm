@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
 #import <RNKakaoLogins.h>
+#import <Firebase.h>
 
 #import <React/RCTAppSetupUtils.h>
 
@@ -33,6 +34,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
