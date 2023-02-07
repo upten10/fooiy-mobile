@@ -55,6 +55,8 @@ export const apiUrl = {
   SHOP_NEARBY: 'shops/shop/nearby/',
   // 개척, 메뉴 리스트
   SHOP_MENU: 'shops/menu/',
+  // 매장 정보
+  SHOP_INFO: 'shops/shop/info/',
   // 음식점 검색
   SHOP_SEARCH: 'search/shops/',
   // 위치 검색
