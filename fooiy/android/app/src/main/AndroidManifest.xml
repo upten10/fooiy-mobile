@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.fooiy">
+  package="com.fooiy.fooiy">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,6 +15,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 위치 권한 -->
+
+    <!-- 알림 권한 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- 알림 권한 -->
 
     <application
       android:name=".MainApplication"

@@ -1,4 +1,4 @@
-package com.fooiy;
+package com.fooiy.fooiy;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
