@@ -9,10 +9,37 @@ import UI_Feed from '../../common_ui/feed/UI_Feed';
 import FeedHeader from '../../common_ui/headers/FeedHeader';
 import SelectCategoryModal from './SelectCategoryModal';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
-import MoreVertModal from '../../common_ui/modal/MoreVertModal';
-import {fooiyColor} from '../../common/globalStyles';
+import messaging from '@react-native-firebase/messaging';
+import {requestNotifications, RESULTS} from 'react-native-permissions';
 
 const Feed = props => {
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    requestUserPermission();
+  }, [requestUserPermission]);
+
+  const requestUserPermission = useCallback(async () => {
+    const {status} = await requestNotifications([]);
+    // const authStatus = await messaging().requestPermission();
+    const enabled = status === RESULTS.GRANTED;
+
+    enabled &&
+      (await messaging()
+        .getToken()
+        .then(res => {
+          setToken(res);
+        }));
+  }, []);
+  const patchFCM = async () => {
+    await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
+      fcm_token: token,
+    });
+  };
+  useEffect(() => {
+    patchFCM();
+  }, [token]);
+
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -20,32 +47,6 @@ const Feed = props => {
   const [refreshing, setRefreshing] = useState(false);
   const [category, setCategory] = useState('');
   const [open, setOpen] = useState(true);
-
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [feed_id, setFeedId] = useState(false);
-  const openModal = id => {
-    setFeedId(id);
-    setIsOpenModal(true);
-  };
-  const toggleModal = () => {
-    setIsOpenModal(false);
-  };
-  const buttons = [
-    {
-      name: '수정',
-      domain: '피드',
-      onClick: () => console.log(1),
-      isNext: false,
-      textColor: fooiyColor.G800,
-    },
-    {
-      name: '삭제',
-      domain: '피드',
-      onClick: () => console.log(2),
-      isNext: true,
-      textColor: fooiyColor.P700,
-    },
-  ];
 
   useEffect(() => {
     setTimeout(function () {
@@ -135,9 +136,8 @@ const Feed = props => {
   }, [category]);
 
   const renderItem = useCallback(({item}) => {
-    return (
-      <UI_Feed {...item} parent={props.route.name} openModal={openModal} />
-    );
+    return <UI_Feed {...item} parent={props.route.name} />;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -151,7 +151,7 @@ const Feed = props => {
           refreshing={refreshing}
           renderItem={renderItem}
           // https://reactnative.dev/docs/optimizing-flatlist-configuration#updatecellsbatchingperiod
-          updateCellsBatchingPeriod={150}
+          updateCellsBatchingPeriod={10}
           removeClippedSubviews={true}
           ListHeaderComponent={ListHeaderComponent}
           ListFooterComponent={FlatListFooter}
@@ -159,7 +159,7 @@ const Feed = props => {
           onEndReached={loadMoreItem}
           ListEmptyComponent={ListEmptyComponent}
           onEndReachedThreshold={2}
-          maxToRenderPerBatch={6}
+          maxToRenderPerBatch={5}
         />
       </View>
       {open && (
@@ -173,11 +173,6 @@ const Feed = props => {
           setTotalCount={setTotalCount}
         />
       )}
-      <MoreVertModal
-        buttons={buttons}
-        isModalVisible={isOpenModal}
-        toggleModal={toggleModal}
-      />
     </SafeAreaView>
   );
 };

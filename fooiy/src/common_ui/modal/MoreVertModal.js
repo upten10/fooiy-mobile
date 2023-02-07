@@ -53,7 +53,9 @@ const MoreVertModal = props => {
           ) : (
             <View style={styles.next_container}>
               <Text style={styles.next_title}>
-                {buttons[0].domain}을 {currentStage}하시겠습니까?
+                {buttons[0].domain}
+                {buttons[0].domain === '피드' ? '를' : '을'} {currentStage}
+                하시겠습니까?
               </Text>
               <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity activeOpacity={0.8} onPress={toggleModal}>

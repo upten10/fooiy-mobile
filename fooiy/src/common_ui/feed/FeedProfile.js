@@ -19,6 +19,7 @@ const FeedProfile = props => {
     openModal,
     id,
     content,
+    item,
   } = props;
   const navigation = useNavigation();
   const onPressProfileImg = () => {

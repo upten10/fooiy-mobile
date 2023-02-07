@@ -14,6 +14,9 @@ import TasteEvaluationModal from './TasteEvaluationModal';
 import Margin from '../Margin';
 
 import {useDebounce} from '../../common/hooks/useDebounce';
+import checkFeedAuthorization from '../../screens/feed/functions/checkFeedAuthorization';
+import MoreVertModal from '../modal/MoreVertModal';
+import {useNavigation} from '@react-navigation/native';
 
 const UI_Feed = item => {
   const [disableShopButton, setDisableShopButton] = useState(false);
@@ -26,6 +29,56 @@ const UI_Feed = item => {
   const {debounceCallback, isLoading} = useDebounce({time: 1500});
   const feeds = useSelector(state => state.feeds.feeds.value);
   const feed = feeds.find(e => e.id === item.id);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [workingFeed, setWorkingFeed] = useState(false);
+  const [buttons, setButtons] = useState([{}]);
+  const navigate = useNavigation();
+  const openModal = props => {
+    setWorkingFeed(item);
+    setIsOpenModal(true);
+  };
+
+  const toggleModal = () => {
+    setIsOpenModal(false);
+  };
+
+  const userInfoRedux = useSelector(state => state.userInfo.value);
+  useEffect(() => {
+    checkFeedAuthorization(
+      setButtons,
+      '피드',
+      workingFeed.account_id,
+      userInfoRedux,
+      workingFeed,
+      updateFeed,
+      deleteFeed,
+      reportFeed,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workingFeed]);
+
+  const updateFeed = () => {
+    toggleModal();
+    navigate.navigate('ModifyFeed', {
+      feed: workingFeed,
+    });
+  };
+
+  const deleteFeed = () => {
+    console.log('deleteFeed');
+  };
+  const reportFeed = async () => {
+    toggleModal();
+    await ApiManagerV2.get(apiUrl.FEED_REPORT, {
+      params: {
+        feed_id: item.id,
+      },
+    }).then(
+      res =>
+        res.data.payload === 'success' &&
+        console.warn('피드신고가 완료되었습니다'),
+    );
+  };
 
   const debounceLike = async liked => {
     if (feed === undefined && item.is_liked === (await liked)) {
@@ -158,8 +211,9 @@ const UI_Feed = item => {
           profile_image={item.profile_image}
           fooiyti={item.fooiyti}
           rank={item.rank}
-          openModal={item.openModal}
+          openModal={openModal}
           id={item.id}
+          item={item}
         />
       </View>
       <Margin h={16} />
@@ -202,6 +256,11 @@ const UI_Feed = item => {
       <FeedDescription
         description={item.description}
         created_at={item.created_at}
+      />
+      <MoreVertModal
+        buttons={buttons}
+        isModalVisible={isOpenModal}
+        toggleModal={toggleModal}
       />
     </View>
   );
