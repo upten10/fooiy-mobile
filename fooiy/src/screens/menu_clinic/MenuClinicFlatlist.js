@@ -1,27 +1,26 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  Dimensions,
+  ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
+  PanResponder,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {Notice_24} from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
+import {fooiyColor} from '../../common/globalStyles';
 import Margin from '../../common_ui/Margin';
 import {categoryToEnglish} from './categoryList';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
-import Header from './Header';
 import {globalVariable} from '../../common/globalVariable';
-import FooiyToast from '../../common/FooiyToast';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../common/Enums';
+import {useNavigation} from '@react-navigation/native';
+
+import FastImage from 'react-native-fast-image';
 
 const MenuClinicFlatlist = props => {
   const {
-    setOffset,
+    footerBottomHeight,
+    setOffsetY,
     itemFlatListRef,
     tabIndex,
     categoryList,
@@ -29,42 +28,100 @@ const MenuClinicFlatlist = props => {
     headerHeight,
     tabBarHeight,
   } = props;
-  const RenderItem = (item, index) => {
+
+  const [categoryFeedlist, setCategoryFeedlist] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const navigation = useNavigation();
+  const onClickImage = shop_id => {
+    navigation.navigate('Shop', {
+      shop_id: shop_id,
+    });
+  };
+  const RenderItem = item => {
     return (
-      <View
-        style={{
-          ...styles.itemContainer,
-          backgroundColor: index % 2 === 0 ? '#587498' : '#E86850',
-        }}>
-        <Text style={styles.itemText}>
-          {categoryToEnglish[categoryList[tabIndex]]}
-        </Text>
-      </View>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => onClickImage(item.item.shop_id)}>
+        <View
+          style={[
+            styles.itemContainer,
+            item.index % 3 === 2
+              ? {borderRightWidth: 0}
+              : item.index % 3 === 0
+              ? {borderLeftWidth: 0}
+              : null,
+          ]}>
+          <FastImage style={styles.image} source={{uri: item.item.image}} />
+        </View>
+      </TouchableOpacity>
     );
   };
-  const setOffsetY = e => {
-    setOffset(e.nativeEvent.contentOffset.y);
+  const endSetOffsetY = e => {
+    setOffsetY(e.nativeEvent.contentOffset.y);
   };
 
-  const sampleData = new Array(50).fill(0);
+  const onScroll = e => {
+    console.log(e.nativeEvent.contentOffset);
+  };
+
+  const getShopList = async (offset, categoryFeedlist) => {
+    await ApiManagerV2.get(apiUrl.MENU_CLINIC, {
+      params: {
+        category: categoryToEnglish[categoryList[tabIndex]],
+        offset: offset,
+        limit: globalVariable.Limit20,
+      },
+    }).then(res => {
+      setCategoryFeedlist([
+        ...categoryFeedlist,
+        ...res.data.payload.feed_list.results,
+      ]);
+      setTotalCount(res.data.payload.feed_list.total_count);
+    });
+  };
+  const loadMoreItem = () => {
+    if (totalCount > offset + globalVariable.Limit20) {
+      setOffset(offset + globalVariable.Limit20);
+      getShopList(offset + globalVariable.Limit20, categoryFeedlist);
+    }
+  };
+  const ListFooterComponent = useCallback(() => {
+    return <Margin h={footerBottomHeight} />;
+  }, [footerBottomHeight]);
+
+  useEffect(() => {
+    getShopList(0, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabIndex]);
+
   return (
-    <Animated.FlatList
-      ref={itemFlatListRef}
-      data={sampleData}
-      renderItem={item => <RenderItem {...item} />}
-      showsVerticalScrollIndicator={false}
-      scrollEventThrottle={16}
-      onScrollEndDrag={setOffsetY}
-      onMomentumScrollEnd={setOffsetY}
-      numColumns={3}
-      onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
-        useNativeDriver: true,
-      })}
-      contentContainerStyle={{
-        paddingTop: headerHeight + tabBarHeight,
-      }}
-      scrollToOverflowEnabled={false}
-    />
+    <>
+      <Animated.FlatList
+        ref={itemFlatListRef}
+        data={categoryFeedlist}
+        renderItem={item => <RenderItem {...item} />}
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+        onScrollEndDrag={endSetOffsetY}
+        onMomentumScrollEnd={endSetOffsetY}
+        numColumns={3}
+        onEndReached={loadMoreItem}
+        ListFooterComponent={ListFooterComponent}
+        onEndReachedThreshold={5}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {
+            useNativeDriver: true,
+          },
+        )}
+        contentContainerStyle={{
+          paddingTop: headerHeight + tabBarHeight,
+          minHeight: globalVariable.height,
+        }}
+        scrollToOverflowEnabled={false}
+      />
+    </>
   );
 };
 
@@ -82,12 +139,18 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     width: globalVariable.width / 3,
-    height: 100,
+    height: globalVariable.width / 3,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: fooiyColor.W,
   },
   headerContainer: {
     position: 'absolute',
     width: '100%',
+  },
+  image: {
+    width: globalVariable.width / 3,
+    height: globalVariable.width / 3,
   },
 });

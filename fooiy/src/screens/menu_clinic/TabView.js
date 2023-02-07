@@ -7,15 +7,14 @@ import Margin from '../../common_ui/Margin';
 import {categoryToKorean} from './categoryList';
 
 const TabView = props => {
-  const {categoryList, tabIndex, setTabIndex, toTop} = props;
+  const {categoryList, tabIndex, setCurrentTab} = props;
 
   const CategoryTab = item => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() => {
-          setTabIndex(item.index);
-          toTop();
+          setCurrentTab(item.index);
         }}>
         <View style={styles.tab_container}>
           <Text
@@ -26,6 +25,7 @@ const TabView = props => {
             {categoryToKorean[item.item]}
           </Text>
         </View>
+        {tabIndex === item.index && <View style={styles.indicator} />}
       </TouchableOpacity>
     );
   };
@@ -37,7 +37,8 @@ const TabView = props => {
         keyExtractor={(item, index) => index}
         renderItem={item => <CategoryTab {...item} />}
         horizontal={true}
-        ListFooterComponent={<Margin w={16} />}
+        ListHeaderComponent={<Margin w={8} />}
+        ListFooterComponent={<Margin w={8} />}
       />
     </View>
   );
@@ -47,12 +48,19 @@ export default TabView;
 
 const styles = StyleSheet.create({
   tab_container: {
-    padding: 16,
-    paddingTop: 8,
-    paddingRight: 0,
+    padding: 8,
+    paddingBottom: 16,
   },
   tab_text: {
     ...fooiyFont.H4,
     color: fooiyColor.G200,
+  },
+  indicator: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    height: 4,
+    backgroundColor: fooiyColor.B,
+    borderRadius: 4,
   },
 });

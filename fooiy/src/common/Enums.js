@@ -46,6 +46,9 @@ export const apiUrl = {
   // 기록 등록
   UPDATE_FEED: 'feeds/feed/modify/',
 
+  // 메뉴 상담소
+  MENU_CLINIC: 'shops/menu_clinic/latest_order/',
+
   // 음식점 지도 리스트
   MAP_SHOP_LIST: 'shops/shop/shop_map_list/',
   // 개척, 근처 매장 리스트

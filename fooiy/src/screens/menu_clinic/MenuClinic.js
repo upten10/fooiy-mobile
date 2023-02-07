@@ -1,28 +1,14 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {Notice_24} from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {Platform, StyleSheet, View} from 'react-native';
+import {fooiyColor} from '../../common/globalStyles';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
-import Margin from '../../common_ui/Margin';
-import {
-  categoryList,
-  categoryToEnglish,
-  categoryToKorean,
-} from './categoryList';
+import {categoryList} from './categoryList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 import Header from './Header';
-import FooiyToast from '../../common/FooiyToast';
 import MenuClinicFlatlist from './MenuClinicFlatlist';
 import TabView from './TabView';
+import FindShopButton from './FindShopButton';
 
 const tabBarHeight = 52;
 const MenuClinic = () => {
@@ -53,27 +39,29 @@ const MenuClinic = () => {
   }, []);
   // collapsing
 
-  const setOffset = value => {
+  const setOffsetY = value => {
     offsetRef.current = value;
   };
 
-  const toTop = useCallback(() => {
-    if (itemFlatListRef) {
-      if (offsetRef.current > headerHeight) {
-        offsetRef.current = headerHeight;
+  const setCurrentTab = useCallback(
+    index => {
+      setTabIndex(index);
+      if (itemFlatListRef) {
+        if (offsetRef.current > headerHeight) {
+          offsetRef.current = headerHeight;
+        }
+        itemFlatListRef.current.scrollToOffset({
+          offset: offsetRef.current,
+          animated: true,
+        });
       }
-      itemFlatListRef.current.scrollToOffset({
-        offset: offsetRef.current,
-        animated: true,
-      });
-    }
-  }, [itemFlatListRef, offsetRef, headerHeight]);
+    },
+    [itemFlatListRef, offsetRef, headerHeight],
+  );
 
   useEffect(() => {
     setCategories(categoryList);
   }, []);
-
-  console.log(scrollY.value);
 
   return (
     <View style={styles.container}>
@@ -84,7 +72,8 @@ const MenuClinic = () => {
       </View>
 
       <MenuClinicFlatlist
-        setOffset={setOffset}
+        footerBottomHeight={80 + insets.bottom}
+        setOffsetY={setOffsetY}
         itemFlatListRef={itemFlatListRef}
         categoryList={categoryList}
         tabIndex={tabIndex}
@@ -114,12 +103,16 @@ const MenuClinic = () => {
         ]}
         pointerEvents="box-none">
         <TabView
-          toTop={toTop}
+          setCurrentTab={setCurrentTab}
           categoryList={categoryList}
           tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
         />
       </Animated.View>
+      <FindShopButton
+        categoryList={categoryList}
+        tabIndex={tabIndex}
+        bottomHeight={Platform.OS === 'ios' ? insets.bottom : 16}
+      />
     </View>
   );
 };
