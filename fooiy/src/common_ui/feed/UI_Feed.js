@@ -3,7 +3,7 @@ import {View, Animated} from 'react-native';
 import {feedsAction} from '../../redux/actions/feedsAction';
 import {useDispatch, useSelector} from 'react-redux';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
+import {apiUrl, toastMessage} from '../../common/Enums';
 import KakaoShareLink from 'react-native-kakao-share-link';
 import FeedProfile from './FeedProfile';
 import FeedImage from './FeedImage';
@@ -17,6 +17,7 @@ import {useDebounce} from '../../common/hooks/useDebounce';
 import checkFeedAuthorization from '../../screens/feed/functions/checkFeedAuthorization';
 import MoreVertModal from '../modal/MoreVertModal';
 import {useNavigation} from '@react-navigation/native';
+import FooiyToast from '../../common/FooiyToast';
 
 const UI_Feed = item => {
   const [disableShopButton, setDisableShopButton] = useState(false);
@@ -66,6 +67,8 @@ const UI_Feed = item => {
 
   const deleteFeed = () => {
     console.log('deleteFeed');
+    toggleModal();
+    FooiyToast.message(toastMessage.FEED_DELETE);
   };
   const reportFeed = async () => {
     toggleModal();
@@ -73,11 +76,13 @@ const UI_Feed = item => {
       params: {
         feed_id: item.id,
       },
-    }).then(
-      res =>
-        res.data.payload === 'success' &&
-        console.warn('피드신고가 완료되었습니다'),
-    );
+    })
+      .then(
+        res =>
+          res.data.payload === 'success' &&
+          FooiyToast.message(toastMessage.FEED_REPORT),
+      )
+      .catch(e => FooiyToast.error());
   };
 
   const debounceLike = async liked => {

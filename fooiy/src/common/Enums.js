@@ -68,3 +68,13 @@ export const apiUrl = {
   //
   MY_PARTY_LIST: 'party/accounts/',
 };
+
+export const toastMessage = {
+  // 피드 신고
+  FEED_REPORT: '피드 신고가 완료되었습니다.',
+  FEED_DELETE: '피드 삭제가 완료되었습니다.',
+  FEED_COMMENT_DELETE: '댓글 삭제가 완료되었습니다.',
+  FEED_COMMENT_REGISTER: '댓글 등록이 완료되었습니다.',
+  FEED_COMMENT_REPORT: '댓글 신고가 완료되었습니다.',
+  FEED_COMMENT_UPDATE: '댓글 수정이 완료되었습니다.',
+};
