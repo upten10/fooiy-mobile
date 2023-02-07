@@ -20,51 +20,26 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 import Header from './Header';
-import {globalVariable} from '../../common/globalVariable';
 import FooiyToast from '../../common/FooiyToast';
-const window = Dimensions.get('window');
+import MenuClinicFlatlist from './MenuClinicFlatlist';
+import TabView from './TabView';
+
 const tabBarHeight = 52;
 const MenuClinic = () => {
-  const TestFlat = props => {
-    const RenderItem = (item, index) => {
-      return (
-        <View
-          style={{
-            ...styles.itemContainer,
-            backgroundColor: index % 2 === 0 ? '#587498' : '#E86850',
-          }}>
-          <Text style={styles.itemText}>1</Text>
-        </View>
-      );
-    };
-    const sampleData = new Array(20).fill(0);
-    return (
-      <Animated.FlatList
-        data={sampleData}
-        renderItem={item => <RenderItem {...item} />}
-        scrollEventThrottle={16}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: props.scrollY}}}],
-          {useNativeDriver: true},
-        )}
-        contentContainerStyle={{
-          paddingTop: headerHeight + tabBarHeight,
-          //   marginTop: 56,
-        }}
-        scrollToOverflowEnabled={false}
-      />
-    );
-  };
-
   const insets = useSafeAreaInsets();
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [categories, setCategories] = useState([]);
+  const [tabIndex, setTabIndex] = useState(0);
+  const itemFlatListRef = useRef(null);
+  const offsetRef = useRef(0);
+
+  // collapsing
   const scrollY = useRef(new Animated.Value(0)).current;
   const headerTranslateY = scrollY.interpolate({
     inputRange: [0, headerHeight],
     outputRange: [0, -headerHeight],
     extrapolate: 'clamp',
   });
-
   const tabBarTranslateY = scrollY.interpolate({
     // 위로 갈때가 input 아래로 갈때가 output
     // output 처음 값이 처음 위치
@@ -76,6 +51,30 @@ const MenuClinic = () => {
     const {height} = event.nativeEvent.layout;
     setHeaderHeight(height);
   }, []);
+  // collapsing
+
+  const setOffset = value => {
+    offsetRef.current = value;
+  };
+
+  const toTop = useCallback(() => {
+    if (itemFlatListRef) {
+      if (offsetRef.current > headerHeight) {
+        offsetRef.current = headerHeight;
+      }
+      itemFlatListRef.current.scrollToOffset({
+        offset: offsetRef.current,
+        animated: true,
+      });
+    }
+  }, [itemFlatListRef, offsetRef, headerHeight]);
+
+  useEffect(() => {
+    setCategories(categoryList);
+  }, []);
+
+  console.log(scrollY.value);
+
   return (
     <View style={styles.container}>
       <View style={[styles.safearea_container, {height: insets.top}]} />
@@ -84,7 +83,15 @@ const MenuClinic = () => {
         <StackHeader title={'메뉴 상담소'} />
       </View>
 
-      <TestFlat scrollY={scrollY} />
+      <MenuClinicFlatlist
+        setOffset={setOffset}
+        itemFlatListRef={itemFlatListRef}
+        categoryList={categoryList}
+        tabIndex={tabIndex}
+        scrollY={scrollY}
+        headerHeight={headerHeight}
+        tabBarHeight={tabBarHeight}
+      />
       <Animated.View
         style={[
           styles.headerContainer,
@@ -106,9 +113,12 @@ const MenuClinic = () => {
           },
         ]}
         pointerEvents="box-none">
-        <TouchableOpacity onPress={() => FooiyToast.error()}>
-          <View style={{backgroundColor: 'red', height: 52}} />
-        </TouchableOpacity>
+        <TabView
+          toTop={toTop}
+          categoryList={categoryList}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+        />
       </Animated.View>
     </View>
   );
@@ -125,12 +135,6 @@ const styles = StyleSheet.create({
   safearea_container: {
     zIndex: 1000,
     backgroundColor: fooiyColor.W,
-  },
-  itemContainer: {
-    width: '100%',
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   headerContainer: {
     position: 'absolute',
