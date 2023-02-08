@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   Platform,
@@ -19,10 +20,19 @@ import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const SettingTab = props => {
-  const {title, description} = props;
+  const {title, description, party_id} = props;
+  const navigation = useNavigation();
+
+  const onPressPartyConfirm = () => {
+    navigation.navigate('PartyConfirm', {
+      party_id,
+    });
+  };
 
   return (
     <TouchableOpacity
+      onPress={title === '파티 가입 신청 목록' ? onPressPartyConfirm : null}
+      activeOpacity={0.8}
       style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -136,7 +146,7 @@ export default props => {
             <View style={styles.introContainer}>
               <TextInput
                 maxLength={100}
-                placeholder="인사말을 입력해주세요."
+                placeholder={'인사말을 입력해주세요.'}
                 value={curIntro}
                 onChangeText={setCurIntro}
                 style={
@@ -160,6 +170,7 @@ export default props => {
             <SettingTab
               title={'파티 가입 신청 목록'}
               description={waiting_join_count + '명'}
+              party_id={party_id}
             />
           </View>
         </View>

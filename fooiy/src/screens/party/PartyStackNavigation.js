@@ -15,6 +15,7 @@ import PartyProfile from './PartyProfile/PartyProfile';
 import OtherUserPage from '../mypage/storage/OtherUserPage';
 import PartySetting from './PartySetting/PartySetting';
 import PartySearch from '../../common_ui/Search/PartySearch';
+import PartyConfirm from './PartySetting/PartyConfirm';
 
 const PartyStack = createStackNavigator();
 
@@ -146,6 +147,16 @@ const PartyStackNavigation = props => {
       <PartyStack.Screen
         name="PartySetting"
         component={PartySetting}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
+        }}
+      />
+      {/* 파티 설정 가입 신청 목록 */}
+      <PartyStack.Screen
+        name="PartyConfirm"
+        component={PartyConfirm}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
             tabBarStyle: {display: 'none'},

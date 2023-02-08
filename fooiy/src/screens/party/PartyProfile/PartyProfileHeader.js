@@ -37,7 +37,6 @@ export default props => {
 
   useEffect(() => {
     setJoinState(join_state);
-    console.log('jjj');
   }, [join_state]);
 
   const joinParty = async () => {

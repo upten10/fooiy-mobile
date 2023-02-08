@@ -86,6 +86,8 @@ export const apiUrl = {
   SEARCH_PARTY: 'search/party/',
   // 파티 가입
   JOIN_PARTY: 'party/accounts/join/',
+  // 파티 가입 검수
+  CONFIRM_PARTY: 'party/accounts/check_join/',
 };
 
 export const toastMessage = {
