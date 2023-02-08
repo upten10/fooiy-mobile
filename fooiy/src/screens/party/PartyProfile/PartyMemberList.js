@@ -79,8 +79,6 @@ export default props => {
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
 
-  console.log(filteredMembers);
-
   useEffect(() => {
     getPartyMemberList();
   }, []);

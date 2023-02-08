@@ -5,6 +5,7 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -12,7 +13,7 @@ import FastImage from 'react-native-fast-image';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {fooiyColor} from '../../../common/globalStyles';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import PartyProfileHeader from './PartyProfileHeader';
@@ -77,9 +78,40 @@ export default props => {
     );
   };
 
+  const onPressSetting = () => {
+    navigation.navigate('PartySetting', {
+      party_id,
+      ...partyInfo,
+    });
+  };
+
+  const ListEmptyComponent = () => {
+    return (
+      <View style={{alignItems: 'center'}}>
+        <FastImage
+          source={require('../../../../assets/image/empty_notice.png')}
+          style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
+        />
+        <Text
+          style={{
+            ...fooiyFont.Body1,
+            color: fooiyColor.G600,
+            textAlign: 'center',
+          }}>
+          아직 등록한 피드가 없어요.{'\n'}
+          방문한 음식점을 등록해보세요!
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
-      <StackHeader title={partyInfo.name} />
+      <StackHeader
+        title={partyInfo.name}
+        owner_id={partyInfo.owner_id}
+        onPressSetting={onPressSetting}
+      />
       {/* Body */}
       <View
         style={{
@@ -100,6 +132,7 @@ export default props => {
           ListHeaderComponent={
             <PartyProfileHeader partyInfo={{...partyInfo, party_id}} />
           }
+          ListEmptyComponent={ListEmptyComponent}
         />
       </View>
     </SafeAreaView>

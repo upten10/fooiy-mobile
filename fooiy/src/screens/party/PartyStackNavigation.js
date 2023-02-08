@@ -13,6 +13,7 @@ import PartyCreateFinishScreen from './PartyCreate/PartyCreateFinishScreen';
 import PartyMemberList from './PartyProfile/PartyMemberList';
 import PartyProfile from './PartyProfile/PartyProfile';
 import OtherUserPage from '../mypage/storage/OtherUserPage';
+import PartySetting from './PartySetting/PartySetting';
 
 const PartyStack = createStackNavigator();
 
@@ -137,6 +138,16 @@ const PartyStackNavigation = props => {
               ...globalStyles.tab_bar,
               ...globalStyles.shadow,
             },
+          });
+        }}
+      />
+      {/* 파티 설정 */}
+      <PartyStack.Screen
+        name="PartySetting"
+        component={PartySetting}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
           });
         }}
       />

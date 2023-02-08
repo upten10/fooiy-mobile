@@ -92,6 +92,7 @@ export {default as PartyIcon} from './Party/Icon_party.svg';
 export {default as PartyCrown} from './Party/Icon_crown.svg';
 export {default as PartyCreateComplete} from './Party/Icon_check_big.svg';
 export {default as PartyProfileArrow} from './Party/Icon_arrow_S.svg';
+export {default as PartySetting} from './Party/Icon_Settings.svg';
 
 export {default as FooiytiEImogi} from './fooiytiImogi/fooiyti_e_imogi.svg';
 export {default as FooiytiIImogi} from './fooiytiImogi/fooiyti_i_imogi.svg';
