@@ -16,7 +16,7 @@ import {useDispatch} from 'react-redux';
 import {Notice} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {fooiyColor} from '../../../common/globalStyles';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
@@ -29,6 +29,7 @@ const EditName = () => {
   const [isValid, setIsValid] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [btnActivate, setBtnActivate] = useState(false);
+  const [focus, setFocus] = useState(true);
 
   const insets = useSafeAreaInsets();
 
@@ -62,6 +63,7 @@ const EditName = () => {
   };
 
   const onInputBlur = () => {
+    setFocus(false);
     inputValue === '' ? null : checkValid(inputValue);
   };
 
@@ -70,6 +72,10 @@ const EditName = () => {
     if (NICKNAME_RULE.test(name)) {
       patchNickName(name);
     }
+  };
+
+  const onInputFocus = () => {
+    setFocus(true);
   };
 
   return (
@@ -88,14 +94,16 @@ const EditName = () => {
             <View style={styles.textInputContainer}>
               <TextInput
                 maxLength={20}
-                autoCapitalize="none"
+                autoCapitalize={false}
                 autoCorrect={false}
                 spellCheck={false}
                 placeholder="특수문자 제외, 최대 20자"
                 placeholderTextColor={fooiyColor.G400}
                 style={
-                  inputValue === ''
-                    ? styles.textInput
+                  !focus
+                    ? inputValue.length > 0
+                      ? [styles.textInput, {color: fooiyColor.B}]
+                      : styles.textInput
                     : nameError
                     ? [
                         styles.textInput,
@@ -105,8 +113,8 @@ const EditName = () => {
                     : [styles.textInput, styles.textInputValue]
                 }
                 onChangeText={onChangeText}
-                // onFocus={}
                 onBlur={onInputBlur}
+                onFocus={onInputFocus}
                 autoFocus
                 value={inputValue}
               />
@@ -190,19 +198,26 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   textInput: {
+    ...fooiyFont.Subtitle2,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
     borderWidth: 1,
     borderColor: fooiyColor.G200,
     borderRadius: 8,
     height: 56,
     color: fooiyColor.G400,
-    fontSize: 16,
-    fontWeight: '600',
     padding: 16,
   },
   textInputValue: {
+    ...fooiyFont.Subtitle2,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
     borderColor: fooiyColor.G400,
     color: fooiyColor.B,
-    fontWeight: '400',
   },
   wrongTextInput: {
     borderColor: fooiyColor.P800,

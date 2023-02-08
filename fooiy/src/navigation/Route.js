@@ -1,8 +1,8 @@
 import FeedStackNavigation from '../screens/feed/StackNavigation';
-import Suggestion from '../screens/suggestion/Suggestion';
 import MypageStackNavigation from '../screens/mypage/StackNavigation';
 import RegisterStackNavigation from '../screens/register/RegisterStackNavigation';
 import Map from '../screens/map/Map';
+import PartyStackNavigation from '../screens/party/PartyStackNavigation';
 
 export const Route = [
   {
@@ -25,8 +25,8 @@ export const Route = [
   },
   {
     id: 4,
-    name: 'Suggestion',
-    component: Suggestion,
+    name: 'PartyStackNavigation',
+    component: PartyStackNavigation,
     text: '파티',
   },
   {

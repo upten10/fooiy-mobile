@@ -1,27 +1,34 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import NaverMapView from 'react-native-nmap';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {fooiyColor, globalStyles} from '../../../common/globalStyles';
+import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
+import {useDebounce} from '../../../common/hooks/useDebounce';
 import {LocationPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import Geolocation from 'react-native-geolocation-service';
-import {throttle} from 'lodash';
 import ShopModal from '../../map/ShopModal';
-import MypageMapMarker from './MypageMapMarker';
 import AndroidMypageMapMarker from './AndroidMypageMapMarker';
-import {useDebounce} from '../../../common/hooks/useDebounce';
+import MypageMapMarker from './MypageMapMarker';
 
 // 다른 유저 페이지에서 접근 시 props에 account_id랑 nickname 들어있음
 const MypageMap = props => {
   const mapView = useRef(null);
   const {debounceCallback, isLoading} = useDebounce({time: 500});
-  const account_id =
-    props.route.params !== undefined ? props.route.params.account_id : null;
+
+  const {
+    // other user page
+    account_id,
+    nickname,
+
+    // party page
+    name,
+    party_id,
+  } = props.route.params;
 
   const [screenLocation, setScreenLocation] = useState([]);
   const [feedMarkers, setFeedMarkers] = useState([]);
@@ -110,12 +117,13 @@ const MypageMap = props => {
   const getFeedMarkerList = async data => {
     await ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
       params: {
-        type: 'mypage',
+        type: party_id !== undefined ? 'party' : 'mypage',
         longitude_left_bottom: screenLocation[0].longitude,
         latitude_left_bottom: screenLocation[0].latitude,
         latitude_right_top: screenLocation[1].latitude,
         longitude_right_top: screenLocation[1].longitude,
         ...(account_id && {other_account_id: account_id}),
+        ...(party_id && {party_id: party_id}),
       },
     })
       .then(res => {
@@ -144,7 +152,13 @@ const MypageMap = props => {
       style={{flex: 1, backgroundColor: fooiyColor.W}}
       edges={Platform.OS === 'ios' ? 'top' : null}>
       <StackHeader
-        title={account_id !== null ? props.route.params.nickname : '내 지도'}
+        title={
+          name !== undefined
+            ? name
+            : nickname !== undefined
+            ? nickname
+            : '내 지도'
+        }
       />
       <View>
         <NaverMapView

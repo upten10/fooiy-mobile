@@ -25,9 +25,23 @@ const MypageFeedDetail = props => {
       getMyFeed(props.route.params.item);
     } else if (props.route.params.feed_id) {
       getFeed(props.route.params.feed_id);
+    } else if (props.route.params.party_id) {
+      getPartyFeed(props.route.params.id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const getPartyFeed = async id => {
+    await ApiManagerV2.get(apiUrl.PARTY_FEED_LIST, {
+      params: {
+        feed_id: id,
+        party_id: props.route.params.party_id,
+        type: 'list',
+      },
+    }).then(res => {
+      setFeeds(res.data.payload.feed_list.results);
+    });
+  };
 
   const getFeed = async feed_id => {
     await ApiManagerV2.get(apiUrl.RETRIEVE_FEED, {
@@ -65,8 +79,12 @@ const MypageFeedDetail = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {shopName === '' ? (
-        <StackHeader title={nickname} />
+      {shopName.length === 0 ? (
+        props.route.params.party_id !== undefined ? (
+          <StackHeader title={props.route.params.name} />
+        ) : (
+          <StackHeader title={nickname} />
+        )
       ) : (
         <StackHeader shop={{shop_name: shopName, shop_address: adress}} />
       )}

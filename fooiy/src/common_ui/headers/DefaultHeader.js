@@ -36,7 +36,7 @@ export const DefaultHeader = props => {
 
   const navigation = useNavigation();
 
-  const {flatListRef, toTop} = props;
+  const {flatListRef, toTop, isParty} = props;
 
   const search = () => {
     navigation.navigate('Search');
@@ -46,10 +46,14 @@ export const DefaultHeader = props => {
     setPushCount(0);
   };
 
+  const partySearch = () => {
+    navigation.navigate('PartySearch');
+  };
+
   return (
     <View>
       <View style={styles.header_container}>
-        {flatListRef.current !== null ? (
+        {flatListRef !== undefined ? (
           <TouchableWithoutFeedback
             onPress={() => {
               console.log('header');
@@ -80,7 +84,7 @@ export const DefaultHeader = props => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              search();
+              isParty === undefined ? search() : partySearch();
             }}>
             <Search_Icon />
           </TouchableOpacity>

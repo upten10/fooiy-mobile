@@ -70,8 +70,24 @@ export const apiUrl = {
   // 음식점 지도 마커 상세
   MAP_SHOP_MARKER_DETAIL: 'shops/shop/shop_map_marker_detail/',
 
-  //
+  // 가입한 파티 리스트
   MY_PARTY_LIST: 'party/accounts/',
+  // 파티 생성
+  CREATE_PARTY: 'party/accounts/',
+  // 파티 정보 변경
+  EDIT_PARTY: 'party/accounts/',
+  // 파티 정보
+  PARTY_INFO: 'party/accounts/info/',
+  // 파티 피드 리스트
+  PARTY_FEED_LIST: 'feeds/feed/party/',
+  // 파티원 리스트
+  PARTY_MEMBER_LIST: 'party/accounts/member_list/',
+  // 파티 검색
+  SEARCH_PARTY: 'search/party/',
+  // 파티 가입
+  JOIN_PARTY: 'party/accounts/join/',
+  // 파티 가입 검수
+  CONFIRM_PARTY: 'party/accounts/check_join/',
 
   // 푸시 알림
   PUSH_NOTIFICATION: 'archives/push_notification/',
