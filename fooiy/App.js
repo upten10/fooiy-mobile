@@ -50,21 +50,30 @@ const toastConfig = {
 };
 
 const App = () => {
+  // Test
+  useEffect(() => {
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      // remoteMessage ? console.log('true') : console.log('false');
+      console.log(remoteMessage, 'Test notification');
+    });
+  }, []);
   // Background Notification
   useEffect(() => {
-    messaging().onNotificationOpenedApp(remoteMessage => {
+    messaging().onNotificationOpenedApp(async remoteMessage => {
       console.log(remoteMessage, 'Background notification');
     });
   }, []);
-  // Quit Notification
-  useEffect(() => {
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => console.log(remoteMessage, 'Quit notification'));
-  }, []);
+  // // Quit Notification
+  // useEffect(() => {
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       console.log(remoteMessage, 'Quit notification');
+  //     });
+  // }, []);
   // Foreground Notification
   useEffect(() => {
-    messaging().onMessage(remoteMessage => {
+    messaging().onMessage(async remoteMessage => {
       console.log(remoteMessage, 'Foreground notification');
       const {notification} = remoteMessage;
       if (notification !== null) {

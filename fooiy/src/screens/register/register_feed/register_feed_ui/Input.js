@@ -15,11 +15,9 @@ const Input = props => {
       <Text style={styles.title}>{title}</Text>
       <View
         style={
-          checkInput()
-            ? styles.input_container
-            : isFocus
-            ? styles.input_container
-            : [styles.input_container, {borderColor: fooiyColor.G200}]
+          isFocus
+            ? [styles.input_container, {borderColor: fooiyColor.G400}]
+            : styles.input_container
         }>
         <TextInput
           ref={textInputRef}
@@ -51,7 +49,7 @@ const Input = props => {
           placeholderTextColor={fooiyColor.G400}
           value={value}
         />
-        {isFocus && checkInput() ? (
+        {checkInput() ? (
           <TouchableOpacity
             hitSlop={{top: 16, bottom: 16, left: 16, right: 16}}
             onPress={() => {
@@ -95,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: fooiyColor.G400,
+    borderColor: fooiyColor.G200,
   },
   input: {
     flex: 1,

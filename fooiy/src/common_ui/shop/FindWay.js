@@ -1,24 +1,34 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Linking} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Linking,
+  Platform,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import NaverMapView, {Marker} from 'react-native-nmap';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor} from '../../common/globalStyles';
 import {StackHeader} from '../headers/StackHeader';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Copy, Current_Location_2} from '../../../assets/icons/svg';
+import {
+  Copy,
+  Current_Location_2,
+  KakaoMap,
+  NaverMap,
+  Tmap,
+} from '../../../assets/icons/svg';
 import {fooiyFont} from '../../common/globalStyles';
 import {check, PERMISSIONS} from 'react-native-permissions';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
 
 const FindWay = props => {
   const shop = props.route.params.shop;
   const mapView = useRef(null);
   const insets = useSafeAreaInsets();
   const [isModalVisible, setModalVisible] = useState(false);
-  const [markerImage, setMarkerImage] = useState();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -70,19 +80,6 @@ const FindWay = props => {
       `${shop.shop_latitude}`;
     await Linking.openURL(destinationURL);
   };
-  const getMarkerImage = async () => {
-    await ApiManagerV2.get(apiUrl.SHOP_LIST, {
-      params: {
-        shop_id: props.route.params.shop.shop_id,
-      },
-    }).then(res =>
-      setMarkerImage(res.data.payload.feed_list.results[0].image[0]),
-    );
-  };
-
-  useEffect(() => {
-    getMarkerImage();
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -104,24 +101,18 @@ const FindWay = props => {
                 longitude: shop.shop_longitude * 1,
                 latitude: shop.shop_latitude * 1,
               }}
-              image={{uri: markerImage}}
-              style={styles.marker_image}
-              onClick={() => onClickMarker(item, index)}
-            />
-            <Marker
-              coordinate={{
-                longitude: shop.shop_longitude * 1,
-                latitude: shop.shop_latitude * 1,
-              }}
-              image={require('../../../assets/icons/marker/mypage_marker_clicked.png')}
-              style={styles.marker_border}
-              anchor={{x: 0.5, y: 0.838}}
+              width={34}
+              height={44}
+              image={require('../../../assets/image/Current_Position.png')}
             />
           </NaverMapView>
         </View>
         <View style={styles.copy_container}>
           <Text style={styles.shop_address}>{shop.shop_address}</Text>
-          <TouchableOpacity style={styles.copy_btn} onPress={onClickCopy}>
+          <TouchableOpacity
+            style={styles.copy_btn}
+            onPress={onClickCopy}
+            activeOpacity={0.8}>
             <Text style={styles.copy_text}>주소 복사</Text>
             <Copy style={styles.copy_icon} />
           </TouchableOpacity>
@@ -142,33 +133,38 @@ const FindWay = props => {
           <Modal
             isVisible={isModalVisible}
             onBackdropPress={toggleModal}
-            style={{backgroundColor: fooiyColor.P100}}>
-            <View>
-              <TouchableOpacity onPress={onClickNaverMap}>
-                <View
-                  style={{
-                    width: 50,
-                    height: 50,
-                    backgroundColor: fooiyColor.G100,
-                  }}></View>
+            style={{
+              justifyContent: 'flex-end',
+              margin: 0,
+            }}>
+            <View style={styles.item}>
+              <TouchableOpacity
+                onPress={onClickNaverMap}
+                style={{alignItems: 'center'}}
+                activeOpacity={0.8}>
+                <NaverMap />
+                <Text style={styles.item_text}>네이버 지도</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={onClickKakaoMap}>
-                <View
-                  style={{
-                    width: 50,
-                    height: 50,
-                    backgroundColor: fooiyColor.G300,
-                  }}></View>
+              <TouchableOpacity
+                onPress={onClickKakaoMap}
+                style={{marginLeft: 48, marginRight: 48, alignItems: 'center'}}
+                activeOpacity={0.8}>
+                <KakaoMap />
+                <Text style={styles.item_text}>카카오맵</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={onClickTMap}>
-                <View
-                  style={{
-                    width: 50,
-                    height: 50,
-                    backgroundColor: fooiyColor.G500,
-                  }}></View>
+              <TouchableOpacity
+                onPress={onClickTMap}
+                style={{alignItems: 'center'}}
+                activeOpacity={0.8}>
+                <Tmap />
+                <Text style={styles.item_text}>티맵</Text>
               </TouchableOpacity>
             </View>
+            {Platform.OS === 'ios' ? (
+              <View
+                style={{height: insets.bottom, backgroundColor: fooiyColor.W}}
+              />
+            ) : null}
           </Modal>
           <Text style={styles.find_way_text}>길찾기</Text>
         </TouchableOpacity>
@@ -187,14 +183,6 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '98%',
-  },
-  marker_image: {
-    width: 38.4,
-    height: 38.4,
-  },
-  marker_border: {
-    width: 44.8,
-    height: 49.6,
   },
   copy_container: {
     width: '100%',
@@ -270,5 +258,19 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     color: fooiyColor.W,
     textAlign: 'center',
+  },
+  item: {
+    height: 130,
+    backgroundColor: fooiyColor.W,
+    flexDirection: 'row',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  item_text: {
+    marginTop: 8,
+    ...fooiyFont.Caption1,
+    color: fooiyColor.G500,
   },
 });

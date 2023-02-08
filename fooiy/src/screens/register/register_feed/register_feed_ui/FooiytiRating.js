@@ -99,10 +99,13 @@ function FooiytiRating(props) {
           </Text>
         </View>
         <View style={styles.slider}>
+          <View style={styles.track} />
           <View style={{flexDirection: 'row'}}>
             {[...Array(5)].map((value, index) => (
-              <TouchableWithoutFeedback onPress={() => onPress(index)}>
-                <View key={index} style={styles.track}>
+              <TouchableWithoutFeedback
+                onPress={() => onPress(index)}
+                key={index}>
+                <View style={styles.track_box}>
                   <View style={styles.track_mark} />
                 </View>
               </TouchableWithoutFeedback>
@@ -146,6 +149,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   track: {
+    position: 'absolute',
+    borderBottomWidth: 1,
+    borderColor: fooiyColor.G200,
+    width: BOX * 4,
+    top: 20,
+  },
+  track_box: {
     width: BOX,
     height: 40,
     justifyContent: 'center',
