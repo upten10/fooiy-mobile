@@ -41,12 +41,14 @@ const FeedProfile = props => {
           <View>
             <Text style={styles.nickname}>{nickname}</Text>
             <View style={styles.profile_detail_container}>
-              <Rank
-                containerStyle={{marginLeft: 8}}
-                rank={rank}
-                font={fooiyFont.Subtitle4}
-              />
-              <Text style={styles.fooiyti}>{fooiyti}</Text>
+              {rank && (
+                <Rank
+                  containerStyle={{marginLeft: 8}}
+                  rank={rank}
+                  font={fooiyFont.Subtitle4}
+                />
+              )}
+              {fooiyti && <Text style={styles.fooiyti}>{fooiyti}</Text>}
             </View>
           </View>
         </View>

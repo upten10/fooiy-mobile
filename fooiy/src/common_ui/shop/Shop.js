@@ -73,12 +73,12 @@ const Shop = props => {
 
   const go_map = () => {
     navigation.navigate('FindWay', {
-      shop: props.route.params,
+      shop: shopInfo,
     });
   };
   const onClickMenu = () => {
     navigation.navigate('Menu', {
-      shop: props.route.params,
+      shop: shopInfo,
     });
   };
   const onClickRegister = () => {

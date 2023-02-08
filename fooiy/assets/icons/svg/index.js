@@ -64,6 +64,7 @@ export {default as TasteEvaluation50} from './TasteEvaluation/taste_evaluation_5
 export {default as TasteEvaluation70} from './TasteEvaluation/taste_evaluation_70.svg';
 export {default as TasteEvaluation99} from './TasteEvaluation/taste_evaluation_99.svg';
 export {default as TasteEvaluationDescription} from './TasteEvaluation/taste_evaluation_description.svg';
+export {default as ShopFooiytiDescription} from './shop_fooiyti_description';
 export {default as SearchDark} from './Icon_Search_Dark.svg';
 export {default as CafeShopDark} from './Icon_Cafe_Shop_Dark.svg';
 export {default as CafeShopLight} from './Icon_Cafe_Shop_Light.svg';
@@ -83,6 +84,7 @@ export {default as Total_3} from './Slider/Total_3.svg';
 export {default as Total_4} from './Slider/Total_4.svg';
 export {default as ArrowIconBottomDark} from './Icon_arrrow_bottom_dark.svg';
 export {default as LocationDarkIcon} from './Icon_location.svg';
+export {default as LocationGrayIcon} from './Icon_location_gray.svg';
 export {default as RegistCommentFocused} from './RegistCommentFocused.svg';
 export {default as RegistComment} from './RegistComment.svg';
 export {default as WhiteClear} from './Icon_clear_white.svg';
@@ -95,3 +97,5 @@ export {default as FooiytiTImogi} from './fooiytiImogi/fooiyti_t_imogi.svg';
 export {default as FooiytiFImogi} from './fooiytiImogi/fooiyti_f_imogi.svg';
 export {default as FooiytiAImogi} from './fooiytiImogi/fooiyti_a_imogi.svg';
 export {default as FooiytiCImogi} from './fooiytiImogi/fooiyti_c_imogi.svg';
+
+export {default as EmptyMenuClinic} from './empty_menu_clinic.svg';

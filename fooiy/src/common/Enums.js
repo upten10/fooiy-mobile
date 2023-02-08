@@ -48,6 +48,8 @@ export const apiUrl = {
 
   // 메뉴 상담소
   MENU_CLINIC: 'shops/menu_clinic/latest_order/',
+  // 메뉴 상담소 매장 찾기
+  MENU_NEAR_CLINIC: 'shops/menu_clinic/distance_order/',
 
   // 음식점 지도 리스트
   MAP_SHOP_LIST: 'shops/shop/shop_map_list/',
@@ -72,6 +74,9 @@ export const apiUrl = {
 
   //
   MY_PARTY_LIST: 'party/accounts/',
+
+  // 메뉴판 제보하기
+  MENU_REPORT: 'shops/menu/suggestion/',
 };
 
 export const toastMessage = {

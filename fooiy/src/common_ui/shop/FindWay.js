@@ -12,6 +12,7 @@ import {check, PERMISSIONS} from 'react-native-permissions';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 
 const FindWay = props => {
   const shop = props.route.params.shop;
@@ -24,7 +25,8 @@ const FindWay = props => {
     setModalVisible(!isModalVisible);
   };
   const onClickCopy = () => {
-    Clipboard.setString(shop.shop_address);
+    FooiyToast.message('주소가 복사되었습니다.', true);
+    Clipboard.setString(shop.address);
   };
   const onClickLocationBtn = () => {
     check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION).then(res => {
@@ -46,18 +48,16 @@ const FindWay = props => {
   const onClickNaverMap = async () => {
     destinationURL =
       'nmap://route/car?dlat=' +
-      `${shop.shop_latitude}` +
+      `${shop.latitude}` +
       '&dlng=' +
-      `${shop.shop_longitude}` +
+      `${shop.longitude}` +
       '&dname=' +
       `${shop.shop_name}`;
     await Linking.openURL(destinationURL);
   };
   const onClickKakaoMap = async () => {
     destinationURL =
-      'kakaomap://route?ep=' +
-      `${shop.shop_latitude},${shop.shop_longitude}` +
-      '&by=CAR';
+      'kakaomap://route?ep=' + `${shop.latitude},${shop.longitude}` + '&by=CAR';
     await Linking.openURL(destinationURL);
   };
   const onClickTMap = async () => {
@@ -65,9 +65,9 @@ const FindWay = props => {
       'tmap://route?goalname=' +
       `${shop.shop_name}` +
       '&goalx=' +
-      `${shop.shop_longitude}` +
+      `${shop.longitude}` +
       '&goaly=' +
-      `${shop.shop_latitude}`;
+      `${shop.latitude}`;
     await Linking.openURL(destinationURL);
   };
   const getMarkerImage = async () => {
@@ -86,7 +86,7 @@ const FindWay = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StackHeader title={shop.shop_name} />
+      <StackHeader title={shop.name} />
       <View>
         <View>
           <NaverMapView
@@ -94,15 +94,15 @@ const FindWay = props => {
             showsMyLocationButton={false}
             zoomControl={false}
             center={{
-              longitude: shop.shop_longitude * 1,
-              latitude: shop.shop_latitude * 1,
+              longitude: shop.longitude * 1,
+              latitude: shop.latitude * 1,
               zoom: 17,
             }}
             style={styles.map}>
             <Marker
               coordinate={{
-                longitude: shop.shop_longitude * 1,
-                latitude: shop.shop_latitude * 1,
+                longitude: shop.longitude * 1,
+                latitude: shop.latitude * 1,
               }}
               image={{uri: markerImage}}
               style={styles.marker_image}
@@ -110,8 +110,8 @@ const FindWay = props => {
             />
             <Marker
               coordinate={{
-                longitude: shop.shop_longitude * 1,
-                latitude: shop.shop_latitude * 1,
+                longitude: shop.longitude * 1,
+                latitude: shop.latitude * 1,
               }}
               image={require('../../../assets/icons/marker/mypage_marker_clicked.png')}
               style={styles.marker_border}
@@ -120,7 +120,7 @@ const FindWay = props => {
           </NaverMapView>
         </View>
         <View style={styles.copy_container}>
-          <Text style={styles.shop_address}>{shop.shop_address}</Text>
+          <Text style={styles.shop_address}>{shop.address}</Text>
           <TouchableOpacity style={styles.copy_btn} onPress={onClickCopy}>
             <Text style={styles.copy_text}>주소 복사</Text>
             <Copy style={styles.copy_icon} />

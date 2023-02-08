@@ -38,7 +38,7 @@ const ShopFooiyti = props => {
                 : fooiyColor.P500
               : null
           }
-          inActiveStrokeColor={fooiyColor.G50}
+          inActiveStrokeColor={fooiyColor.G100}
           inActiveStrokeOpacity={0.5}
           inActiveStrokeWidth={4}
           activeStrokeWidth={5}
@@ -75,6 +75,7 @@ const ShopFooiyti = props => {
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
       />
+      <Margin h={24} />
     </View>
   );
 };

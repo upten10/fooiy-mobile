@@ -28,6 +28,8 @@ import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
 import FeedComment from '../screens/feed/FeedComment';
 import ModifyFeed from '../screens/feed/ModifyFeed';
 import MenuClinic from '../screens/menu_clinic/MenuClinic';
+import MenuClinicFindShop from '../screens/menu_clinic/MenuClinicFindShop';
+import MenuReport from '../common_ui/shop/MenuReport';
 import {globalVariable} from '../common/globalVariable';
 import {globalStyles} from '../common/globalStyles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -56,6 +58,8 @@ const RootNavigator = () => {
       <Stack.Screen name="FeedComment" component={FeedComment} />
       <Stack.Screen name="ModifyFeed" component={ModifyFeed} />
       <Stack.Screen name="MenuClinic" component={MenuClinic} />
+      <Stack.Screen name="MenuClinicFindShop" component={MenuClinicFindShop} />
+      <Stack.Screen name="MenuReport" component={MenuReport} />
 
       {/* shop */}
       <Stack.Screen name="FindWay" component={FindWay} />

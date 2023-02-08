@@ -16,6 +16,7 @@ import {apiUrl} from '../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
 
 import FastImage from 'react-native-fast-image';
+import FooiyToast from '../../common/FooiyToast';
 
 const MenuClinicFlatlist = props => {
   const {
@@ -61,10 +62,6 @@ const MenuClinicFlatlist = props => {
     setOffsetY(e.nativeEvent.contentOffset.y);
   };
 
-  const onScroll = e => {
-    console.log(e.nativeEvent.contentOffset);
-  };
-
   const getShopList = async (offset, categoryFeedlist) => {
     await ApiManagerV2.get(apiUrl.MENU_CLINIC, {
       params: {
@@ -72,13 +69,15 @@ const MenuClinicFlatlist = props => {
         offset: offset,
         limit: globalVariable.Limit20,
       },
-    }).then(res => {
-      setCategoryFeedlist([
-        ...categoryFeedlist,
-        ...res.data.payload.feed_list.results,
-      ]);
-      setTotalCount(res.data.payload.feed_list.total_count);
-    });
+    })
+      .then(res => {
+        setCategoryFeedlist([
+          ...categoryFeedlist,
+          ...res.data.payload.feed_list.results,
+        ]);
+        setTotalCount(res.data.payload.feed_list.total_count);
+      })
+      .catch(e => FooiyToast.error());
   };
   const loadMoreItem = () => {
     if (totalCount > offset + globalVariable.Limit20) {

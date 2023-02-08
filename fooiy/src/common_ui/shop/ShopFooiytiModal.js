@@ -4,9 +4,8 @@ import Modal from 'react-native-modal';
 
 import {globalVariable} from '../../common/globalVariable';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {Cancel} from '../../../assets/icons/svg';
+import {Cancel, ShopFooiytiDescription} from '../../../assets/icons/svg';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {TasteEvaluationDescription} from '../../../assets/icons/svg';
 
 const ShopFooiytiModal = props => {
   const {isModalVisible, setModalVisible} = props;
@@ -31,9 +30,7 @@ const ShopFooiytiModal = props => {
           입맛에 맞을 확률이 높아져요.
         </Text>
         <View style={styles.taste_evaluation_image}>
-          <TasteEvaluationDescription
-            style={{width: globalVariable.width - 280}}
-          />
+          <ShopFooiytiDescription style={{width: globalVariable.width - 280}} />
         </View>
       </View>
     </Modal>
@@ -44,7 +41,7 @@ export default memo(ShopFooiytiModal);
 
 const styles = StyleSheet.create({
   container: {
-    height: 248,
+    height: 252,
     width: globalVariable.width - 32,
     borderRadius: 16,
     backgroundColor: fooiyColor.W,
@@ -71,7 +68,9 @@ const styles = StyleSheet.create({
     color: fooiyColor.G800,
   },
   taste_evaluation_image: {
-    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 108,
     width: globalVariable.width - 80,
     marginLeft: 24,
     marginTop: 16,

@@ -7,7 +7,7 @@ import Margin from '../../common_ui/Margin';
 import {categoryToKorean} from './categoryList';
 
 const TabView = props => {
-  const {categoryList, tabIndex, setCurrentTab} = props;
+  const {categoryList, tabIndex, setCurrentTab, tabRef} = props;
 
   const CategoryTab = item => {
     return (
@@ -32,6 +32,7 @@ const TabView = props => {
   return (
     <View style={{backgroundColor: fooiyColor.W}}>
       <FlatList
+        ref={tabRef}
         data={categoryList}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => index}
@@ -39,6 +40,15 @@ const TabView = props => {
         horizontal={true}
         ListHeaderComponent={<Margin w={8} />}
         ListFooterComponent={<Margin w={8} />}
+        onScrollToIndexFailed={info => {
+          const wait = new Promise(resolve => setTimeout(resolve, 500));
+          wait.then(() => {
+            tabRef.current?.scrollToIndex({
+              index: tabIndex,
+              animated: true,
+            });
+          });
+        }}
       />
     </View>
   );

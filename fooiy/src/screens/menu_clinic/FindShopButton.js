@@ -3,11 +3,19 @@ import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {categoryToKorean} from './categoryList';
+import {useNavigation} from '@react-navigation/native';
 
 const FindShopButton = props => {
   const {categoryList, tabIndex, bottomHeight} = props;
+  const navigation = useNavigation();
+  const onClickFindShop = () => {
+    navigation.navigate('MenuClinicFindShop', {
+      categoryList: categoryList,
+      tabIndex: tabIndex,
+    });
+  };
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={() => console.warn(123)}>
+    <TouchableOpacity activeOpacity={0.8} onPress={() => onClickFindShop()}>
       <View style={[styles.container, {bottom: bottomHeight}]}>
         <Text style={styles.find_shop_text}>
           '{categoryToKorean[categoryList[tabIndex]]}' 주변 맛집 찾기
