@@ -57,11 +57,13 @@ const FindShop = props => {
           <TextInput
             placeholder="음식점을 검색해보세요!"
             style={
-              value !== ''
-                ? styles.input_value
-                : isFocus
-                ? [styles.input_blur, {borderColor: fooiyColor.G400}]
-                : styles.input_blur
+              !isFocus && value === ''
+                ? [styles.empty_value, {borderColor: fooiyColor.G200}]
+                : isFocus && value === ''
+                ? [styles.empty_value, {borderColor: fooiyColor.G400}]
+                : isFocus && value !== ''
+                ? [styles.is_value, {borderColor: fooiyColor.G400}]
+                : [styles.is_value, {borderColor: fooiyColor.G200}]
             }
             maxLength={20}
             autoCapitalize="none"
@@ -145,25 +147,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  input_value: {
+  empty_value: {
     width: '100%',
-    height: '100%',
     borderWidth: 1,
     borderRadius: 8,
+    height: 56,
     padding: 16,
-    justifyContent: 'center',
-    borderColor: fooiyColor.G400,
-    ...fooiyFont.Body1,
-  },
-  input_blur: {
-    width: '100%',
-    height: '100%',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 16,
-    justifyContent: 'center',
-    borderColor: fooiyColor.G200,
     ...fooiyFont.Subtitle2,
+    lineHeight: Platform.select({ios: 0, android: null}),
+  },
+  is_value: {
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 8,
+    height: 56,
+    padding: 16,
+    ...fooiyFont.Body1,
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
   search_icon: {
     width: 24,

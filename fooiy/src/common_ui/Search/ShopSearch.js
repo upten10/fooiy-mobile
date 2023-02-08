@@ -30,6 +30,8 @@ const ShopSearch = () => {
     longitude: 0,
     latitude: 0,
   });
+  const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
 
   const onFocus = () => {
     setFocus(true);
@@ -37,21 +39,41 @@ const ShopSearch = () => {
   const onBlur = () => {
     setFocus(false);
   };
+
+  const getShop = async (offset, value, shops) => {
+    await ApiManagerV2.get(apiUrl.SHOP_SEARCH, {
+      params: {
+        limit: globalVariable.FeedLimit,
+        offset: offset,
+        keyword: value,
+        longitude: currentLocation.longitude,
+        latitude: currentLocation.latitude,
+      },
+    })
+      .then(res => {
+        {
+          setShop([...shops, ...res.data.payload.shop_list.results]);
+          setTotalCount(res.data.payload.shop_list.total_count);
+          console.log('토탈카운트', res.data.payload.shop_list.total_count);
+        }
+      })
+      .catch(e => null);
+  };
+  const loadMoreItem = () => {
+    if (totalCount > offset + globalVariable.FeedLimit) {
+      setOffset(offset + globalVariable.FeedLimit);
+      getShop(offset + globalVariable.FeedLimit, value, shop);
+    }
+  };
+
   const debounceCallback = useCallback(value => {
     debounceSearch(value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const debounceSearch = debounce(async value => {
-    value &&
-      (await ApiManagerV2.get(apiUrl.SHOP_SEARCH, {
-        params: {
-          keyword: value,
-          longitude: currentLocation.longitude,
-          latitude: currentLocation.latitude,
-        },
-      }).then(res => {
-        setShop(res.data.payload.shop_list.results);
-      }));
+    setOffset(0);
+    setTotalCount(0);
+    value && getShop(0, value, []);
   }, 300);
   const ListEmptyComponent = () => {
     return (
@@ -84,7 +106,7 @@ const ShopSearch = () => {
       </View>
     );
   };
-  const ShopItem = item => {
+  const ShopItem = useCallback(item => {
     const {
       index,
       item: {
@@ -151,7 +173,7 @@ const ShopSearch = () => {
         </View>
       </TouchableOpacity>
     );
-  };
+  }, []);
   const MainUI = useCallback(() => {
     if (value.length !== 0) {
       // 아이템들 그려주면 됨.
@@ -169,9 +191,12 @@ const ShopSearch = () => {
             }}
             scrollEventThrottle={16}
             bounces={true}
-            scrollToOverflowEnabled
+            onScroll={Keyboard.dismiss}
+            // scrollToOverflowEnabled
             showsVerticalScrollIndicator={false}
             ListFooterComponent={<View style={{marginBottom: 16}} />}
+            onEndReached={loadMoreItem}
+            onEndReachedThreshold={2}
           />
         </>
       );
@@ -199,7 +224,7 @@ const ShopSearch = () => {
         </>
       );
     }
-  }, [value, shop]);
+  }, [shop, totalCount]);
 
   useEffect(() => {
     debounceCallback(value);
@@ -236,11 +261,13 @@ const ShopSearch = () => {
             onChangeText={setValue}
             value={value}
             style={
-              value !== ''
-                ? styles.input_value
-                : focus
-                ? [styles.input_blur, {borderColor: fooiyColor.G400}]
-                : styles.input_blur
+              !focus && value === ''
+                ? [styles.empty_value, {borderColor: fooiyColor.G200}]
+                : focus && value === ''
+                ? [styles.empty_value, {borderColor: fooiyColor.G400}]
+                : focus && value !== ''
+                ? [styles.is_value, {borderColor: fooiyColor.G400}]
+                : [styles.is_value, {borderColor: fooiyColor.G200}]
             }
           />
           <Search_Icon style={{position: 'absolute', right: 16}} />
@@ -289,25 +316,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  input_value: {
+  empty_value: {
     width: '100%',
     borderWidth: 1,
-    borderColor: fooiyColor.G400,
-    borderRadius: 8,
-    height: 56,
-    padding: 16,
-    ...fooiyFont.Body1,
-    color: fooiyColor.B,
-    lineHeight: Platform.select({ios: 0, android: null}),
-  },
-  input_blur: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: fooiyColor.G200,
     borderRadius: 8,
     height: 56,
     padding: 16,
     ...fooiyFont.Subtitle2,
+    lineHeight: Platform.select({ios: 0, android: null}),
+  },
+  is_value: {
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 8,
+    height: 56,
+    padding: 16,
+    ...fooiyFont.Body1,
     lineHeight: Platform.select({ios: 0, android: null}),
   },
 });

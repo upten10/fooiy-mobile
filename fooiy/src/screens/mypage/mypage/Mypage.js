@@ -1,18 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  Image,
   FlatList,
+  Image,
   ImageBackground,
+  StyleSheet,
   Text,
+  View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
@@ -20,7 +17,6 @@ import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {DefaultHeader} from '../../../common_ui/headers/DefaultHeader';
-import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import MypageProfile from './MypageProfile';
 
 const limit = 12;
@@ -121,45 +117,45 @@ const Mypage = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const ListEmptyComponent = () => {
+    return (
+      <View style={{alignItems: 'center'}}>
+        <FastImage
+          source={require('../../../../assets/image/empty_notice.png')}
+          style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
+        />
+        <Text
+          style={{
+            ...fooiyFont.Body1,
+            color: fooiyColor.G600,
+            textAlign: 'center',
+          }}>
+          아직 등록한 피드가 없어요.{'\n'}
+          방문한 음식점을 등록해보세요!
+        </Text>
+      </View>
+    );
+  };
+
   const keyExtractor = useCallback((item, index) => index.toString(), []);
 
   return (
     <SafeAreaView style={styles.rootContainer}>
       <DefaultHeader flatListRef={flatListRef} toTop={toTop} />
-      {noFeedImage === '' ? (
-        <FlatList
-          ref={flatListRef}
-          data={feeds}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          scrollEventThrottle={16}
-          onEndReached={loadMoreFeeds}
-          bounces={true}
-          numColumns={3}
-          scrollToOverflowEnabled
-          ListHeaderComponent={MypageProfile}
-          ListFooterComponent={() => <View style={styles.emptyComp}></View>}
-        />
-      ) : (
-        <View>
-          <MypageProfile />
-          <View style={{alignItems: 'center'}}>
-            <FastImage
-              source={require('../../../../assets/image/empty_notice.png')}
-              style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
-            />
-            <Text
-              style={{
-                ...fooiyFont.Body1,
-                color: fooiyColor.G600,
-                textAlign: 'center',
-              }}>
-              아직 등록한 피드가 없어요.{'\n'}
-              방문한 음식점을 등록해보세요!
-            </Text>
-          </View>
-        </View>
-      )}
+      <FlatList
+        ref={flatListRef}
+        data={feeds}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        scrollEventThrottle={16}
+        onEndReached={loadMoreFeeds}
+        bounces={true}
+        numColumns={3}
+        scrollToOverflowEnabled
+        ListHeaderComponent={MypageProfile}
+        ListFooterComponent={() => <View style={styles.emptyComp}></View>}
+        ListEmptyComponent={ListEmptyComponent}
+      />
     </SafeAreaView>
   );
 };

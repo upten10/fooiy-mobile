@@ -45,5 +45,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textTransform: 'uppercase',
     color: fooiyColor.W,
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
 });

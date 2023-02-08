@@ -1,22 +1,22 @@
-import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Mypage from './mypage/Mypage';
+import React from 'react';
+import {useSelector} from 'react-redux';
 import {globalStyles} from '../../common/globalStyles';
-import Storage from './storage/Storage';
+import {globalVariable} from '../../common/globalVariable';
+import Search from '../../common_ui/Search/Search';
+import Shop from '../../common_ui/shop/Shop';
+import Mypage from './mypage/Mypage';
 import MypageFeedDetail from './mypage/MypageFeedDetail';
-import StorageSingleFeed from './storage/StorageSingleFeed';
-import OtherUserPage from './storage/OtherUserPage';
-import OtherUserFeedDetail from './storage/OtherUserFeedDetail';
-import Suggestion from './setting/Suggestion';
-import Setting from './setting/Setting';
-import ProfileImg from './setting/ProfileImg';
 import EditName from './setting/EditName';
+import ProfileImg from './setting/ProfileImg';
+import Setting from './setting/Setting';
+import Suggestion from './setting/Suggestion';
 import Withdraw from './setting/Withdraw';
 import WithdrawConfirm from './setting/WithdrawConfirm';
-import Search from '../../common_ui/Search/Search';
-import {useSelector} from 'react-redux';
-import {globalVariable} from '../../common/globalVariable';
-import Shop from '../../common_ui/shop/Shop';
+import OtherUserFeedDetail from './storage/OtherUserFeedDetail';
+import OtherUserPage from './storage/OtherUserPage';
+import Storage from './storage/Storage';
+import StorageSingleFeed from './storage/StorageSingleFeed';
 
 const Stack = createStackNavigator();
 const MypageStackNavigation = props => {
@@ -89,7 +89,19 @@ const MypageStackNavigation = props => {
           });
         }}
       />
-      <Stack.Screen name="StorageSingleFeed" component={StorageSingleFeed} />
+      <Stack.Screen
+        name="StorageSingleFeed"
+        component={StorageSingleFeed}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
+          });
+        }}
+      />
       <Stack.Screen name="Storage" component={Storage} />
       <Stack.Screen
         name="Setting"

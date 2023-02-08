@@ -6,11 +6,15 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {GoBackArrow, Map_shop} from '../../../assets/icons/svg';
+import {GoBackArrow, Map_shop, PartySetting} from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
+import {useSelector} from 'react-redux';
+
 export const StackHeader = props => {
   const {toTop} = props;
   const navigation = useNavigation();
+  const userInfoRedux = useSelector(state => state.userInfo.value);
+
   return (
     <View>
       <View style={styles.header_container}>
@@ -80,6 +84,15 @@ export const StackHeader = props => {
               props.map();
             }}>
             <Map_shop style={styles.map_icon} />
+          </TouchableOpacity>
+        ) : props.owner_id && props.owner_id === userInfoRedux.public_id ? (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}
+            onPress={() => {
+              props.onPressSetting();
+            }}>
+            <PartySetting />
           </TouchableOpacity>
         ) : null}
       </View>

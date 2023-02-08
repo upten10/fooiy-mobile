@@ -8,7 +8,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {globalVariable} from '../common/globalVariable';
 import {useDispatch} from 'react-redux';
 import {insetsAction} from '../redux/actions/insetsAction';
-import TabBarIcon from '../../assets/icons/svg/TabBarIcon';
+import TabBarIcon from '../../assets/icons/svg/TabBar/TabBarIcon';
 
 const Tab = createBottomTabNavigator();
 

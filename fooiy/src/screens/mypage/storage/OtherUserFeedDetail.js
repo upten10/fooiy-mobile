@@ -1,14 +1,12 @@
-import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
-import {FlatList, FlatListgi, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {globalVariable} from '../../../common/globalVariable';
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import UI_Feed from '../../../common_ui/feed/UI_Feed';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {RenderLoader} from '../../../common_ui/RenderLoader';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 const OtherUserFeedDetail = props => {
   const [feeds, setFeeds] = useState([]);
