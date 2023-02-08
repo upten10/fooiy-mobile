@@ -16,6 +16,7 @@ import OtherUserPage from '../mypage/storage/OtherUserPage';
 import PartySetting from './PartySetting/PartySetting';
 import PartySearch from '../../common_ui/Search/PartySearch';
 import PartyConfirm from './PartySetting/PartyConfirm';
+import MypageMap from '../mypage/mypage_map/MypageMap';
 
 const PartyStack = createStackNavigator();
 
@@ -167,6 +168,16 @@ const PartyStackNavigation = props => {
       <PartyStack.Screen
         name="PartySearch"
         component={PartySearch}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
+        }}
+      />
+      {/* 파티 지도 */}
+      <PartyStack.Screen
+        name="PartyMap"
+        component={MypageMap}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
             tabBarStyle: {display: 'none'},

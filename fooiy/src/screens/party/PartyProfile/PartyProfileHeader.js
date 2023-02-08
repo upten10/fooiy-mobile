@@ -97,6 +97,14 @@ export default props => {
     });
   };
 
+  const onPressMap = () => {
+    navigation.navigate('PartyMap', {
+      party_id,
+      name,
+      account_id: -1,
+    });
+  };
+
   return (
     <View style={{paddingHorizontal: 16, paddingTop: 16}}>
       {/* 프로필 사진 있는 로우 */}
@@ -171,7 +179,9 @@ export default props => {
           justifyContent: 'space-between',
           marginBottom: 24,
         }}>
-        <View
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onPressMap}
           style={{
             flexDirection: 'row',
             borderWidth: 1,
@@ -185,7 +195,7 @@ export default props => {
           }}>
           <Map />
           <Text style={{marginLeft: 8}}>지도</Text>
-        </View>
+        </TouchableOpacity>
         <SubscribeBtn />
       </View>
     </View>
