@@ -97,7 +97,9 @@ export default props => {
           renderItem={renderItem}
           removeClippedSubviews={true}
           keyExtractor={item => String(item.id)}
-          ListHeaderComponent={<PartyProfileHeader partyInfo={partyInfo} />}
+          ListHeaderComponent={
+            <PartyProfileHeader partyInfo={{...partyInfo, party_id}} />
+          }
         />
       </View>
     </SafeAreaView>

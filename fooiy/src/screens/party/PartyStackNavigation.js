@@ -10,7 +10,9 @@ import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
 import Party from './Party';
 import PartyCreate from './PartyCreate/PartyCreate';
 import PartyCreateFinishScreen from './PartyCreate/PartyCreateFinishScreen';
+import PartyMemberList from './PartyProfile/PartyMemberList';
 import PartyProfile from './PartyProfile/PartyProfile';
+import OtherUserPage from '../mypage/storage/OtherUserPage';
 
 const PartyStack = createStackNavigator();
 
@@ -91,16 +93,13 @@ const PartyStackNavigation = props => {
         name="PartyProfile"
         component={PartyProfile}
         listeners={({navigation, route}) => {
-          const state = navigation.getState();
-          if (state.index === 0) {
-            navigation.getParent().setOptions({
-              tabBarStyle: {
-                height: globalVariable.tabBarHeight + insets.bottom,
-                ...globalStyles.tab_bar,
-                ...globalStyles.shadow,
-              },
-            });
-          }
+          navigation.getParent().setOptions({
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
+          });
         }}
       />
       {/* 파티 피드 디테일 */}
@@ -108,16 +107,37 @@ const PartyStackNavigation = props => {
         name="PartyFeedDetail"
         component={MypageFeedDetail}
         listeners={({navigation, route}) => {
-          const state = navigation.getState();
-          if (state.index === 0) {
-            navigation.getParent().setOptions({
-              tabBarStyle: {
-                height: globalVariable.tabBarHeight + insets.bottom,
-                ...globalStyles.tab_bar,
-                ...globalStyles.shadow,
-              },
-            });
-          }
+          navigation.getParent().setOptions({
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
+          });
+        }}
+      />
+      {/* 파티원 리스트 */}
+      <PartyStack.Screen
+        name="PartyMemberList"
+        component={PartyMemberList}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
+        }}
+      />
+      {/* 다른 유저 마이페이지 */}
+      <PartyStack.Screen
+        name="OtherUserPage"
+        component={OtherUserPage}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
+          });
         }}
       />
     </PartyStack.Navigator>

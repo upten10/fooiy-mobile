@@ -89,7 +89,19 @@ const MypageStackNavigation = props => {
           });
         }}
       />
-      <Stack.Screen name="StorageSingleFeed" component={StorageSingleFeed} />
+      <Stack.Screen
+        name="StorageSingleFeed"
+        component={StorageSingleFeed}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {
+              height: globalVariable.tabBarHeight + insets.bottom,
+              ...globalStyles.tab_bar,
+              ...globalStyles.shadow,
+            },
+          });
+        }}
+      />
       <Stack.Screen name="Storage" component={Storage} />
       <Stack.Screen
         name="Setting"

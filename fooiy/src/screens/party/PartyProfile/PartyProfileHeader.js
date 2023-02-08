@@ -1,5 +1,6 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Map, PartyProfileArrow} from '../../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
@@ -25,7 +26,10 @@ export default props => {
     owner_id,
     owner_rank,
     waiting_join_count,
+    party_id,
   } = props.partyInfo;
+
+  const navigation = useNavigation();
 
   const SubscribeBtn = () => {
     return (
@@ -57,6 +61,12 @@ export default props => {
     );
   };
 
+  const onPressPartyMemberList = () => {
+    navigation.navigate('PartyMemberList', {
+      party_id,
+    });
+  };
+
   return (
     <View style={{paddingHorizontal: 16, paddingTop: 16}}>
       {/* 프로필 사진 있는 로우 */}
@@ -68,7 +78,9 @@ export default props => {
             <View style={styles.party_info_text_container}>
               <Text style={styles.party_info_text}>피드 {feed_count}개</Text>
             </View>
-            <View
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={onPressPartyMemberList}
               style={[
                 styles.party_info_text_container,
                 styles.account_count_container,
@@ -77,7 +89,7 @@ export default props => {
                 파티원 {account_count}명
               </Text>
               <PartyProfileArrow />
-            </View>
+            </TouchableOpacity>
           </View>
           <Text style={{...fooiyFont.Subtitle1}}>{name}</Text>
         </View>

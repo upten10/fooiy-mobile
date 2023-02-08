@@ -94,7 +94,7 @@ const EditName = () => {
             <View style={styles.textInputContainer}>
               <TextInput
                 maxLength={20}
-                autoCapitalize="none"
+                autoCapitalize={false}
                 autoCorrect={false}
                 spellCheck={false}
                 placeholder="특수문자 제외, 최대 20자"
