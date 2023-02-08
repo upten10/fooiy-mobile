@@ -1,6 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Notification from '../common_ui/Notification';
 import Search from '../common_ui/Search/Search';
 import FindWay from '../common_ui/shop/FindWay';
 import Menu from '../common_ui/shop/Menu';
@@ -10,6 +11,7 @@ import FeedComment from '../screens/feed/FeedComment';
 import ModifyFeed from '../screens/feed/ModifyFeed';
 import Login from '../screens/Login/Login';
 import Map from '../screens/map/Map';
+import MenuClinic from '../screens/menu_clinic/MenuClinic';
 import MypageMap from '../screens/mypage/mypage_map/MypageMap';
 import FooiyTI from '../screens/mypage/setting/FooiyTI';
 import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
@@ -24,20 +26,6 @@ import RegisterFeed from '../screens/register/register_feed/register_feed_ui/Reg
 import SetAddress from '../screens/register/register_feed/SetAddress';
 import Share from './Share';
 import TabNavigator from './TabNavigator';
-import Notification from '../common_ui/Notification';
-import EditName from '../screens/mypage/setting/EditName';
-import FindWay from '../common_ui/shop/FindWay';
-import Menu from '../common_ui/shop/Menu';
-import Shop from '../common_ui/shop/Shop';
-import Search from '../common_ui/Search/Search';
-import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
-import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
-import FeedComment from '../screens/feed/FeedComment';
-import ModifyFeed from '../screens/feed/ModifyFeed';
-import MenuClinic from '../screens/menu_clinic/MenuClinic';
-import {globalVariable} from '../common/globalVariable';
-import {globalStyles} from '../common/globalStyles';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 
