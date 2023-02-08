@@ -46,12 +46,17 @@ export const apiUrl = {
   // 기록 등록
   UPDATE_FEED: 'feeds/feed/modify/',
 
+  // 메뉴 상담소
+  MENU_CLINIC: 'shops/menu_clinic/latest_order/',
+
   // 음식점 지도 리스트
   MAP_SHOP_LIST: 'shops/shop/shop_map_list/',
   // 개척, 근처 매장 리스트
   SHOP_NEARBY: 'shops/shop/nearby/',
   // 개척, 메뉴 리스트
   SHOP_MENU: 'shops/menu/',
+  // 매장 정보
+  SHOP_INFO: 'shops/shop/info/',
   // 음식점 검색
   SHOP_SEARCH: 'search/shops/',
   // 위치 검색
@@ -70,4 +75,14 @@ export const apiUrl = {
 
   // 푸시 알림
   PUSH_NOTIFICATION: 'archives/push_notification/',
+};
+
+export const toastMessage = {
+  // 피드 신고
+  FEED_REPORT: '피드 신고가 완료되었습니다.',
+  FEED_DELETE: '피드 삭제가 완료되었습니다.',
+  FEED_COMMENT_DELETE: '댓글 삭제가 완료되었습니다.',
+  FEED_COMMENT_REGISTER: '댓글 등록이 완료되었습니다.',
+  FEED_COMMENT_REPORT: '댓글 신고가 완료되었습니다.',
+  FEED_COMMENT_UPDATE: '댓글 수정이 완료되었습니다.',
 };

@@ -31,6 +31,22 @@ const toastConfig = {
       <Text style={{...fooiyFont.Caption1, color: fooiyColor.W}}>{text2}</Text>
     </View>
   ),
+  message: ({text1}) => (
+    <View
+      style={{
+        height: 56,
+        marginBottom: Platform.OS === 'ios' ? globalVariable.tabBarHeight : 32,
+        width: globalVariable.width - 32,
+        backgroundColor: fooiyColor.G800,
+        borderRadius: 8,
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        padding: 16,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+      }}>
+      <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.W}}>{text1}</Text>
+    </View>
+  ),
 };
 
 const App = () => {

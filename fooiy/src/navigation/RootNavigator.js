@@ -25,6 +25,19 @@ import SetAddress from '../screens/register/register_feed/SetAddress';
 import Share from './Share';
 import TabNavigator from './TabNavigator';
 import Notification from '../common_ui/Notification';
+import EditName from '../screens/mypage/setting/EditName';
+import FindWay from '../common_ui/shop/FindWay';
+import Menu from '../common_ui/shop/Menu';
+import Shop from '../common_ui/shop/Shop';
+import Search from '../common_ui/Search/Search';
+import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
+import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
+import FeedComment from '../screens/feed/FeedComment';
+import ModifyFeed from '../screens/feed/ModifyFeed';
+import MenuClinic from '../screens/menu_clinic/MenuClinic';
+import {globalVariable} from '../common/globalVariable';
+import {globalStyles} from '../common/globalStyles';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 
@@ -49,6 +62,7 @@ const RootNavigator = () => {
       <Stack.Screen name="Feed" component={Feed} />
       <Stack.Screen name="FeedComment" component={FeedComment} />
       <Stack.Screen name="ModifyFeed" component={ModifyFeed} />
+      <Stack.Screen name="MenuClinic" component={MenuClinic} />
 
       {/* shop */}
       <Stack.Screen name="FindWay" component={FindWay} />
