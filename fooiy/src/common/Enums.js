@@ -76,6 +76,8 @@ export const apiUrl = {
   CREATE_PARTY: 'party/accounts/',
   // 파티 정보
   PARTY_INFO: 'party/accounts/info/',
+  // 파티 피드 리스트
+  PARTY_FEED_LIST: 'feeds/feed/party/',
 };
 
 export const toastMessage = {

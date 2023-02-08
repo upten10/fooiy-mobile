@@ -6,6 +6,7 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
+import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
 import Party from './Party';
 import PartyCreate from './PartyCreate/PartyCreate';
 import PartyCreateFinishScreen from './PartyCreate/PartyCreateFinishScreen';
@@ -89,6 +90,23 @@ const PartyStackNavigation = props => {
       <PartyStack.Screen
         name="PartyProfile"
         component={PartyProfile}
+        listeners={({navigation, route}) => {
+          const state = navigation.getState();
+          if (state.index === 0) {
+            navigation.getParent().setOptions({
+              tabBarStyle: {
+                height: globalVariable.tabBarHeight + insets.bottom,
+                ...globalStyles.tab_bar,
+                ...globalStyles.shadow,
+              },
+            });
+          }
+        }}
+      />
+      {/* 파티 피드 디테일 */}
+      <PartyStack.Screen
+        name="PartyFeedDetail"
+        component={MypageFeedDetail}
         listeners={({navigation, route}) => {
           const state = navigation.getState();
           if (state.index === 0) {
