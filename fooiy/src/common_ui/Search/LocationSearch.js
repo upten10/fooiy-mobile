@@ -46,6 +46,8 @@ const LocationSearch = () => {
       (await ApiManagerV2.get(apiUrl.SPOT_SEARCH, {
         params: {
           keyword: value,
+          limit: 30,
+          offset: 0,
         },
       }).then(res => {
         setSpot(res.data.payload.spot_list.results);
@@ -204,11 +206,13 @@ const LocationSearch = () => {
             onChangeText={setValue}
             value={value}
             style={
-              value !== ''
-                ? styles.input_value
-                : focus
-                ? [styles.input_blur, {borderColor: fooiyColor.G400}]
-                : styles.input_blur
+              !focus && value === ''
+                ? [styles.empty_value, {borderColor: fooiyColor.G200}]
+                : focus && value === ''
+                ? [styles.empty_value, {borderColor: fooiyColor.G400}]
+                : focus && value !== ''
+                ? [styles.is_value, {borderColor: fooiyColor.G400}]
+                : [styles.is_value, {borderColor: fooiyColor.G200}]
             }
           />
           <Search_Icon style={{position: 'absolute', right: 16}} />
@@ -244,7 +248,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 36,
-    borderWidth: 1,
     backgroundColor: fooiyColor.G600,
     justifyContent: 'center',
     alignItems: 'center',
@@ -257,25 +260,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  input_value: {
+  empty_value: {
     width: '100%',
     borderWidth: 1,
-    borderColor: fooiyColor.G400,
-    borderRadius: 8,
-    height: 56,
-    padding: 16,
-    ...fooiyFont.Body1,
-    color: fooiyColor.B,
-    lineHeight: Platform.select({ios: 0, android: null}),
-  },
-  input_blur: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: fooiyColor.G200,
     borderRadius: 8,
     height: 56,
     padding: 16,
     ...fooiyFont.Subtitle2,
+    lineHeight: Platform.select({ios: 0, android: null}),
+  },
+  is_value: {
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 8,
+    height: 56,
+    padding: 16,
+    ...fooiyFont.Body1,
     lineHeight: Platform.select({ios: 0, android: null}),
   },
 });

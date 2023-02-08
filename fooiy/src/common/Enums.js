@@ -67,4 +67,7 @@ export const apiUrl = {
 
   //
   MY_PARTY_LIST: 'party/accounts/',
+
+  // 푸시 알림
+  PUSH_NOTIFICATION: 'archives/push_notification/',
 };

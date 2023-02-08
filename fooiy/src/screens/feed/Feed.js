@@ -1,7 +1,6 @@
 import {React, useEffect, useState, useRef, useCallback} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, StyleSheet, Image, FlatList, Text} from 'react-native';
-
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
@@ -21,7 +20,6 @@ const Feed = props => {
 
   const requestUserPermission = useCallback(async () => {
     const {status} = await requestNotifications([]);
-    // const authStatus = await messaging().requestPermission();
     const enabled = status === RESULTS.GRANTED;
 
     enabled &&
