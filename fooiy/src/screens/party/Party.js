@@ -22,6 +22,7 @@ const Party = props => {
   const navigation = useNavigation();
 
   const [partyList, setPartyList] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     getPartyList();
@@ -85,9 +86,21 @@ const Party = props => {
     );
   };
 
+  const onRefresh = () => {
+    if (!refreshing) {
+      getRefreshData();
+    }
+  };
+
+  const getRefreshData = async () => {
+    setRefreshing(true);
+    await getPartyList();
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
-      <DefaultHeader />
+      <DefaultHeader isParty={true} />
       {/* Body */}
       <View
         style={{
@@ -103,6 +116,8 @@ const Party = props => {
           data={partyList}
           ListHeaderComponent={listHeaderComponent}
           ListEmptyComponent={ListEmptyComponent}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
           scrollEnabled={partyList.length === 0 ? false : true}
           // ListFooterComponent={listFooterComponent}
           keyExtractor={(item, index) => index.toString()}

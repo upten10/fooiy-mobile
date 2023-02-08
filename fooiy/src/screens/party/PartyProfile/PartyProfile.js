@@ -26,6 +26,7 @@ export default props => {
 
   const [partyInfo, setPartyInfo] = useState({});
   const [partyFeeds, setPartyFeeds] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     getPartyInfo();
@@ -85,6 +86,19 @@ export default props => {
     });
   };
 
+  const onRefresh = () => {
+    if (!refreshing) {
+      getRefreshData();
+    }
+  };
+
+  const getRefreshData = async () => {
+    setRefreshing(true);
+    await getPartyInfo();
+    await getPartyFeeds();
+    setRefreshing(false);
+  };
+
   const ListEmptyComponent = () => {
     return (
       <View style={{alignItems: 'center'}}>
@@ -126,6 +140,8 @@ export default props => {
         <FlatList
           data={partyFeeds}
           numColumns={3}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
           renderItem={renderItem}
           removeClippedSubviews={true}
           keyExtractor={item => String(item.id)}

@@ -63,7 +63,7 @@ const ShopListUI = item => {
             </Text>
           </View>
         ) : null}
-        <View>
+        <View style={{backgroundColor: fooiyColor.G100, borderRadius: 16}}>
           <FastImage
             source={{uri: thumbnail !== undefined ? thumbnail : image}}
             style={{width: '100%', height: '100%', borderRadius: 16}}

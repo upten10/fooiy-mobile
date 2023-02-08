@@ -74,12 +74,16 @@ export const apiUrl = {
   MY_PARTY_LIST: 'party/accounts/',
   // 파티 생성
   CREATE_PARTY: 'party/accounts/',
+  // 파티 정보 변경
+  EDIT_PARTY: 'party/accounts/',
   // 파티 정보
   PARTY_INFO: 'party/accounts/info/',
   // 파티 피드 리스트
   PARTY_FEED_LIST: 'feeds/feed/party/',
   // 파티원 리스트
   PARTY_MEMBER_LIST: 'party/accounts/member_list/',
+  // 파티 검색
+  SEARCH_PARTY: 'search/party/',
 };
 
 export const toastMessage = {

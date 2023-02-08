@@ -26,8 +26,8 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import Rank from '../../../common_ui/Rank';
 import {useDebounce} from '../../../common/hooks/useDebounce';
 
-const SearchBar = props => {
-  const {value, setValue} = props;
+export const SearchBar = props => {
+  const {value, setValue, placeholder, autoFocus} = props;
 
   return (
     <View
@@ -47,12 +47,12 @@ const SearchBar = props => {
       <TextInput
         value={value}
         onChangeText={setValue}
-        placeholder={'유저를 검색해보세요!'}
+        placeholder={placeholder}
         maxLength={20}
         autoCapitalize={false}
         autoCorrect={false}
         spellCheck={false}
-        autoFocus={false}
+        autoFocus={autoFocus}
         placeholderTextColor={fooiyColor.G400}
         style={{
           width: globalVariable.width - 32 - 32 - 24,
@@ -240,7 +240,12 @@ export default props => {
             height: globalVariable.height - insets.top - insets.bottom - 56,
             paddingHorizontal: 16,
           }}>
-          <SearchBar value={value} setValue={setValue} />
+          <SearchBar
+            value={value}
+            setValue={setValue}
+            placeholder={'유저를 검색해보세요!'}
+            autoFocus={false}
+          />
           <FlatList
             data={filteredMembers}
             renderItem={item => renderItem(item)}

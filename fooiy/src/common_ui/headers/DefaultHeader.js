@@ -9,10 +9,14 @@ import {globalVariable} from '../../common/globalVariable';
 export const DefaultHeader = props => {
   const navigation = useNavigation();
 
-  const {flatListRef, toTop} = props;
+  const {flatListRef, toTop, isParty} = props;
 
   const search = () => {
     navigation.navigate('Search');
+  };
+
+  const partySearch = () => {
+    navigation.navigate('PartySearch');
   };
 
   return (
@@ -47,7 +51,7 @@ export const DefaultHeader = props => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              search();
+              isParty === undefined ? search() : partySearch();
             }}>
             <Search_Icon />
           </TouchableOpacity>
