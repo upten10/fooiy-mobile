@@ -1,6 +1,13 @@
 import {React, useEffect, useState, useRef, useCallback} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, StyleSheet, Image, FlatList, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
@@ -11,6 +18,14 @@ import SelectCategoryModal from './SelectCategoryModal';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import messaging from '@react-native-firebase/messaging';
 import {requestNotifications, RESULTS} from 'react-native-permissions';
+import FooiyToast from '../../common/FooiyToast';
+import {
+  ArrowIconRight,
+  ArrowIconRight24,
+  Total_2,
+} from '../../../assets/icons/svg';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import Margin from '../../common_ui/Margin';
 
 const Feed = props => {
   const [token, setToken] = useState();
@@ -38,6 +53,7 @@ const Feed = props => {
   };
   useEffect(() => {
     patchFCM();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const [feeds, setFeeds] = useState([]);
@@ -46,13 +62,7 @@ const Feed = props => {
   const [noFeedImage, setNoFeedImage] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [category, setCategory] = useState('');
-  const [open, setOpen] = useState(true);
-
-  useEffect(() => {
-    setTimeout(function () {
-      setOpen(false);
-    }, 3000);
-  }, []);
+  const [open, setOpen] = useState(false);
 
   const onRefresh = () => {
     if (!refreshing) {
@@ -75,9 +85,10 @@ const Feed = props => {
       toTop();
     }
   });
-  const toTop = () => {
-    flatListRef.current.scrollToIndex({index: 0, animated: true});
-  };
+  const toTop = useCallback(() => {
+    flatListRef &&
+      flatListRef.current.scrollToIndex({index: 0, animated: true});
+  }, [flatListRef]);
 
   const getFeedList = async data => {
     setOffset(data);
@@ -87,20 +98,23 @@ const Feed = props => {
         offset: data,
         category: category,
       },
-    }).then(res => {
-      if (res.data.payload.feed_list) {
-        if (data === 0) {
-          setFeeds(res.data.payload.feed_list.results);
+    })
+      .then(res => {
+        if (res.data.payload.feed_list) {
+          if (data === 0) {
+            setFeeds(res.data.payload.feed_list.results);
+          } else {
+            setFeeds([...feeds, ...res.data.payload.feed_list.results]);
+          }
+          totalCount === 0 &&
+            setTotalCount(res.data.payload.feed_list.total_count);
         } else {
-          setFeeds([...feeds, ...res.data.payload.feed_list.results]);
+          setNoFeedImage(res.data.payload.image);
         }
-        totalCount === 0 &&
-          setTotalCount(res.data.payload.feed_list.total_count);
-      } else {
-        setNoFeedImage(res.data.payload.image);
-      }
-    });
-    // .catch(function (error) => console.log(error));
+      })
+      .catch(e => {
+        FooiyToast.error();
+      });
   };
 
   const loadMoreItem = () => {
@@ -121,11 +135,29 @@ const Feed = props => {
   const ListHeaderComponent = useCallback(() => {
     return (
       category !== globalVariable.category_cafe && (
-        <View style={{height: 80}}>
-          <Text>메뉴상담소</Text>
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => stackNavigation.navigate('MenuClinic')}>
+          <View style={styles.header_container}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Total_2 />
+              <View style={{marginLeft: 14}}>
+                <Text style={{...fooiyFont.Body2, color: fooiyColor.G600}}>
+                  지금 뭐 먹을지 고민된다면?
+                </Text>
+                <Text style={{...fooiyFont.H4, color: fooiyColor.B}}>
+                  메뉴상담소
+                </Text>
+              </View>
+            </View>
+            <View style={{marginRight: 16}}>
+              <ArrowIconRight24 />
+            </View>
+          </View>
+        </TouchableOpacity>
       )
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
   useEffect(() => {
@@ -181,6 +213,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
+  },
+  header_container: {
+    height: 80,
+    paddingVertical: 12,
+    marginLeft: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 

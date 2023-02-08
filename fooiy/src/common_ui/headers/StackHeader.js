@@ -16,8 +16,8 @@ export const StackHeader = props => {
       <View style={styles.header_container}>
         {props.shop ? (
           <View style={styles.shop_detail}>
-            <Text style={styles.shop_name}>{props.shop.shop_name}</Text>
-            <Text style={styles.shop_address}>{props.shop.shop_address}</Text>
+            <Text style={styles.shop_name}>{props.shop.name}</Text>
+            <Text style={styles.shop_address}>{props.shop.address}</Text>
           </View>
         ) : // It is for account stack header
         props.title ? (

@@ -8,13 +8,12 @@ import {
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
-  FlatList,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
-import {apiUrl} from '../../common/Enums';
+import {apiUrl, toastMessage} from '../../common/Enums';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import UI_Comment from '../../common_ui/feed/UI_Comment';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -29,9 +28,9 @@ import {useSelector} from 'react-redux';
 import WorkingCommentModal from './WorkingCommentModal';
 import checkFeedAuthorization from './functions/checkFeedAuthorization';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
+import FooiyToast from '../../common/FooiyToast';
 
 const FeedComment = props => {
-  const flatListRef = useRef(null);
   const textInputRef = useRef(null);
   const insets = useSafeAreaInsets();
 
@@ -119,14 +118,15 @@ const FeedComment = props => {
         offset: offset,
         feed_id: feed_id,
       },
-    }).then(res => {
-      if (res.data.payload.comment_list) {
-        setComments([...comments, ...res.data.payload.comment_list.results]);
-        totalCount === 0 &&
-          setTotalCount(res.data.payload.comment_list.total_count);
-      }
-    });
-    // .catch(function (error) => console.log(error));
+    })
+      .then(res => {
+        if (res.data.payload.comment_list) {
+          setComments([...comments, ...res.data.payload.comment_list.results]);
+          totalCount === 0 &&
+            setTotalCount(res.data.payload.comment_list.total_count);
+        }
+      })
+      .catch(e => FooiyToast.error());
   };
   const loadMoreItem = () => {
     if (totalCount > offset + globalVariable.FeedLimit) {
@@ -147,9 +147,14 @@ const FeedComment = props => {
           textInputRef.current.clear();
           setValue('');
           res.data.payload === 'success' && updateComments();
+          res.data.payload === 'success' &&
+            FooiyToast.message(toastMessage.FEED_COMMENT_REGISTER, true);
           dismissKeyboard();
         })
-        .catch(e => dismissKeyboard()));
+        .catch(e => {
+          dismissKeyboard();
+          FooiyToast.error();
+        }));
   };
 
   const patchComment = async () => {
@@ -157,12 +162,19 @@ const FeedComment = props => {
       feed_id: feed_id,
       comment_id: workingComment.comment_id,
       content: value,
-    }).then(res => {
-      textInputRef.current.clear();
-      setWorkingState('');
-      res.data.payload === 'success' && updateComments();
-      dismissKeyboard();
-    });
+    })
+      .then(res => {
+        textInputRef.current.clear();
+        setWorkingState('');
+        res.data.payload === 'success' && updateComments();
+        res.data.payload === 'success' &&
+          FooiyToast.message(toastMessage.FEED_COMMENT_UPDATE, true);
+        dismissKeyboard();
+      })
+      .catch(e => {
+        dismissKeyboard();
+        FooiyToast.error();
+      });
   };
 
   const deleteComment = async () => {
@@ -171,22 +183,33 @@ const FeedComment = props => {
       {
         parmas: {feed_id},
       },
-    ).then(res => {
-      toggleModal();
-      res.data.payload === 'success' && updateComments();
-      dismissKeyboard();
-    });
+    )
+      .then(res => {
+        toggleModal();
+        res.data.payload === 'success' && updateComments();
+        res.data.payload === 'success' &&
+          FooiyToast.message(toastMessage.FEED_COMMENT_DELETE, true);
+        dismissKeyboard();
+      })
+      .catch(e => {
+        dismissKeyboard();
+        FooiyToast.error();
+      });
   };
   const reportComment = async () => {
     await ApiManagerV2.get(apiUrl.FEED_COMMENT_REPORT, {
       params: {
         comment_id: workingComment.comment_id,
       },
-    }).then(res => {
-      toggleModal();
-      console.log(workingComment.comment_id);
-      res.data.payload === 'success';
-    });
+    })
+      .then(res => {
+        toggleModal();
+        res.data.payload === 'success' &&
+          FooiyToast.message(toastMessage.FEED_COMMENT_REPORT);
+      })
+      .catch(e => {
+        FooiyToast.error();
+      });
   };
 
   const updateComments = async () => {
@@ -195,11 +218,9 @@ const FeedComment = props => {
     setValue('');
     setTextlineHeight(24);
     setTextInputHeight(68);
-    const findIndex = comments.findIndex(
-      e => e.comment_id === workingComment.comment_id,
-    );
-    const updateIndex = findIndex !== -1 ? findIndex : comments.length;
-    getCommentList(updateIndex, comments.slice(undefined, updateIndex));
+    getCommentList(0, []);
+    setOffset(0);
+    setTotalCount(0);
   };
   //****** api function ******//
 
