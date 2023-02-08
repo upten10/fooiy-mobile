@@ -1,23 +1,51 @@
-import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   ArrowIconBottomGray,
   ArrowIconTopGray,
   CafeShop,
   CommonShop,
-  Notification,
   Logo,
+  Notification,
+  Notification_Push,
   Search_Icon,
 } from '../../../assets/icons/svg';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../common/Enums';
 import {globalVariable} from '../../common/globalVariable';
-import {useNavigation} from '@react-navigation/native';
 
 const FeedHeader = props => {
+  // Push Notification
+  const [isPush, setIsPush] = useState(false);
+  const [pushCount, setPushCount] = useState(0);
+
+  const pushHandler = async () => {
+    const cnt = await AsyncStorage.getItem('push_count');
+    await ApiManagerV2.get(apiUrl.PUSH_NOTIFICATION).then(res => {
+      if (res.data.payload.push_notifications.total_count > cnt) {
+        setPushCount(res.data.payload.push_notifications.total_count - cnt);
+        setIsPush(true);
+      } else {
+        setIsPush(false);
+      }
+    });
+  };
+  useEffect(() => {
+    pushHandler();
+  }, []);
+  // Push Notification
+
   const {category, open, setOpen} = props;
   const navigation = useNavigation();
 
   const search = () => {
     navigation.navigate('Search');
+  };
+  const notification = pushCount => {
+    navigation.navigate('Notification', pushCount);
+    setPushCount(0);
   };
 
   return (
@@ -39,9 +67,11 @@ const FeedHeader = props => {
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             style={{marginRight: 16}}
-            // onPress={() => props.notification()}
-          >
-            <Notification />
+            onPress={() => {
+              notification(pushCount);
+              setIsPush(false);
+            }}>
+            {isPush ? <Notification_Push /> : <Notification />}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {

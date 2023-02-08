@@ -38,6 +38,7 @@ export {default as Map_shop} from './Map_shop.svg';
 export {default as Current_Location_2} from './Current_Location_2.svg';
 export {default as Copy} from './Copy.svg';
 export {default as Notification} from './Notification.svg';
+export {default as Notification_Push} from './Notification_Push.svg';
 export {default as Subway} from './Search/Subway.svg';
 export {default as Landmark} from './Search/Landmark.svg';
 export {default as District} from './Search/District.svg';
@@ -87,6 +88,9 @@ export {default as LocationDarkIcon} from './Icon_location.svg';
 export {default as RegistCommentFocused} from './RegistCommentFocused.svg';
 export {default as RegistComment} from './RegistComment.svg';
 export {default as WhiteClear} from './Icon_clear_white.svg';
+export {default as Tmap} from './Tmap.svg';
+export {default as NaverMap} from './NaverMap.svg';
+export {default as KakaoMap} from './KakaoMap.svg';
 
 export {default as PartyIcon} from './Party/Icon_party.svg';
 export {default as PartyCrown} from './Party/Icon_crown.svg';

@@ -88,6 +88,9 @@ export const apiUrl = {
   JOIN_PARTY: 'party/accounts/join/',
   // 파티 가입 검수
   CONFIRM_PARTY: 'party/accounts/check_join/',
+
+  // 푸시 알림
+  PUSH_NOTIFICATION: 'archives/push_notification/',
 };
 
 export const toastMessage = {

@@ -1,23 +1,30 @@
-import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Share from './Share';
-import Login from '../screens/Login/Login';
-import TabNavigator from './TabNavigator';
+import React from 'react';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Search from '../common_ui/Search/Search';
+import FindWay from '../common_ui/shop/FindWay';
+import Menu from '../common_ui/shop/Menu';
+import Shop from '../common_ui/shop/Shop';
 import Feed from '../screens/feed/Feed';
-import Mypage from '../screens/mypage/mypage/Mypage';
-import FooiyTI from '../screens/mypage/setting/FooiyTI';
-import Register from '../screens/register/Register';
-import RegisterCamera from '../screens/register/camera/RegisterCamera';
-import ImageCrop from '../screens/register/camera/ImageCrop';
-import Gallery from '../screens/register/gallery/Gallery';
-import {useNavigation} from '@react-navigation/native';
+import FeedComment from '../screens/feed/FeedComment';
+import ModifyFeed from '../screens/feed/ModifyFeed';
+import Login from '../screens/Login/Login';
 import Map from '../screens/map/Map';
-import Setting from '../screens/mypage/setting/Setting';
 import MypageMap from '../screens/mypage/mypage_map/MypageMap';
-import SetAddress from '../screens/register/register_feed/SetAddress';
-import FindShop from '../screens/register/register_feed/FindShop';
+import FooiyTI from '../screens/mypage/setting/FooiyTI';
+import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
+import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
+import ImageCrop from '../screens/register/camera/ImageCrop';
+import RegisterCamera from '../screens/register/camera/RegisterCamera';
+import Gallery from '../screens/register/gallery/Gallery';
+import Register from '../screens/register/Register';
 import FindMenu from '../screens/register/register_feed/FindMenu';
+import FindShop from '../screens/register/register_feed/FindShop';
 import RegisterFeed from '../screens/register/register_feed/register_feed_ui/RegisterFeed';
+import SetAddress from '../screens/register/register_feed/SetAddress';
+import Share from './Share';
+import TabNavigator from './TabNavigator';
+import Notification from '../common_ui/Notification';
 import EditName from '../screens/mypage/setting/EditName';
 import FindWay from '../common_ui/shop/FindWay';
 import Menu from '../common_ui/shop/Menu';
@@ -87,6 +94,7 @@ const RootNavigator = () => {
       <Stack.Screen name="Shop" component={Shop} />
 
       <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );
 };

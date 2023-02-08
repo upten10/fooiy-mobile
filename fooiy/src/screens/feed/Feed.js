@@ -36,7 +36,6 @@ const Feed = props => {
 
   const requestUserPermission = useCallback(async () => {
     const {status} = await requestNotifications([]);
-    // const authStatus = await messaging().requestPermission();
     const enabled = status === RESULTS.GRANTED;
 
     enabled &&

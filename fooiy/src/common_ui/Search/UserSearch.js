@@ -23,6 +23,8 @@ import {apiUrl} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {debounce} from 'lodash';
 import {useNavigation} from '@react-navigation/native';
+import Rank from '../Rank';
+import {globalVariable} from '../../common/globalVariable';
 
 const UserSearch = () => {
   const navigation = useNavigation();
@@ -30,6 +32,8 @@ const UserSearch = () => {
   const [value, setValue] = useState('');
   const [user, setUser] = useState([]);
   const [ranker, setRanker] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
 
   const onFocus = () => {
     setFocus(true);
@@ -41,16 +45,32 @@ const UserSearch = () => {
     debounceSearch(value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const getUser = async (offset, value, users) => {
+    await ApiManagerV2.get(apiUrl.ACCOUNT_SEARCH, {
+      params: {
+        keyword: value,
+        offset: offset,
+        limit: globalVariable.FeedLimit,
+      },
+    }).then(res => {
+      setUser([...users, ...res.data.payload.accounts_list.results]);
+      setTotalCount(res.data.payload.accounts_list.total_count);
+    });
+  };
+
+  const loadMoreItem = () => {
+    if (totalCount > offset + globalVariable.FeedLimit) {
+      setOffset(offset + globalVariable.FeedLimit);
+      getUser(offset + globalVariable.FeedLimit, value, user);
+    }
+  };
+
   const debounceSearch = debounce(async value => {
-    value &&
-      (await ApiManagerV2.get(apiUrl.ACCOUNT_SEARCH, {
-        params: {
-          keyword: value,
-        },
-      }).then(res => {
-        setUser(res.data.payload.accounts_list.results);
-      }));
+    setOffset(0);
+    setTotalCount(0);
+    value && getUser(0, value, []);
   }, 300);
+
   const rankerSearch = async () => {
     await ApiManagerV2.get(apiUrl.ACCOUNT_RANKER).then(res =>
       setRanker(res.data.payload.ranker_list),
@@ -131,6 +151,11 @@ const UserSearch = () => {
                 ]}>
                 피드 {count}
               </Text>
+              <Rank
+                containerStyle={{marginLeft: 4}}
+                rank={rank}
+                font={fooiyFont.Subtitle4}
+              />
             </View>
           </View>
           <ArrowIconRight
@@ -219,6 +244,7 @@ const UserSearch = () => {
             ListEmptyComponent={ListEmptyComponent}
             keyExtractor={item => String(item.public_id)}
             scrollEventThrottle={16}
+            onEndReached={loadMoreItem}
             bounces={true}
             scrollToOverflowEnabled
             showsVerticalScrollIndicator={false}
@@ -245,7 +271,7 @@ const UserSearch = () => {
         </>
       );
     }
-  }, [value, user, ranker]);
+  }, [value, user, ranker, totalCount]);
 
   useEffect(() => {
     debounceCallback(value);
@@ -275,11 +301,13 @@ const UserSearch = () => {
             onChangeText={setValue}
             value={value}
             style={
-              value !== ''
-                ? styles.input_value
-                : focus
-                ? [styles.input_blur, {borderColor: fooiyColor.G400}]
-                : styles.input_blur
+              !focus && value === ''
+                ? [styles.empty_value, {borderColor: fooiyColor.G200}]
+                : focus && value === ''
+                ? [styles.empty_value, {borderColor: fooiyColor.G400}]
+                : focus && value !== ''
+                ? [styles.is_value, {borderColor: fooiyColor.G400}]
+                : [styles.is_value, {borderColor: fooiyColor.G200}]
             }
           />
           <Search_Icon style={{position: 'absolute', right: 16}} />
@@ -335,25 +363,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  input_value: {
+  empty_value: {
     width: '100%',
     borderWidth: 1,
-    borderColor: fooiyColor.G400,
-    borderRadius: 8,
-    height: 56,
-    padding: 16,
-    ...fooiyFont.Body1,
-    color: fooiyColor.B,
-    lineHeight: Platform.select({ios: 0, android: null}),
-  },
-  input_blur: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: fooiyColor.G200,
     borderRadius: 8,
     height: 56,
     padding: 16,
     ...fooiyFont.Subtitle2,
+    lineHeight: Platform.select({ios: 0, android: null}),
+  },
+  is_value: {
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 8,
+    height: 56,
+    padding: 16,
+    ...fooiyFont.Body1,
     lineHeight: Platform.select({ios: 0, android: null}),
   },
 });
