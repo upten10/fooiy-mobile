@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -18,17 +18,31 @@ import {apiUrl} from '../../common/Enums';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Menu} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import ShopFooiyti from './ShopFooiyti';
 
 const Shop = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [shopInfo, setShopInfo] = useState({});
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const type = props.route.params.type && props.route.params.type;
   const other_account_id =
     props.route.params.other_account_id && props.route.params.other_account_id;
+
+  const getShopInfo = async () => {
+    await ApiManagerV2.get(apiUrl.SHOP_INFO, {
+      params: {
+        shop_id: props.route.params.shop_id,
+      },
+    }).then(res => setShopInfo(res.data.payload.shop_info));
+  };
+  useEffect(() => {
+    getShopInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.route.params]);
 
   const getFeedList = async data => {
     setIsLoading(true);
@@ -74,9 +88,14 @@ const Shop = props => {
     });
   };
 
+  const ListHeaderComponent = useCallback(() => {
+    return shopInfo.fooiyti && <ShopFooiyti fooiyti={shopInfo.fooiyti} />;
+  }, [shopInfo.fooiyti]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <StackHeader shop={props.route.params} map={go_map} />
+      <StackHeader shop={shopInfo} map={go_map} />
+
       <FlatList
         data={feeds}
         renderItem={({item}) => (
@@ -84,6 +103,7 @@ const Shop = props => {
         )}
         keyExtractor={(feeds, index) => index.toString()}
         ListFooterComponent={RenderLoader(isLoading)}
+        ListHeaderComponent={ListHeaderComponent}
         onEndReached={loadMoreItem}
         onEndReachedThreshold={3}
       />
