@@ -69,4 +69,6 @@ export const apiUrl = {
   MY_PARTY_LIST: 'party/accounts/',
   // 파티 생성
   CREATE_PARTY: 'party/accounts/',
+  // 파티 정보
+  PARTY_INFO: 'party/accounts/info/',
 };

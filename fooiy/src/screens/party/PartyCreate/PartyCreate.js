@@ -13,10 +13,10 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Clear, Notice, Register_icon} from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {globalVariable} from '../../common/globalVariable';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
+import {Clear, Notice, Register_icon} from '../../../../assets/icons/svg';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const Title = props => {
   const {index} = props;
@@ -207,8 +207,24 @@ const NavigateBtn = props => {
     <View
       style={
         index === 1
-          ? [styles.navigateBtnContainer, {bottom: insets.bottom}]
-          : [styles.navigateTwoBtnContainer, {bottom: insets.bottom}]
+          ? [
+              styles.navigateBtnContainer,
+              {
+                bottom: Platform.select({
+                  ios: insets.bottom,
+                  android: 34,
+                }),
+              },
+            ]
+          : [
+              styles.navigateTwoBtnContainer,
+              {
+                bottom: Platform.select({
+                  ios: insets.bottom,
+                  android: 34,
+                }),
+              },
+            ]
       }>
       {index === 1 ? null : (
         <TouchableOpacity

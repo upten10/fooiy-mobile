@@ -1,11 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect} from 'react';
 import {Text, View} from 'react-native';
-import {PartyCreateComplete} from '../../../assets/icons/svg';
-import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {globalVariable} from '../../common/globalVariable';
+import {PartyCreateComplete} from '../../../../assets/icons/svg';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../../common/Enums';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
 
 export default props => {
   const {params} = props.route;

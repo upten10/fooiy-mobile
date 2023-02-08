@@ -40,7 +40,7 @@ const ShopListUI = item => {
         // 수정 필요
       });
     } else if (party_id !== undefined) {
-      console.log(party_id);
+      navigation.navigate('PartyProfile', {party_id});
     }
   };
 
