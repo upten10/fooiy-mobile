@@ -1,6 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ArrowIconRight} from '../../../assets/icons/svg';
@@ -141,30 +149,32 @@ export default props => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
-      <StackHeader title={'파티 검색'} />
-      <View
-        style={{
-          width: '100%',
-          height: globalVariable.height - insets.top - insets.bottom - 56,
-          paddingHorizontal: 16,
-        }}>
-        <SearchBar
-          placeholder={'파티를 검색해보세요!'}
-          value={value}
-          setValue={setValue}
-          autoFocus={true}
-        />
-        <FlatList
-          data={searchedPartyList}
-          renderItem={item => renderItem(item)}
-          numColumns={1}
-          keyExtractor={item => String(item.party_id)}
-          ItemSeparatorComponent={ItemSeparatorComponent}
-          ListEmptyComponent={ListEmptyComponent}
-        />
-      </View>
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
+        <StackHeader title={'파티 검색'} />
+        <View
+          style={{
+            width: '100%',
+            height: globalVariable.height - insets.top - insets.bottom - 56,
+            paddingHorizontal: 16,
+          }}>
+          <SearchBar
+            placeholder={'파티를 검색해보세요!'}
+            value={value}
+            setValue={setValue}
+            autoFocus={true}
+          />
+          <FlatList
+            data={searchedPartyList}
+            renderItem={item => renderItem(item)}
+            numColumns={1}
+            keyExtractor={item => String(item.party_id)}
+            ItemSeparatorComponent={ItemSeparatorComponent}
+            ListEmptyComponent={ListEmptyComponent}
+          />
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 

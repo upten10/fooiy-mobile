@@ -1,11 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Map, PartyProfileArrow} from '../../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import Rank from '../../../common_ui/Rank';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../../common/Enums';
 
 //  ("subscribe", "가입 중"),
 // ("confirm", "검수"),
@@ -31,33 +33,62 @@ export default props => {
 
   const navigation = useNavigation();
 
+  const [joinState, setJoinState] = useState('');
+
+  useEffect(() => {
+    setJoinState(join_state);
+    console.log('jjj');
+  }, [join_state]);
+
+  const joinParty = async () => {
+    await ApiManagerV2.post(apiUrl.JOIN_PARTY, {
+      party_id,
+    }).then(res => setJoinState('confirm'));
+  };
+
+  const onPressSubscribeBtn = () => {
+    switch (join_state) {
+      case 'subscribe':
+        console.log('가입돼있음');
+        break;
+      case 'confirm':
+        console.log('승인 대기중');
+        break;
+      default:
+        joinParty();
+        break;
+    }
+  };
+
   const SubscribeBtn = () => {
     return (
-      <View
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={onPressSubscribeBtn}
         style={[
           styles.subscribe_common_text_container,
-          join_state === 'subscribe'
+          joinState === 'subscribe'
             ? styles.subscribe_subscribed_text_container
-            : join_state === 'confirm'
+            : joinState === 'confirm'
             ? styles.subscribe_confirm_text_container
             : styles.subscribe_unsubscribe_text_container,
         ]}>
         <Text
           style={[
             styles.subscribe_common_text,
-            join_state === 'subscribe'
+            joinState === 'subscribe'
               ? styles.subscribe_subscribed_text
-              : join_state === 'confirm'
+              : joinState === 'confirm'
               ? styles.subscribe_confirm_text
               : styles.subscribe_unsubscribe_text,
           ]}>
-          {join_state === 'subscribe'
+          {joinState === 'subscribe'
             ? '가입함'
-            : join_state === 'confirm'
+            : joinState === 'confirm'
             ? '승인 대기'
             : '가입 신청'}
         </Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 

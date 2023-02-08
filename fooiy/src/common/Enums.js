@@ -84,6 +84,8 @@ export const apiUrl = {
   PARTY_MEMBER_LIST: 'party/accounts/member_list/',
   // 파티 검색
   SEARCH_PARTY: 'search/party/',
+  // 파티 가입
+  JOIN_PARTY: 'party/accounts/join/',
 };
 
 export const toastMessage = {
