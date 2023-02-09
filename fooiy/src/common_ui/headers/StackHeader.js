@@ -52,7 +52,7 @@ export const StackHeader = props => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
-            navigation.goBack();
+            props.isParty ? props.setIsVisible(false) : navigation.goBack();
           }}>
           <GoBackArrow />
         </TouchableOpacity>

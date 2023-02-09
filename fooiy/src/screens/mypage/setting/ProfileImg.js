@@ -28,7 +28,7 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 
 const ProfileImg = props => {
-  const {isParty, toggleAlbum, setImage, party_id} = props;
+  const {isParty, toggleAlbum, setImage, party_id, setIsVisible} = props;
 
   const navigation = useNavigation();
   const width = globalVariable.width;
@@ -52,12 +52,7 @@ const ProfileImg = props => {
           transformRequest: (data, headers) => {
             return data;
           },
-        })
-          .then(res => {
-            console.log(res);
-            // dispatch(userInfoAction.edit(res.data.payload.account_info));
-          })
-          .then(navigation.goBack())
+        }).then(navigation.goBack())
       : await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -247,7 +242,12 @@ const ProfileImg = props => {
     <SafeAreaView
       style={{backgroundColor: fooiyColor.W, flex: 1}}
       edges={Platform.OS === 'ios' ? 'top' : null}>
-      <StackHeader title="앨범" next={enroll} />
+      <StackHeader
+        title="앨범"
+        next={enroll}
+        isParty={isParty}
+        setIsVisible={setIsVisible}
+      />
       {selectIndex !== -1 ? (
         <SelectedPhoto />
       ) : (

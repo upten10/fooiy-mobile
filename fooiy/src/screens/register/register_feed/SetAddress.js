@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import NaverMapView from 'react-native-nmap';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -10,10 +10,11 @@ import axios from 'axios';
 import {debounce} from 'lodash';
 import {Current_Location} from '../../../../assets/icons/svg';
 import {check, PERMISSIONS} from 'react-native-permissions';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const SetAddress = props => {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const photo_list = props.route.params.photo_list;
   const [btnActivate, setBtnActivate] = useState(false);
   const mapView = useRef(null);
@@ -165,18 +166,25 @@ const SetAddress = props => {
                   zoom: 17,
                 }
           }
-          style={styles.mapview}></NaverMapView>
-        <View
-          style={{
-            width: 5,
-            height: 5,
-            position: 'absolute',
-            right: '50%',
-            top: '42.5%',
-            borderWidth: 2,
-            backgroundColor: 'red',
-          }}
-        />
+          style={[
+            styles.mapview,
+            {height: globalVariable.height - 258 - 56 - insets.top},
+          ]}>
+          <View
+            style={{
+              flex: 1,
+              alignSelf: 'center',
+              justifyContent: 'center',
+            }}>
+            <Image
+              source={require('../../../../assets/image/Current_Position.png')}
+              style={{
+                width: 34,
+                height: 44,
+              }}
+            />
+          </View>
+        </NaverMapView>
       </View>
       <View style={styles.current_location}>
         <TouchableOpacity onPress={onClickLocationBtn}>
@@ -231,7 +239,7 @@ export default SetAddress;
 const styles = StyleSheet.create({
   mapview: {
     width: '100%',
-    height: '85%',
+    // height: globalVariable.height - 258 - 56 - insets.top,
   },
   current_location: {
     width: 56,
