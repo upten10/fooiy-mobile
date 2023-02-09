@@ -17,6 +17,7 @@ import PartySetting from './PartySetting/PartySetting';
 import PartySearch from '../../common_ui/Search/PartySearch';
 import PartyConfirm from './PartySetting/PartyConfirm';
 import MypageMap from '../mypage/mypage_map/MypageMap';
+import EditName from '../mypage/setting/EditName';
 
 const PartyStack = createStackNavigator();
 
@@ -148,6 +149,16 @@ const PartyStackNavigation = props => {
       <PartyStack.Screen
         name="PartySetting"
         component={PartySetting}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({
+            tabBarStyle: {display: 'none'},
+          });
+        }}
+      />
+      {/* 파티 이름 변경 */}
+      <PartyStack.Screen
+        name="PartyEditName"
+        component={EditName}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
             tabBarStyle: {display: 'none'},

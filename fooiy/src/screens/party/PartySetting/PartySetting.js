@@ -20,7 +20,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const SettingTab = props => {
-  const {title, description, party_id} = props;
+  const {title, description, party_id, owner_id} = props;
   const navigation = useNavigation();
 
   const onPressPartyConfirm = () => {
@@ -29,9 +29,28 @@ const SettingTab = props => {
     });
   };
 
+  const onPressPartyEditName = () => {
+    navigation.navigate('PartyEditName', {
+      party_id,
+    });
+  };
+
+  const onPressPartyMemberList = () => {
+    navigation.navigate('PartyMemberList', {
+      party_id,
+      owner_id,
+    });
+  };
+
   return (
     <TouchableOpacity
-      onPress={title === '파티 가입 신청 목록' ? onPressPartyConfirm : null}
+      onPress={
+        title === '파티 가입 신청 목록'
+          ? onPressPartyConfirm
+          : title === '파티 이름'
+          ? onPressPartyEditName
+          : onPressPartyMemberList
+      }
       activeOpacity={0.8}
       style={{
         flexDirection: 'row',
@@ -162,10 +181,16 @@ export default props => {
           </View>
           {/* Settings */}
           <View>
-            <SettingTab title={'파티 이름'} description={name} />
+            <SettingTab
+              title={'파티 이름'}
+              description={name}
+              party_id={party_id}
+            />
             <SettingTab
               title={'파티원 목록'}
               description={account_count + '명'}
+              party_id={party_id}
+              owner_id={owner_id}
             />
             <SettingTab
               title={'파티 가입 신청 목록'}
