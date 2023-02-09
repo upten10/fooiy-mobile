@@ -14,6 +14,7 @@ import FastImage from 'react-native-fast-image';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -28,10 +29,13 @@ export default props => {
   const [partyInfo, setPartyInfo] = useState({});
   const [partyFeeds, setPartyFeeds] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [noFeedImage, setNoFeedImage] = useState(null);
 
   useEffect(() => {
     getPartyInfo();
-    getPartyFeeds();
+    getPartyFeeds(0);
   }, []);
 
   const getPartyInfo = async () => {
@@ -44,13 +48,43 @@ export default props => {
     });
   };
 
-  const getPartyFeeds = async () => {
+  const getPartyFeeds = async offset => {
+    setOffset(offset);
     await ApiManagerV2.get(apiUrl.PARTY_FEED_LIST, {
       params: {
         type: 'image',
         party_id: party_id,
+        limit: globalVariable.FeedLimit,
+        offset: offset,
       },
-    }).then(res => setPartyFeeds(res.data.payload.feed_list.results));
+    })
+      .then(res => {
+        if (res.data.payload.feed_list) {
+          if (offset === 0) {
+            setPartyFeeds(res.data.payload.feed_list.results);
+          } else {
+            setPartyFeeds([
+              ...partyFeeds,
+              ...res.data.payload.feed_list.results,
+            ]);
+          }
+          totalCount === 0 &&
+            setTotalCount(res.data.payload.feed_list.total_count);
+        } else {
+          setNoFeedImage(res.data.payload.image);
+        }
+      })
+      .catch(e => {
+        FooiyToast.error();
+      });
+    // .then(res => setPartyFeeds(res.data.payload.feed_list.results));
+  };
+
+  const loadMoreItem = () => {
+    if (totalCount > offset + globalVariable.FeedLimit) {
+      setOffset(offset + globalVariable.FeedLimit);
+      getPartyFeeds(offset + globalVariable.FeedLimit);
+    }
   };
 
   const renderItem = ({item, index}) => {
@@ -96,7 +130,7 @@ export default props => {
   const getRefreshData = async () => {
     setRefreshing(true);
     await getPartyInfo();
-    await getPartyFeeds();
+    await getPartyFeeds(0);
     setRefreshing(false);
   };
 
@@ -147,6 +181,7 @@ export default props => {
           onRefresh={onRefresh}
           refreshing={refreshing}
           renderItem={renderItem}
+          onEndReached={loadMoreItem}
           removeClippedSubviews={true}
           keyExtractor={item => String(item.id)}
           ListHeaderComponent={
