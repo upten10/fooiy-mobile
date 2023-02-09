@@ -119,7 +119,6 @@ const Party = props => {
           onRefresh={onRefresh}
           refreshing={refreshing}
           scrollEnabled={partyList.length === 0 ? false : true}
-          // ListFooterComponent={listFooterComponent}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => <ShopListUI {...item} />}
           // onEndReached={loadMoreItem}
