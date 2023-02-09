@@ -11,9 +11,26 @@ export default props => {
   const {params} = props.route;
   const navigation = useNavigation();
 
+  const formData = new FormData();
+  formData.append('party_name', params.party_name);
+  formData.append('introduction', params.introduction);
+  formData.append('party_image', {
+    uri: params.party_image.uri,
+    name:
+      params.party_image.filename !== null
+        ? params.party_image.filename
+        : 'image.jpg',
+    type: `image`,
+  });
+
   const createParty = useCallback(async () => {
-    await ApiManagerV2.post(apiUrl.CREATE_PARTY, {
-      ...params,
+    await ApiManagerV2.post(apiUrl.CREATE_PARTY, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      transformRequest: (formData, headers) => {
+        return formData;
+      },
     }).then(res => console.log('파티 생성'));
   }, [params]);
 

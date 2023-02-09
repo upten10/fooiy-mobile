@@ -134,7 +134,7 @@ const RegisterFeed = props => {
         type,
       });
     photo_list[2] &&
-      formData.append('image_2', {
+      formData.append('image_3', {
         uri: photo_list[2].image.uri,
         name:
           photo_list[2].image.filename !== null

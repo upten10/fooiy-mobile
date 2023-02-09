@@ -83,7 +83,7 @@ const Shop = props => {
     });
   };
   const onClickRegister = () => {
-    navigation.navigate('RegisterStackNavigation', {
+    navigation.navigate('Register', {
       shop: props.route.params,
     });
   };

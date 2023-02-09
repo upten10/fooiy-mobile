@@ -1,37 +1,35 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  View,
+  Alert,
   FlatList,
   Image,
-  TouchableOpacity,
-  Text,
-  Button,
-  StyleSheet,
-  Alert,
   Linking,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {Platform} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
-import {CropView} from 'react-native-image-crop-tools';
 import RNFS from 'react-native-fs';
-
+import {CropView} from 'react-native-image-crop-tools';
+import cloneDeep from 'lodash/cloneDeep';
+import {check, PERMISSIONS} from 'react-native-permissions';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
+import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../../common/Enums';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import cloneDeep from 'lodash/cloneDeep';
-import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
-import {useDispatch} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
-import {check, PERMISSIONS} from 'react-native-permissions';
-import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
 
-const ProfileImg = () => {
-  const insets = useSafeAreaInsets();
+const ProfileImg = props => {
+  const {isParty, toggleAlbum, setImage, party_id} = props;
+
   const navigation = useNavigation();
   const width = globalVariable.width;
   const height = globalVariable.height;
@@ -42,23 +40,36 @@ const ProfileImg = () => {
   const [galleryOriginalListIOS, setGalleryOriginalListIOS] = useState([]); // ios 전용
   const [galleryOriginalList, setGalleryOriginalList] = useState([]);
   const [selectIndex, setSelectIndex] = useState(-1);
-  const [curEdges, setCurEdges] = useState([]);
 
   const dispatch = useDispatch();
 
   const patchProfileImg = async data => {
-    await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      transformRequest: (data, headers) => {
-        return data;
-      },
-    })
-      .then(res => {
-        dispatch(userInfoAction.edit(res.data.payload.account_info));
-      })
-      .then(navigation.goBack());
+    isParty === 'profile'
+      ? await ApiManagerV2.patch(apiUrl.EDIT_PARTY, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          transformRequest: (data, headers) => {
+            return data;
+          },
+        })
+          .then(res => {
+            console.log(res);
+            // dispatch(userInfoAction.edit(res.data.payload.account_info));
+          })
+          .then(navigation.goBack())
+      : await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          transformRequest: (data, headers) => {
+            return data;
+          },
+        })
+          .then(res => {
+            dispatch(userInfoAction.edit(res.data.payload.account_info));
+          })
+          .then(navigation.goBack());
   };
 
   const enroll = async () => {
@@ -81,12 +92,24 @@ const ProfileImg = () => {
           : galleryList[selectIndex].node.type;
 
       const formData = new FormData();
-      formData.append('profile_image', {
-        uri: photo.uri,
-        name: photo.filename !== null ? photo.filename : 'image.jpg',
-        type,
-      });
-      patchProfileImg(formData);
+      isParty === 'profile'
+        ? (formData.append('party_id', party_id),
+          formData.append('party_image', {
+            uri: photo.uri,
+            name: photo.filename !== null ? photo.filename : 'image.jpg',
+            type,
+          }))
+        : formData.append('profile_image', {
+            uri: photo.uri,
+            name: photo.filename !== null ? photo.filename : 'image.jpg',
+            type,
+          });
+      if (isParty === 'create') {
+        toggleAlbum();
+        setImage(galleryList[selectIndex].node.image);
+      } else {
+        patchProfileImg(formData);
+      }
     }
   };
 
@@ -113,7 +136,6 @@ const ProfileImg = () => {
     try {
       if (galleryCursor !== false) {
         const {edges, page_info} = await CameraRoll.getPhotos(params);
-        setCurEdges(edges);
 
         if (page_info.has_next_page === false) {
           setGalleryCursor(false);
@@ -232,26 +254,6 @@ const ProfileImg = () => {
         <View style={styles.crop_view}></View>
       )}
       <View style={styles.mid_view}>
-        {/* <FlatList
-          data={selectedPhotoIndexList}
-          keyExtractor={index => index.toString()}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => {
-                  setSelectIndex(index);
-                }}>
-                <Image
-                  source={{uri: galleryList[item].node.image.uri}}
-                  style={styles.select_image}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        /> */}
         {cropPhoto ? (
           <TouchableOpacity
             onPress={() =>
