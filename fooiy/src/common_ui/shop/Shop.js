@@ -84,7 +84,7 @@ const Shop = props => {
   };
   const onClickRegister = () => {
     navigation.navigate('RegisterStackNavigation', {
-      shop: props.route.params,
+      shop: shopInfo,
     });
   };
 
