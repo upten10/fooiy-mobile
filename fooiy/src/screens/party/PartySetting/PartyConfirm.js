@@ -44,11 +44,11 @@ export default props => {
     }).then(res => setPartyConfirmList(res.data.payload.party_members));
   };
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item, index}) => {
     const {account_id, fooiyti, nickname, profile_image, rank} = item;
 
     const onPressTab = () => {
-      if (checkedList.findIndex(elem => elem === account_id) === 0) {
+      if (checkedList.findIndex(elem => elem === account_id) !== -1) {
         setCheckedList(checkedList.filter(elem => elem !== account_id));
       } else {
         setCheckedList([...checkedList, account_id]);
@@ -142,7 +142,7 @@ export default props => {
               </View>
             </View>
           </View>
-          {checkedList.findIndex(elem => elem === account_id) === 0 ? (
+          {checkedList.findIndex(elem => elem === account_id) !== -1 ? (
             <PartyConfirmCheck />
           ) : (
             <PartyConfirmUncheck />
@@ -183,7 +183,7 @@ export default props => {
   const postPartyConfirm = async type => {
     await ApiManagerV2.post(apiUrl.CONFIRM_PARTY, {
       party_id,
-      confirm_account_id: checkedList[0],
+      confirm_accounts: checkedList,
       confirm: type,
     }).then(res => {
       setIsOpenModal(false);
@@ -315,9 +315,7 @@ export default props => {
           data={partyConfirmList}
           renderItem={item => renderItem(item)}
           numColumns={1}
-          keyExtractor={item => {
-            String(item.account_id);
-          }}
+          keyExtractor={item => String(item.account_id)}
           ItemSeparatorComponent={ItemSeparatorComponent}
           ListEmptyComponent={ListEmptyComponent}
         />

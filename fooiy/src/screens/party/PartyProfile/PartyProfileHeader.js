@@ -94,6 +94,7 @@ export default props => {
   const onPressPartyMemberList = () => {
     navigation.navigate('PartyMemberList', {
       party_id,
+      owner_id,
     });
   };
 
@@ -101,7 +102,6 @@ export default props => {
     navigation.navigate('PartyMap', {
       party_id,
       name,
-      account_id: -1,
     });
   };
 

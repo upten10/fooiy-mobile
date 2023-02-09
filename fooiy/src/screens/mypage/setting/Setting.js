@@ -77,7 +77,7 @@ const Setting = props => {
   };
 
   const onItemPress = navi => {
-    navigation.navigate(navi);
+    navigation.navigate(navi, {});
   };
 
   const onPressLogout = async () => {
@@ -124,6 +124,7 @@ const Setting = props => {
               placeholder="인사말을 입력해주세요."
               value={curIntro}
               onChangeText={setCurIntro}
+              placeholderTextColor={fooiyColor.G400}
               style={
                 isFocused ? [styles.intro, styles.introFocus] : styles.intro
               }
