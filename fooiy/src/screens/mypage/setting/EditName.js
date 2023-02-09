@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
       android: null,
     }),
     width: globalVariable.width - (32 + 24 + 32 + 2),
+    height: 56,
   },
   textInputValue: {
     ...fooiyFont.Subtitle2,

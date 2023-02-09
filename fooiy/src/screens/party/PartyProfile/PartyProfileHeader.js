@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Map, PartyProfileArrow} from '../../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
@@ -194,7 +194,18 @@ export default props => {
             height: 48,
           }}>
           <Map />
-          <Text style={{marginLeft: 8}}>지도</Text>
+          <Text
+            style={{
+              ...fooiyFont.Button,
+              color: fooiyColor.G500,
+              marginLeft: 8,
+              lineHeight: Platform.select({
+                ios: 0,
+                android: null,
+              }),
+            }}>
+            지도
+          </Text>
         </TouchableOpacity>
         <SubscribeBtn />
       </View>
@@ -236,7 +247,6 @@ const styles = StyleSheet.create({
   subscribe_common_text_container: {
     borderRadius: 8,
     paddingHorizontal: 16,
-    paddingVertical: 16,
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',
@@ -245,6 +255,10 @@ const styles = StyleSheet.create({
     ...fooiyFont.Button,
     width: globalVariable.width - 32 - 117 - 8 - 32,
     textAlign: 'center',
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
   },
   subscribe_unsubscribe_text_container: {
     backgroundColor: fooiyColor.P500,

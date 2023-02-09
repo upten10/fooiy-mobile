@@ -4,6 +4,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -130,12 +131,15 @@ export default props => {
       <View
         style={{
           width: '100%',
-          height:
-            globalVariable.height -
-            insets.top -
-            insets.bottom -
-            globalVariable.tabBarHeight -
-            56,
+          height: Platform.select({
+            ios:
+              globalVariable.height -
+              insets.top -
+              insets.bottom -
+              globalVariable.tabBarHeight -
+              56,
+            android: globalVariable.height - globalVariable.tabBarHeight - 34,
+          }),
         }}>
         <FlatList
           data={partyFeeds}

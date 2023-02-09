@@ -135,10 +135,11 @@ const MypageMap = props => {
   const getFeedMarkerDetail = async data => {
     await ApiManagerV2.get(apiUrl.FEED_MAP_DETAIL, {
       params: {
-        type: 'mypage',
+        type: party_id !== undefined ? 'party' : 'mypage',
         latitude: data.latitude,
         longitude: data.longitude,
         ...(account_id && {other_account_id: account_id}),
+        ...(party_id && {party_id: party_id}),
       },
     })
       .then(res => {

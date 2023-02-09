@@ -154,10 +154,6 @@ export default props => {
     });
   };
 
-  const ItemSeparatorComponent = () => {
-    return <View style={{height: 16}}></View>;
-  };
-
   const ConfirmModal = () => {
     const toggleModal = () => {
       setIsOpenModal(false);
@@ -281,7 +277,10 @@ export default props => {
     };
 
     return isSetting && is_owner ? null : (
-      <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+      <TouchableOpacity
+        onPress={onPress}
+        activeOpacity={0.8}
+        style={{marginBottom: 16}}>
         <View
           style={{
             width: '100%',
@@ -397,7 +396,7 @@ export default props => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
+      <SafeAreaView style={{backgroundColor: fooiyColor.W, flex: 1}}>
         <StackHeader
           title={'파티원 목록'}
           owner_id={owner_id}
@@ -407,23 +406,58 @@ export default props => {
         <View
           style={{
             width: '100%',
-            height: globalVariable.height - insets.top - insets.bottom - 56,
+            height: Platform.select({
+              ios: globalVariable.height - insets.top - insets.bottom - 56,
+              android: globalVariable.height - insets.top - insets.bottom - 56,
+            }),
             paddingHorizontal: 16,
           }}>
-          <SearchBar
-            value={value}
-            setValue={setValue}
-            placeholder={'유저를 검색해보세요!'}
-            autoFocus={false}
-          />
-          <FlatList
-            data={filteredMembers}
-            renderItem={item => renderItem(item)}
-            numColumns={1}
-            keyExtractor={item => String(item.account_id)}
-            ItemSeparatorComponent={ItemSeparatorComponent}
-            ListEmptyComponent={ListEmptyComponent}
-          />
+          {members.length === 1 && isSetting ? null : (
+            <SearchBar
+              value={value}
+              setValue={setValue}
+              placeholder={'유저를 검색해보세요!'}
+              autoFocus={false}
+            />
+          )}
+          {members.length !== 1 || !isSetting ? (
+            <FlatList
+              data={filteredMembers}
+              renderItem={item => renderItem(item)}
+              numColumns={1}
+              keyExtractor={item => String(item.account_id)}
+              ListEmptyComponent={ListEmptyComponent}
+            />
+          ) : (
+            <View
+              style={{
+                height: Platform.select({
+                  ios:
+                    globalVariable.height -
+                    insets.top -
+                    insets.bottom -
+                    56 -
+                    56,
+                  android:
+                    globalVariable.height -
+                    insets.top -
+                    insets.bottom -
+                    56 -
+                    56 -
+                    34,
+                }),
+              }}>
+              <Text
+                style={{
+                  ...fooiyFont.Subtitle2,
+                  color: fooiyColor.G600,
+                  textAlign: 'center',
+                  marginTop: 16,
+                }}>
+                아직 파티원이 없어요.
+              </Text>
+            </View>
+          )}
           {isSetting ? (
             <TouchableOpacity
               onPress={checkedMembers.length > 0 ? onPressExpulsionBtn : null}
@@ -458,6 +492,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    left: 16,
+    bottom: 0,
+    marginBottom: Platform.select({
+      ios: null,
+      android: 34,
+    }),
   },
   expulsionBtnNoActive: {
     width: '100%',
@@ -466,6 +507,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    left: 16,
+    bottom: 0,
+    marginBottom: Platform.select({
+      ios: null,
+      android: 34,
+    }),
   },
   expulsionBtnTextActive: {
     ...fooiyFont.Button,
