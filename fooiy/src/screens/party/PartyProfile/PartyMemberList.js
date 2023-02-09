@@ -267,7 +267,7 @@ export default props => {
     } = item;
 
     const onPress = () => {
-      if (isSetting) {
+      if (isSetting && !is_owner) {
         if (checkedMembers.findIndex(elem => elem === account_id) !== -1) {
           setCheckedMembers(checkedMembers.filter(elem => elem !== account_id));
         } else {
@@ -280,7 +280,7 @@ export default props => {
       }
     };
 
-    return (
+    return isSetting && is_owner ? null : (
       <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
         <View
           style={{
