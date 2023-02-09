@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {Profiler, useEffect, useState} from 'react';
 import {
+  Image,
   Keyboard,
   Platform,
   StyleSheet,
@@ -329,6 +330,7 @@ export default props => {
           isParty={'create'}
           toggleAlbum={toggleAlbum}
           setImage={setImage}
+          setIsVisible={setIsVisible}
         />
       </View>
     );
@@ -361,6 +363,17 @@ export default props => {
                 />
                 <NoticeComp index={index} />
               </>
+            ) : image ? (
+              <Image
+                source={{uri: image.uri}}
+                style={{
+                  width: globalVariable.width - 32,
+                  height: globalVariable.width - 32,
+                  borderRadius: 24,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              />
             ) : (
               <InsertImage setIsVisible={setIsVisible} />
             )}

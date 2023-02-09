@@ -101,7 +101,6 @@ export default props => {
   const [curIntro, setCurIntro] = useState(introduction);
   const [isFocused, setIsFocused] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [img, setImg] = useState();
 
   const insets = useSafeAreaInsets();
 
@@ -141,8 +140,8 @@ export default props => {
         <ProfileImg
           isParty={'profile'}
           toggleAlbum={toggleAlbum}
-          setImage={setImg}
           party_id={party_id}
+          setIsVisible={setIsVisible}
         />
       </View>
     );
