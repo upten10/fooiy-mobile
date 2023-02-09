@@ -69,8 +69,7 @@ const ModifyFeed = props => {
       fooiyti_a: valueSet[fooiytiRatingAC],
       fooiyti_c: valueSet[4 - fooiytiRatingAC],
     }).then(res => {
-      res.data.payload === 'success' &&
-        navigation.navigate('FeedStackNavigation');
+      res.data.payload === 'success' && navigation.goBack();
     });
   };
 
