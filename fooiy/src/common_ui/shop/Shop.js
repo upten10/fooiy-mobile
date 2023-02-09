@@ -48,7 +48,6 @@ const Shop = props => {
     setIsLoading(true);
     await ApiManagerV2.get(apiUrl.SHOP_LIST, {
       params: {
-        type: 'mypage',
         limit: globalVariable.FeedLimit,
         offset: offset,
         shop_id: data,
@@ -83,7 +82,7 @@ const Shop = props => {
     });
   };
   const onClickRegister = () => {
-    navigation.navigate('RegisterStackNavigation', {
+    navigation.navigate('Register', {
       shop: props.route.params,
     });
   };

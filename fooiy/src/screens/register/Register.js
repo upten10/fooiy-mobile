@@ -8,6 +8,7 @@ import {
   Alert,
   Linking,
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
@@ -80,7 +81,7 @@ const Register = props => {
     toggleModal();
   };
   return (
-    <View>
+    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
       <StackHeader title="사진 등록" style={{color: 'black'}} />
       <TouchableOpacity
         onPress={register_photo}
@@ -149,7 +150,7 @@ const Register = props => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

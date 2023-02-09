@@ -23,9 +23,13 @@ import {apiUrl} from '../../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
 import TotalRating from './TotalRating';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import SelectParties from '../../../../common_ui/SelectParties';
+import Margin from '../../../../common_ui/Margin';
+import FooiyToast from '../../../../common/FooiyToast';
 
 const RegisterFeed = props => {
   const {photo_list, shop, menu, address} = props.route.params;
+  const [selectedPartyList, setSelectedPartyList] = useState([]);
   const shop_init = shop
     ? props.route.params.shop.name
       ? props.route.params.shop.name
@@ -85,9 +89,11 @@ const RegisterFeed = props => {
           transformRequest: (data, headers) => {
             return data;
           },
-        }).then(res => {
-          console.log(res);
         })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(e => FooiyToast.error())
       : await ApiManagerV2.post(apiUrl.REGISTER_PIONEER, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -95,9 +101,11 @@ const RegisterFeed = props => {
           transformRequest: (data, headers) => {
             return data;
           },
-        }).then(res => {
-          console.log(res);
-        });
+        })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(e => FooiyToast.error());
     navigation.navigate('FeedStackNavigation');
   };
   const onClickRegister = async () => {
@@ -134,7 +142,7 @@ const RegisterFeed = props => {
         type,
       });
     photo_list[2] &&
-      formData.append('image_2', {
+      formData.append('image_3', {
         uri: photo_list[2].image.uri,
         name:
           photo_list[2].image.filename !== null
@@ -150,6 +158,7 @@ const RegisterFeed = props => {
     formData.append('fooiyti_f', 100 - valueSet[fooiytiRatingTF]);
     formData.append('fooiyti_a', valueSet[fooiytiRatingAC]);
     formData.append('fooiyti_c', 100 - valueSet[fooiytiRatingAC]);
+    formData.append('subscribe_parties', selectedPartyList);
 
     postRegister(formData);
   };
@@ -276,6 +285,12 @@ const RegisterFeed = props => {
             </Text>
           </View>
         </View>
+        <Margin h={36} />
+        <SelectParties
+          selectedPartyList={selectedPartyList}
+          setSelectedPartyList={setSelectedPartyList}
+        />
+        <Margin h={48} />
         <TouchableOpacity
           activeOpacity={0.8}
           style={

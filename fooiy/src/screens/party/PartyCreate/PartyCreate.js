@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {Profiler, useEffect, useState} from 'react';
 import {
   Keyboard,
   Platform,
@@ -17,6 +17,7 @@ import {Clear, Notice, Register_icon} from '../../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import ProfileImg from '../../mypage/setting/ProfileImg';
 
 const Title = props => {
   const {index} = props;
@@ -173,7 +174,8 @@ const NoticeComp = props => {
 };
 
 const NavigateBtn = props => {
-  const {index, navigation, btnActivate, checkName, inputValue, data} = props;
+  const {index, navigation, btnActivate, checkName, inputValue, data, image} =
+    props;
   const insets = useSafeAreaInsets();
 
   const nextRoute =
@@ -198,7 +200,7 @@ const NavigateBtn = props => {
     } else if (index === 3) {
       navigation.navigate(nextRoute, {
         ...data,
-        party_image: '',
+        party_image: image,
       });
     }
   };
@@ -258,9 +260,11 @@ const NavigateBtn = props => {
   );
 };
 
-const InsertImage = () => {
+const InsertImage = props => {
+  const {setIsVisible} = props;
+
   const onPressInsertImage = () => {
-    console.log('Press');
+    setIsVisible(true);
   };
 
   return (
@@ -295,6 +299,8 @@ export default props => {
   const [inputValue, setInputValue] = useState('');
   const [checkName, setCheckName] = useState(false);
   const [data, setData] = useState({});
+  const [isVisible, setIsVisible] = useState(false);
+  const [image, setImage] = useState();
 
   useEffect(() => {
     if (props.route.params !== undefined) {
@@ -305,49 +311,74 @@ export default props => {
   useEffect(() => {
     setIndex(navigation.getState().index);
   }, [navigation, index]);
-  return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView
-        style={{backgroundColor: fooiyColor.W}}
-        edges={Platform.select({
-          ios: 'top',
-          android: null,
-        })}>
-        <StackHeader title={'파티 생성'} />
-        {/* Body */}
-        <View
-          style={{
-            height: globalVariable.height - insets.top - 56,
-            paddingHorizontal: 16,
-            paddingTop: 16,
-          }}>
-          <Title index={index} />
-          {index < 3 ? (
-            <>
-              <UserInput
-                index={index}
-                setBtnActivate={setBtnActivate}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-                setCheckName={setCheckName}
-              />
-              <NoticeComp index={index} />
-            </>
-          ) : (
-            <InsertImage />
-          )}
-          <NavigateBtn
-            index={index}
-            navigation={navigation}
-            btnActivate={btnActivate}
-            inputValue={inputValue}
-            checkName={checkName}
-            data={data}
-          />
-        </View>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
-  );
+
+  const toggleAlbum = () => {
+    setIsVisible(false);
+  };
+
+  if (isVisible) {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          width: globalVariable.width,
+          height: globalVariable.height,
+          borderWidth: 1,
+        }}>
+        <ProfileImg
+          isParty={'create'}
+          toggleAlbum={toggleAlbum}
+          setImage={setImage}
+        />
+      </View>
+    );
+  } else {
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView
+          style={{backgroundColor: fooiyColor.W}}
+          edges={Platform.select({
+            ios: 'top',
+            android: null,
+          })}>
+          <StackHeader title={'파티 생성'} />
+          {/* Body */}
+          <View
+            style={{
+              height: globalVariable.height - insets.top - 56,
+              paddingHorizontal: 16,
+              paddingTop: 16,
+            }}>
+            <Title index={index} />
+            {index < 3 ? (
+              <>
+                <UserInput
+                  index={index}
+                  setBtnActivate={setBtnActivate}
+                  inputValue={inputValue}
+                  setInputValue={setInputValue}
+                  setCheckName={setCheckName}
+                />
+                <NoticeComp index={index} />
+              </>
+            ) : (
+              <InsertImage setIsVisible={setIsVisible} />
+            )}
+
+            <NavigateBtn
+              index={index}
+              navigation={navigation}
+              btnActivate={btnActivate}
+              inputValue={inputValue}
+              checkName={checkName}
+              data={data}
+              image={image}
+            />
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

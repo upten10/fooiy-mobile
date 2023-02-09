@@ -191,7 +191,6 @@ const UI_Feed = item => {
             description: item.menu_name + ' ' + item.menu_price,
           },
         });
-        console.log(response);
       } catch (e) {
         console.error(e);
         console.error(e.message);
@@ -240,6 +239,7 @@ const UI_Feed = item => {
         likeCount={likeCount}
         onClickShareIcon={onClickShareIcon}
         onClickStoreIcon={onClickStoreIcon}
+        is_confirm={item.is_confirm}
         storeIcon={storeIcon}
         count_comment={item.count_comment}
       />

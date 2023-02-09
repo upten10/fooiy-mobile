@@ -97,7 +97,7 @@ const Gallery = props => {
       }
     });
     const params = {
-      first: 40,
+      first: 12,
       assetType: 'Photos',
       ...(galleryCursor && {after: galleryCursor}),
     };
