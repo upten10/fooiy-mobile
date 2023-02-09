@@ -62,7 +62,9 @@ const FindWay = props => {
       `${shop.longitude}` +
       '&dname=' +
       `${shop.shop_name}`;
-    await Linking.openURL(destinationURL);
+    await Linking.openURL(destinationURL).catch(e =>
+      FooiyToast.message('원할한 이용을 위해 어플을 설치해 주세요.'),
+    );
   };
   const onClickKakaoMap = async () => {
     const destinationURL =

@@ -23,6 +23,7 @@ const FeedUsefulContent = props => {
     onClickStoreIcon,
     onClickShareIcon,
     storeIcon,
+    is_confirm,
     count_comment,
   } = props;
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ const FeedUsefulContent = props => {
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
             <Comment />
           </TouchableOpacity>
-          {count_comment !== 0 && (
+          {!is_confirm && count_comment !== 0 && (
             <View style={styles.comment_count_container}>
               <Text style={styles.comment_count}>{count_comment}</Text>
             </View>
