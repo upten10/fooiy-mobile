@@ -150,64 +150,87 @@ export default props => {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
-          <StackHeader title={'파티 설정'} />
-          {/* Body */}
-          <View
-            style={{
-              width: '100%',
-              height: globalVariable.height - insets.top - insets.bottom - 56,
-              paddingHorizontal: 16,
-              paddingTop: 16,
-            }}>
-            {/* Info */}
-            <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 20,
-                }}>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={onImgPress}
-                  style={{marginRight: 16}}>
-                  <FastImage
-                    source={{uri: image}}
-                    style={{
-                      width: 72,
-                      height: 72,
-                      borderWidth: 1,
-                      borderRadius: 24,
-                      borderColor: fooiyColor.G200,
-                    }}
+          <View>
+            <StackHeader title={'파티 설정'} />
+            {/* Body */}
+            <View
+              style={{
+                width: '100%',
+                height: globalVariable.height - insets.top - insets.bottom - 56,
+                paddingHorizontal: 16,
+                paddingTop: 16,
+              }}>
+              {/* Info */}
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginBottom: 20,
+                  }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={onImgPress}
+                    style={{marginRight: 16}}>
+                    <FastImage
+                      source={{uri: image}}
+                      style={{
+                        width: 72,
+                        height: 72,
+                        borderWidth: 1,
+                        borderRadius: 24,
+                        borderColor: fooiyColor.G200,
+                      }}
+                    />
+                    <Camera_Profile style={styles.cameraIcon} />
+                  </TouchableOpacity>
+                  <Text style={{...fooiyFont.Subtitle1}}>{name}</Text>
+                </View>
+                <View style={styles.introContainer}>
+                  <TextInput
+                    maxLength={100}
+                    placeholder={'인사말을 입력해주세요.'}
+                    value={curIntro}
+                    onChangeText={setCurIntro}
+                    style={
+                      isFocused
+                        ? [styles.intro, styles.introFocus]
+                        : styles.intro
+                    }
+                    onFocus={onIntroFocus}
+                    onBlur={onIntroBlur}
                   />
-                  <Camera_Profile style={styles.cameraIcon} />
-                </TouchableOpacity>
-                <Text style={{...fooiyFont.Subtitle1}}>{name}</Text>
+                  <Pencil
+                    style={isFocused ? styles.pencilFocus : styles.pencilBlur}
+                  />
+                </View>
               </View>
-              <View style={styles.introContainer}>
-                <TextInput
-                  maxLength={100}
-                  placeholder={'인사말을 입력해주세요.'}
-                  value={curIntro}
-                  onChangeText={setCurIntro}
-                  style={
-                    isFocused ? [styles.intro, styles.introFocus] : styles.intro
-                  }
-                  onFocus={onIntroFocus}
-                  onBlur={onIntroBlur}
+              {/* Settings */}
+              <View>
+                <SettingTab title={'파티 이름'} description={name} />
+                <SettingTab
+                  title={'파티원 목록'}
+                  description={account_count + '명'}
                 />
-                <Pencil
-                  style={isFocused ? styles.pencilFocus : styles.pencilBlur}
+                <SettingTab
+                  title={'파티 가입 신청 목록'}
+                  description={waiting_join_count + '명'}
+                  party_id={party_id}
                 />
               </View>
             </View>
             {/* Settings */}
             <View>
-              <SettingTab title={'파티 이름'} description={name} />
+              <SettingTab
+                title={'파티 이름'}
+                description={name}
+                party_id={party_id}
+              />
               <SettingTab
                 title={'파티원 목록'}
                 description={account_count + '명'}
+                party_id={party_id}
+                owner_id={owner_id}
               />
               <SettingTab
                 title={'파티 가입 신청 목록'}
@@ -216,28 +239,10 @@ export default props => {
               />
             </View>
           </View>
-          {/* Settings */}
-          <View>
-            <SettingTab
-              title={'파티 이름'}
-              description={name}
-              party_id={party_id}
-            />
-            <SettingTab
-              title={'파티원 목록'}
-              description={account_count + '명'}
-              party_id={party_id}
-              owner_id={owner_id}
-            />
-            <SettingTab
-              title={'파티 가입 신청 목록'}
-              description={waiting_join_count + '명'}
-              party_id={party_id}
-            />
-          </View>
-        </View>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
