@@ -12,9 +12,8 @@ const SelectParties = props => {
   const [partyList, setPartyList] = useState([]);
   const getMyParties = async () => {
     await ApiManagerV2.get(apiUrl.MY_PARTY_LIST, {
-      params: {feed_id: feed_id},
+      params: {feed_id: feed_id ? feed_id : null},
     }).then(res => {
-      console.log(res.data.payload.party_list);
       setPartyList(res.data.payload.party_list);
     });
   };
