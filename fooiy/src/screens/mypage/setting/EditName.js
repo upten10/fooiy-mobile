@@ -13,7 +13,7 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {Notice} from '../../../../assets/icons/svg';
+import {Clear, Notice} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
@@ -122,32 +122,47 @@ const EditName = props => {
             </View>
             {/* input */}
             <View style={styles.textInputContainer}>
-              <TextInput
-                maxLength={20}
-                autoCapitalize={false}
-                autoCorrect={false}
-                spellCheck={false}
-                placeholder="특수문자 제외, 최대 20자"
-                placeholderTextColor={fooiyColor.G400}
+              <View
                 style={
-                  !focus
-                    ? inputValue.length > 0
-                      ? [styles.textInput, {color: fooiyColor.B}]
-                      : styles.textInput
+                  focus
+                    ? nameError
+                      ? [
+                          styles.textInputCommonContainer,
+                          styles.wrongTextInputContainer,
+                        ]
+                      : [
+                          styles.textInputCommonContainer,
+                          {borderColor: fooiyColor.G400},
+                        ]
                     : nameError
                     ? [
-                        styles.textInput,
-                        styles.textInputValue,
-                        styles.wrongTextInput,
+                        styles.textInputCommonContainer,
+                        styles.wrongTextInputContainer,
                       ]
-                    : [styles.textInput, styles.textInputValue]
-                }
-                onChangeText={onChangeText}
-                onBlur={onInputBlur}
-                onFocus={onInputFocus}
-                autoFocus
-                value={inputValue}
-              />
+                    : [styles.textInputCommonContainer]
+                }>
+                <TextInput
+                  maxLength={20}
+                  autoCapitalize={false}
+                  autoCorrect={false}
+                  spellCheck={false}
+                  placeholder="특수문자 제외, 최대 20자"
+                  placeholderTextColor={fooiyColor.G400}
+                  style={styles.textInput}
+                  onChangeText={onChangeText}
+                  onBlur={onInputBlur}
+                  onFocus={onInputFocus}
+                  autoFocus
+                  value={inputValue}
+                />
+                {inputValue.length > 0 ? (
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => setInputValue('')}>
+                    <Clear />
+                  </TouchableOpacity>
+                ) : null}
+              </View>
               <Text style={nameError ? styles.errorMsgOn : styles.errorMsgOff}>
                 사용할 수 없는 {party_id ? '파티 이름' : '닉네임'}이에요.
               </Text>
@@ -226,18 +241,27 @@ const styles = StyleSheet.create({
   textInputContainer: {
     marginBottom: 16,
   },
+  textInputCommonContainer: {
+    width: '100%',
+    height: 56,
+    borderWidth: 1,
+    borderColor: fooiyColor.G200,
+    borderRadius: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+  },
+  textInputValueContainer: {
+    borderColor: fooiyColor.G400,
+  },
   textInput: {
     ...fooiyFont.Subtitle2,
     lineHeight: Platform.select({
       ios: 0,
       android: null,
     }),
-    borderWidth: 1,
-    borderColor: fooiyColor.G200,
-    borderRadius: 8,
-    height: 56,
-    color: fooiyColor.G400,
-    padding: 16,
+    width: globalVariable.width - (32 + 24 + 32 + 2),
   },
   textInputValue: {
     ...fooiyFont.Subtitle2,
@@ -245,10 +269,9 @@ const styles = StyleSheet.create({
       ios: 0,
       android: null,
     }),
-    borderColor: fooiyColor.G400,
     color: fooiyColor.B,
   },
-  wrongTextInput: {
+  wrongTextInputContainer: {
     borderColor: fooiyColor.P800,
   },
   errorMsgOn: {
