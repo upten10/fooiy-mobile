@@ -65,10 +65,18 @@ const UI_Feed = item => {
     });
   };
 
-  const deleteFeed = () => {
-    console.log('deleteFeed');
-    toggleModal();
-    FooiyToast.message(toastMessage.FEED_DELETE);
+  const deleteFeed = async () => {
+    await ApiManagerV2.delete(apiUrl.DELETE_FEED + `${item.id}/`)
+      .then(res => {
+        toggleModal();
+        res.data.payload === 'success' && toggleModal();
+        res.data.payload === 'success' &&
+          FooiyToast.message(toastMessage.FEED_DELETE);
+      })
+      .catch(e => {
+        toggleModal();
+        FooiyToast.error();
+      });
   };
   const reportFeed = async () => {
     toggleModal();

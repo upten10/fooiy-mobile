@@ -43,6 +43,8 @@ export const apiUrl = {
   REGISTER_PIONEER: 'feeds/pioneer/',
   // 기록 등록
   REGISTER_RECORD: 'feeds/record/',
+  // 기록 삭제
+  DELETE_FEED: 'feeds/record/',
   // 기록 등록
   UPDATE_FEED: 'feeds/feed/modify/',
 

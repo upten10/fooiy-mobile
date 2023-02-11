@@ -114,7 +114,7 @@ const RegisterFeed = props => {
     const type = Platform.OS === 'ios' ? `image.jpg` : `image/jpeg`;
     const formData = new FormData();
     formData.append('account', accountValue);
-    shop && menu
+    shop
       ? formData.append('shop_id', shop_id)
       : formData.append('shop_name', shopValue);
     shop && menu

@@ -44,7 +44,14 @@ const toastConfig = {
         justifyContent: 'center',
         alignItems: 'flex-start',
       }}>
-      <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.W}}>{text1}</Text>
+      <Text
+        style={{
+          ...fooiyFont.Subtitle2,
+          color: fooiyColor.W,
+          lineHeight: Platform.select({ios: 0, android: 24}),
+        }}>
+        {text1}
+      </Text>
     </View>
   ),
 };

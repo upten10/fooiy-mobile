@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   next_cancel_button_text: {
     ...fooiyFont.Button,
     color: fooiyColor.G600,
-    lineHeight: Platform.select({ios: 0, android: 16}),
+    lineHeight: Platform.select({ios: 0, android: null}),
     textAlign: 'center',
   },
   next_button: {
@@ -147,6 +147,6 @@ const styles = StyleSheet.create({
     ...fooiyFont.Button,
     color: fooiyColor.W,
     textAlign: 'center',
-    lineHeight: Platform.select({ios: 0, android: 16}),
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
 });

@@ -21,6 +21,7 @@ import {
   Tmap,
 } from '../../../assets/icons/svg';
 import FooiyToast from '../../common/FooiyToast';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {StackHeader} from '../headers/StackHeader';
 
@@ -34,7 +35,10 @@ const FindWay = props => {
     setModalVisible(!isModalVisible);
   };
   const onClickCopy = () => {
-    FooiyToast.message('주소가 복사되었습니다.', true);
+    Toast.show({
+      type: 'message',
+      text1: '주소가 복사되었습니다.',
+    });
     Clipboard.setString(shop.address);
   };
   const onClickLocationBtn = () => {

@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {globalVariable} from '../../common/globalVariable';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   shop_info: {
-    paddingVertical: 16,
+    justifyContent: 'center',
     paddingLeft: 16,
   },
   shop_name: {
@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
     color: fooiyColor.G800,
   },
   taste_evaluation_imogi: {
-    width: 28,
-    height: 28,
-    marginTop: 1,
+    width: 24,
+    height: 24,
+    marginTop: 4,
   },
 });

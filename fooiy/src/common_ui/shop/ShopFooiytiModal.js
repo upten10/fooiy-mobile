@@ -1,11 +1,10 @@
 import React, {memo} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {TouchableOpacity, View, StyleSheet, Text} from 'react-native';
 import Modal from 'react-native-modal';
 
 import {globalVariable} from '../../common/globalVariable';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {Cancel, ShopFooiytiDescription} from '../../../assets/icons/svg';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const ShopFooiytiModal = props => {
   const {isModalVisible, setModalVisible} = props;
@@ -13,14 +12,14 @@ const ShopFooiytiModal = props => {
     setModalVisible(!isModalVisible);
   };
   return (
-    <Modal isVisible={isModalVisible} onBackdropPress={() => toggleModal()}>
+    <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
       <View style={styles.container}>
         <View style={styles.modal_title}>
           <Text style={styles.title}>음식점 푸이티아이</Text>
           <TouchableOpacity
             activeOpacity={0.8}
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
-            onPress={() => toggleModal()}
+            onPress={toggleModal}
             style={styles.icon_cancel}>
             <Cancel />
           </TouchableOpacity>
