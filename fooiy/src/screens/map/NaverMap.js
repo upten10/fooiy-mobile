@@ -25,6 +25,7 @@ const NaverMap = props => {
     {latitude: 30.397517566296486, longitude: 124.91716542482237},
     {latitude: 40.26662580495315, longitude: 130.52104864676795},
   ];
+  const insets = useSafeAreaInsets();
   //map ref 초기화
   const mapView = useRef(null);
   const sheetRef = useRef(null);
@@ -134,8 +135,7 @@ const NaverMap = props => {
         style={[
           styles.button,
           {
-            bottom:
-              78 + globalVariable.tabBarHeight + useSafeAreaInsets().bottom,
+            bottom: globalVariable.tabBarHeight + 54 + insets.bottom + 16,
           },
         ]}
         onPress={onClickLocationBtn}>
@@ -219,16 +219,28 @@ const NaverMap = props => {
       />
       <NaverMapView
         ref={mapView}
-        style={styles.map}
-        showsMyLocationButton={true}
+        liteModeEnabled
+        useTextureView={true}
         center={center}
-        onMapClick={() => toggleModal()}
+        showsMyLocationButton={false}
         zoomControl={false}
+        scaleBar={false}
+        rotateGesturesEnabled={false}
         minZoomLevel={5}
         maxZoomLevel={18}
-        useTextureView={true}
-        rotateGesturesEnabled={false}
-        onCameraChange={e => onCameraChange(e)}>
+        style={styles.map}
+        onMapClick={() => toggleModal()}
+        onCameraChange={e => onCameraChange(e)}
+        logoMargin={Platform.select({
+          ios: {
+            left: 16,
+            bottom: globalVariable.tabBarHeight + 54 + 16,
+          },
+          android: {
+            left: 16,
+            bottom: globalVariable.tabBarHeight + 54 + 16,
+          },
+        })}>
         {Platform.select({
           ios: shopMarkers.map(item => {
             return (
