@@ -28,7 +28,7 @@ const WithdrawConfirm = props => {
       params: {reason},
     })
       .then(dispatch(loginActions.setLogin(false)))
-      .then(navigation.popToTop());
+      .then(navigation.navigate('Login'));
     AsyncStorage.clear();
   };
 

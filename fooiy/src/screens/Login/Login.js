@@ -39,7 +39,12 @@ const Login = () => {
     await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
       params: {},
     }).then(res => {
-      dispatch(userInfoAction.init(res.data.payload.account_info));
+      if (res.data.payload.account_info.fooiyti === null) {
+        navigation.navigate('FooiytiTestHome');
+      } else {
+        dispatch(userInfoAction.init(res.data.payload.account_info));
+        navigation.navigate('TabNavigator');
+      }
     });
   };
 
@@ -47,7 +52,7 @@ const Login = () => {
     const value = await AsyncStorage.getItem('auth');
     if (value) {
       getAccountInfo();
-      navigation.navigate('TabNavigator');
+      setTimeout(() => SplashScreen.hide(), 500);
     } else {
       setTimeout(() => SplashScreen.hide(), 500);
     }
