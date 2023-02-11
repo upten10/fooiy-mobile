@@ -39,9 +39,9 @@ const FooiyTI = props => {
       right: ['F', userInfoRedux.fooiyti_f_percentage],
     },
     {
-      text: '초딩/어른',
-      left: ['C', userInfoRedux.fooiyti_c_percentage],
-      right: ['A', userInfoRedux.fooiyti_a_percentage],
+      text: '어른/초딩',
+      left: ['A', userInfoRedux.fooiyti_a_percentage],
+      right: ['C', userInfoRedux.fooiyti_c_percentage],
     },
   ];
 
