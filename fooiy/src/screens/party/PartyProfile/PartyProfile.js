@@ -19,6 +19,7 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import PartyProfileHeader from './PartyProfileHeader';
+import ListFooterComponent from '../../../common_ui/footer/FlatListFooter';
 
 export default props => {
   const {party_id} = props.route.params;
@@ -155,7 +156,7 @@ export default props => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
+    <SafeAreaView style={{backgroundColor: fooiyColor.W, flex: 1}}>
       <StackHeader
         title={partyInfo.name}
         owner_id={partyInfo.owner_id}
@@ -164,16 +165,7 @@ export default props => {
       {/* Body */}
       <View
         style={{
-          width: '100%',
-          height: Platform.select({
-            ios:
-              globalVariable.height -
-              insets.top -
-              insets.bottom -
-              globalVariable.tabBarHeight -
-              56,
-            android: globalVariable.height - globalVariable.tabBarHeight - 34,
-          }),
+          flex: 1,
         }}>
         <FlatList
           data={partyFeeds}
@@ -188,6 +180,7 @@ export default props => {
             <PartyProfileHeader partyInfo={{...partyInfo, party_id}} />
           }
           ListEmptyComponent={ListEmptyComponent}
+          ListFooterComponent={ListFooterComponent}
         />
       </View>
     </SafeAreaView>

@@ -9,8 +9,8 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
+  TouchableOpacity,
 } from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {Clear, Notice} from '../../../../assets/icons/svg';
@@ -110,9 +110,9 @@ const EditName = props => {
       <SafeAreaView style={styles.container}>
         <StackHeader title={party_id ? '파티 이름 변경' : '닉네임 변경'} />
         {/* 바디 */}
-        <View style={BodyStyles(insets.top, insets.bottom).bodyContainer}>
+        <View style={{flex: 1, paddingHorizontal: 16}}>
           {/* 새로운 닉네임을 입력해주세요 텍스트 컨테이너 */}
-          <View style={styles.upperContainer}>
+          <View style={{flex: 1}}>
             <View style={styles.introContainer}>
               <Text style={styles.introText}>
                 {party_id
@@ -191,35 +191,34 @@ const EditName = props => {
             </View>
           </View>
           {/* btn */}
-          <KeyboardAvoidingView
-            keyboardVerticalOffset={Platform.select({
-              ios: 150,
-              android: 100,
-            })}
-            behavior={Platform.select({
-              ios: 'position',
-              android: 'position',
-            })}
-            style={styles.changeBtnContainer}>
-            <TouchableOpacity
+        </View>
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.select({
+            ios: 16,
+            android: 0,
+          })}
+          behavior={Platform.select({
+            ios: 'position',
+            android: null,
+          })}>
+          <TouchableOpacity
+            style={
+              btnActivate
+                ? styles.changeBtn
+                : [styles.changeBtn, styles.changeBtnOff]
+            }
+            activeOpacity={0.8}
+            onPress={isValid ? onPressBtn : null}>
+            <Text
               style={
                 btnActivate
-                  ? styles.changeBtn
-                  : [styles.changeBtn, styles.changeBtnOff]
-              }
-              activeOpacity={0.8}
-              onPress={isValid ? onPressBtn : null}>
-              <Text
-                style={
-                  btnActivate
-                    ? styles.changeBtnText
-                    : [styles.changeBtnText, styles.changeBtnTextOff]
-                }>
-                변경
-              </Text>
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
-        </View>
+                  ? styles.changeBtnText
+                  : [styles.changeBtnText, styles.changeBtnTextOff]
+              }>
+              변경
+            </Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -229,8 +228,9 @@ export default EditName;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: fooiyColor.W,
-    height: globalVariable.height,
+    // height: globalVariable.height,
   },
   introContainer: {
     marginBottom: 24,
@@ -313,24 +313,23 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   changeBtnContainer: {
-    ...Platform.select({
-      ios: {
-        width: '100%',
-        height: 56,
-      },
-      android: {
-        width: '100%',
-        height: 56,
-        marginBottom: 45,
-      },
-    }),
+    backgroundColor: 'pink',
+    width: '100%',
+    height: 56,
   },
   changeBtn: {
+    width: globalVariable.width - 32,
     height: 56,
     backgroundColor: fooiyColor.P500,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 8,
+    position: 'absolute',
+    bottom: Platform.select({
+      ios: 0,
+      android: 16,
+    }),
+    left: 16,
   },
   changeBtnOff: {
     backgroundColor: fooiyColor.G100,

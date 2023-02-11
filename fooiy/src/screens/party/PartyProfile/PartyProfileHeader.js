@@ -59,6 +59,7 @@ export default props => {
     }
   };
 
+  // 가입 버튼
   const SubscribeBtn = () => {
     return (
       <TouchableOpacity
@@ -207,6 +208,7 @@ export default props => {
             지도
           </Text>
         </TouchableOpacity>
+        {/* 가입 버튼 */}
         <SubscribeBtn />
       </View>
     </View>

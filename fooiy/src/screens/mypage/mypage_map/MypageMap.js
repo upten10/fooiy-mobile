@@ -161,7 +161,7 @@ const MypageMap = props => {
             : '내 지도'
         }
       />
-      <View>
+      <View style={{flex: 1}}>
         <NaverMapView
           ref={mapView}
           style={styles.map}
@@ -173,6 +173,7 @@ const MypageMap = props => {
           zoomControl={false}
           minZoomLevel={5}
           maxZoomLevel={18}
+          scaleBar={false}
           rotateGesturesEnabled={false}
           onCameraChange={e => onCameraChange(e)}>
           {Platform.select({
@@ -224,7 +225,6 @@ export default MypageMap;
 
 const styles = StyleSheet.create({
   map: {
-    width: globalVariable.width,
-    height: globalVariable.height,
+    flex: 1,
   },
 });

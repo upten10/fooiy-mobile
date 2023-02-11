@@ -208,7 +208,7 @@ const NaverMap = props => {
   }, [props.center]);
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <MapHeader
         isCafe={isCafe}
         setIsCafe={setIsCafe}
@@ -238,7 +238,7 @@ const NaverMap = props => {
           },
           android: {
             left: 16,
-            bottom: globalVariable.tabBarHeight + 54 + 16,
+            bottom: globalVariable.tabBarHeight + 54 + 23 + 16,
           },
         })}>
         {Platform.select({

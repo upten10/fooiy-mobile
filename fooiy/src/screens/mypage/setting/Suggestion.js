@@ -131,6 +131,7 @@ const Suggestion = () => {
                 <TextInput
                   style={styles.textInput}
                   placeholder="여기에 내용을 적어주세요 :)"
+                  placeholderTextColor={fooiyColor.G300}
                   multiline
                   autoCapitalize={false}
                   autoCorrect={false}
@@ -221,10 +222,6 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     color: fooiyColor.B,
   },
-  description: {
-    ...fooiyFont.Subtitle4,
-    color: fooiyColor.G400,
-  },
   categoryPlaceHolder: {
     fontSize: 12,
     fontWeight: '600',
@@ -251,9 +248,13 @@ const styles = StyleSheet.create({
   textInput: {
     width: '100%',
     height: '100%',
-    fontSize: 14,
-    fontWeight: '400',
+    ...fooiyFont.Body2,
     color: fooiyColor.G600,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
+    padding: 0,
   },
   textInputLength: {
     fontSize: 12,
@@ -330,11 +331,16 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     borderBottomEndRadius: 8,
     borderBottomStartRadius: 8,
-    height: 56,
+    height: 58,
   },
   dropDownTitle: {
     ...fooiyFont.Subtitle2,
     color: fooiyColor.B,
+  },
+  description: {
+    ...fooiyFont.Subtitle4,
+    color: fooiyColor.G400,
+    lineHeight: 17,
   },
   dropDownValue: {
     ...fooiyFont.Body1,
