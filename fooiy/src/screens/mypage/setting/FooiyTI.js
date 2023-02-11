@@ -1,5 +1,13 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
@@ -12,6 +20,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const FooiyTI = props => {
+  const navigation = useNavigation();
   const userInfoRedux = useSelector(state => state.userInfo.value);
   const resultArr = [
     {
@@ -35,6 +44,12 @@ const FooiyTI = props => {
       right: ['A', userInfoRedux.fooiyti_a_percentage],
     },
   ];
+
+  const onPressBtn = () => {
+    if (props.route.name === 'FooiytiTestResult') {
+      navigation.navigate('TabNavigator');
+    }
+  };
 
   const ResultPercentage = param => {
     const {text, left, right} = param;
@@ -124,13 +139,20 @@ const FooiyTI = props => {
           <Image
             source={{uri: userInfoRedux.fooiyti_result_image}}
             style={styles.resultImg}
-            resizeMode={'center'}
+            resizeMode={'contain'}
           />
         </View>
       </ScrollView>
       <View style={styles.reBtnContainer}>
-        <TouchableOpacity style={styles.reBtn} activeOpacity={0.8}>
-          <Text style={styles.reBtnText}>검사 다시하기</Text>
+        <TouchableOpacity
+          onPress={onPressBtn}
+          style={styles.reBtn}
+          activeOpacity={0.8}>
+          <Text style={styles.reBtnText}>
+            {props.route.name === 'FooiytiTestResult'
+              ? '시작하기'
+              : '검사 다시하기'}
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -225,6 +247,10 @@ const styles = StyleSheet.create({
     width: globalVariable.width,
     alignItems: 'center',
     height: 56,
+    marginBottom: Platform.select({
+      ios: 0,
+      android: 16,
+    }),
   },
   reBtn: {
     width: globalVariable.width - 32,

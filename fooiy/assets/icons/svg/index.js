@@ -112,3 +112,8 @@ export {default as FooiytiAImogi} from './fooiytiImogi/fooiyti_a_imogi.svg';
 export {default as FooiytiCImogi} from './fooiytiImogi/fooiyti_c_imogi.svg';
 
 export {default as EmptyMenuClinic} from './empty_menu_clinic.svg';
+
+export {default as FooiytiSummary} from './fooiyti/FooiytiSummary.svg';
+export {default as FooiytiUncheck} from './fooiyti/FooiytiUncheck.svg';
+export {default as Fooiyticheck} from './fooiyti/FooiytiCheck.svg';
+export {default as Musang} from './fooiyti/Musang.svg';

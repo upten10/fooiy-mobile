@@ -28,6 +28,11 @@ import RegisterFeed from '../screens/register/register_feed/register_feed_ui/Reg
 import SetAddress from '../screens/register/register_feed/SetAddress';
 import Share from './Share';
 import TabNavigator from './TabNavigator';
+import FooiytiTestHome from '../screens/FooiytiTest/FooiytiTestHome';
+import InformationInput from '../screens/FooiytiTest/InformationInput';
+import FooiytiTest from '../screens/FooiytiTest/FooiytiTest';
+import FooiytiTestResult from '../screens/FooiytiTest/FooiytiTestResult';
+import FooiytiTestResultLoading from '../screens/FooiytiTest/FooiytiTestResultLoading';
 
 const Stack = createStackNavigator();
 
@@ -87,6 +92,15 @@ const RootNavigator = () => {
 
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Notification" component={Notification} />
+
+      <Stack.Screen name="FooiytiTestHome" component={FooiytiTestHome} />
+      <Stack.Screen name="InformationInput" component={InformationInput} />
+      <Stack.Screen name="FooiytiTest" component={FooiytiTest} />
+      <Stack.Screen
+        name="FooiytiTestResultLoading"
+        component={FooiytiTestResultLoading}
+      />
+      <Stack.Screen name="FooiytiTestResult" component={FooiyTI} />
     </Stack.Navigator>
   );
 };
