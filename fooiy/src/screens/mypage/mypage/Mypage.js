@@ -69,7 +69,6 @@ const Mypage = props => {
       },
     })
       .then(res => {
-        console.log(JSON.stringify(res.data.payload));
         if (res.data.payload.feed_list) {
           if (data === 0) {
             setFeeds(res.data.payload.feed_list.results);
