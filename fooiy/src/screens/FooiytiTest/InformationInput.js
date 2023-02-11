@@ -47,9 +47,7 @@ export default props => {
     setOpen(false);
     setDate(date);
     setDisplayDate(
-      date.toLocaleDateString('ko', {
-        dateStyle: 'long',
-      }),
+      `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`,
     );
   };
 
@@ -111,6 +109,7 @@ export default props => {
             title={'생년월일'}
             confirmText={'선택'}
             cancelText={'취소'}
+            locale={'ko'}
             onConfirm={onConfirm}
             onCancel={() => {
               setOpen(false);

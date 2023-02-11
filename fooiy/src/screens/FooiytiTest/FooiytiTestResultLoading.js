@@ -11,14 +11,18 @@ import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
 
 export default props => {
-  const {testResult} = props.route.params;
+  const {testResult, reTest} = props.route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   useEffect(() => {
     postResult();
     setTimeout(() => {
-      navigation.navigate('FooiytiTestResult');
+      if (reTest) {
+        navigation.navigate('FooiyTI');
+      } else {
+        navigation.navigate('FooiytiTestResult');
+      }
     }, 3000);
   }, []);
 

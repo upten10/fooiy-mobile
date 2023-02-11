@@ -48,6 +48,8 @@ const FooiyTI = props => {
   const onPressBtn = () => {
     if (props.route.name === 'FooiytiTestResult') {
       navigation.navigate('TabNavigator');
+    } else {
+      navigation.navigate('FooiytiReTest');
     }
   };
 
@@ -115,7 +117,10 @@ const FooiyTI = props => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: fooiyColor.W}}>
-      <StackHeader title="푸이티아이" />
+      <StackHeader
+        title="푸이티아이"
+        blockGoBack={props.route.name === 'FooiytiTestResult' ? true : null}
+      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.fooiytiContainer}>

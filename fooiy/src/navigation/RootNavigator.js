@@ -28,10 +28,10 @@ import RegisterFeed from '../screens/register/register_feed/register_feed_ui/Reg
 import SetAddress from '../screens/register/register_feed/SetAddress';
 import Share from './Share';
 import TabNavigator from './TabNavigator';
+import FooiytiTestStackNavigation from '../screens/FooiytiTest/FooiytiTestStackNavigation';
 import FooiytiTestHome from '../screens/FooiytiTest/FooiytiTestHome';
 import InformationInput from '../screens/FooiytiTest/InformationInput';
 import FooiytiTest from '../screens/FooiytiTest/FooiytiTest';
-import FooiytiTestResult from '../screens/FooiytiTest/FooiytiTestResult';
 import FooiytiTestResultLoading from '../screens/FooiytiTest/FooiytiTestResultLoading';
 
 const Stack = createStackNavigator();
@@ -77,7 +77,7 @@ const RootNavigator = () => {
 
       {/* mypage */}
       {/* <Stack.Screen name="Mypage" component={Mypage} /> */}
-      <Stack.Screen name="FooiyTI" component={FooiyTI} />
+      {/* <Stack.Screen name="FooiyTI" component={FooiyTI} /> */}
       {/* <Stack.Screen name="Setting" component={Setting} /> */}
       {/* <Stack.Screen name="EditName" component={EditName} /> */}
       <Stack.Screen name="MypageMap" component={MypageMap} />
@@ -93,6 +93,10 @@ const RootNavigator = () => {
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Notification" component={Notification} />
 
+      {/* <Stack.Screen
+        name="FooiytiTestStackNavigation"
+        component={FooiytiTestStackNavigation}
+      /> */}
       <Stack.Screen name="FooiytiTestHome" component={FooiytiTestHome} />
       <Stack.Screen name="InformationInput" component={InformationInput} />
       <Stack.Screen name="FooiytiTest" component={FooiytiTest} />

@@ -6,6 +6,7 @@ import {Fooiyticheck, FooiytiUncheck} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
 
 export default props => {
@@ -25,8 +26,6 @@ export default props => {
   const [curIndex, setCurIndex] = useState(0);
   const [curCheckedIndex, setCurCheckedIndex] = useState([]);
   const [testResult, setTestResult] = useState([]);
-
-  console.log(testResult);
 
   useEffect(() => {
     getQuestionList();
@@ -79,6 +78,18 @@ export default props => {
     );
   };
 
+  const onPressBack = () => {
+    if (curIndex === 0) {
+      navigation.goBack();
+    } else {
+      let arr = testResult;
+      arr[curIndex] = curCheckedIndex;
+      setTestResult(arr);
+      setCurCheckedIndex(testResult[curIndex - 1]);
+      setCurIndex(curIndex - 1);
+    }
+  };
+
   const onPressNext = () => {
     if (curCheckedIndex.length > 0) {
       if (curIndex !== questionList.length - 1) {
@@ -89,20 +100,11 @@ export default props => {
         setCurIndex(curIndex + 1);
       } else if (curIndex === questionList.length - 1) {
         testResult[curIndex] || setTestResult([...testResult, curCheckedIndex]);
-        navigation.navigate('FooiytiTestResultLoading', {testResult});
+        navigation.navigate('FooiytiTestResultLoading', {
+          testResult,
+          reTest: props.route.name === 'FooiytiReTest' ? true : false,
+        });
       }
-    }
-  };
-
-  const onPressBack = () => {
-    if (curIndex === 0) {
-      navigation.navigate('InformationInput');
-    } else {
-      let arr = testResult;
-      arr[curIndex] = curCheckedIndex;
-      setTestResult(arr);
-      setCurCheckedIndex(testResult[curIndex - 1]);
-      setCurIndex(curIndex - 1);
     }
   };
 
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: fooiyColor.G200,
     borderRadius: 8,
-    flex: 1,
+    width: (globalVariable.width - 39) / 2,
     padding: 16,
     alignItems: 'center',
     justifyContent: 'center',

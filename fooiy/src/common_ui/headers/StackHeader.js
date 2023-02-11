@@ -11,7 +11,7 @@ import {globalVariable} from '../../common/globalVariable';
 import {useSelector} from 'react-redux';
 
 export const StackHeader = props => {
-  const {toTop} = props;
+  const {toTop, blockGoBack} = props;
   const navigation = useNavigation();
   const userInfoRedux = useSelector(state => state.userInfo.value);
 
@@ -48,15 +48,17 @@ export const StackHeader = props => {
         )}
       </View>
       {/* isolation for having absolute position back icon */}
-      <View style={styles.go_back_container}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            props.isParty ? props.setIsVisible(false) : navigation.goBack();
-          }}>
-          <GoBackArrow />
-        </TouchableOpacity>
-      </View>
+      {blockGoBack ?? (
+        <View style={styles.go_back_container}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              props.isParty ? props.setIsVisible(false) : navigation.goBack();
+            }}>
+            <GoBackArrow />
+          </TouchableOpacity>
+        </View>
+      )}
       <View style={styles.go_next_container}>
         {props.next ? (
           <TouchableOpacity
