@@ -29,7 +29,7 @@ const NaverMap = props => {
   //map ref 초기화
   const mapView = useRef(null);
   const sheetRef = useRef(null);
-  const {debounceCallback, isLoading} = useDebounce({time: 500});
+  const {debounceCallback, isLoading} = useDebounce({time: 250});
 
   // 클릭 된 마커 키
   const [clickedIndex, setClickedIndex] = useState(null);
@@ -46,7 +46,9 @@ const NaverMap = props => {
   const [shopCount, setShopCount] = useState(0);
 
   useEffect(() => {
+    console.log(shopMarkers);
     if (depth <= 2) {
+      setShopMarkers([]);
       toggleModal();
     }
   }, [depth]);
@@ -144,8 +146,8 @@ const NaverMap = props => {
     );
   };
 
-  const getShopMarkerList = async data => {
-    await ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER, {
+  const getShopMarkerList = data => {
+    ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER, {
       params: {
         longitude_left_bottom:
           depth === 1 ? depthOneScreenLocation[0].longitude : data[0].longitude,
@@ -174,8 +176,8 @@ const NaverMap = props => {
       .catch(e => console.log('getShopMarkerList: ', e));
   };
 
-  const getShopMarkerDetail = async data => {
-    await ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER_DETAIL, {
+  const getShopMarkerDetail = data => {
+    ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER_DETAIL, {
       params: {
         latitude: data.latitude,
         longitude: data.longitude,
@@ -219,8 +221,8 @@ const NaverMap = props => {
       />
       <NaverMapView
         ref={mapView}
-        liteModeEnabled
-        useTextureView={true}
+        // liteModeEnabled
+        // useTextureView={true}
         center={center}
         showsMyLocationButton={false}
         zoomControl={false}
@@ -241,36 +243,38 @@ const NaverMap = props => {
             bottom: globalVariable.tabBarHeight + 54 + 23 + 16,
           },
         })}>
-        {Platform.select({
-          ios: shopMarkers.map(item => {
-            return (
-              <MapMarker
-                key={item.id}
-                {...item}
-                setClickedIndex={setClickedIndex}
-                clickedIndex={clickedIndex}
-                getShopMarkerDetail={getShopMarkerDetail}
-                setModalVisible={setModalVisible}
-                depth={depth}
-                onPressClusterMarker={onPressClusterMarker}
-              />
-            );
-          }),
-          android: shopMarkers.map(item => {
-            return (
-              <AndroidMapMarker
-                key={item.id}
-                {...item}
-                setClickedIndex={setClickedIndex}
-                clickedIndex={clickedIndex}
-                getShopMarkerDetail={getShopMarkerDetail}
-                setModalVisible={setModalVisible}
-                depth={depth}
-                onPressClusterMarker={onPressClusterMarker}
-              />
-            );
-          }),
-        })}
+        {shopMarkers.length > 0
+          ? Platform.select({
+              ios: shopMarkers.map(item => {
+                return (
+                  <MapMarker
+                    key={item.id}
+                    {...item}
+                    setClickedIndex={setClickedIndex}
+                    clickedIndex={clickedIndex}
+                    getShopMarkerDetail={getShopMarkerDetail}
+                    setModalVisible={setModalVisible}
+                    depth={depth}
+                    onPressClusterMarker={onPressClusterMarker}
+                  />
+                );
+              }),
+              android: shopMarkers.map(item => {
+                return (
+                  <AndroidMapMarker
+                    key={item.id}
+                    {...item}
+                    setClickedIndex={setClickedIndex}
+                    clickedIndex={clickedIndex}
+                    getShopMarkerDetail={getShopMarkerDetail}
+                    setModalVisible={setModalVisible}
+                    depth={depth}
+                    onPressClusterMarker={onPressClusterMarker}
+                  />
+                );
+              }),
+            })
+          : null}
       </NaverMapView>
       <LocationBtn />
       {isModalVisible ? (

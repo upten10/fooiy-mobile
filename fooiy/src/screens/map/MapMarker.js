@@ -58,7 +58,7 @@ export default props => {
           getShopMarkerDetail({latitude, longitude});
           setModalVisible(true);
         }}
-        isHideCollidedMarkers={true}
+        isHideCollidedMarkers={false}
       />
     </>
   );

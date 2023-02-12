@@ -18,6 +18,8 @@ const MypageMapMarker = props => {
   const {feed_image, feeds_count, latitude, longitude} = item;
   const [isClicked, setIsClicked] = useState(false);
 
+  console.log(feed_image);
+
   useEffect(() => {
     if (clickedIndex === index) {
       setIsClicked(true);

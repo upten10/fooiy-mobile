@@ -48,7 +48,6 @@ const AndroidMapMarker = props => {
         }
         coordinate={{latitude: latitude * 1, longitude: longitude * 1}}
         style={styles.markerUnclicked}
-        hidden={clickedIndex === id ? true : false}
         onClick={() => {
           setClickedIndex(id);
           getShopMarkerDetail({latitude, longitude});
