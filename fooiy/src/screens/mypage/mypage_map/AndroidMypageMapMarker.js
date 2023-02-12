@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
-import {Align, Marker} from 'react-native-nmap';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {Marker} from 'react-native-nmap';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
-import {ArrowIcon} from '../../../../assets/icons/svg/index';
 
 const AndroidMypageMapMarker = props => {
   // index는 MypageMap에서 준 id
@@ -38,89 +37,6 @@ const AndroidMypageMapMarker = props => {
     getFeedMarkerDetail(item);
   };
 
-  // return (
-  //   feed_image && (
-  //     <>
-  //       {/* 이미지 */}
-  //       <Marker
-  //         key={index}
-  //         coordinate={{
-  //           latitude: latitude * 1,
-  //           longitude: longitude * 1,
-  //         }}
-  //         image={{uri: feed_image}}
-  //         style={
-  //           zoomLevel > 11
-  //             ? styles.image_big
-  //             : zoomLevel > 8
-  //             ? styles.image_mid
-  //             : styles.image_small
-  //         }
-  //         onClick={() => onClickMarker(item, index)}
-  //         zIndex={isClicked ? 1 : null}
-  //       />
-  //       {/* 테두리 */}
-  //       <Marker
-  //         coordinate={{
-  //           latitude: latitude * 1,
-  //           longitude: longitude * 1,
-  //         }}
-  //         image={
-  //           isClicked
-  //             ? require('../../../../assets/icons/marker/mypage_marker_clicked.png')
-  //             : require('../../../../assets/icons/marker/mypage_marker_unclicked.png')
-  //         }
-  //         style={
-  //           zoomLevel > 11
-  //             ? styles.frame_big
-  //             : zoomLevel > 8
-  //             ? styles.frame_mid
-  //             : styles.frame_small
-  //         }
-  //         anchor={{x: 0.5, y: 0.772}}
-  //         onClick={() => onClickMarker(item, index)}
-  //         hidden={!isClicked}
-  //         zIndex={isClicked ? 1 : null}
-  //       />
-  //       {feeds_count !== 1 ? (
-  //         <>
-  //           {/* 뱃지 */}
-  //           <Marker
-  //             coordinate={{
-  //               latitude: latitude * 1,
-  //               longitude: longitude * 1,
-  //             }}
-  //             image={
-  //               isClicked
-  //                 ? require('../../../../assets/icons/marker/marker_badge_clicked.png')
-  //                 : require('../../../../assets/icons/marker/marker_badge_unclicked.png')
-  //             }
-  //             style={
-  //               zoomLevel > 11
-  //                 ? styles.badge_big
-  //                 : zoomLevel > 8
-  //                 ? styles.badge_mid
-  //                 : styles.badge_small
-  //             }
-  //             onClick={() => onClickMarker(item, index)}
-  //             hidden={!isClicked}
-  //             anchor={{x: 0.1, y: 0.95}}
-  //             zIndex={isClicked ? 1 : null}
-  //             caption={{
-  //               text: JSON.stringify(feeds_count),
-  //               color: isClicked ? fooiyColor.W : fooiyColor.G600,
-  //               haloColor: isClicked ? fooiyColor.P500 : fooiyColor.W,
-  //               offset:
-  //                 zoomLevel > 11 ? -60 : zoomLevel > 8 ? -60 * 0.8 : -60 * 0.6,
-  //               textSize:
-  //                 zoomLevel > 11 ? 12 : zoomLevel > 8 ? 12 * 0.8 : 12 * 0.6,
-  //             }}
-  //           />
-  //         </>
-  //       ) : null}
-  //     </>
-  //   )
-  // );
   return (
     <Marker
       key={index}

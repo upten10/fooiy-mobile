@@ -7,7 +7,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor} from '../../../common/globalStyles';
-import {globalVariable} from '../../../common/globalVariable';
 import {useDebounce} from '../../../common/hooks/useDebounce';
 import {LocationPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';

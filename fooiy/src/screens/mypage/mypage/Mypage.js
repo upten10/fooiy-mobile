@@ -18,6 +18,7 @@ import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {DefaultHeader} from '../../../common_ui/headers/DefaultHeader';
+import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import MypageProfile from './MypageProfile';
 
 const limit = 12;
@@ -86,6 +87,14 @@ const Mypage = props => {
       });
   };
 
+  const getAccountInfo = async data => {
+    ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
+      params: {},
+    }).then(res => {
+      dispatch(userInfoAction.init(res.data.payload.account_info));
+    });
+  };
+
   const loadMoreFeeds = () => {
     if (totalCount > offset + globalVariable.FeedLimit) {
       setOffset(offset + globalVariable.FeedLimit);
@@ -102,6 +111,7 @@ const Mypage = props => {
   const getRefreshData = async () => {
     setRefreshing(true);
     await getFeedList(0);
+    await getAccountInfo();
     setRefreshing(false);
   };
 
