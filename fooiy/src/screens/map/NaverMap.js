@@ -1,24 +1,22 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, StyleSheet, Platform} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Platform, StyleSheet, View} from 'react-native';
 import NaverMapView from 'react-native-nmap';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {globalVariable} from '../../common/globalVariable';
 
-import MapBottomSheet from './bottom_sheet/MapBottomSheet';
-import ShopModal from './ShopModal';
-import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
-import {LocationPermission} from '../../common/Permission';
 import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
-import MapMarker from './MapMarker';
-import {useDebounce} from '../../common/hooks/useDebounce';
-import {fooiyColor} from '../../common/globalStyles';
-import {useSelector} from 'react-redux';
-import MapHeader from './MapHeader';
-import {LocationDarkIcon} from '../../../assets/icons/svg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {LocationDarkIcon} from '../../../assets/icons/svg';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../common/Enums';
+import {useDebounce} from '../../common/hooks/useDebounce';
+import {LocationPermission} from '../../common/Permission';
 import AndroidMapMarker from './AndroidMapMarker';
+import MapBottomSheet from './bottom_sheet/MapBottomSheet';
+import MapHeader from './MapHeader';
+import MapMarker from './MapMarker';
+import ShopModal from './ShopModal';
 
 const NaverMap = props => {
   const depthOneScreenLocation = [
@@ -46,12 +44,31 @@ const NaverMap = props => {
   const [shopCount, setShopCount] = useState(0);
 
   useEffect(() => {
-    console.log(shopMarkers);
     if (depth <= 2) {
       setShopMarkers([]);
       toggleModal();
     }
   }, [depth]);
+
+  useEffect(() => {
+    if (screenLocation.length !== 0) {
+      getShopMarkerList(screenLocation);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screenLocation, isCafe]);
+
+  useEffect(() => {
+    props.center
+      ? setCenter({
+          ...{
+            longitude: props.center.longitude * 1,
+            latitude: props.center.latitude * 1,
+          },
+          zoom: 16,
+        })
+      : checkGrant();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.center]);
 
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const onCameraChange = e => {
@@ -188,26 +205,6 @@ const NaverMap = props => {
       })
       .catch(e => console.warn('getShopMarkerDetail: ', e));
   };
-
-  useEffect(() => {
-    if (screenLocation.length !== 0) {
-      getShopMarkerList(screenLocation);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screenLocation, isCafe]);
-
-  useEffect(() => {
-    props.center
-      ? setCenter({
-          ...{
-            longitude: props.center.longitude * 1,
-            latitude: props.center.latitude * 1,
-          },
-          zoom: 16,
-        })
-      : checkGrant();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.center]);
 
   return (
     <View style={{flex: 1}}>

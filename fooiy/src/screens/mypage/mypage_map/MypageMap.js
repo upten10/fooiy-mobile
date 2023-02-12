@@ -114,7 +114,7 @@ const MypageMap = props => {
   };
 
   const getFeedMarkerList = async data => {
-    await ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
+    ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
       params: {
         type: party_id !== undefined ? 'party' : 'mypage',
         longitude_left_bottom: screenLocation[0].longitude,
