@@ -21,6 +21,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import ProfileImg from '../../mypage/setting/ProfileImg';
+import {useDebounce} from '../../../common/hooks/useDebounce';
 
 const Title = props => {
   const {index} = props;
@@ -38,46 +39,43 @@ const Title = props => {
 };
 
 const UserInput = props => {
-  const {index, setBtnActivate, setInputValue, inputValue, setCheckName} =
-    props;
+  const {index, setBtnActivate, setInputValue, inputValue} = props;
+  const {debounceCallback, isLoading} = useDebounce({time: 250});
   const [isValid, setIsValid] = useState(false);
-  const [nameError, setNameError] = useState(false);
   const [focus, setFocus] = useState(true);
 
   const NICKNAME_RULE =
     /^[0-9A-Za-z가-힣][0-9A-Za-z가-힣._/]{0,18}[0-9A-Za-z가-힣]$/;
 
-  useEffect(() => setNameError(false), [inputValue]);
+  useEffect(() => {
+    if (inputValue.length !== 0 && index === 1) {
+      debounceCallback(() => {
+        checkValid(inputValue);
+      });
+    }
+  }, [inputValue]);
 
   const checkValid = name => {
     if (NICKNAME_RULE.test(name)) {
       setIsValid(true);
       setBtnActivate(true);
-      setCheckName(true);
     } else {
       setIsValid(false);
-      setNameError(true);
       setBtnActivate(false);
-      setCheckName(true);
     }
   };
 
   const onChangeText = value => {
     setInputValue(value);
-    setCheckName(false);
     if (index === 1) {
-      value === '' ? setBtnActivate(false) : setBtnActivate(true);
+      value.length < 3 ? setBtnActivate(false) : null;
     } else if (index === 2) {
       setBtnActivate(true);
-      setCheckName(true);
     }
   };
 
   const onInputBlur = () => {
     setFocus(false);
-    if (index === 1) {
-      inputValue === '' ? null : checkValid(inputValue);
-    }
   };
 
   const onInputFocus = () => {
@@ -88,15 +86,21 @@ const UserInput = props => {
     <View style={{marginBottom: 16}}>
       <View
         style={
-          !focus && !nameError
-            ? styles.textInputContainer
-            : nameError
-            ? [
+          focus
+            ? isValid || inputValue.length === 0
+              ? [styles.textInputContainer, styles.textInputValue]
+              : [
+                  styles.textInputContainer,
+                  styles.textInputValue,
+                  styles.wrongTextInput,
+                ]
+            : isValid || inputValue.length === 0
+            ? [styles.textInputContainer, styles.textInputValue]
+            : [
                 styles.textInputContainer,
                 styles.textInputValue,
                 styles.wrongTextInput,
               ]
-            : [styles.textInputContainer, styles.textInputValue]
         }>
         <TextInput
           maxLength={20}
@@ -111,9 +115,9 @@ const UserInput = props => {
           autoFocus
           value={inputValue}
           style={
-            inputValue === ''
+            inputValue.length === 0
               ? styles.textInput
-              : nameError
+              : !isValid
               ? [styles.textInput, styles.textInputValue, styles.wrongTextInput]
               : [styles.textInput, styles.textInputValue]
           }
@@ -129,7 +133,14 @@ const UserInput = props => {
           </TouchableOpacity>
         ) : null}
       </View>
-      <Text style={nameError ? styles.errorMsgOn : styles.errorMsgOff}>
+      <Text
+        style={
+          inputValue.length === 0
+            ? styles.errorMsgOff
+            : isValid
+            ? styles.errorMsgOff
+            : styles.errorMsgOn
+        }>
         사용할 수 없는 파티 이름이에요.
       </Text>
     </View>
@@ -307,7 +318,6 @@ export default props => {
   const [index, setIndex] = useState(0);
   const [btnActivate, setBtnActivate] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [checkName, setCheckName] = useState(false);
   const [data, setData] = useState({});
   const [isVisible, setIsVisible] = useState(false);
   const [image, setImage] = useState();
@@ -368,21 +378,26 @@ export default props => {
                   setBtnActivate={setBtnActivate}
                   inputValue={inputValue}
                   setInputValue={setInputValue}
-                  setCheckName={setCheckName}
                 />
                 <NoticeComp index={index} />
               </>
             ) : image ? (
-              <Image
-                source={{uri: image.uri}}
-                style={{
-                  width: globalVariable.width - 32,
-                  height: globalVariable.width - 32,
-                  borderRadius: 24,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  setIsVisible(true);
+                }}>
+                <Image
+                  source={{uri: image.uri}}
+                  style={{
+                    width: globalVariable.width - 32,
+                    height: globalVariable.width - 32,
+                    borderRadius: 24,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                />
+              </TouchableOpacity>
             ) : (
               <InsertImage setIsVisible={setIsVisible} />
             )}
@@ -393,7 +408,6 @@ export default props => {
           navigation={navigation}
           btnActivate={btnActivate}
           inputValue={inputValue}
-          checkName={checkName}
           data={data}
           image={image}
         />

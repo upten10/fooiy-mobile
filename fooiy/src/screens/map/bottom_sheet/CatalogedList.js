@@ -88,7 +88,7 @@ const CatalogedList = props => {
   };
 
   const ListHeaderComponent = () => {
-    return <View style={{height: 16}} />;
+    return <View style={{height: 24}} />;
   };
 
   const listFooterComponent = () => {

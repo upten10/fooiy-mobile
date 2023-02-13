@@ -292,6 +292,7 @@ const styles = StyleSheet.create({
   rightNickname: {
     ...fooiyFont.Body2,
     color: fooiyColor.G600,
+    marginRight: 8,
   },
   logoutContainer: {
     alignItems: 'center',

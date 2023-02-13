@@ -168,7 +168,9 @@ export default props => {
       {/* 소개글 */}
       {introduction === null ? null : (
         <View>
-          <Text>{introduction}</Text>
+          <Text style={{...fooiyFont.Body2, color: fooiyColor.G600}}>
+            {introduction}
+          </Text>
         </View>
       )}
       {/* 버튼 */}

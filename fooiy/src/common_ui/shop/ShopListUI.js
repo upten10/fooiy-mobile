@@ -44,7 +44,7 @@ const ShopListUI = item => {
       style={{
         backgroundColor: fooiyColor.W,
         marginHorizontal: 7.5,
-        paddingBottom: 24,
+        marginBottom: 24,
       }}
       activeOpacity={0.8}
       onPress={onPress}>
@@ -99,7 +99,12 @@ const ShopListUI = item => {
           shop_category_list.map((item, index) => {
             return (
               <View style={styles.category_container} key={index}>
-                <Text style={{...fooiyFont.Caption1_1, paddingHorizontal: 8}}>
+                <Text
+                  style={{
+                    ...fooiyFont.Caption1_1,
+                    color: fooiyColor.G600,
+                    paddingHorizontal: 8,
+                  }}>
                   {item}
                 </Text>
               </View>

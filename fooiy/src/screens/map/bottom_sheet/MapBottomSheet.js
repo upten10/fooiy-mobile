@@ -72,6 +72,7 @@ const MapBottomSheet = props => {
             style={{
               ...fooiyFont.Subtitle1,
               color: currentIndex === 0 ? fooiyColor.G800 : fooiyColor.G400,
+              marginTop: 8,
             }}>
             내 푸이티아이순
           </Text>
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     marginTop: 5,
-    marginBottom: 12,
+    marginBottom: 16,
     ...fooiyFont.Subtitle2,
   },
   categoryTab: {
