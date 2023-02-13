@@ -1,31 +1,25 @@
-import {React, useEffect, useState, useRef, useCallback} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {React, useCallback, useEffect, useRef, useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  Image,
   FlatList,
+  Image,
+  StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-
-import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
-import {globalVariable} from '../../common/globalVariable';
-import UI_Feed from '../../common_ui/feed/UI_Feed';
-import FeedHeader from '../../common_ui/headers/FeedHeader';
-import SelectCategoryModal from './SelectCategoryModal';
-import FlatListFooter from '../../common_ui/footer/FlatListFooter';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import messaging from '@react-native-firebase/messaging';
 import {requestNotifications, RESULTS} from 'react-native-permissions';
+import {ArrowIconRight24, Total_2} from '../../../assets/icons/svg';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
-import {
-  ArrowIconRight,
-  ArrowIconRight24,
-  Total_2,
-} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import Margin from '../../common_ui/Margin';
+import {globalVariable} from '../../common/globalVariable';
+import UI_Feed from '../../common_ui/feed/UI_Feed';
+import FlatListFooter from '../../common_ui/footer/FlatListFooter';
+import FeedHeader from '../../common_ui/headers/FeedHeader';
+import SelectCategoryModal from './SelectCategoryModal';
 
 const Feed = props => {
   const [token, setToken] = useState();

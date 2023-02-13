@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Keyboard,
   Platform,
@@ -17,6 +17,7 @@ import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
+import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import ProfileImg from '../../mypage/setting/ProfileImg';
 
@@ -104,8 +105,8 @@ export default props => {
 
   const insets = useSafeAreaInsets();
 
-  const onImgPress = () => {
-    setIsVisible(true);
+  const onImgPress = async () => {
+    (await GalleryPermission()) && setIsVisible(true);
   };
 
   const onIntroFocus = () => {

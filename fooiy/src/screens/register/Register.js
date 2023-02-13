@@ -1,85 +1,56 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   Dimensions,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Alert,
-  Linking,
-  Platform,
-  SafeAreaView,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {useNavigation} from '@react-navigation/native';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
-import {fooiyColor} from '../../common/globalStyles';
 import {
-  Register_icon,
-  Notice,
-  Camera,
   Album,
+  Camera,
   Cancel,
+  Notice,
+  Register_icon,
 } from '../../../assets/icons/svg';
-import {PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import {fooiyColor} from '../../common/globalStyles';
+import {CameraPermission, GalleryPermission} from '../../common/Permission';
+import {StackHeader} from '../../common_ui/headers/StackHeader';
 
 const width = Dimensions.get('window').width;
 
 const Register = props => {
   const navigation = useNavigation();
+  const [isModalVisible, setModalVisible] = useState(false);
+
   const register_photo = () => {
     setModalVisible(true);
   };
-  const [isModalVisible, setModalVisible] = useState(false);
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-
-  const goCamera = () => {
-    props.route.params
-      ? navigation.navigate('RegisterCamera', {
-          shop: props.route.params.shop,
-        })
-      : navigation.navigate('RegisterCamera');
-    toggleModal();
+  const goCamera = async () => {
+    setModalVisible(false);
+    (await CameraPermission()) &&
+      (props.route.params
+        ? navigation.navigate('RegisterCamera', {
+            shop: props.route.params.shop,
+          })
+        : navigation.navigate('RegisterCamera'));
+  };
+  const goGallery = async () => {
+    setModalVisible(false);
+    (await GalleryPermission()) &&
+      (props.route.params
+        ? navigation.navigate('Gallery', {
+            shop: props.route.params.shop,
+          })
+        : navigation.navigate('Gallery'));
   };
 
-  const goGallery = () => {
-    Platform.OS === 'android'
-      ? request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(res => {
-          console.log(res);
-          switch (res) {
-            case RESULTS.DENIED:
-              Alert.alert(
-                '서비스 이용 알림',
-                '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-                [
-                  {text: '닫기', onPress: navigation.goBack},
-                  {text: '설정', onPress: Linking.openSettings},
-                ],
-              );
-              break;
-            case RESULTS.BLOCKED:
-              Alert.alert(
-                '서비스 이용 알림',
-                '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-                [
-                  {text: '닫기', onPress: navigation.goBack},
-                  {text: '설정', onPress: Linking.openSettings},
-                ],
-              );
-              break;
-          }
-        })
-      : null;
-    props.route.params
-      ? navigation.navigate('Gallery', {
-          shop: props.route.params.shop,
-        })
-      : navigation.navigate('Gallery');
-    toggleModal();
-  };
   return (
     <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
       <StackHeader title="사진 등록" style={{color: 'black'}} />

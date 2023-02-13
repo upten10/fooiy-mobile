@@ -134,8 +134,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   shop_name: {
-    color: '#0D0F14',
-    marginBottom: 8,
+    ...fooiyFont.Subtitle2,
+    color: fooiyColor.B,
+  },
+  shop_address: {
+    ...fooiyFont.Caption1,
+    color: fooiyColor.B,
   },
   title_name: {
     fontSize: 16,
@@ -143,10 +147,6 @@ const styles = StyleSheet.create({
     color: fooiyColor.B,
     width: globalVariable.width - 56 * 2,
     textAlign: 'center',
-  },
-
-  shop_address: {
-    color: '#4A5470',
   },
   menu_container: {
     justifyContent: 'center',

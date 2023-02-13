@@ -32,12 +32,6 @@ const ShopListUI = item => {
     if (public_id !== undefined) {
       navigation.navigate('Shop', {
         shop_id: public_id,
-        shop_name: name,
-        shop_address: address,
-        // 수정 필요
-        shop_longitude: 127.11729911704028,
-        shop_latitude: 37.32417435738688,
-        // 수정 필요
       });
     } else if (party_id !== undefined) {
       navigation.navigate('PartyProfile', {party_id});

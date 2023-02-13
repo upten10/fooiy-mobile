@@ -1,16 +1,20 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import NaverMapView from 'react-native-nmap';
-import {globalVariable} from '../../../common/globalVariable';
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {useNavigation} from '@react-navigation/native';
-import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
 import {debounce} from 'lodash';
-import {Current_Location} from '../../../../assets/icons/svg';
-import {check, PERMISSIONS} from 'react-native-permissions';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
+import NaverMapView from 'react-native-nmap';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Current_Location} from '../../../../assets/icons/svg';
+import FooiyToast from '../../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {
+  CheckLocationPermission,
+  LocationPermission,
+} from '../../../common/Permission';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const SetAddress = props => {
   const navigation = useNavigation();
@@ -116,32 +120,38 @@ const SetAddress = props => {
     }
   }, [address]);
 
-  const onClickLocationBtn = () => {
-    check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION).then(res => {
-      if (res === 'granted' || res === 'limited') {
-        Platform.OS === 'android'
-          ? Geolocation.getCurrentPosition(
-              async position => {
-                const {longitude, latitude} = position.coords;
-                mapView.current.animateToCoordinate({longitude, latitude});
-              },
-              error => this.setState({error: error.message}),
-              {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-            )
-          : null;
-      }
-    });
-    mapView.current.setLocationTrackingMode(2);
+  const onClickLocationBtn = async () => {
+    (await LocationPermission())
+      ? Platform.OS === 'android'
+        ? Geolocation.getCurrentPosition(
+            async position => {
+              const {longitude, latitude} = position.coords;
+              mapView.current.animateToCoordinate({longitude, latitude});
+            },
+            error => this.setState({error: error.message}),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+          )
+        : mapView.current.setLocationTrackingMode(2)
+      : null;
   };
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(position => {
-      const {latitude, longitude} = position.coords;
-      setLocation({
-        longitude,
-        latitude,
-      });
-    });
+    const center = async () => {
+      (await CheckLocationPermission())
+        ? Geolocation.getCurrentPosition(position => {
+            const {latitude, longitude} = position.coords;
+            setLocation({
+              longitude,
+              latitude,
+            });
+          })
+        : (setLocation({
+            longitude: globalVariable.default_longitude,
+            latitude: globalVariable.default_latitude,
+          }),
+          FooiyToast.message('위치 권한을 허용해주세요!', false, 200));
+    };
+    center();
   }, []);
 
   return (
@@ -166,24 +176,21 @@ const SetAddress = props => {
                   zoom: 17,
                 }
           }
-          style={[
-            styles.mapview,
-            {height: globalVariable.height - 258 - 56 - insets.top},
-          ]}>
-          <View
+          style={styles.mapview}>
+          <Image
+            source={require('../../../../assets/image/Current_Position.png')}
             style={{
-              flex: 1,
-              alignSelf: 'center',
-              justifyContent: 'center',
-            }}>
-            <Image
-              source={require('../../../../assets/image/Current_Position.png')}
-              style={{
-                width: 34,
-                height: 44,
-              }}
-            />
-          </View>
+              width: 34,
+              height: 44,
+              left: globalVariable.width / 2 - 17,
+              top:
+                ((globalVariable.height - insets.bottom - insets.top - 56) *
+                  0.85) /
+                  2 -
+                44 -
+                22,
+            }}
+          />
         </NaverMapView>
       </View>
       <View style={styles.current_location}>
@@ -230,6 +237,14 @@ const SetAddress = props => {
           <Text style={styles.input_adress_text}>주소 직접 입력</Text>
         </TouchableOpacity>
       </View>
+      {/* <View
+        style={{
+          width: 100,
+          height: (globalVariable.height - insets.bottom - insets.top) * 0.85,
+          position: 'absolute',
+          backgroundColor: 'red',
+          top: insets.top,
+        }} /> */}
     </SafeAreaView>
   );
 };
@@ -239,7 +254,7 @@ export default SetAddress;
 const styles = StyleSheet.create({
   mapview: {
     width: '100%',
-    // height: globalVariable.height - 258 - 56 - insets.top,
+    height: '85%',
   },
   current_location: {
     width: 56,

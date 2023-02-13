@@ -1,29 +1,29 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
+import {useNavigation} from '@react-navigation/native';
+import cloneDeep from 'lodash/cloneDeep';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  View,
   FlatList,
   Image,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
   Platform,
-  Alert,
-  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {CameraRoll} from '@react-native-camera-roll/camera-roll';
-import {CropView} from 'react-native-image-crop-tools';
 import RNFS from 'react-native-fs';
-import {globalVariable} from '../../../common/globalVariable';
-import {GalleryPermission} from '../../../common/Permission';
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import cloneDeep from 'lodash/cloneDeep';
-import {check, PERMISSIONS} from 'react-native-permissions';
-import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
-import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
+import {CropView} from 'react-native-image-crop-tools';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const Gallery = props => {
+  useEffect(() => {
+    getGalleryPhotos();
+  }, []);
+
   const navigation = useNavigation();
   const width = globalVariable.width;
   const height = globalVariable.height;
@@ -84,24 +84,11 @@ const Gallery = props => {
 
   // 갤러리에서 사진 받아오기
   const getGalleryPhotos = async () => {
-    check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(res => {
-      if (res === 'blocked' || res === 'denied') {
-        Alert.alert(
-          '서비스 이용 알림',
-          '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-          [
-            {text: '닫기', onPress: navigation.goBack},
-            {text: '설정', onPress: Linking.openSettings},
-          ],
-        );
-      }
-    });
     const params = {
       first: 12,
       assetType: 'Photos',
       ...(galleryCursor && {after: galleryCursor}),
     };
-
     try {
       if (galleryCursor !== false) {
         const {edges, page_info} = await CameraRoll.getPhotos(params);
@@ -156,12 +143,6 @@ const Gallery = props => {
       setSelectedPhotoList(selectedPhotoIndexList.filter(idx => idx !== index));
     }
   };
-
-  useEffect(() => {
-    GalleryPermission();
-    getGalleryPhotos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const SelectedPhoto = useCallback(() => {
     if (selectedPhotoIndexList.length === 0) {

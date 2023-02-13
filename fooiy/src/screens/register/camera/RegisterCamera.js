@@ -1,23 +1,18 @@
-import React, {useRef, useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-  View,
-  TouchableOpacity,
-  Alert,
-  Platform,
-} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Camera, useCameraDevices} from 'react-native-vision-camera';
-
-import {CameraPermission} from '../../../common/Permission';
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {check, PERMISSIONS} from 'react-native-permissions';
-import {Linking} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  Dimensions,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Camera, useCameraDevices} from 'react-native-vision-camera';
+import {Change, FlashOff, FlashOn} from '../../../../assets/icons/svg';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {Change, FlashOn, FlashOff} from '../../../../assets/icons/svg';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const RegisterCamera = props => {
   const insets = useSafeAreaInsets();
@@ -38,46 +33,21 @@ const RegisterCamera = props => {
   };
 
   const takePhoto = async () => {
-    const platformPermissions =
-      Platform.OS === 'ios'
-        ? PERMISSIONS.IOS.CAMERA
-        : PERMISSIONS.ANDROID.CAMERA;
-    check(platformPermissions).then(async res => {
-      if (res === 'blocked' || res === 'denied') {
-        Alert.alert(
-          '서비스 이용 알림',
-          '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-          [
-            {text: '닫기', onPress: navigation.goBack},
-            {text: '설정', onPress: Linking.openSettings},
-          ],
-        );
-      } else {
-        try {
-          if (camera.current == null) throw new Error('Camera Ref is Null');
-          const photo = await camera.current.takePhoto(takePhotoOptions);
-          const path = 'file://' + photo.path;
-          props.route.params
-            ? navigation.navigate('ImageCrop', {
-                photo: path,
-                shop: props.route.params.shop,
-              })
-            : navigation.navigate('ImageCrop', {
-                photo: path,
-              });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    });
+    if (camera.current == null) throw new Error('Camera Ref is Null');
+    const photo = await camera.current.takePhoto(takePhotoOptions);
+    const path = 'file://' + photo.path;
+    props.route.params
+      ? navigation.navigate('ImageCrop', {
+          photo: path,
+          shop: props.route.params.shop,
+        })
+      : navigation.navigate('ImageCrop', {
+          photo: path,
+        });
   };
 
-  useEffect(() => {
-    CameraPermission();
-  }, []);
-
   if (device == null)
-    return <View style={{flex: 1, backgroundColor: '#666'}} />;
+    return <View style={{flex: 1, backgroundColor: fooiyColor.G100}} />;
 
   return (
     <SafeAreaView

@@ -1,21 +1,18 @@
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {useNavigation} from '@react-navigation/native';
+import cloneDeep from 'lodash/cloneDeep';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  Alert,
   FlatList,
   Image,
-  Linking,
   Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import RNFS from 'react-native-fs';
 import {CropView} from 'react-native-image-crop-tools';
-import cloneDeep from 'lodash/cloneDeep';
-import {check, PERMISSIONS} from 'react-native-permissions';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
@@ -23,7 +20,6 @@ import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 
@@ -110,18 +106,6 @@ const ProfileImg = props => {
 
   // 갤러리에서 사진 받아오기
   const getGalleryPhotos = async () => {
-    check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(res => {
-      if (res === 'blocked' || res === 'denied') {
-        Alert.alert(
-          '서비스 이용 알림',
-          '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-          [
-            {text: '닫기', onPress: navigation.goBack},
-            {text: '설정', onPress: Linking.openSettings},
-          ],
-        );
-      }
-    });
     const params = {
       first: 12,
       assetType: 'Photos',
@@ -178,7 +162,6 @@ const ProfileImg = props => {
   };
 
   useEffect(() => {
-    GalleryPermission();
     getGalleryPhotos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

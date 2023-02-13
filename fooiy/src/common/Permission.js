@@ -1,178 +1,119 @@
 import {Alert, Linking, Platform} from 'react-native';
 import {
   check,
+  checkMultiple,
   PERMISSIONS,
-  RESULTS,
   request,
   requestLocationAccuracy,
   requestMultiple,
-  checkMultiple,
 } from 'react-native-permissions';
-import {exp} from 'react-native-reanimated';
+import {globalVariable} from './globalVariable';
 
 const CameraPermission = async () => {
-  const platformPermissions =
-    Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA;
-  return request(platformPermissions)
-    .then(result => {
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log(
-            'This feature is not available (on this device / in this context)',
-          );
-          break;
-        case RESULTS.DENIED:
-          console.log(
-            'The permission has not been requested / is denied but requestable',
-          );
-          break;
-        case RESULTS.LIMITED:
-          console.log('The permission is limited: some actions are possible');
-          break;
-        case RESULTS.GRANTED:
-          console.log('The permission is granted');
-          break;
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          break;
-      }
-    })
-    .catch(error => {
-      console.log('Error!');
-    });
+  return await request(globalVariable.permission_camera).then(res => {
+    if (res === 'blocked' || res === 'denied') {
+      Alert.alert(
+        '서비스 이용 알림',
+        '카메라 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+        [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
+      );
+      return false;
+    } else {
+      return true;
+    }
+  });
 };
 
 const GalleryPermission = async () => {
-  const platformPermissions =
-    Platform.OS === 'ios'
-      ? PERMISSIONS.IOS.PHOTO_LIBRARY
-      : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
-  return request(platformPermissions)
-    .then(result => {
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log(
-            'This feature is not available (on this device / in this context)',
-          );
-          break;
-        case RESULTS.DENIED:
-          console.log(
-            'The permission has not been requested / is denied but requestable',
-          );
-          break;
-        case RESULTS.LIMITED:
-          console.log('The permission is limited: some actions are possible');
-          break;
-        case RESULTS.GRANTED:
-          console.log('The permission is granted');
-          break;
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          break;
-      }
-    })
-    .catch(error => {
-      console.log('Error!');
-    });
+  return await request(globalVariable.permission_gallery).then(res => {
+    if (res === 'blocked' || res === 'denied') {
+      Alert.alert(
+        '서비스 이용 알림',
+        '사진 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+        [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
+      );
+      return false;
+    } else {
+      return true;
+    }
+  });
 };
 
 const LocationPermission = async () => {
-  const platformPermissions =
-    Platform.OS === 'ios'
-      ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-      : [
-          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        ];
   return Platform.OS === 'ios'
     ? (requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
         .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
         .catch(() => console.warn('Cannot request location accuracy')),
-      request(platformPermissions)
-        .then(result => {
-          switch (result) {
-            case RESULTS.BLOCKED:
-              console.log(
-                'The permission is denied and not requestable anymore',
-              );
-              Alert.alert(
-                '서비스 이용 알림',
-                '위치 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-                [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
-              );
-              break;
+      await request(globalVariable.permission_location)
+        .then(res => {
+          if (res === 'blocked' || res === 'denied') {
+            Alert.alert(
+              '서비스 이용 알림',
+              '위치 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
+              [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
+            );
+            return false;
+          } else {
+            return true;
           }
         })
         .catch(error => {
-          console.log('Error!');
+          console.log(error, 'Error!');
         }))
-    : requestMultiple(platformPermissions)
-        .then(result => {
+    : await requestMultiple(globalVariable.permission_location)
+        .then(res => {
           if (
-            result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'denied' ||
-            result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'denied' ||
-            result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'blocked' ||
-            result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'blocked'
+            res[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'denied' ||
+            res[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'denied' ||
+            res[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'blocked' ||
+            res[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'blocked'
           ) {
             Alert.alert(
               '서비스 이용 알림',
               '위치 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
               [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
             );
+            return false;
+          } else {
+            return true;
           }
         })
         .catch(error => {
-          console.log('Error!');
+          console.log(error, 'Error!');
         });
 };
-
-const checkLocation = async () => {
-  const platformPermissions =
-    Platform.OS === 'ios'
-      ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-      : [
-          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        ];
+const CheckLocationPermission = async () => {
   return Platform.OS === 'ios'
-    ? (requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
-        .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
-        .catch(() => console.warn('Cannot request location accuracy')),
-      request(platformPermissions)
-        .then(result => {
-          switch (result) {
-            case RESULTS.BLOCKED:
-              console.log(
-                'The permission is denied and not requestable anymore',
-              );
-              Alert.alert(
-                '서비스 이용 알림',
-                '위치 권한을 허용해야 서비스 정상 이용이 가능합니다. 설정에서 권한을 허용해주세요.',
-                [{text: '닫기'}, {text: '설정', onPress: Linking.openSettings}],
-              );
-              break;
+    ? await check(globalVariable.permission_location)
+        .then(res => {
+          if (res === 'blocked' || res === 'denied') {
+            return false;
+          } else {
+            return true;
           }
         })
         .catch(error => {
-          console.log('Error!');
-        }))
-    : checkMultiple(platformPermissions)
-        .then(result => {
+          console.log(error, 'Error!');
+        })
+    : await checkMultiple(globalVariable.permission_location)
+        .then(res => {
           if (
-            result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'denied' ||
-            result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'denied' ||
-            result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'blocked' ||
-            result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'blocked'
+            res[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'denied' ||
+            res[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'denied' ||
+            res[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'blocked' ||
+            res[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'blocked'
           ) {
-            LocationPermission();
+            return false;
+          } else {
+            return true;
           }
         })
         .catch(error => {
-          console.log('Error!');
+          console.log(error, 'Error!');
         });
 };
 
 export {CameraPermission};
 export {GalleryPermission};
 export {LocationPermission};
-export {checkLocation};
+export {CheckLocationPermission};

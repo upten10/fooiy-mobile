@@ -99,13 +99,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  test: {
-    height: 100,
-    zIndex: 100,
-    backgroundColor: '#242424',
-    display: 'flex',
-    position: 'absolute',
-    top: 700,
-    elevation: 1,
-  },
 });

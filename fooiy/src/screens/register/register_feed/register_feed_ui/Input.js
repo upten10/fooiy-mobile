@@ -27,14 +27,14 @@ const Input = props => {
                   styles.input,
                   {
                     ...fooiyFont.Body1,
-                    lineHeight: Platform.OS === 'ios' ? 0 : 24,
+                    lineHeight: Platform.OS === 'ios' ? 0 : null,
                   },
                 ]
               : [
                   styles.input,
                   {
                     ...fooiyFont.Subtitle2,
-                    lineHeight: Platform.OS === 'ios' ? 0 : 24,
+                    lineHeight: Platform.OS === 'ios' ? 0 : null,
                   },
                 ]
           }

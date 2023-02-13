@@ -2,14 +2,17 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import NaverMapView from 'react-native-nmap';
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
+import {apiUrl, toastMessage} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {useDebounce} from '../../../common/hooks/useDebounce';
-import {LocationPermission} from '../../../common/Permission';
+import {
+  CheckLocationPermission,
+  LocationPermission,
+} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import ShopModal from '../../map/ShopModal';
 import AndroidMypageMapMarker from './AndroidMypageMapMarker';
@@ -18,6 +21,7 @@ import MypageMapMarker from './MypageMapMarker';
 // 다른 유저 페이지에서 접근 시 props에 account_id랑 nickname 들어있음
 const MypageMap = props => {
   const mapView = useRef(null);
+  const [center, setCenter] = useState();
   const {debounceCallback, isLoading} = useDebounce({time: 500});
 
   const {
@@ -39,16 +43,40 @@ const MypageMap = props => {
   const [zoomLevel, setZoomLevel] = useState(14);
 
   useEffect(() => {
-    checkGrant();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     if (screenLocation.length !== 0) {
       getFeedMarkerList(screenLocation);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screenLocation]);
+  useEffect(() => {
+    const center = async () => {
+      (await CheckLocationPermission())
+        ? onClickLocationBtn()
+        : (FooiyToast.message('위치 권한을 허용해주세요!', true, 0),
+          setCenter({
+            ...{
+              longitude: globalVariable.default_longitude,
+              latitude: globalVariable.default_latitude,
+            },
+            zoom: 16,
+          }));
+    };
+    center();
+  }, []);
+  const onClickLocationBtn = async () => {
+    (await LocationPermission())
+      ? Platform.OS === 'android'
+        ? Geolocation.getCurrentPosition(
+            async position => {
+              const {longitude, latitude} = position.coords;
+              mapView.current.animateToCoordinate({longitude, latitude});
+            },
+            error => this.setState({error: error.message}),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+          )
+        : mapView.current.setLocationTrackingMode(2)
+      : null;
+  };
 
   // 모달 없애기
   const toggleModal = () => {
@@ -61,57 +89,6 @@ const MypageMap = props => {
       setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
       setZoomLevel(e.zoom);
     });
-  };
-
-  const checkGrant = async () => {
-    await LocationPermission();
-    Platform.OS === 'ios'
-      ? check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
-          .then(result => {
-            switch (result) {
-              case RESULTS.GRANTED:
-                onClickLocationBtn();
-                break;
-              case RESULTS.LIMITED:
-                onClickLocationBtn();
-                break;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          })
-      : check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION)
-          .then(result => {
-            switch (result) {
-              case RESULTS.LIMITED:
-                onClickLocationBtn();
-                break;
-              case RESULTS.GRANTED:
-                onClickLocationBtn();
-                break;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-  };
-
-  const onClickLocationBtn = () => {
-    check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION).then(res => {
-      if (res === 'granted' || res === 'limited') {
-        Platform.OS === 'android'
-          ? Geolocation.getCurrentPosition(
-              async position => {
-                const {longitude, latitude} = position.coords;
-                mapView.current.animateToCoordinate({longitude, latitude});
-              },
-              error => this.setState({error: error.message}),
-              {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-            )
-          : null;
-      }
-    });
-    mapView.current.setLocationTrackingMode(2);
   };
 
   const getFeedMarkerList = async data => {
@@ -173,7 +150,8 @@ const MypageMap = props => {
           minZoomLevel={5}
           maxZoomLevel={18}
           rotateGesturesEnabled={false}
-          onCameraChange={e => onCameraChange(e)}>
+          onCameraChange={e => onCameraChange(e)}
+          center={center}>
           {Platform.select({
             ios: feedMarkers.map(item => {
               return (

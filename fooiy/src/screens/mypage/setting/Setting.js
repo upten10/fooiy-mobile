@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
 import {
   Image,
   Keyboard,
@@ -10,23 +12,17 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {
-  ArrowIcon,
-  Camera_Profile,
-  Pencil,
-  ToggleOn,
-} from '../../../../assets/icons/svg';
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {globalVariable} from '../../../common/globalVariable';
-import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch, useSelector} from 'react-redux';
+import {ArrowIcon, Camera_Profile, Pencil} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {useDispatch, useSelector} from 'react-redux';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {GalleryPermission} from '../../../common/Permission';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
-import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loginActions} from '../../../redux/reducer/login';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import MktSwitch from './MktSwitch';
 
 const Setting = props => {
@@ -72,8 +68,8 @@ const Setting = props => {
     }
   };
 
-  const onImgPress = () => {
-    navigation.navigate('ProfileImg');
+  const onImgPress = async () => {
+    (await GalleryPermission()) && navigation.navigate('ProfileImg');
   };
 
   const onItemPress = navi => {
