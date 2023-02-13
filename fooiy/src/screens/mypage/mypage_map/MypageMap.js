@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import NaverMapView from 'react-native-nmap';
+import NaverMapView, {Marker} from 'react-native-nmap';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
@@ -175,6 +175,13 @@ const MypageMap = props => {
           scaleBar={false}
           rotateGesturesEnabled={false}
           onCameraChange={e => onCameraChange(e)}>
+          <Marker
+            coordinate={{
+              latitude: 47.61424127195381,
+              longitude: -122.33682336610559,
+            }}
+            image={require('../../../../assets/icons/marker/marker.png')}
+          />
           {feedMarkers.length > 0
             ? Platform.select({
                 ios: feedMarkers.map(item => {

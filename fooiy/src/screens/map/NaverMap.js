@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import NaverMapView from 'react-native-nmap';
+import NaverMapView, {Marker} from 'react-native-nmap';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -240,6 +240,13 @@ const NaverMap = props => {
             bottom: globalVariable.tabBarHeight + 54 + 23 + 16,
           },
         })}>
+        <Marker
+          coordinate={{
+            latitude: 47.61424127195381,
+            longitude: -122.33682336610559,
+          }}
+          image={require('../../../assets/icons/marker/marker.png')}
+        />
         {shopMarkers.length > 0
           ? Platform.select({
               ios: shopMarkers.map(item => {
