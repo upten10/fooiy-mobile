@@ -176,7 +176,22 @@ const SetAddress = props => {
                   zoom: 17,
                 }
           }
-          style={styles.mapview}>
+          style={{
+            width: '100%',
+            height: globalVariable.height - 56 - insets.top - 258 + 16,
+          }}
+          scaleBar={false}
+          rotateGesturesEnabled={false}
+          logoMargin={Platform.select({
+            ios: {
+              left: 16,
+              bottom: 16 + 24,
+            },
+            android: {
+              left: 16,
+              bottom: 16 + 24 + 24,
+            },
+          })}>
           <Image
             source={require('../../../../assets/image/Current_Position.png')}
             style={{
@@ -237,14 +252,6 @@ const SetAddress = props => {
           <Text style={styles.input_adress_text}>주소 직접 입력</Text>
         </TouchableOpacity>
       </View>
-      {/* <View
-        style={{
-          width: 100,
-          height: (globalVariable.height - insets.bottom - insets.top) * 0.85,
-          position: 'absolute',
-          backgroundColor: 'red',
-          top: insets.top,
-        }} /> */}
     </SafeAreaView>
   );
 };
@@ -252,10 +259,6 @@ const SetAddress = props => {
 export default SetAddress;
 
 const styles = StyleSheet.create({
-  mapview: {
-    width: '100%',
-    height: '85%',
-  },
   current_location: {
     width: 56,
     height: 56,

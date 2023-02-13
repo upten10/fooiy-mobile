@@ -12,6 +12,7 @@ import Geolocation from 'react-native-geolocation-service';
 import Modal from 'react-native-modal';
 import NaverMapView, {Marker} from 'react-native-nmap';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {
   Copy,
   Current_Location_2,
@@ -20,7 +21,6 @@ import {
   Tmap,
 } from '../../../assets/icons/svg';
 import FooiyToast from '../../common/FooiyToast';
-import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {
   CheckLocationPermission,
@@ -114,7 +114,17 @@ const FindWay = props => {
               latitude: shop.latitude * 1,
               zoom: 17,
             }}
-            style={styles.map}>
+            style={styles.map}
+            logoMargin={Platform.select({
+              ios: {
+                left: 16,
+                bottom: 88 + 24,
+              },
+              android: {
+                left: 16,
+                bottom: 88 + 24,
+              },
+            })}>
             <Marker
               coordinate={{
                 longitude: shop.longitude * 1,

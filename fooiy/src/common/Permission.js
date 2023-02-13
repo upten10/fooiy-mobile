@@ -41,7 +41,7 @@ const GalleryPermission = async () => {
 
 const LocationPermission = async () => {
   return Platform.OS === 'ios'
-    ? (requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
+    ? (requestLocationAccuracy({purposeKey: 'full-accuracy'})
         .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
         .catch(() => console.warn('Cannot request location accuracy')),
       await request(globalVariable.permission_location)

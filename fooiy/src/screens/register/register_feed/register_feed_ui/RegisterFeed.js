@@ -89,11 +89,7 @@ const RegisterFeed = props => {
           transformRequest: (data, headers) => {
             return data;
           },
-        })
-          .then(res => {
-            console.log(res);
-          })
-          .catch(e => FooiyToast.error())
+        }).catch(e => FooiyToast.error())
       : await ApiManagerV2.post(apiUrl.REGISTER_PIONEER, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -101,11 +97,7 @@ const RegisterFeed = props => {
           transformRequest: (data, headers) => {
             return data;
           },
-        })
-          .then(res => {
-            console.log(res);
-          })
-          .catch(e => FooiyToast.error());
+        }).catch(e => FooiyToast.error());
     navigation.navigate('FeedStackNavigation');
   };
   const onClickRegister = async () => {
