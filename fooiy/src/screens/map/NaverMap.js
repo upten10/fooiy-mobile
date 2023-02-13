@@ -1,17 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import NaverMapView, {Marker} from 'react-native-nmap';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import {globalVariable} from '../../common/globalVariable';
-
 import Geolocation from 'react-native-geolocation-service';
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {LocationDarkIcon} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
+import {globalVariable} from '../../common/globalVariable';
 import {useDebounce} from '../../common/hooks/useDebounce';
-import {LocationPermission} from '../../common/Permission';
+import {
+  CheckLocationPermission,
+  LocationPermission,
+} from '../../common/Permission';
+import NaverMapView, {Marker} from 'react-native-nmap';
 import AndroidMapMarker from './AndroidMapMarker';
 import MapBottomSheet from './bottom_sheet/MapBottomSheet';
 import MapHeader from './MapHeader';
@@ -96,55 +98,19 @@ const NaverMap = props => {
   };
 
   // 현위치 버튼 클릭 이벤트
-  const onClickLocationBtn = () => {
-    check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION).then(res => {
-      if (res === 'granted' || res === 'limited') {
-        Platform.OS === 'android'
-          ? Geolocation.getCurrentPosition(
-              async position => {
-                const {longitude, latitude} = position.coords;
-                mapView.current.animateToCoordinate({longitude, latitude});
-              },
-              error => this.setState({error: error.message}),
-              {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-            )
-          : null;
-      }
-    });
-    mapView.current.setLocationTrackingMode(2);
-  };
-
-  const checkGrant = async () => {
-    await LocationPermission();
-    Platform.OS === 'ios'
-      ? check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
-          .then(result => {
-            switch (result) {
-              case RESULTS.GRANTED:
-                onClickLocationBtn();
-                break;
-              case RESULTS.LIMITED:
-                onClickLocationBtn();
-                break;
-            }
-          })
-          .catch(error => {
-            console.log('checkGrant: ', error);
-          })
-      : check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION)
-          .then(result => {
-            switch (result) {
-              case RESULTS.LIMITED:
-                onClickLocationBtn();
-                break;
-              case RESULTS.GRANTED:
-                onClickLocationBtn();
-                break;
-            }
-          })
-          .catch(error => {
-            console.log('checkGrant: ', error);
-          });
+  const onClickLocationBtn = async () => {
+    (await LocationPermission())
+      ? Platform.OS === 'android'
+        ? Geolocation.getCurrentPosition(
+            async position => {
+              const {longitude, latitude} = position.coords;
+              mapView.current.animateToCoordinate({longitude, latitude});
+            },
+            error => this.setState({error: error.message}),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+          )
+        : mapView.current.setLocationTrackingMode(2)
+      : null;
   };
 
   // 현위치 버튼 컴포넌트
@@ -205,6 +171,39 @@ const NaverMap = props => {
       })
       .catch(e => console.warn('getShopMarkerDetail: ', e));
   };
+
+  useEffect(() => {
+    if (screenLocation.length !== 0) {
+      getShopMarkerList(screenLocation);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screenLocation, isCafe]);
+
+  useEffect(() => {
+    props.center
+      ? setCenter({
+          ...{
+            longitude: props.center.longitude * 1,
+            latitude: props.center.latitude * 1,
+          },
+          zoom: 16,
+        })
+      : setCenter({
+          ...{
+            longitude: globalVariable.default_longitude,
+            latitude: globalVariable.default_latitude,
+          },
+          zoom: 16,
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.center]);
+  useEffect(() => {
+    const checkPermission = async () => {
+      !(await CheckLocationPermission()) &&
+        FooiyToast.message('위치 권한을 허용해주세요!', false);
+    };
+    checkPermission();
+  }, []);
 
   return (
     <View style={{flex: 1}}>

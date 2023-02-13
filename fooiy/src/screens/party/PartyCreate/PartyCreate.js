@@ -18,6 +18,7 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Clear, Notice, Register_icon} from '../../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
+import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import ProfileImg from '../../mypage/setting/ProfileImg';
 
@@ -272,8 +273,8 @@ const NavigateBtn = props => {
 const InsertImage = props => {
   const {setIsVisible} = props;
 
-  const onPressInsertImage = () => {
-    setIsVisible(true);
+  const onPressInsertImage = async () => {
+    (await GalleryPermission()) && setIsVisible(true);
   };
 
   return (

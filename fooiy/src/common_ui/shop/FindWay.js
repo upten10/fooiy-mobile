@@ -1,5 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Linking,
   Platform,
@@ -11,7 +11,6 @@ import {
 import Geolocation from 'react-native-geolocation-service';
 import Modal from 'react-native-modal';
 import NaverMapView, {Marker} from 'react-native-nmap';
-import {check, PERMISSIONS} from 'react-native-permissions';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   Copy,
@@ -23,6 +22,10 @@ import {
 import FooiyToast from '../../common/FooiyToast';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {
+  CheckLocationPermission,
+  LocationPermission,
+} from '../../common/Permission';
 import {StackHeader} from '../headers/StackHeader';
 
 const FindWay = props => {
@@ -41,23 +44,27 @@ const FindWay = props => {
     });
     Clipboard.setString(shop.address);
   };
-  const onClickLocationBtn = () => {
-    check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION).then(res => {
-      if (res === 'granted' || res === 'limited') {
-        Platform.OS === 'android'
-          ? Geolocation.getCurrentPosition(
-              async position => {
-                const {longitude, latitude} = position.coords;
-                mapView.current.animateToCoordinate({longitude, latitude});
-              },
-              error => this.setState({error: error.message}),
-              {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-            )
-          : null;
-      }
-    });
-    mapView.current.setLocationTrackingMode(2);
+  const onClickLocationBtn = async () => {
+    (await LocationPermission())
+      ? Platform.OS === 'android'
+        ? Geolocation.getCurrentPosition(
+            async position => {
+              const {longitude, latitude} = position.coords;
+              mapView.current.animateToCoordinate({longitude, latitude});
+            },
+            error => this.setState({error: error.message}),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+          )
+        : mapView.current.setLocationTrackingMode(2)
+      : null;
   };
+  useEffect(() => {
+    const checkPermission = async () => {
+      !(await CheckLocationPermission()) &&
+        FooiyToast.message('위치 권한을 허용해주세요!', false, 88 - 24);
+    };
+    checkPermission();
+  }, []);
   const onClickNaverMap = async () => {
     const destinationURL =
       'nmap://route/car?dlat=' +
@@ -141,7 +148,9 @@ const FindWay = props => {
         <TouchableOpacity
           style={styles.find_way_container}
           activeOpacity={0.8}
-          onPress={() => setModalVisible(true)}>
+          onPress={async () =>
+            (await LocationPermission()) && setModalVisible(true)
+          }>
           <Modal
             isVisible={isModalVisible}
             onBackdropPress={toggleModal}

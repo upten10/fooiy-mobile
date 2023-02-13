@@ -4,15 +4,17 @@ import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {categoryToKorean} from './categoryList';
 import {useNavigation} from '@react-navigation/native';
+import {LocationPermission} from '../../common/Permission';
 
 const FindShopButton = props => {
   const {categoryList, tabIndex, bottomHeight} = props;
   const navigation = useNavigation();
-  const onClickFindShop = () => {
-    navigation.navigate('MenuClinicFindShop', {
-      categoryList: categoryList,
-      tabIndex: tabIndex,
-    });
+  const onClickFindShop = async () => {
+    (await LocationPermission()) &&
+      navigation.navigate('MenuClinicFindShop', {
+        categoryList: categoryList,
+        tabIndex: tabIndex,
+      });
   };
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={() => onClickFindShop()}>

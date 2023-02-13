@@ -29,7 +29,6 @@ const LocationSearch = () => {
   const [focus, setFocus] = useState(false);
   const [value, setValue] = useState('');
   const [spot, setSpot] = useState([]);
-  const test = useRef();
 
   const onFocus = () => {
     setFocus(true);
@@ -194,7 +193,6 @@ const LocationSearch = () => {
         }}>
         <View style={styles.input_container}>
           <TextInput
-            ref={test}
             placeholder="보고 싶은 위치를 검색해보세요"
             placeholderTextColor={fooiyColor.G400}
             onFocus={onFocus}

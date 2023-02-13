@@ -1,30 +1,21 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {
-  FlatList,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
-import TabView from './TabView';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Geolocation from 'react-native-geolocation-service';
-import {checkLocation} from '../../common/Permission';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {EmptyMenuClinic, LocationGrayIcon} from '../../../assets/icons/svg';
+import {geocoding} from '../../common/api/geocoding';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
-import {categoryToEnglish} from './categoryList';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
-import FastImage from 'react-native-fast-image';
-import Margin from '../../common_ui/Margin';
-import {geocoding} from '../../common/api/geocoding';
-import {EmptyMenuClinic, LocationGrayIcon} from '../../../assets/icons/svg';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ListEmptyTextComponent from '../../common_ui/empty_component/ListEmptyTextComponent';
-import {useNavigation} from '@react-navigation/native';
+import {StackHeader} from '../../common_ui/headers/StackHeader';
+import Margin from '../../common_ui/Margin';
+import {categoryToEnglish} from './categoryList';
+import TabView from './TabView';
 
 const MenuClinicFindShop = props => {
   const {categoryList, tabIndex} = props.route.params;
@@ -45,7 +36,6 @@ const MenuClinicFindShop = props => {
   }, [tabRef]);
 
   useEffect(() => {
-    checkLocation();
     Geolocation.getCurrentPosition(position => {
       const {latitude, longitude} = position.coords;
       setLocation({

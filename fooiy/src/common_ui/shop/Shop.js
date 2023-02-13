@@ -6,6 +6,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StackHeader} from '../headers/StackHeader';
@@ -111,6 +112,9 @@ const Shop = props => {
         onEndReached={loadMoreItem}
         onEndReachedThreshold={3}
       />
+      {Platform.OS === 'android' ? (
+        <View style={styles.android_shadow} />
+      ) : null}
       <View style={[styles.bottom_container, {height: insets.bottom + 88}]}>
         <TouchableOpacity
           style={styles.menu_container}
@@ -141,14 +145,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  test: {
-    height: 100,
-    zIndex: 100,
-    backgroundColor: '#242424',
-    display: 'flex',
+  android_shadow: {
     position: 'absolute',
-    top: 700,
+    width: '100%',
+    bottom: 0,
+    height: 90,
     elevation: 1,
+    borderRadius: 16,
   },
   bottom_container: {
     position: 'absolute',

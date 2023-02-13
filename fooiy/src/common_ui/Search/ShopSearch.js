@@ -19,6 +19,8 @@ import Geolocation from 'react-native-geolocation-service';
 import {globalVariable} from '../../common/globalVariable';
 import {debounce} from 'lodash';
 import {useNavigation} from '@react-navigation/native';
+import {CheckLocationPermission} from '../../common/Permission';
+import FooiyToast from '../../common/FooiyToast';
 
 const ShopSearch = () => {
   const navigation = useNavigation();
@@ -128,12 +130,6 @@ const ShopSearch = () => {
         onPress={() =>
           navigation.navigate('Shop', {
             shop_id: public_id,
-            shop_name: name,
-            shop_address: address,
-            // 수정 필요
-            shop_longitude: 127.11729911704028,
-            shop_latitude: 37.32417435738688,
-            // 수정 필요
           })
         }>
         {/* img */}
@@ -231,13 +227,17 @@ const ShopSearch = () => {
   }, [value]);
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(async position => {
-      const {longitude, latitude} = position.coords;
-      setCurrentLocation({
-        longitude,
-        latitude,
-      });
-    });
+    const center = async () => {
+      (await CheckLocationPermission()) &&
+        Geolocation.getCurrentPosition(async position => {
+          const {longitude, latitude} = position.coords;
+          setCurrentLocation({
+            longitude,
+            latitude,
+          });
+        });
+    };
+    center();
   }, []);
 
   return (
