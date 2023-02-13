@@ -282,6 +282,6 @@ const styles = StyleSheet.create({
     borderColor: fooiyColor.G200,
   },
   subscribe_subscribed_text: {
-    color: fooiyColor.G600,
+    color: fooiyColor.G500,
   },
 });

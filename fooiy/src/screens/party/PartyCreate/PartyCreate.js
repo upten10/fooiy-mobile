@@ -70,6 +70,7 @@ const UserInput = props => {
     if (index === 1) {
       value.length < 3 ? setBtnActivate(false) : null;
     } else if (index === 2) {
+      setIsValid(true);
       setBtnActivate(true);
     }
   };
@@ -188,8 +189,7 @@ const NoticeComp = props => {
 };
 
 const NavigateBtn = props => {
-  const {index, navigation, btnActivate, checkName, inputValue, data, image} =
-    props;
+  const {index, navigation, btnActivate, inputValue, data, image} = props;
   const insets = useSafeAreaInsets();
 
   const nextRoute =
@@ -201,7 +201,7 @@ const NavigateBtn = props => {
 
   const onPressNext = () => {
     if (index === 1) {
-      btnActivate && checkName
+      btnActivate
         ? navigation.navigate(nextRoute, {
             party_name: inputValue,
           })
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
   },
   navigateTwoBtnContainer: {
     width: '100%',
-    height: 56,
+    height: 48,
     position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'space-between',
