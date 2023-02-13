@@ -1,13 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import NaverMapView from 'react-native-nmap';
+import NaverMapView, {Marker} from 'react-native-nmap';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {fooiyColor} from '../../../common/globalStyles';
-import {globalVariable} from '../../../common/globalVariable';
 import {useDebounce} from '../../../common/hooks/useDebounce';
 import {LocationPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -115,7 +114,7 @@ const MypageMap = props => {
   };
 
   const getFeedMarkerList = async data => {
-    await ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
+    ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
       params: {
         type: party_id !== undefined ? 'party' : 'mypage',
         longitude_left_bottom: screenLocation[0].longitude,
@@ -176,42 +175,52 @@ const MypageMap = props => {
           scaleBar={false}
           rotateGesturesEnabled={false}
           onCameraChange={e => onCameraChange(e)}>
-          {Platform.select({
-            ios: feedMarkers.map(item => {
-              return (
-                <MypageMapMarker
-                  key={item.id}
-                  item={item}
-                  index={item.id}
-                  toggleModal={toggleModal}
-                  setClickedIndex={setClickedIndex}
-                  setModalVisible={setModalVisible}
-                  getFeedMarkerDetail={getFeedMarkerDetail}
-                  clickedIndex={clickedIndex}
-                  zoomLevel={zoomLevel}
-                />
-              );
-            }),
-            android: feedMarkers.map(item => {
-              return (
-                <AndroidMypageMapMarker
-                  key={item.id}
-                  item={item}
-                  index={item.id}
-                  toggleModal={toggleModal}
-                  setClickedIndex={setClickedIndex}
-                  setModalVisible={setModalVisible}
-                  getFeedMarkerDetail={getFeedMarkerDetail}
-                  clickedIndex={clickedIndex}
-                  zoomLevel={zoomLevel}
-                />
-              );
-            }),
-          })}
+          <Marker
+            coordinate={{
+              latitude: 47.61424127195381,
+              longitude: -122.33682336610559,
+            }}
+            image={require('../../../../assets/icons/marker/marker.png')}
+          />
+          {feedMarkers.length > 0
+            ? Platform.select({
+                ios: feedMarkers.map(item => {
+                  return (
+                    <MypageMapMarker
+                      key={item.id}
+                      item={item}
+                      index={item.id}
+                      toggleModal={toggleModal}
+                      setClickedIndex={setClickedIndex}
+                      setModalVisible={setModalVisible}
+                      getFeedMarkerDetail={getFeedMarkerDetail}
+                      clickedIndex={clickedIndex}
+                      zoomLevel={zoomLevel}
+                    />
+                  );
+                }),
+                android: feedMarkers.map(item => {
+                  return (
+                    <AndroidMypageMapMarker
+                      key={item.id}
+                      item={item}
+                      index={item.id}
+                      toggleModal={toggleModal}
+                      setClickedIndex={setClickedIndex}
+                      setModalVisible={setModalVisible}
+                      getFeedMarkerDetail={getFeedMarkerDetail}
+                      clickedIndex={clickedIndex}
+                      zoomLevel={zoomLevel}
+                    />
+                  );
+                }),
+              })
+            : null}
         </NaverMapView>
         {isModalVisible && (
           <ShopModal
             onBackdropPress={toggleModal}
+            myPage={true}
             shops_info={feedMarkerDetails}
             other_account_id={account_id && account_id}
           />

@@ -8,7 +8,7 @@ const ShopModal = props => {
   const insets = useSafeAreaInsets();
   const [current, setCurrent] = useState(0);
   const shopRef = useRef(null);
-  const {onBackdropPress, shops_info, other_account_id} = props;
+  const {onBackdropPress, shops_info, other_account_id, myPage} = props;
 
   useEffect(() => {
     if (shops_info.length !== 0) {
@@ -52,7 +52,9 @@ const ShopModal = props => {
     <View
       style={[
         styles.modal_container,
-        {bottom: globalVariable.tabBarHeight + 54 + insets.bottom + 24},
+        myPage
+          ? {bottom: 16 + insets.bottom}
+          : {bottom: globalVariable.tabBarHeight + 54 + insets.bottom + 24},
       ]}>
       {shops.length > 1 ? (
         <View style={styles.shop_list_indicator}>

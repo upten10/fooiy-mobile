@@ -1,15 +1,15 @@
-import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Feed from './Feed';
-import {globalStyles} from '../../common/globalStyles';
-import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
-import OtherUserPage from '../mypage/storage/OtherUserPage';
-import OtherUserFeedDetail from '../mypage/storage/OtherUserFeedDetail';
-import Register from '../register/Register';
-import Shop from '../../common_ui/shop/Shop';
-import Search from '../../common_ui/Search/Search';
+import React from 'react';
 import {useSelector} from 'react-redux';
+import {globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
+import Search from '../../common_ui/Search/Search';
+import Shop from '../../common_ui/shop/Shop';
+import MypageFeedDetail from '../mypage/mypage/MypageFeedDetail';
+import OtherUserFeedDetail from '../mypage/storage/OtherUserFeedDetail';
+import OtherUserPage from '../mypage/storage/OtherUserPage';
+import Register from '../register/Register';
+import Feed from './Feed';
 
 const Stack = createStackNavigator();
 const StackNavigation = () => {
@@ -21,6 +21,9 @@ const StackNavigation = () => {
       <Stack.Screen
         name="Feed"
         component={Feed}
+        options={{
+          gestureEnabled: false,
+        }}
         listeners={({navigation, route}) => {
           const state = navigation.getState();
           if (state.index === 0) {
