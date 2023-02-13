@@ -47,18 +47,22 @@ const MenuReport = props => {
           <Margin h={24} />
           <TextInput
             style={
-              !isFocus && value === ''
-                ? [styles.empty_value, {borderColor: fooiyColor.G200}]
-                : isFocus && value === ''
-                ? [styles.empty_value, {borderColor: fooiyColor.G400}]
-                : isFocus && value !== ''
+              isFocus
                 ? [styles.is_value, {borderColor: fooiyColor.G400}]
                 : [styles.is_value, {borderColor: fooiyColor.G200}]
+              // !isFocus && value === ''
+              //   ? [styles.empty_value, {borderColor: fooiyColor.G200}]
+              //   : isFocus && value === ''
+              //   ? [styles.empty_value, {borderColor: fooiyColor.G400}]
+              //   : isFocus && value !== ''
+              //   ? [styles.is_value, {borderColor: fooiyColor.G400}]
+              //   : [styles.is_value, {borderColor: fooiyColor.G200}]
             }
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             multiline={true}
             textAlignVertical="top"
+            maxLength={500}
             onChangeText={setValue}
             value={value}
             placeholder={placeholder}
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
     color: fooiyColor.G800,
   },
   shop_address: {
-    ...fooiyFont.Subtitle4,
+    ...fooiyFont.Subtitle3,
     color: fooiyColor.G400,
   },
   empty_value: {

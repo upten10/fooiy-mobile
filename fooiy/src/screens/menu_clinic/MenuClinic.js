@@ -14,7 +14,6 @@ const tabBarHeight = 52;
 const MenuClinic = () => {
   const insets = useSafeAreaInsets();
   const [headerHeight, setHeaderHeight] = useState(0);
-  const [categories, setCategories] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
   const itemFlatListRef = useRef(null);
   const offsetRef = useRef(0);
@@ -58,10 +57,6 @@ const MenuClinic = () => {
     },
     [itemFlatListRef, offsetRef, headerHeight],
   );
-
-  useEffect(() => {
-    setCategories(categoryList);
-  }, []);
 
   return (
     <View style={styles.container}>

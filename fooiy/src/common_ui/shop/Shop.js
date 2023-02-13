@@ -38,7 +38,12 @@ const Shop = props => {
       params: {
         shop_id: props.route.params.shop_id,
       },
-    }).then(res => setShopInfo(res.data.payload.shop_info));
+    })
+      .then(res => {
+        console.log(res, props.route.params.shop_id);
+        setShopInfo(res.data.payload.shop_info);
+      })
+      .catch(e => console.log(e));
   };
   useEffect(() => {
     getShopInfo();

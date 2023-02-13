@@ -1,24 +1,29 @@
-import React, {useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Route} from './Route';
-import {fooiyColor, fooiyFont, globalStyles} from '../common/globalStyles';
-import SplashScreen from 'react-native-splash-screen';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {globalVariable} from '../common/globalVariable';
+import SplashScreen from 'react-native-splash-screen';
 import {useDispatch} from 'react-redux';
-import {insetsAction} from '../redux/actions/insetsAction';
 import TabBarIcon from '../../assets/icons/svg/TabBar/TabBarIcon';
+import {fooiyColor, fooiyFont, globalStyles} from '../common/globalStyles';
+import {globalVariable} from '../common/globalVariable';
+import {insetsAction} from '../redux/actions/insetsAction';
+import {Route} from './Route';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   dispatch(insetsAction.setInsets(insets));
+
   useEffect(() => {
     setTimeout(() => SplashScreen.hide(), 500);
   }, []);
+
   return (
     <Tab.Navigator
       initialRouteName="FeedStackNavigation"
@@ -60,6 +65,13 @@ const TabNavigator = () => {
               try {
                 navigation.navigate(route.name);
               } catch (error) {}
+            },
+            beforeRemove: e => {
+              try {
+                e.preventDefault();
+              } catch (error) {
+                console.log(error);
+              }
             },
           })}
         />

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import {globalVariable} from '../../common/globalVariable';
 import {
   Fork,
@@ -99,10 +99,11 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   fork_count: {
-    justifyContent: 'center',
+    height: 24,
     textAlign: 'center',
     ...fooiyFont.Body2,
     color: fooiyColor.G500,
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
   right_side_icon: {
     flex: 1,

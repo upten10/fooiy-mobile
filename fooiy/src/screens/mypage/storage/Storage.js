@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   Image,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -323,11 +324,12 @@ const filter_styles = StyleSheet.create({
     paddingVertical: 7,
     borderBottomEndRadius: 8,
     borderBottomStartRadius: 8,
-    height: 56,
+    height: 58,
   },
   description: {
     ...fooiyFont.Subtitle4,
     color: fooiyColor.G400,
+    lineHeight: 17,
   },
   dropDownTitle: {
     ...fooiyFont.Subtitle2,

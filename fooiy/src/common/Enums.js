@@ -43,6 +43,8 @@ export const apiUrl = {
   REGISTER_PIONEER: 'feeds/pioneer/',
   // 기록 등록
   REGISTER_RECORD: 'feeds/record/',
+  // 기록 삭제
+  DELETE_FEED: 'feeds/record/',
   // 기록 등록
   UPDATE_FEED: 'feeds/feed/modify/',
 
@@ -97,6 +99,11 @@ export const apiUrl = {
 
   // 푸시 알림
   PUSH_NOTIFICATION: 'archives/push_notification/',
+
+  // 푸이티아이 질문지
+  FOOIYTI_QUESTION_LIST: 'archives/fooiyti/question/',
+  // 푸이티아이 결과
+  FOOIYTI_QUESTION_RESULT: 'archives/fooiyti/result/',
 };
 
 export const toastMessage = {

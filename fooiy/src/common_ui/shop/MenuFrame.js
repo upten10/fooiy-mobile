@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   menu_container: {
     justifyContent: 'space-between',
-    marginHorizontal: 16,
+    marginHorizontal: 8,
     flexDirection: 'row',
   },
   menu_name: {

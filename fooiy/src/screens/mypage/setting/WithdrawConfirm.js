@@ -28,7 +28,7 @@ const WithdrawConfirm = props => {
       params: {reason},
     })
       .then(dispatch(loginActions.setLogin(false)))
-      .then(navigation.popToTop());
+      .then(navigation.navigate('Login'));
     AsyncStorage.clear();
   };
 
@@ -144,13 +144,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: Platform.select({
       ios: 0,
-      android: 20,
+      android: 16,
     }),
     marginBottom: 16,
     width: '100%',
   },
   btn: {
-    width: 168,
+    width: (globalVariable.width - 39) / 2,
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',

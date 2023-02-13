@@ -301,7 +301,7 @@ export default props => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
+    <SafeAreaView style={{backgroundColor: fooiyColor.W, flex: 1}}>
       <StackHeader title={'파티 가입 신청 목록'} />
       {/* Body */}
       <View
@@ -328,7 +328,7 @@ export default props => {
               justifyContent: 'space-between',
               paddingBottom: Platform.select({
                 ios: 0,
-                android: 34,
+                android: 88,
               }),
             }}>
             <TouchableOpacity
@@ -336,7 +336,7 @@ export default props => {
               activeOpacity={0.8}
               style={{
                 width: (globalVariable.width - 39) / 2,
-                height: '100%',
+                height: 48,
                 backgroundColor: fooiyColor.W,
                 borderWidth: 1,
                 borderColor: fooiyColor.G200,
@@ -361,7 +361,7 @@ export default props => {
               activeOpacity={0.8}
               style={{
                 width: (globalVariable.width - 39) / 2,
-                height: '100%',
+                height: 48,
                 backgroundColor: fooiyColor.P500,
                 borderRadius: 8,
                 alignItems: 'center',

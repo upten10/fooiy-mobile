@@ -1,11 +1,10 @@
 import React, {memo} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 
 import {globalVariable} from '../../common/globalVariable';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {Cancel} from '../../../assets/icons/svg';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {TasteEvaluationDescription} from '../../../assets/icons/svg';
 
 const TasteEvaluationModal = props => {

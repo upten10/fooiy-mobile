@@ -1,13 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import NaverMapView from 'react-native-nmap';
+import NaverMapView, {Marker} from 'react-native-nmap';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl, toastMessage} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor} from '../../../common/globalStyles';
-import {globalVariable} from '../../../common/globalVariable';
 import {useDebounce} from '../../../common/hooks/useDebounce';
 import {
   CheckLocationPermission,
@@ -92,7 +91,7 @@ const MypageMap = props => {
   };
 
   const getFeedMarkerList = async data => {
-    await ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
+    ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
       params: {
         type: party_id !== undefined ? 'party' : 'mypage',
         longitude_left_bottom: screenLocation[0].longitude,
@@ -112,10 +111,11 @@ const MypageMap = props => {
   const getFeedMarkerDetail = async data => {
     await ApiManagerV2.get(apiUrl.FEED_MAP_DETAIL, {
       params: {
-        type: 'mypage',
+        type: party_id !== undefined ? 'party' : 'mypage',
         latitude: data.latitude,
         longitude: data.longitude,
         ...(account_id && {other_account_id: account_id}),
+        ...(party_id && {party_id: party_id}),
       },
     })
       .then(res => {
@@ -137,7 +137,7 @@ const MypageMap = props => {
             : '내 지도'
         }
       />
-      <View>
+      <View style={{flex: 1}}>
         <NaverMapView
           ref={mapView}
           style={styles.map}
@@ -149,45 +149,55 @@ const MypageMap = props => {
           zoomControl={false}
           minZoomLevel={5}
           maxZoomLevel={18}
+          scaleBar={false}
           rotateGesturesEnabled={false}
-          onCameraChange={e => onCameraChange(e)}
-          center={center}>
-          {Platform.select({
-            ios: feedMarkers.map(item => {
-              return (
-                <MypageMapMarker
-                  key={item.id}
-                  item={item}
-                  index={item.id}
-                  toggleModal={toggleModal}
-                  setClickedIndex={setClickedIndex}
-                  setModalVisible={setModalVisible}
-                  getFeedMarkerDetail={getFeedMarkerDetail}
-                  clickedIndex={clickedIndex}
-                  zoomLevel={zoomLevel}
-                />
-              );
-            }),
-            android: feedMarkers.map(item => {
-              return (
-                <AndroidMypageMapMarker
-                  key={item.id}
-                  item={item}
-                  index={item.id}
-                  toggleModal={toggleModal}
-                  setClickedIndex={setClickedIndex}
-                  setModalVisible={setModalVisible}
-                  getFeedMarkerDetail={getFeedMarkerDetail}
-                  clickedIndex={clickedIndex}
-                  zoomLevel={zoomLevel}
-                />
-              );
-            }),
-          })}
+          onCameraChange={e => onCameraChange(e)}>
+          <Marker
+            coordinate={{
+              latitude: 47.61424127195381,
+              longitude: -122.33682336610559,
+            }}
+            image={require('../../../../assets/icons/marker/marker.png')}
+          />
+          {feedMarkers.length > 0
+            ? Platform.select({
+                ios: feedMarkers.map(item => {
+                  return (
+                    <MypageMapMarker
+                      key={item.id}
+                      item={item}
+                      index={item.id}
+                      toggleModal={toggleModal}
+                      setClickedIndex={setClickedIndex}
+                      setModalVisible={setModalVisible}
+                      getFeedMarkerDetail={getFeedMarkerDetail}
+                      clickedIndex={clickedIndex}
+                      zoomLevel={zoomLevel}
+                    />
+                  );
+                }),
+                android: feedMarkers.map(item => {
+                  return (
+                    <AndroidMypageMapMarker
+                      key={item.id}
+                      item={item}
+                      index={item.id}
+                      toggleModal={toggleModal}
+                      setClickedIndex={setClickedIndex}
+                      setModalVisible={setModalVisible}
+                      getFeedMarkerDetail={getFeedMarkerDetail}
+                      clickedIndex={clickedIndex}
+                      zoomLevel={zoomLevel}
+                    />
+                  );
+                }),
+              })
+            : null}
         </NaverMapView>
         {isModalVisible && (
           <ShopModal
             onBackdropPress={toggleModal}
+            myPage={true}
             shops_info={feedMarkerDetails}
             other_account_id={account_id && account_id}
           />
@@ -201,7 +211,6 @@ export default MypageMap;
 
 const styles = StyleSheet.create({
   map: {
-    width: globalVariable.width,
-    height: globalVariable.height,
+    flex: 1,
   },
 });

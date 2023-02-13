@@ -14,30 +14,35 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {DefaultHeader} from '../../../common_ui/headers/DefaultHeader';
+import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import MypageProfile from './MypageProfile';
 
 const limit = 12;
 
 const Mypage = props => {
-  const [feeds, setFeeds] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [totalCount, setTotalCount] = useState(-1);
-  const [noFeedImage, setNoFeedImage] = useState('');
+  const tabNavigation = props.navigation.getParent();
+  const stackNavigation = props.navigation;
 
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    getFeedList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const flatListRef = useRef(null);
 
-  const tabNavigation = props.navigation.getParent();
-  const stackNavigation = props.navigation;
+  const [feeds, setFeeds] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [noFeedImage, setNoFeedImage] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    getFeedList(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   tabNavigation?.addListener('tabPress', e => {
     if (
       stackNavigation.getState().index === 0 &&
@@ -55,35 +60,59 @@ const Mypage = props => {
     });
   };
 
-  const navigation = useNavigation();
-
   const getFeedList = async data => {
+    setOffset(data);
     await ApiManagerV2.get(apiUrl.MYPAGE_FEED_LIST, {
       params: {
-        offset: offset,
-        limit,
+        offset: data,
+        limit: globalVariable.FeedLimit,
         type: 'image',
       },
-    }).then(res => {
-      if (res.data.payload.image === undefined) {
-        setFeeds([...feeds, ...res.data.payload.feed_list.results]);
-        if (totalCount === -1) {
-          setOffset(offset + limit);
-          setTotalCount(res.data.payload.feed_list.total_count);
+    })
+      .then(res => {
+        if (res.data.payload.feed_list) {
+          if (data === 0) {
+            setFeeds(res.data.payload.feed_list.results);
+          } else {
+            setFeeds([...feeds, ...res.data.payload.feed_list.results]);
+          }
+          totalCount === 0 &&
+            setTotalCount(res.data.payload.feed_list.total_count);
+        } else {
+          setNoFeedImage(res.data.payload.image);
         }
-      } else {
-        setNoFeedImage(res.data.payload.image);
-      }
+      })
+      .catch(e => {
+        FooiyToast.error();
+      });
+  };
+
+  const getAccountInfo = async data => {
+    ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
+      params: {},
+    }).then(res => {
+      dispatch(userInfoAction.init(res.data.payload.account_info));
     });
   };
 
   const loadMoreFeeds = () => {
-    if (totalCount > offset) {
-      if (totalCount + limit > offset) {
-        setOffset(offset + limit);
-        getFeedList();
-      }
+    if (totalCount > offset + globalVariable.FeedLimit) {
+      setOffset(offset + globalVariable.FeedLimit);
+      getFeedList(offset + globalVariable.FeedLimit);
     }
+  };
+
+  const onRefresh = () => {
+    if (!refreshing) {
+      getRefreshData();
+    }
+  };
+
+  const getRefreshData = async () => {
+    setRefreshing(true);
+    await getFeedList(0);
+    await getAccountInfo();
+    setRefreshing(false);
   };
 
   const renderItem = useCallback(({item, index}) => {
@@ -149,6 +178,8 @@ const Mypage = props => {
         keyExtractor={keyExtractor}
         scrollEventThrottle={16}
         onEndReached={loadMoreFeeds}
+        onRefresh={onRefresh}
+        refreshing={refreshing}
         bounces={true}
         numColumns={3}
         scrollToOverflowEnabled

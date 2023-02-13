@@ -3,6 +3,7 @@ import React, {Profiler, useEffect, useState} from 'react';
 import {
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   Platform,
   StyleSheet,
   Text,
@@ -208,57 +209,64 @@ const NavigateBtn = props => {
   };
 
   return (
-    <View
-      style={
-        index === 1
-          ? [
-              styles.navigateBtnContainer,
-              {
-                bottom: Platform.select({
-                  ios: insets.bottom,
-                  android: 34,
-                }),
-              },
-            ]
-          : [
-              styles.navigateTwoBtnContainer,
-              {
-                bottom: Platform.select({
-                  ios: insets.bottom,
-                  android: 34,
-                }),
-              },
-            ]
-      }>
-      {index === 1 ? null : (
-        <TouchableOpacity
-          style={styles.backBtn}
-          onPress={() => navigation.goBack()}>
-          <Text style={styles.backBtnText}>이전</Text>
-        </TouchableOpacity>
-      )}
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={onPressNext}
+    <KeyboardAvoidingView
+      behavior={Platform.select({
+        ios: 'position',
+        android: null,
+      })}
+      style={{paddingHorizontal: 16}}>
+      <View
         style={
           index === 1
-            ? btnActivate
-              ? styles.nextBtn
-              : [styles.nextBtn, styles.nextBtnOff]
-            : [styles.nextBtn, styles.secondNextBtn]
+            ? [
+                styles.navigateBtnContainer,
+                {
+                  bottom: Platform.select({
+                    ios: insets.bottom,
+                    android: 34,
+                  }),
+                },
+              ]
+            : [
+                styles.navigateTwoBtnContainer,
+                {
+                  bottom: Platform.select({
+                    ios: insets.bottom,
+                    android: 34,
+                  }),
+                },
+              ]
         }>
-        <Text
+        {index === 1 ? null : (
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => navigation.goBack()}>
+            <Text style={styles.backBtnText}>이전</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onPressNext}
           style={
             index === 1
               ? btnActivate
-                ? styles.nextBtnText
-                : [styles.nextBtnText, styles.nextBtnTextOff]
-              : styles.nextBtnText
+                ? styles.nextBtn
+                : [styles.nextBtn, styles.nextBtnOff]
+              : [styles.nextBtn, styles.secondNextBtn]
           }>
-          다음
-        </Text>
-      </TouchableOpacity>
-    </View>
+          <Text
+            style={
+              index === 1
+                ? btnActivate
+                  ? styles.nextBtnText
+                  : [styles.nextBtnText, styles.nextBtnTextOff]
+                : styles.nextBtnText
+            }>
+            다음
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -378,18 +386,17 @@ export default props => {
             ) : (
               <InsertImage setIsVisible={setIsVisible} />
             )}
-
-            <NavigateBtn
-              index={index}
-              navigation={navigation}
-              btnActivate={btnActivate}
-              inputValue={inputValue}
-              checkName={checkName}
-              data={data}
-              image={image}
-            />
           </View>
         </SafeAreaView>
+        <NavigateBtn
+          index={index}
+          navigation={navigation}
+          btnActivate={btnActivate}
+          inputValue={inputValue}
+          checkName={checkName}
+          data={data}
+          image={image}
+        />
       </TouchableWithoutFeedback>
     );
   }
@@ -459,13 +466,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 56,
     position: 'absolute',
-    left: 16,
   },
   navigateTwoBtnContainer: {
     width: '100%',
     height: 56,
     position: 'absolute',
-    left: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

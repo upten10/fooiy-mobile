@@ -63,7 +63,7 @@ const MapHeader = props => {
           setShopMarkers={setShopMarkers}
         />
         {/* 필터 */}
-        {depth === 1 ? null : (
+        {depth < 3 ? null : (
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {

@@ -207,10 +207,16 @@ export default props => {
               </View>
               {/* Settings */}
               <View>
-                <SettingTab title={'파티 이름'} description={name} />
+                <SettingTab
+                  title={'파티 이름'}
+                  description={name}
+                  party_id={party_id}
+                />
                 <SettingTab
                   title={'파티원 목록'}
                   description={account_count + '명'}
+                  party_id={party_id}
+                  owner_id={owner_id}
                 />
                 <SettingTab
                   title={'파티 가입 신청 목록'}
@@ -218,25 +224,6 @@ export default props => {
                   party_id={party_id}
                 />
               </View>
-            </View>
-            {/* Settings */}
-            <View>
-              <SettingTab
-                title={'파티 이름'}
-                description={name}
-                party_id={party_id}
-              />
-              <SettingTab
-                title={'파티원 목록'}
-                description={account_count + '명'}
-                party_id={party_id}
-                owner_id={owner_id}
-              />
-              <SettingTab
-                title={'파티 가입 신청 목록'}
-                description={waiting_join_count + '명'}
-                party_id={party_id}
-              />
             </View>
           </View>
         </SafeAreaView>

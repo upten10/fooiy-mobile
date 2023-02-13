@@ -75,7 +75,7 @@ const ModifyFeed = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StackHeader title="피드 등록" />
+      <StackHeader title="피드 수정" />
       <KeyboardAwareScrollView
         extraScrollHeight={insets.top}
         style={styles.view}
@@ -141,7 +141,7 @@ const ModifyFeed = props => {
               <View style={styles.comment_focus_active}>
                 <TextInput
                   ref={commentRef}
-                  style={styles.comment_text_focus_active}
+                  style={styles.r}
                   multiline
                   textAlignVertical="top"
                   autoCapitalize={false}
@@ -180,7 +180,7 @@ const ModifyFeed = props => {
           activeOpacity={0.8}
           style={styles.register_btn_active}
           onPress={updateFeed}>
-          <Text style={styles.register_btn_text_active}>피드 등록</Text>
+          <Text style={styles.register_btn_text_active}>피드 수정</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: fooiyColor.G200,
   },
-  comment_text_focus_active: {
+  r: {
     paddingTop: 16,
     padding: 16,
     ...fooiyFont.Body1,
@@ -290,11 +290,11 @@ const styles = StyleSheet.create({
   register_btn_text_active: {
     ...fooiyFont.Button,
     color: fooiyColor.W,
-    fontSize: 14,
+    fontSize: 16,
   },
   register_btn_text_deactive: {
     ...fooiyFont.Button,
     color: fooiyColor.G300,
-    fontSize: 14,
+    fontSize: 16,
   },
 });

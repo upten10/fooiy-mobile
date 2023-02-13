@@ -17,6 +17,9 @@ import OtherUserFeedDetail from './storage/OtherUserFeedDetail';
 import OtherUserPage from './storage/OtherUserPage';
 import Storage from './storage/Storage';
 import StorageSingleFeed from './storage/StorageSingleFeed';
+import FooiytiTest from '../FooiytiTest/FooiytiTest';
+import FooiytiTestResultLoading from '../FooiytiTest/FooiytiTestResultLoading';
+import FooiyTI from './setting/FooiyTI';
 
 const Stack = createStackNavigator();
 const MypageStackNavigation = props => {
@@ -123,6 +126,24 @@ const MypageStackNavigation = props => {
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
         }}
+      />
+      <Stack.Screen
+        name="FooiyTI"
+        component={FooiyTI}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+        }}
+      />
+      <Stack.Screen
+        name="FooiytiReTest"
+        component={FooiytiTest}
+        listeners={({navigation, route}) => {
+          navigation.getParent().setOptions({tabBarStyle: {display: 'none'}});
+        }}
+      />
+      <Stack.Screen
+        name="FooiytiTestResultLoading"
+        component={FooiytiTestResultLoading}
       />
     </Stack.Navigator>
   );

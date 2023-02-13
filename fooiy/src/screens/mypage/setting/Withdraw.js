@@ -141,6 +141,7 @@ const Withdraw = props => {
                   <TextInput
                     style={styles.textInput}
                     placeholder="아쉬운 점에 대해 말씀해주세요. (최소 10자 이상)"
+                    placeholderTextColor={fooiyColor.G300}
                     multiline
                     autoCapitalize={false}
                     autoCorrect={false}
@@ -264,7 +265,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: Platform.select({
       ios: 0,
-      android: 20,
+      android: 16,
     }),
     width: '100%',
     height: 56,
@@ -278,9 +279,12 @@ const styles = StyleSheet.create({
     backgroundColor: fooiyColor.G100,
   },
   changeBtnText: {
+    ...fooiyFont.Button,
     color: fooiyColor.W,
-    fontSize: 16,
-    fontWeight: '600',
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
   },
   changeBtnTextOff: {
     color: fooiyColor.G300,
