@@ -487,6 +487,10 @@ const styles = StyleSheet.create({
   nextBtnText: {
     ...fooiyFont.Button,
     color: fooiyColor.W,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
   },
   nextBtnTextOff: {
     color: fooiyColor.G300,

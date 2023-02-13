@@ -153,7 +153,7 @@ export default props => {
           style={{
             borderWidth: 1,
             borderColor: fooiyColor.G200,
-            borderRadius: 8,
+            borderRadius: 4,
           }}>
           <Text
             style={{
