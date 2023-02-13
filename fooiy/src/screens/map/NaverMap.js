@@ -59,19 +59,6 @@ const NaverMap = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screenLocation, isCafe]);
 
-  useEffect(() => {
-    props.center
-      ? setCenter({
-          ...{
-            longitude: props.center.longitude * 1,
-            latitude: props.center.latitude * 1,
-          },
-          zoom: 16,
-        })
-      : checkGrant();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.center]);
-
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const onCameraChange = e => {
     debounceCallback(() => {
