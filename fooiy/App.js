@@ -9,6 +9,7 @@ import {Platform, StatusBar, Text, View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import {Provider} from 'react-redux';
+import analytics from '@react-native-firebase/analytics';
 import {fooiyColor, fooiyFont} from './src/common/globalStyles';
 import {globalVariable} from './src/common/globalVariable';
 import RootNavigator from './src/navigation/RootNavigator';
@@ -104,13 +105,41 @@ const App = () => {
   };
 
   const navigationRef = useNavigationContainerRef();
+  const routeNameRef = React.useRef(null);
 
   useFlipper(navigationRef);
 
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <NavigationContainer linking={linking} ref={navigationRef}>
+        <NavigationContainer
+          linking={linking}
+          ref={navigationRef}
+          onReady={() =>
+            (routeNameRef.current =
+              navigationRef.current.getCurrentRoute().name)
+          }
+          onStateChange={state => {
+            const previousRouteName = routeNameRef.current;
+            const currentRouteName =
+              navigationRef.current.getCurrentRoute().name;
+
+            if (previousRouteName !== currentRouteName) {
+              console.log(currentRouteName);
+              analytics()
+                .logScreenView({
+                  screen_name: currentRouteName,
+                  screen_class: currentRouteName,
+                })
+                .then(() => {
+                  console.log('Analytics');
+                })
+                .catch(err => {
+                  console.warn(err);
+                });
+            }
+            routeNameRef.current = currentRouteName;
+          }}>
           <RootNavigator />
           <StatusBar barStyle={'dark-content'} />
         </NavigationContainer>
