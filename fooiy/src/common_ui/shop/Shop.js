@@ -20,6 +20,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Menu} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import ShopFooiyti from './ShopFooiyti';
+import FlatListFooter from '../footer/FlatListFooter';
 
 const Shop = props => {
   const [feeds, setFeeds] = useState([]);
@@ -40,7 +41,6 @@ const Shop = props => {
       },
     })
       .then(res => {
-        console.log(res, props.route.params.shop_id);
         setShopInfo(res.data.payload.shop_info);
       })
       .catch(e => console.log(e));
@@ -107,7 +107,7 @@ const Shop = props => {
           <UI_Feed {...item} disable_shop_button={true} />
         )}
         keyExtractor={(feeds, index) => index.toString()}
-        ListFooterComponent={RenderLoader(isLoading)}
+        ListFooterComponent={<FlatListFooter h={96} />}
         ListHeaderComponent={ListHeaderComponent}
         onEndReached={loadMoreItem}
         onEndReachedThreshold={3}

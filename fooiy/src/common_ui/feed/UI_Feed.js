@@ -225,7 +225,7 @@ const UI_Feed = item => {
           rank={item.rank}
           openModal={openModal}
           id={item.id}
-          item={item}
+          is_confirm={item.is_confirm}
         />
       </View>
       <Margin h={16} />

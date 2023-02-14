@@ -1,6 +1,6 @@
 import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Marker} from 'react-native-nmap';
+import {Marker, FooiyMarker} from 'react-native-nmap';
 import {fooiyColor} from '../../../common/globalStyles';
 
 const MypageMapMarker = props => {
@@ -39,14 +39,13 @@ const MypageMapMarker = props => {
     <>
       {/* 이미지 */}
       <Marker
+        flat={true}
         key={index}
         coordinate={{
           latitude: latitude * 1,
           longitude: longitude * 1,
         }}
-        image={{
-          uri: feed_image,
-        }}
+        image={feed_image}
         style={
           zoomLevel > 11
             ? styles.image_big

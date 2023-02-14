@@ -19,7 +19,7 @@ const FeedProfile = props => {
     openModal,
     id,
     content,
-    item,
+    is_confirm,
   } = props;
   const navigation = useNavigation();
   const onPressProfileImg = () => {
@@ -58,6 +58,7 @@ const FeedProfile = props => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() =>
+            is_confirm !== true &&
             openModal(
               id,
               account_id,

@@ -45,6 +45,7 @@ const FeedUsefulContent = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() =>
+              is_confirm !== true &&
               navigation.navigate('FeedComment', {
                 feed_id: feed_id,
                 feed_account_id: account_id,
