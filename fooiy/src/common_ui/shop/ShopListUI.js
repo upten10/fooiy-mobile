@@ -74,7 +74,7 @@ const ShopListUI = item => {
           }}>
           {name.length >= 10 ? name.substr(0, 10) + '...' : name}
         </Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {owner !== undefined ? (
             <View style={{marginRight: 4}}>
               <PartyCrown />

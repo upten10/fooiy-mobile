@@ -204,7 +204,7 @@ export default props => {
               marginLeft: 8,
               lineHeight: Platform.select({
                 ios: 0,
-                android: null,
+                android: 20,
               }),
             }}>
             지도

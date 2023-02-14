@@ -315,6 +315,7 @@ export default props => {
               <View style={{flexDirection: 'row'}}>
                 <View
                   style={{
+                    height: 18,
                     borderWidth: 1,
                     borderColor: fooiyColor.P500,
                     borderRadius: 4,
@@ -329,7 +330,7 @@ export default props => {
                       color: fooiyColor.P500,
                       lineHeight: Platform.select({
                         ios: 0,
-                        android: null,
+                        android: 14,
                       }),
                     }}>
                     {fooiyti}
@@ -337,6 +338,7 @@ export default props => {
                 </View>
                 <View
                   style={{
+                    height: 18,
                     borderWidth: 1,
                     borderColor: fooiyColor.G400,
                     borderRadius: 4,
@@ -351,7 +353,7 @@ export default props => {
                       color: fooiyColor.G400,
                       lineHeight: Platform.select({
                         ios: 0,
-                        android: null,
+                        android: 14,
                       }),
                     }}>
                     피드 {feed_count}
