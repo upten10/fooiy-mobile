@@ -18,8 +18,6 @@ const CatalogedList = props => {
   const [totalCount, setTotalCount] = useState(0);
   const [emptyShopImage, setEmptyShopImage] = useState('');
 
-  console.log(shops);
-
   const curList = useRef(null);
 
   useEffect(() => {
