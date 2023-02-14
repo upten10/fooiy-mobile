@@ -581,7 +581,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fooiy.fooiy;
 				PRODUCT_NAME = fooiy;
 				SWIFT_OBJC_BRIDGING_HEADER = "fooiy-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

@@ -1,5 +1,4 @@
 import messaging from '@react-native-firebase/messaging';
-import {useFlipper} from '@react-navigation/devtools';
 import {
   NavigationContainer,
   useNavigationContainerRef,
@@ -104,8 +103,6 @@ const App = () => {
   };
 
   const navigationRef = useNavigationContainerRef();
-
-  useFlipper(navigationRef);
 
   return (
     <SafeAreaProvider>
