@@ -1,6 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Notification from '../common_ui/Notification';
 import Search from '../common_ui/Search/Search';
 import FindWay from '../common_ui/shop/FindWay';
@@ -35,12 +34,12 @@ import TabNavigator from './TabNavigator';
 
 const Stack = createStackNavigator();
 
-const RootNavigator = () => {
-  const insets = useSafeAreaInsets();
+const RootNavigator = props => {
+  const {isLoggedIn} = props;
 
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName={isLoggedIn ? 'TabNavigator' : 'Login'}
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen
