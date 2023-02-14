@@ -216,7 +216,7 @@ const NaverMap = props => {
           },
           android: {
             left: 16,
-            bottom: globalVariable.tabBarHeight + 54 + 23 + 16,
+            bottom: globalVariable.tabBarHeight + 54 + 24,
           },
         })}>
         <Marker
