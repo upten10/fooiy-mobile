@@ -88,7 +88,7 @@ const CatalogedList = props => {
   };
 
   const ListHeaderComponent = () => {
-    return <View style={{height: 16}} />;
+    return <View style={{height: 24}} />;
   };
 
   const listFooterComponent = () => {
@@ -105,6 +105,9 @@ const CatalogedList = props => {
       ListEmptyComponent={listEmptyComponent}
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={listFooterComponent}
+      contentContainerStyle={{
+        minWidth: shops.length === 1 ? globalVariable.width : null,
+      }}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({item}) => <ShopListUI {...item} />}
       onEndReached={loadMoreItem}

@@ -134,18 +134,20 @@ export default props => {
   };
 
   const ListEmptyComponent = () => {
-    return (
-      <View style={{width: '100%', height: '100%'}}>
-        <Text
-          style={{
-            ...fooiyFont.Body1,
-            color: fooiyColor.G600,
-            textAlign: 'center',
-          }}>
-          검색 결과가 없어요.{'\n'}철자와 띄어쓰기를 확인해보세요!
-        </Text>
-      </View>
-    );
+    if (value.length > 0) {
+      return (
+        <View style={{width: '100%', height: '100%'}}>
+          <Text
+            style={{
+              ...fooiyFont.Body1,
+              color: fooiyColor.G600,
+              textAlign: 'center',
+            }}>
+            검색 결과가 없어요.{'\n'}철자와 띄어쓰기를 확인해보세요!
+          </Text>
+        </View>
+      );
+    }
   };
 
   return (
@@ -164,14 +166,18 @@ export default props => {
             setValue={setValue}
             autoFocus={true}
           />
-          <FlatList
-            data={searchedPartyList}
-            renderItem={item => renderItem(item)}
-            numColumns={1}
-            keyExtractor={item => String(item.party_id)}
-            ItemSeparatorComponent={ItemSeparatorComponent}
-            ListEmptyComponent={ListEmptyComponent}
-          />
+          {value.length > 0 ? (
+            <FlatList
+              data={searchedPartyList}
+              renderItem={item => renderItem(item)}
+              numColumns={1}
+              keyExtractor={item => String(item.party_id)}
+              ItemSeparatorComponent={ItemSeparatorComponent}
+              ListEmptyComponent={ListEmptyComponent}
+            />
+          ) : (
+            <Text></Text>
+          )}
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>

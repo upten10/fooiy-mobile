@@ -1,10 +1,13 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet, Platform} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  Platform,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {GoBackArrow, Map_shop, PartySetting} from '../../../assets/icons/svg';
 import {globalVariable} from '../../common/globalVariable';
@@ -29,13 +32,14 @@ export const StackHeader = props => {
             {toTop === undefined ? (
               <Text style={styles.title_name}>{props.title}</Text>
             ) : (
-              <TouchableWithoutFeedback
+              <TouchableOpacity
+                activeOpacity={0.8}
                 hitSlop={{top: 16, bottom: 16}}
                 onPress={() => {
                   toTop();
                 }}>
                 <Text style={styles.title_name}>{props.title}</Text>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             )}
           </View>
         ) : props.menu ? (

@@ -1,6 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Notification from '../common_ui/Notification';
 import Search from '../common_ui/Search/Search';
 import FindWay from '../common_ui/shop/FindWay';
@@ -10,6 +9,10 @@ import Shop from '../common_ui/shop/Shop';
 import Feed from '../screens/feed/Feed';
 import FeedComment from '../screens/feed/FeedComment';
 import ModifyFeed from '../screens/feed/ModifyFeed';
+import FooiytiTest from '../screens/FooiytiTest/FooiytiTest';
+import FooiytiTestHome from '../screens/FooiytiTest/FooiytiTestHome';
+import FooiytiTestResultLoading from '../screens/FooiytiTest/FooiytiTestResultLoading';
+import InformationInput from '../screens/FooiytiTest/InformationInput';
 import Login from '../screens/Login/Login';
 import Map from '../screens/map/Map';
 import MenuClinic from '../screens/menu_clinic/MenuClinic';
@@ -28,19 +31,15 @@ import RegisterFeed from '../screens/register/register_feed/register_feed_ui/Reg
 import SetAddress from '../screens/register/register_feed/SetAddress';
 import Share from './Share';
 import TabNavigator from './TabNavigator';
-import FooiytiTestStackNavigation from '../screens/FooiytiTest/FooiytiTestStackNavigation';
-import FooiytiTestHome from '../screens/FooiytiTest/FooiytiTestHome';
-import InformationInput from '../screens/FooiytiTest/InformationInput';
-import FooiytiTest from '../screens/FooiytiTest/FooiytiTest';
-import FooiytiTestResultLoading from '../screens/FooiytiTest/FooiytiTestResultLoading';
 
 const Stack = createStackNavigator();
 
-const RootNavigator = () => {
-  const insets = useSafeAreaInsets();
+const RootNavigator = props => {
+  const {isLoggedIn} = props;
+
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName={isLoggedIn ? 'TabNavigator' : 'Login'}
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen

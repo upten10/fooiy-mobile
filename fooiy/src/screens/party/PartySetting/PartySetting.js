@@ -190,6 +190,7 @@ export default props => {
                   <TextInput
                     maxLength={100}
                     placeholder={'인사말을 입력해주세요.'}
+                    placeholderTextColor={fooiyColor.G400}
                     value={curIntro}
                     onChangeText={setCurIntro}
                     style={

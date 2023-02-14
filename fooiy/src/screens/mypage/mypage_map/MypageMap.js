@@ -7,6 +7,7 @@ import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl, toastMessage} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
 import {useDebounce} from '../../../common/hooks/useDebounce';
 import {
   CheckLocationPermission,

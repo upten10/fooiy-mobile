@@ -3,15 +3,17 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform, StatusBar, Text, View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import {Provider} from 'react-redux';
+import analytics from '@react-native-firebase/analytics';
 import {fooiyColor, fooiyFont} from './src/common/globalStyles';
 import {globalVariable} from './src/common/globalVariable';
 import RootNavigator from './src/navigation/RootNavigator';
 import store from './src/redux/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const toastConfig = {
   notification: ({text1, text2}) => (
@@ -56,6 +58,7 @@ const toastConfig = {
 };
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   // Test
   useEffect(() => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -93,6 +96,17 @@ const App = () => {
     });
   }, []);
 
+  useEffect(() => {
+    checkLogIn();
+  }, []);
+
+  const checkLogIn = async () => {
+    const auth = await AsyncStorage.getItem('auth');
+    if (auth) {
+      setIsLoggedIn(true);
+    }
+  };
+
   const linking = {
     prefixes: ['kakaoadeeb3a64a0ef610048dbcbe1010c07f://'],
     config: {
@@ -103,12 +117,37 @@ const App = () => {
   };
 
   const navigationRef = useNavigationContainerRef();
+  const routeNameRef = React.useRef(null);
 
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <NavigationContainer linking={linking} ref={navigationRef}>
-          <RootNavigator />
+        <NavigationContainer
+          linking={linking}
+          ref={navigationRef}
+          onReady={() =>
+            (routeNameRef.current =
+              navigationRef.current.getCurrentRoute().name)
+          }
+          onStateChange={state => {
+            const previousRouteName = routeNameRef.current;
+            const currentRouteName =
+              navigationRef.current.getCurrentRoute().name;
+
+            if (previousRouteName !== currentRouteName) {
+              analytics()
+                .logScreenView({
+                  screen_name: currentRouteName,
+                  screen_class: currentRouteName,
+                })
+                .then(() => {})
+                .catch(err => {
+                  console.warn(err);
+                });
+            }
+            routeNameRef.current = currentRouteName;
+          }}>
+          <RootNavigator isLoggedIn={isLoggedIn} />
           <StatusBar barStyle={'dark-content'} />
         </NavigationContainer>
         <Toast config={toastConfig} />

@@ -76,10 +76,10 @@ const Setting = props => {
     navigation.navigate(navi, {});
   };
 
-  const onPressLogout = async () => {
-    await AsyncStorage.clear()
-      .then(dispatch(loginActions.setLogin(false)))
-      .then(navigation.navigate('Login'));
+  const onPressLogout = () => {
+    AsyncStorage.clear()
+      // .then(dispatch(loginActions.setLogin(false)))
+      .then(navigation.reset({routes: [{name: 'Login', params: {}}]}));
   };
 
   return (
@@ -292,6 +292,7 @@ const styles = StyleSheet.create({
   rightNickname: {
     ...fooiyFont.Body2,
     color: fooiyColor.G600,
+    marginRight: 8,
   },
   logoutContainer: {
     alignItems: 'center',

@@ -104,7 +104,7 @@ const NaverMap = props => {
         style={[
           styles.button,
           {
-            bottom: globalVariable.tabBarHeight + 54 + insets.bottom + 16,
+            bottom: globalVariable.tabBarHeight + 54 + 24 + insets.bottom,
           },
         ]}
         onPress={onClickLocationBtn}>
@@ -212,11 +212,11 @@ const NaverMap = props => {
         logoMargin={Platform.select({
           ios: {
             left: 16,
-            bottom: globalVariable.tabBarHeight + 54 + 16,
+            bottom: globalVariable.tabBarHeight + 54 + 24,
           },
           android: {
             left: 16,
-            bottom: globalVariable.tabBarHeight + 54 + 23 + 16,
+            bottom: globalVariable.tabBarHeight + 54 + 24,
           },
         })}>
         <Marker

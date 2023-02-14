@@ -178,7 +178,9 @@ const Storage = () => {
             />
           </View>
           <View>
-            <Text style={item_styles.profileNicknameText}>{nickname}</Text>
+            <Text numberOfLines={1} style={item_styles.profileNicknameText}>
+              {nickname}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>

@@ -6,9 +6,12 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import {useDispatch} from 'react-redux';
 import TabBarIcon from '../../assets/icons/svg/TabBar/TabBarIcon';
+import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../common/Enums';
 import {fooiyColor, fooiyFont, globalStyles} from '../common/globalStyles';
 import {globalVariable} from '../common/globalVariable';
 import {insetsAction} from '../redux/actions/insetsAction';
+import {userInfoAction} from '../redux/actions/userInfoAction';
 import {Route} from './Route';
 
 const Tab = createBottomTabNavigator();
@@ -18,9 +21,22 @@ const TabNavigator = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  const getAccountInfo = async data => {
+    ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
+      params: {},
+    }).then(res => {
+      if (res.data.payload.account_info.fooiyti === null) {
+        navigation.navigate('FooiytiTestHome');
+      } else {
+        dispatch(userInfoAction.init(res.data.payload.account_info));
+      }
+    });
+  };
+
   dispatch(insetsAction.setInsets(insets));
 
   useEffect(() => {
+    getAccountInfo();
     setTimeout(() => SplashScreen.hide(), 500);
   }, []);
 
@@ -66,13 +82,13 @@ const TabNavigator = () => {
                 navigation.navigate(route.name);
               } catch (error) {}
             },
-            beforeRemove: e => {
-              try {
-                e.preventDefault();
-              } catch (error) {
-                console.log(error);
-              }
-            },
+            // beforeRemove: e => {
+            //   try {
+            //     e.preventDefault();
+            //   } catch (error) {
+            //     console.log(error);
+            //   }
+            // },
           })}
         />
       ))}

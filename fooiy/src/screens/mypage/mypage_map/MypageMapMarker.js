@@ -55,6 +55,7 @@ const MypageMapMarker = props => {
         }
         onClick={() => onClickMarker(item, index)}
         zIndex={isClicked ? 1 : null}
+        isHideCollidedSymbols={true}
       />
       {/* 클릭된 테두리 */}
       <Marker

@@ -55,7 +55,11 @@ const Login = () => {
   useEffect(() => {
     route();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogin]);
+  }, [auth, isLogin]);
+
+  useEffect(() => {
+    auth !== '' ? AsyncStorage.setItem('auth', auth) : null;
+  }, [auth, isLogin]);
 
   const signInWithKakao = async data => {
     const token = await login();
@@ -89,7 +93,7 @@ const Login = () => {
       console.log('user is authenticated');
     }
 
-    await ApiManagerV2.post(apiUrl.APPLE_LOGIN, {
+    ApiManagerV2.post(apiUrl.APPLE_LOGIN, {
       social_id: responseObject.user,
       os: Platform.OS,
       app_version: '1.2.0',
@@ -97,11 +101,9 @@ const Login = () => {
       fcm_token: '0',
     }).then(res => {
       setAuth(res.data.payload.account_info.account_token);
+      appleAuth.State.AUTHORIZED === 1 ? setisLogin(true) : null;
     });
-    appleAuth.State.AUTHORIZED === 1 ? setisLogin(true) : null;
   };
-
-  auth !== '' ? AsyncStorage.setItem('auth', auth) : null;
 
   if (Platform.OS === 'android') {
     return (

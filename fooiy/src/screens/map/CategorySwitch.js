@@ -1,5 +1,12 @@
 import React, {useRef} from 'react';
-import {Animated, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Animated,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import {
   CafeShopDark,
@@ -13,13 +20,13 @@ import {useDebounce} from '../../common/hooks/useDebounce';
 const CategorySwitch = props => {
   const swipeable = useRef(null);
   const {isCafe, setIsCafe, setShopMarkers} = props;
-  const {debounceCallback, isLoading} = useDebounce({time: 1000});
+  const {debounceCallback, isLoading} = useDebounce({time: 200});
 
   const onSwipe = isCafe => {
-    // debounceCallback(() => {
-    setIsCafe(isCafe);
-    setShopMarkers([]);
-    // });
+    debounceCallback(() => {
+      setIsCafe(isCafe);
+      setShopMarkers([]);
+    });
   };
 
   const renderRightActions = (dragX, index) => {
@@ -100,6 +107,7 @@ const styles = StyleSheet.create({
   },
   swipeBtn: {
     width: 79,
+    height: 32,
     backgroundColor: fooiyColor.W,
     borderRadius: 24,
     flexDirection: 'row',
@@ -112,5 +120,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
     ...fooiyFont.Subtitle3,
     color: fooiyColor.G600,
+    lineHeight: Platform.select({
+      ios: 20,
+      android: 16,
+    }),
   },
 });
