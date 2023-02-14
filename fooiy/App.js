@@ -98,10 +98,15 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (AsyncStorage.getItem('auth')) {
+    checkLogIn();
+  }, []);
+
+  const checkLogIn = async () => {
+    const auth = await AsyncStorage.getItem('auth');
+    if (auth) {
       setIsLoggedIn(true);
     }
-  }, []);
+  };
 
   const linking = {
     prefixes: ['kakaoadeeb3a64a0ef610048dbcbe1010c07f://'],
