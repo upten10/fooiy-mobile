@@ -24,7 +24,8 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 
 const ProfileImg = props => {
-  const {isParty, toggleAlbum, setImage, party_id, setIsVisible} = props;
+  const {isParty, toggleAlbum, setImage, party_id, setIsVisible, setImageType} =
+    props;
 
   const navigation = useNavigation();
   const width = globalVariable.width;
@@ -58,6 +59,7 @@ const ProfileImg = props => {
           },
         })
           .then(res => {
+            console.log(JSON.stringify(data));
             dispatch(userInfoAction.edit(res.data.payload.account_info));
           })
           .then(navigation.goBack());
@@ -69,7 +71,9 @@ const ProfileImg = props => {
       console.warn('프사 안고름');
     } else {
       const photo = Platform.select({
-        ios: galleryOriginalListIOS[selectIndex].node.image,
+        ios: galleryOriginalListIOS[selectIndex]
+          ? galleryOriginalListIOS[selectIndex].node.image
+          : null,
         android: galleryList[selectIndex].node.image,
       });
       // Platform.OS === 'ios'
@@ -79,12 +83,13 @@ const ProfileImg = props => {
       const match = /\.(\w+)$/.exec(photo.filename ?? '');
       // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
       const type = Platform.select({
-        ios:
-          galleryOriginalListIOS[selectIndex].node.type === 'image'
+        ios: galleryOriginalListIOS[selectIndex]
+          ? galleryOriginalListIOS[selectIndex].node.type === 'image'
             ? match
               ? `image/${match[1]}`
               : `image`
-            : galleryOriginalListIOS[selectIndex].node.type,
+            : galleryOriginalListIOS[selectIndex].node.type
+          : null,
         android:
           galleryList[selectIndex].node.type === 'image'
             ? match
@@ -108,12 +113,8 @@ const ProfileImg = props => {
           });
       if (isParty === 'create') {
         toggleAlbum();
-        setImage(
-          Platform.select({
-            ios: galleryOriginalListIOS[selectIndex].node.image,
-            android: galleryList[selectIndex].node.image,
-          }),
-        );
+        setImage(photo);
+        setImageType(type);
       } else {
         patchProfileImg(formData);
       }
@@ -200,8 +201,10 @@ const ProfileImg = props => {
               style={styles.crop_view}
               onImageCrop={res => {
                 Platform.select({
-                  ios: (galleryOriginalListIOS[selectIndex].node.image.uri =
-                    'file://' + res.uri),
+                  ios: galleryOriginalListIOS[selectIndex]
+                    ? (galleryOriginalListIOS[selectIndex].node.image.uri =
+                        'file://' + res.uri)
+                    : null,
                   android: (galleryList[selectIndex].node.image.uri =
                     'file://' + res.uri),
                 });
@@ -230,7 +233,9 @@ const ProfileImg = props => {
               source={{
                 uri: galleryList[selectIndex]
                   ? Platform.select({
-                      ios: galleryOriginalListIOS[selectIndex].node.image.uri,
+                      ios: galleryOriginalListIOS[selectIndex]
+                        ? galleryOriginalListIOS[selectIndex].node.image.uri
+                        : null,
                       android: galleryList[selectIndex].node.image.uri,
                     })
                   : null,

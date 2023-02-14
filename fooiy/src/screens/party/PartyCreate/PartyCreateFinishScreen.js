@@ -8,23 +8,23 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 
 export default props => {
-  const {params} = props.route;
+  const {party_image, party_name, introduction, imageType} = props.route.params;
   const navigation = useNavigation();
-
   const formData = new FormData();
-  formData.append('party_name', params.party_name);
-  formData.append('introduction', params.introduction);
-  params.party_image &&
-    formData.append('party_image', {
-      uri: params.party_image.uri,
-      name:
-        params.party_image.filename !== null
-          ? params.party_image.filename
-          : 'image.jpg',
-      type: `image`,
-    });
 
-  const createParty = useCallback(async () => {
+  const createForm = () => {
+    formData.append('party_name', party_name);
+    formData.append('introduction', introduction);
+    party_image &&
+      formData.append('party_image', {
+        uri: party_image.uri,
+        name:
+          party_image.filename !== null ? party_image.filename : 'image.jpg',
+        type: imageType,
+      });
+  };
+
+  const createParty = async () => {
     await ApiManagerV2.post(apiUrl.CREATE_PARTY, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -33,12 +33,13 @@ export default props => {
         return formData;
       },
     }).then(res => console.log('파티 생성'));
-  }, [params]);
+  };
 
   useEffect(() => {
+    createForm();
     createParty();
     setTimeout(() => navigation.navigate('Party', {refresh: true}), 1500);
-  }, [navigation, createParty]);
+  }, []);
 
   return (
     <View
