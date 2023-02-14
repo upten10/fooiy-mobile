@@ -18,6 +18,8 @@ const CatalogedList = props => {
   const [totalCount, setTotalCount] = useState(0);
   const [emptyShopImage, setEmptyShopImage] = useState('');
 
+  console.log(shops);
+
   const curList = useRef(null);
 
   useEffect(() => {
@@ -105,6 +107,9 @@ const CatalogedList = props => {
       ListEmptyComponent={listEmptyComponent}
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={listFooterComponent}
+      contentContainerStyle={{
+        minWidth: shops.length === 1 ? globalVariable.width : null,
+      }}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({item}) => <ShopListUI {...item} />}
       onEndReached={loadMoreItem}
