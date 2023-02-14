@@ -153,7 +153,7 @@ export default props => {
           style={{
             borderWidth: 1,
             borderColor: fooiyColor.G200,
-            borderRadius: 8,
+            borderRadius: 4,
           }}>
           <Text
             style={{
@@ -168,7 +168,9 @@ export default props => {
       {/* 소개글 */}
       {introduction === null ? null : (
         <View>
-          <Text>{introduction}</Text>
+          <Text style={{...fooiyFont.Body2, color: fooiyColor.G600}}>
+            {introduction}
+          </Text>
         </View>
       )}
       {/* 버튼 */}
@@ -202,7 +204,7 @@ export default props => {
               marginLeft: 8,
               lineHeight: Platform.select({
                 ios: 0,
-                android: null,
+                android: 20,
               }),
             }}>
             지도
@@ -280,6 +282,6 @@ const styles = StyleSheet.create({
     borderColor: fooiyColor.G200,
   },
   subscribe_subscribed_text: {
-    color: fooiyColor.G600,
+    color: fooiyColor.G500,
   },
 });

@@ -19,6 +19,7 @@ import {apiUrl} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
+import {useDebounce} from '../../../common/hooks/useDebounce';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 
@@ -29,10 +30,10 @@ const EditName = props => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {debounceCallback, isLoading} = useDebounce({time: 250});
 
   const [inputValue, setInputValue] = useState('');
   const [isValid, setIsValid] = useState(false);
-  const [nameError, setNameError] = useState(false);
   const [btnActivate, setBtnActivate] = useState(false);
   const [focus, setFocus] = useState(true);
 
@@ -41,7 +42,13 @@ const EditName = props => {
   const NICKNAME_RULE =
     /^[0-9A-Za-z가-힣][0-9A-Za-z가-힣._/]{0,18}[0-9A-Za-z가-힣]$/;
 
-  useEffect(() => setNameError(false), [inputValue]);
+  useEffect(() => {
+    if (inputValue.length !== 0) {
+      debounceCallback(() => {
+        checkValid(inputValue);
+      });
+    }
+  }, [inputValue]);
 
   const patchNickName = async name => {
     await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
@@ -75,19 +82,21 @@ const EditName = props => {
       setBtnActivate(true);
     } else {
       setIsValid(false);
-      setNameError(true);
       setBtnActivate(false);
     }
   };
 
   const onChangeText = value => {
     setInputValue(value);
-    value === '' ? setBtnActivate(false) : setBtnActivate(true);
+    value.length < 3 ? setBtnActivate(false) : null;
   };
 
   const onInputBlur = () => {
     setFocus(false);
-    inputValue === '' ? null : checkValid(inputValue);
+  };
+
+  const onInputFocus = () => {
+    setFocus(true);
   };
 
   const onPressBtn = () => {
@@ -101,16 +110,12 @@ const EditName = props => {
     }
   };
 
-  const onInputFocus = () => {
-    setFocus(true);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
         <StackHeader title={party_id ? '파티 이름 변경' : '닉네임 변경'} />
         {/* 바디 */}
-        <View style={{flex: 1, paddingHorizontal: 16}}>
+        <View style={{flex: 1, paddingHorizontal: 16, paddingTop: 16}}>
           {/* 새로운 닉네임을 입력해주세요 텍스트 컨테이너 */}
           <View style={{flex: 1}}>
             <View style={styles.introContainer}>
@@ -121,49 +126,68 @@ const EditName = props => {
               </Text>
             </View>
             {/* input */}
-            <View style={styles.textInputContainer}>
+            <View style={{marginBottom: 16}}>
               <View
                 style={
                   focus
-                    ? nameError
-                      ? [
-                          styles.textInputCommonContainer,
-                          styles.wrongTextInputContainer,
-                        ]
+                    ? isValid || inputValue.length === 0
+                      ? [styles.textInputContainer, styles.textInputValue]
                       : [
-                          styles.textInputCommonContainer,
-                          {borderColor: fooiyColor.G400},
+                          styles.textInputContainer,
+                          styles.textInputValue,
+                          styles.wrongTextInput,
                         ]
-                    : nameError
-                    ? [
-                        styles.textInputCommonContainer,
-                        styles.wrongTextInputContainer,
+                    : isValid || inputValue.length === 0
+                    ? [styles.textInputContainer, styles.textInputValue]
+                    : [
+                        styles.textInputContainer,
+                        styles.textInputValue,
+                        styles.wrongTextInput,
                       ]
-                    : [styles.textInputCommonContainer]
                 }>
                 <TextInput
                   maxLength={20}
-                  autoCapitalize={false}
+                  autoCapitalize="none"
                   autoCorrect={false}
                   spellCheck={false}
-                  placeholder="특수문자 제외, 최대 20자"
+                  placeholder={'특수문자 제외, 최대 20자'}
                   placeholderTextColor={fooiyColor.G400}
-                  style={styles.textInput}
                   onChangeText={onChangeText}
                   onBlur={onInputBlur}
                   onFocus={onInputFocus}
                   autoFocus
                   value={inputValue}
+                  style={
+                    inputValue.length === 0
+                      ? styles.textInput
+                      : !isValid
+                      ? [
+                          styles.textInput,
+                          styles.textInputValue,
+                          styles.wrongTextInput,
+                        ]
+                      : [styles.textInput, styles.textInputValue]
+                  }
                 />
                 {inputValue.length > 0 ? (
                   <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() => setInputValue('')}>
+                    // style={{position: 'absolute', right: 14, bottom: 15.5, zIndex: 1}}
+                    hitSlop={{top: 16, bottom: 16, left: 16, right: 16}}
+                    onPress={() => {
+                      setInputValue('');
+                    }}>
                     <Clear />
                   </TouchableOpacity>
                 ) : null}
               </View>
-              <Text style={nameError ? styles.errorMsgOn : styles.errorMsgOff}>
+              <Text
+                style={
+                  inputValue.length === 0
+                    ? styles.errorMsgOff
+                    : isValid
+                    ? styles.errorMsgOff
+                    : styles.errorMsgOn
+                }>
                 사용할 수 없는 {party_id ? '파티 이름' : '닉네임'}이에요.
               </Text>
             </View>
@@ -239,47 +263,34 @@ const styles = StyleSheet.create({
     ...fooiyFont.H3,
   },
   textInputContainer: {
-    marginBottom: 16,
-  },
-  textInputCommonContainer: {
-    width: '100%',
-    height: 56,
-    borderWidth: 1,
-    borderColor: fooiyColor.G200,
-    borderRadius: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
-  },
-  textInputValueContainer: {
-    borderColor: fooiyColor.G400,
-  },
-  textInput: {
-    ...fooiyFont.Subtitle2,
-    lineHeight: Platform.select({
-      ios: 0,
-      android: null,
-    }),
-    width: globalVariable.width - (32 + 24 + 32 + 2),
+    borderWidth: 1,
+    borderColor: fooiyColor.G200,
+    borderRadius: 8,
     height: 56,
+    paddingHorizontal: 16,
   },
-  textInputValue: {
-    ...fooiyFont.Subtitle2,
-    lineHeight: Platform.select({
-      ios: 0,
-      android: null,
-    }),
-    color: fooiyColor.B,
-  },
-  wrongTextInputContainer: {
+  wrongTextInput: {
     borderColor: fooiyColor.P800,
   },
+  textInput: {
+    ...fooiyFont.Body1,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
+    width: '90%',
+    height: '100%',
+  },
+  textInputValue: {
+    borderColor: fooiyColor.G400,
+  },
   errorMsgOn: {
+    ...fooiyFont.Body2,
     marginTop: 4,
     marginLeft: 16,
-    fontWeight: '400',
-    fontSize: 14,
   },
   errorMsgOff: {
     display: 'none',
@@ -343,14 +354,3 @@ const styles = StyleSheet.create({
     color: fooiyColor.G300,
   },
 });
-
-const BodyStyles = (topSafeAreaHeight, bottomSafeAreaHeight) =>
-  StyleSheet.create({
-    bodyContainer: {
-      height:
-        globalVariable.height - (topSafeAreaHeight + bottomSafeAreaHeight + 72),
-      marginHorizontal: 16,
-      justifyContent: 'space-between',
-      marginTop: 16,
-    },
-  });
