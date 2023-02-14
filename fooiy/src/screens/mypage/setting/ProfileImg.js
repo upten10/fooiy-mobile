@@ -68,19 +68,30 @@ const ProfileImg = props => {
       // 사진 하나는 골라야한다는 경고 로직 추가
       console.warn('프사 안고름');
     } else {
-      const photo = galleryList[selectIndex].node.image;
+      const photo = Platform.select({
+        ios: galleryOriginalListIOS[selectIndex].node.image,
+        android: galleryList[selectIndex].node.image,
+      });
       // Platform.OS === 'ios'
       // ? galleryOriginalListIOS[selectIndex].node.image
       // : galleryList[selectIndex].node.image;
 
       const match = /\.(\w+)$/.exec(photo.filename ?? '');
       // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
-      const type =
-        galleryList[selectIndex].node.type === 'image'
-          ? match
-            ? `image/${match[1]}`
-            : `image`
-          : galleryList[selectIndex].node.type;
+      const type = Platform.select({
+        ios:
+          galleryOriginalListIOS[selectIndex].node.type === 'image'
+            ? match
+              ? `image/${match[1]}`
+              : `image`
+            : galleryOriginalListIOS[selectIndex].node.type,
+        android:
+          galleryList[selectIndex].node.type === 'image'
+            ? match
+              ? `image/${match[1]}`
+              : `image`
+            : galleryList[selectIndex].node.type,
+      });
 
       const formData = new FormData();
       isParty === 'profile'
@@ -97,7 +108,12 @@ const ProfileImg = props => {
           });
       if (isParty === 'create') {
         toggleAlbum();
-        setImage(galleryList[selectIndex].node.image);
+        setImage(
+          Platform.select({
+            ios: galleryOriginalListIOS[selectIndex].node.image,
+            android: galleryList[selectIndex].node.image,
+          }),
+        );
       } else {
         patchProfileImg(formData);
       }
@@ -167,7 +183,6 @@ const ProfileImg = props => {
   }, []);
 
   const SelectedPhoto = useCallback(() => {
-    const width = globalVariable.width;
     if (selectIndex === -1) {
       return;
     }
@@ -184,7 +199,12 @@ const ProfileImg = props => {
               }
               style={styles.crop_view}
               onImageCrop={res => {
-                galleryList[selectIndex].node.image.uri = 'file://' + res.uri;
+                Platform.select({
+                  ios: (galleryOriginalListIOS[selectIndex].node.image.uri =
+                    'file://' + res.uri),
+                  android: (galleryList[selectIndex].node.image.uri =
+                    'file://' + res.uri),
+                });
                 setCropPhoto(false);
               }}
               keepAspectRatio={true}
@@ -209,7 +229,10 @@ const ProfileImg = props => {
             <Image
               source={{
                 uri: galleryList[selectIndex]
-                  ? galleryList[selectIndex].node.image.uri
+                  ? Platform.select({
+                      ios: galleryOriginalListIOS[selectIndex].node.image.uri,
+                      android: galleryList[selectIndex].node.image.uri,
+                    })
                   : null,
               }}
               style={styles.square}
