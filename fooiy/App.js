@@ -138,15 +138,12 @@ const App = () => {
               navigationRef.current.getCurrentRoute().name;
 
             if (previousRouteName !== currentRouteName) {
-              console.log(currentRouteName);
               analytics()
                 .logScreenView({
                   screen_name: currentRouteName,
                   screen_class: currentRouteName,
                 })
-                .then(() => {
-                  console.log('Analytics');
-                })
+                .then(() => {})
                 .catch(err => {
                   console.warn(err);
                 });
