@@ -1,33 +1,27 @@
-import {React, useState, useEffect} from 'react';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  Text,
-  View,
-  StyleSheet,
-  Platform,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+  getProfile as getKakaoProfile,
+  login,
+} from '@react-native-seoul/kakao-login';
+import {useNavigation} from '@react-navigation/native';
+import {React, useEffect, useState} from 'react';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {getUniqueId} from 'react-native-device-info';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import SplashScreen from 'react-native-splash-screen';
+import {useDispatch} from 'react-redux';
+import {
+  Apple,
+  Kakaotalk,
+  Login_icon,
+  Login_img,
+} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {
-  login,
-  getProfile as getKakaoProfile,
-} from '@react-native-seoul/kakao-login';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUniqueId} from 'react-native-device-info';
-import {appleAuth} from '@invertase/react-native-apple-authentication';
-import {
-  Kakaotalk,
-  Apple,
-  Login_img,
-  Login_icon,
-} from '../../../assets/icons/svg';
+import {fooiyColor} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
-import {useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
-import SplashScreen from 'react-native-splash-screen';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -155,6 +149,7 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingHorizontal: 16,
     justifyContent: 'flex-end',
+    backgroundColor: fooiyColor.W,
   },
   info_container: {
     flexDirection: 'row',

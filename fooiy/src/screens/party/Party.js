@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -100,6 +101,7 @@ const Party = props => {
 
   return (
     <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
+      <StatusBar backgroundColor="white" />
       <DefaultHeader isParty={true} />
       {/* Body */}
       <View
