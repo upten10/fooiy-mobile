@@ -41,7 +41,10 @@ const Gallery = props => {
       // 사진 하나는 골라야한다는 경고 로직 추가
     } else {
       const photoList = selectedPhotoIndexList.map(index => {
-        return galleryList[index].node;
+        return Platform.select({
+          ios: galleryOriginalListIOS[index].node,
+          android: galleryList[index].node,
+        });
       });
       props.route.params
         ? navigation.navigate('FindMenu', {
@@ -163,9 +166,14 @@ const Gallery = props => {
               }
               style={styles.crop_view}
               onImageCrop={res => {
-                galleryList[
-                  selectedPhotoIndexList[selectIndex]
-                ].node.image.uri = 'file://' + res.uri;
+                Platform.select({
+                  ios: (galleryOriginalListIOS[
+                    selectedPhotoIndexList[selectIndex]
+                  ].node.image.uri = 'file://' + res.uri),
+                  android: (galleryList[
+                    selectedPhotoIndexList[selectIndex]
+                  ].node.image.uri = 'file://' + res.uri),
+                });
                 setCropPhoto(false);
               }}
               keepAspectRatio={true}
@@ -190,8 +198,14 @@ const Gallery = props => {
             <Image
               source={{
                 uri: galleryList[selectedPhotoIndexList[selectIndex]]
-                  ? galleryList[selectedPhotoIndexList[selectIndex]].node.image
-                      .uri
+                  ? Platform.select({
+                      ios: galleryOriginalListIOS[
+                        selectedPhotoIndexList[selectIndex]
+                      ].node.image.uri,
+                      android:
+                        galleryList[selectedPhotoIndexList[selectIndex]].node
+                          .image.uri,
+                    })
                   : null,
               }}
               style={styles.square}

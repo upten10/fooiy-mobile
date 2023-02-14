@@ -1,8 +1,8 @@
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {isEmpty} from 'lodash';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
-  Image,
-  ImageBackground,
   Linking,
   Platform,
   StyleSheet,
@@ -10,16 +10,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import Modal from 'react-native-modal';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
-import Modal from 'react-native-modal';
-import {globalVariable} from '../../common/globalVariable';
-import MoreVertModal from '../../common_ui/modal/MoreVertModal';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
-import {isEmpty} from 'lodash';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {globalVariable} from '../../common/globalVariable';
 
 const AnnouncementModal = props => {
   const insets = useSafeAreaInsets();
@@ -36,8 +33,6 @@ const AnnouncementModal = props => {
     getInit();
     getAnnouncement();
   }, []);
-
-  console.log(emergency);
 
   useEffect(() => {
     if (!isEmpty(update) || !isEmpty(emergency)) {
@@ -63,7 +58,7 @@ const AnnouncementModal = props => {
   const getInit = () => {
     ApiManagerV2.get(apiUrl.INIT, {
       params: {
-        version: '1.1.0',
+        version: globalVariable.app_version,
         os: Platform.OS,
       },
     }).then(res => {
