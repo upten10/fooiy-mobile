@@ -35,6 +35,10 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    	<string>itms-apps</string>
+	</array>
 	<key>KAKAO_APP_KEY</key>
 	<string>adeeb3a64a0ef610048dbcbe1010c07f</string>
 	<key>LSApplicationQueriesSchemes</key>
