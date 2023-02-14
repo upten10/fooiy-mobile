@@ -105,6 +105,9 @@ const CatalogedList = props => {
       ListEmptyComponent={listEmptyComponent}
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={listFooterComponent}
+      contentContainerStyle={{
+        minWidth: shops.length === 1 ? globalVariable.width : null,
+      }}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({item}) => <ShopListUI {...item} />}
       onEndReached={loadMoreItem}
