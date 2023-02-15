@@ -41,7 +41,7 @@ const toastConfig = {
         backgroundColor: fooiyColor.G800,
         borderRadius: 8,
         marginTop: Platform.OS === 'ios' ? 16 : 0,
-        padding: 16,
+        paddingLeft: 16,
         justifyContent: 'center',
         alignItems: 'flex-start',
       }}>
@@ -49,7 +49,8 @@ const toastConfig = {
         style={{
           ...fooiyFont.Subtitle2,
           color: fooiyColor.W,
-          lineHeight: Platform.select({ios: 0, android: 24}),
+          textAlign: 'center',
+          lineHeight: Platform.select({ios: 0, android: null}),
         }}>
         {text1}
       </Text>

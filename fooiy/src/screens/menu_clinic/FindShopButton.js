@@ -44,6 +44,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...fooiyFont.Button,
     color: fooiyColor.W,
-    lineHeight: Platform.select({ios: 0, android: 16}),
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
 });

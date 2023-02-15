@@ -73,6 +73,9 @@ export {default as CafeShopLight} from './Icon_Cafe_Shop_Light.svg';
 export {default as CommonShopDark} from './Icon_Common_Shop_Dark.svg';
 export {default as CommonShopLight} from './Icon_Common_Shop_Light.svg';
 export {default as CommonShop} from './Header/icon_common_shop.svg';
+export {default as CommonShop36} from './Icon_common_shop_36.svg';
+export {default as CafeShop36} from './Icon_cafe_shop_36.svg';
+
 export {default as CafeShop} from './Header/icon_cafe_shop.svg';
 export {default as Change} from './Camera/Change.svg';
 export {default as FlashOn} from './Camera/FlashOn.svg';

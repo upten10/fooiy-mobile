@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import AnimatedLottieView from 'lottie-react-native';
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -8,6 +7,7 @@ import {Musang} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import ApiLoading from '../../common_ui/loading/ApiLoading';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
 
 export default props => {
@@ -69,13 +69,7 @@ export default props => {
         </Text>
       </View>
       <View style={{width: 192, height: 192}}>
-        <AnimatedLottieView
-          source={require('../../../assets/lottie/progress.json.json')}
-          // progress={animationProgress.current}
-          imageAssetsFolder={'images'}
-          autoPlay
-          loop
-        />
+        <ApiLoading />
       </View>
       <View>
         <Musang />

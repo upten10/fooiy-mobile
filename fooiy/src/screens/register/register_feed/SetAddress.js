@@ -2,11 +2,23 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {debounce} from 'lodash';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import NaverMapView from 'react-native-nmap';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Current_Location} from '../../../../assets/icons/svg';
+import {
+  CafeShop36,
+  Cancel,
+  CommonShop36,
+  Current_Location,
+} from '../../../../assets/icons/svg';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
@@ -15,13 +27,17 @@ import {
   LocationPermission,
 } from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
-
+import Modal from 'react-native-modal';
+import Margin from '../../../common_ui/Margin';
+const width = Dimensions.get('window').width;
 const SetAddress = props => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const photo_list = props.route.params.photo_list;
   const [btnActivate, setBtnActivate] = useState(false);
   const mapView = useRef(null);
+  const [navigateName, setNavigateName] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
   const [address, setAddress] = useState({
     area1: '',
     area2: '',
@@ -32,6 +48,10 @@ const SetAddress = props => {
   });
   const [fullAddress, setFullAddress] = useState('');
   const [location, setLocation] = useState({longitude: 0, latitude: 0});
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const debounceCallback = useCallback((longitude, latitude) => {
     debounceLocation(longitude, latitude);
@@ -101,8 +121,8 @@ const SetAddress = props => {
             {address.land_number2 && address.land_number2}
           </Text>
           <Text style={{...fooiyFont.Body2}}>
-            {address.area1} {address.area2} {address.area4} {address.land_name}{' '}
-            {address.land_number1}
+            {address.area1} {address.area2} {address.area4}
+            {address.land_name} {address.land_number1}
             {address.land_number2 && '-'}
             {address.land_number2 && address.land_number2}
           </Text>
@@ -133,6 +153,16 @@ const SetAddress = props => {
           )
         : mapView.current.setLocationTrackingMode(2)
       : null;
+  };
+
+  const onClickNextButton = name => {
+    if (name === 'FindShop') {
+      btnActivate && setNavigateName(name);
+      btnActivate && setModalVisible(true);
+    } else {
+      setNavigateName(name);
+      setModalVisible(true);
+    }
   };
 
   useEffect(() => {
@@ -239,15 +269,7 @@ const SetAddress = props => {
               ? styles.confirm_address_btn
               : [styles.confirm_address_btn, styles.changeBtnOff]
           }
-          onPress={() =>
-            btnActivate &&
-            navigation.navigate('FindShop', {
-              photo_list: photo_list,
-              shop: null,
-              menu: null,
-              address: fullAddress,
-            })
-          }>
+          onPress={() => onClickNextButton('FindShop')}>
           <Text
             style={
               btnActivate
@@ -259,17 +281,65 @@ const SetAddress = props => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.input_adress_btn}
-          onPress={() =>
-            navigation.navigate('RegisterFeed', {
-              photo_list: photo_list,
-              shop: null,
-              menu: null,
-              address: null,
-            })
-          }>
+          onPress={() => onClickNextButton('RegisterFeed')}>
           <Text style={styles.input_adress_text}>주소 직접 입력</Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={toggleModal}
+        style={styles.modal}>
+        <View style={styles.modal_container}>
+          <View style={styles.modal_header}>
+            <TouchableOpacity
+              style={styles.cancel_btn}
+              onPress={() => setModalVisible(false)}>
+              <Cancel />
+            </TouchableOpacity>
+            <Text style={styles.register_method_text}>방문한 매장 종류</Text>
+          </View>
+          <View style={styles.select_container}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(navigateName, {
+                  photo_list: photo_list,
+                  shop: null,
+                  menu: null,
+                  address: fullAddress,
+                  category: 'common',
+                });
+                toggleModal();
+              }}
+              activeOpacity={0.8}
+              style={{width: (width - 71) / 2}}>
+              <View style={styles.camera}>
+                <CommonShop36 />
+                <Margin h={8} />
+                <Text style={styles.camera_text}>음식점</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(navigateName, {
+                  photo_list: photo_list,
+                  shop: null,
+                  menu: null,
+                  address: fullAddress,
+                  category: globalVariable.category_cafe,
+                });
+                toggleModal();
+              }}
+              activeOpacity={0.8}
+              style={{width: (width - 71) / 2}}>
+              <View style={styles.album}>
+                <CafeShop36 />
+                <Margin h={8} />
+                <Text style={styles.album_text}>카페</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -340,5 +410,81 @@ const styles = StyleSheet.create({
     ...fooiyFont.Button,
     color: fooiyColor.G600,
     letterSpacing: 0.5,
+  },
+  modal: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 16,
+  },
+  modal_container: {
+    width: '100%',
+    borderRadius: 16,
+    backgroundColor: fooiyColor.W,
+  },
+  modal_header: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 16,
+    paddingBottom: 0,
+  },
+  cancel_btn: {
+    position: 'absolute',
+    left: 0,
+    margin: 16,
+    color: fooiyColor.B,
+  },
+  register_method_text: {
+    color: fooiyColor.B,
+    fontFamily: 'Pretendard-SemiBold',
+    fontWeight: '600',
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  select_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: 16,
+  },
+  camera: {
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: fooiyColor.G200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 3.5,
+    height: (width - 71) / 2,
+  },
+  camera_icon: {
+    width: 36,
+    height: 36,
+    marginBottom: 8,
+  },
+  camera_text: {
+    color: fooiyColor.G600,
+    fontFamily: 'Pretendard-SemiBold',
+    fontWeight: '600',
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  album: {
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: fooiyColor.G200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 3.5,
+    height: (width - 71) / 2,
+  },
+  album_icon: {
+    width: 36,
+    height: 36,
+    marginBottom: 8,
+  },
+  album_text: {
+    color: fooiyColor.G600,
+    fontFamily: 'Pretendard-SemiBold',
+    fontWeight: '600',
+    fontSize: 16,
+    lineHeight: 24,
   },
 });
