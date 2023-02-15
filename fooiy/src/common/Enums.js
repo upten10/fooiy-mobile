@@ -104,6 +104,11 @@ export const apiUrl = {
   FOOIYTI_QUESTION_LIST: 'archives/fooiyti/question/',
   // 푸이티아이 결과
   FOOIYTI_QUESTION_RESULT: 'archives/fooiyti/result/',
+
+  // Init
+  INIT: 'archives/init/',
+  // 공지사항
+  ANNOUNCEMENT: 'archives/notice/',
 };
 
 export const toastMessage = {
