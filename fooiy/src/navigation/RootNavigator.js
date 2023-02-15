@@ -21,6 +21,8 @@ import MypageMap from '../screens/mypage/mypage_map/MypageMap';
 import FooiyTI from '../screens/mypage/setting/FooiyTI';
 import OtherUserFeedDetail from '../screens/mypage/storage/OtherUserFeedDetail';
 import OtherUserPage from '../screens/mypage/storage/OtherUserPage';
+import StorageSingleFeed from '../screens/mypage/storage/StorageSingleFeed';
+import PartyProfile from '../screens/party/PartyProfile/PartyProfile';
 import ImageCrop from '../screens/register/camera/ImageCrop';
 import RegisterCamera from '../screens/register/camera/RegisterCamera';
 import Gallery from '../screens/register/gallery/Gallery';
@@ -85,7 +87,8 @@ const RootNavigator = props => {
         name="OtherUserFeedDetail"
         component={OtherUserFeedDetail}
       />
-
+      <Stack.Screen name="StorageSingleFeed" component={StorageSingleFeed} />
+      <Stack.Screen name="PartyProfile" component={PartyProfile} />
       {/* 지도에서 피드로 들어갔다가 뒤로 가면 피드 스택으로 넘어가서 바꿨어용~ */}
       <Stack.Screen name="Shop" component={Shop} />
 

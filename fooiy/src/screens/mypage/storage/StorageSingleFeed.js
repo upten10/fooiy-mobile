@@ -68,7 +68,7 @@ const StorageSingleFeed = props => {
       {shopName === '' ? (
         <StackHeader title={nickname} />
       ) : (
-        <StackHeader shop={{shop_name: shopName, shop_address: adress}} />
+        <StackHeader shop={{name: shopName, short_address: adress}} />
       )}
       <FlatList
         data={feeds}
