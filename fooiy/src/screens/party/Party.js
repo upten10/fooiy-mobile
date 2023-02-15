@@ -100,19 +100,14 @@ const Party = props => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: fooiyColor.W}}>
+    <SafeAreaView style={{backgroundColor: fooiyColor.W, flex: 1}}>
       <StatusBar backgroundColor="white" />
       <DefaultHeader isParty={true} />
       {/* Body */}
       <View
         style={{
           paddingHorizontal: 16 - 7.5,
-          height:
-            globalVariable.height -
-            insets.top -
-            56 -
-            insets.bottom -
-            globalVariable.tabBarHeight,
+          flex: 1,
         }}>
         <FlatList
           data={partyList}

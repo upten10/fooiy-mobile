@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Platform, StatusBar, Text, View} from 'react-native';
+import CodePush from 'react-native-code-push';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import {Provider} from 'react-redux';
@@ -14,6 +15,7 @@ import {globalVariable} from './src/common/globalVariable';
 import RootNavigator from './src/navigation/RootNavigator';
 import store from './src/redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useCodePush from './src/common/hooks/useCodePush';
 
 const toastConfig = {
   notification: ({text1, text2}) => (
@@ -59,6 +61,8 @@ const toastConfig = {
 };
 
 const App = () => {
+  const {progress, updating} = useCodePush();
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // Test
   useEffect(() => {
@@ -157,4 +161,7 @@ const App = () => {
   );
 };
 
-export default App;
+const codePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
+};
+export default CodePush(codePushOptions)(App);

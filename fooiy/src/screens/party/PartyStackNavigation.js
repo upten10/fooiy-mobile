@@ -67,10 +67,10 @@ const PartyStackNavigation = props => {
       <PartyStack.Screen
         name="PartyCreateImg"
         component={PartyCreate}
-        options={{
-          cardStyleInterpolator:
-            CardStyleInterpolators.forFadeFromBottomAndroid,
-        }}
+        // options={{
+        //   cardStyleInterpolator:
+        //     CardStyleInterpolators.forFadeFromBottomAndroid,
+        // }}
         listeners={({navigation, route}) => {
           navigation.getParent().setOptions({
             tabBarStyle: {display: 'none'},
