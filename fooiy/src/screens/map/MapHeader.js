@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {ArrowIconBottomDark, SearchDark} from '../../../assets/icons/svg';
@@ -99,7 +99,7 @@ export default MapHeader;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 0,
+    top: Platform.OS === 'ios' ? 0 : 8,
     zIndex: 1,
     width: '100%',
     alignItems: 'center',
