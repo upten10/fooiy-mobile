@@ -115,7 +115,8 @@ const Login = () => {
           </View>
           <TouchableOpacity
             style={styles.kakao_btn_android}
-            onPress={signInWithKakao}>
+            onPress={signInWithKakao}
+            activeOpacity={0.8}>
             <Kakaotalk style={styles.kakaotalk_icon} />
             <Text style={styles.kakao_text}>카카오로 시작하기</Text>
           </TouchableOpacity>
@@ -130,13 +131,17 @@ const Login = () => {
             <Login_img style={styles.login_img} />
             <Login_icon style={styles.login_icon} />
           </View>
-          <TouchableOpacity style={styles.kakao_btn} onPress={signInWithKakao}>
+          <TouchableOpacity
+            style={styles.kakao_btn}
+            onPress={signInWithKakao}
+            activeOpacity={0.8}>
             <Kakaotalk style={styles.kakaotalk_icon} />
             <Text style={styles.kakao_text}>카카오로 시작하기</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.apple_btn}
-            onPress={() => onAppleButtonPress()}>
+            onPress={() => onAppleButtonPress()}
+            activeOpacity={0.8}>
             <Apple style={styles.apple_icon} />
             <Text style={styles.apple_text}>APPLE로 시작하기</Text>
           </TouchableOpacity>

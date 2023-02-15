@@ -285,13 +285,21 @@ const SetAddress = props => {
           <View style={styles.select_container}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(navigateName, {
-                  photo_list: photo_list,
-                  shop: null,
-                  menu: null,
-                  address: fullAddress,
-                  category: 'common',
-                });
+                fullAddress
+                  ? navigation.navigate(navigateName, {
+                      photo_list: photo_list,
+                      shop: null,
+                      menu: null,
+                      address: fullAddress,
+                      category: 'common',
+                    })
+                  : navigation.navigate(navigateName, {
+                      photo_list: photo_list,
+                      shop: null,
+                      menu: null,
+                      address: null,
+                      category: 'common',
+                    });
                 toggleModal();
               }}
               activeOpacity={0.8}
@@ -304,13 +312,21 @@ const SetAddress = props => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(navigateName, {
-                  photo_list: photo_list,
-                  shop: null,
-                  menu: null,
-                  address: fullAddress,
-                  category: globalVariable.category_cafe,
-                });
+                fullAddress
+                  ? navigation.navigate(navigateName, {
+                      photo_list: photo_list,
+                      shop: null,
+                      menu: null,
+                      address: fullAddress,
+                      category: globalVariable.category_cafe,
+                    })
+                  : navigation.navigate(navigateName, {
+                      photo_list: photo_list,
+                      shop: null,
+                      menu: null,
+                      address: null,
+                      category: globalVariable.category_cafe,
+                    });
                 toggleModal();
               }}
               activeOpacity={0.8}
