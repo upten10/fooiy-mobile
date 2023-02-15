@@ -182,6 +182,7 @@ const SetAddress = props => {
           }}
           scaleBar={false}
           rotateGesturesEnabled={false}
+          tiltGesturesEnabled={false}
           logoMargin={Platform.select({
             ios: {
               left: 16,
@@ -192,20 +193,37 @@ const SetAddress = props => {
               bottom: 16 + 24 + 24,
             },
           })}>
-          <Image
-            source={require('../../../../assets/image/Current_Position.png')}
-            style={{
-              width: 34,
-              height: 44,
-              left: globalVariable.width / 2 - 17,
-              top:
-                ((globalVariable.height - insets.bottom - insets.top - 56) *
-                  0.85) /
-                  2 -
-                44 -
-                22,
-            }}
-          />
+          {btnActivate ? (
+            <Image
+              source={require('../../../../assets/image/Center_Marker.png')}
+              style={{
+                width: 34,
+                height: 42,
+                left: globalVariable.width / 2 - 17,
+                top:
+                  ((globalVariable.height - insets.bottom - insets.top - 56) *
+                    0.85) /
+                    2 -
+                  42 -
+                  21,
+              }}
+            />
+          ) : (
+            <Image
+              source={require('../../../../assets/image/Center_Marker_Gray.png')}
+              style={{
+                width: 34,
+                height: 42,
+                left: globalVariable.width / 2 - 17,
+                top:
+                  ((globalVariable.height - insets.bottom - insets.top - 56) *
+                    0.85) /
+                    2 -
+                  42 -
+                  21,
+              }}
+            />
+          )}
         </NaverMapView>
       </View>
       <View style={styles.current_location}>

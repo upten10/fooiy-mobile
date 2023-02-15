@@ -124,15 +124,17 @@ const FindWay = props => {
                 left: 16,
                 bottom: 88 + 24,
               },
-            })}>
+            })}
+            rotateGesturesEnabled={false}
+            tiltGesturesEnabled={false}>
             <Marker
               coordinate={{
                 longitude: shop.longitude * 1,
                 latitude: shop.latitude * 1,
               }}
               width={34}
-              height={44}
-              image={require('../../../assets/image/Current_Position.png')}
+              height={42}
+              image={require('../../../assets/image/Center_Marker.png')}
             />
           </NaverMapView>
         </View>

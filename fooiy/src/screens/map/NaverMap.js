@@ -15,7 +15,6 @@ import MapBottomSheet from './bottom_sheet/MapBottomSheet';
 import MapHeader from './MapHeader';
 import MapMarker from './MapMarker';
 import ShopModal from './ShopModal';
-import {StatusBar} from 'react-native';
 
 const NaverMap = props => {
   const depthOneScreenLocation = [
@@ -186,7 +185,6 @@ const NaverMap = props => {
 
   return (
     <View style={{flex: 1}}>
-      <StatusBar translucent backgroundColor="transparent" />
       <MapHeader
         isCafe={isCafe}
         setIsCafe={setIsCafe}
@@ -204,6 +202,7 @@ const NaverMap = props => {
         zoomControl={false}
         scaleBar={false}
         rotateGesturesEnabled={false}
+        tiltGesturesEnabled={false}
         minZoomLevel={5}
         maxZoomLevel={18}
         style={styles.map}

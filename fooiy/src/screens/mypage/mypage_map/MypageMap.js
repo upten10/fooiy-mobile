@@ -152,6 +152,7 @@ const MypageMap = props => {
           maxZoomLevel={18}
           scaleBar={false}
           rotateGesturesEnabled={false}
+          tiltGesturesEnabled={false}
           onCameraChange={e => onCameraChange(e)}>
           <Marker
             coordinate={{
