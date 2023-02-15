@@ -235,7 +235,7 @@ const NavigateBtn = props => {
                 {
                   bottom: Platform.select({
                     ios: insets.bottom,
-                    android: 34,
+                    android: 16,
                   }),
                   left: Platform.select({
                     ios: null,
@@ -248,7 +248,7 @@ const NavigateBtn = props => {
                 {
                   bottom: Platform.select({
                     ios: insets.bottom,
-                    android: 34,
+                    android: 16,
                   }),
                   left: Platform.select({
                     ios: null,
@@ -368,7 +368,7 @@ export default props => {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView
-          style={{backgroundColor: fooiyColor.W}}
+          style={{backgroundColor: fooiyColor.W, flex: 1}}
           edges={Platform.select({
             ios: 'top',
             android: null,
@@ -377,9 +377,8 @@ export default props => {
           {/* Body */}
           <View
             style={{
-              height: globalVariable.height - insets.top - 56,
+              flex: 1,
               paddingHorizontal: 16,
-              paddingTop: 16,
             }}>
             <Title index={index} />
             {index < 3 ? (
