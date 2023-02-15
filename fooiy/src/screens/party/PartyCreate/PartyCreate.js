@@ -8,12 +8,10 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View,
-} from 'react-native';
-import {
   TouchableOpacity,
   TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+  View,
+} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Clear, Notice, Register_icon} from '../../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
@@ -22,6 +20,7 @@ import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import ProfileImg from '../../mypage/setting/ProfileImg';
 import {useDebounce} from '../../../common/hooks/useDebounce';
+import {isEmpty} from 'lodash';
 
 const Title = props => {
   const {index} = props;
@@ -189,7 +188,8 @@ const NoticeComp = props => {
 };
 
 const NavigateBtn = props => {
-  const {index, navigation, btnActivate, inputValue, data, image} = props;
+  const {index, navigation, btnActivate, inputValue, data, image, imageType} =
+    props;
   const insets = useSafeAreaInsets();
 
   const nextRoute =
@@ -215,6 +215,7 @@ const NavigateBtn = props => {
       navigation.navigate(nextRoute, {
         ...data,
         party_image: image,
+        imageType,
       });
     }
   };
@@ -236,6 +237,10 @@ const NavigateBtn = props => {
                     ios: insets.bottom,
                     android: 34,
                   }),
+                  left: Platform.select({
+                    ios: null,
+                    android: 16,
+                  }),
                 },
               ]
             : [
@@ -244,6 +249,10 @@ const NavigateBtn = props => {
                   bottom: Platform.select({
                     ios: insets.bottom,
                     android: 34,
+                  }),
+                  left: Platform.select({
+                    ios: null,
+                    android: 16,
                   }),
                 },
               ]
@@ -320,7 +329,8 @@ export default props => {
   const [inputValue, setInputValue] = useState('');
   const [data, setData] = useState({});
   const [isVisible, setIsVisible] = useState(false);
-  const [image, setImage] = useState();
+  const [image, setImage] = useState({});
+  const [imageType, setImageType] = useState('');
 
   useEffect(() => {
     if (props.route.params !== undefined) {
@@ -343,13 +353,14 @@ export default props => {
           position: 'absolute',
           width: globalVariable.width,
           height: globalVariable.height,
-          borderWidth: 1,
+          // borderWidth: 1,
         }}>
         <ProfileImg
           isParty={'create'}
           toggleAlbum={toggleAlbum}
           setImage={setImage}
           setIsVisible={setIsVisible}
+          setImageType={setImageType}
         />
       </View>
     );
@@ -381,7 +392,7 @@ export default props => {
                 />
                 <NoticeComp index={index} />
               </>
-            ) : image ? (
+            ) : !isEmpty(image) ? (
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
@@ -402,15 +413,16 @@ export default props => {
               <InsertImage setIsVisible={setIsVisible} />
             )}
           </View>
+          <NavigateBtn
+            index={index}
+            navigation={navigation}
+            btnActivate={btnActivate}
+            inputValue={inputValue}
+            data={data}
+            image={image}
+            imageType={imageType}
+          />
         </SafeAreaView>
-        <NavigateBtn
-          index={index}
-          navigation={navigation}
-          btnActivate={btnActivate}
-          inputValue={inputValue}
-          data={data}
-          image={image}
-        />
       </TouchableWithoutFeedback>
     );
   }

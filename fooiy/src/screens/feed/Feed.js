@@ -20,6 +20,7 @@ import UI_Feed from '../../common_ui/feed/UI_Feed';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import FeedHeader from '../../common_ui/headers/FeedHeader';
 import SelectCategoryModal from './SelectCategoryModal';
+import AnnouncementModal from './AnnouncementModal';
 
 const Feed = props => {
   const [token, setToken] = useState();
@@ -198,6 +199,7 @@ const Feed = props => {
           setTotalCount={setTotalCount}
         />
       )}
+      <AnnouncementModal />
     </SafeAreaView>
   );
 };

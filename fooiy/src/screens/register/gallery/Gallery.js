@@ -41,7 +41,12 @@ const Gallery = props => {
       // 사진 하나는 골라야한다는 경고 로직 추가
     } else {
       const photoList = selectedPhotoIndexList.map(index => {
-        return galleryList[index].node;
+        return Platform.select({
+          ios: galleryOriginalListIOS[index]
+            ? galleryOriginalListIOS[index].node
+            : null,
+          android: galleryList[index] ? galleryList[index].node : null,
+        });
       });
       props.route.params
         ? navigation.navigate('FindMenu', {
@@ -163,9 +168,18 @@ const Gallery = props => {
               }
               style={styles.crop_view}
               onImageCrop={res => {
-                galleryList[
-                  selectedPhotoIndexList[selectIndex]
-                ].node.image.uri = 'file://' + res.uri;
+                Platform.select({
+                  ios: galleryOriginalListIOS[
+                    selectedPhotoIndexList[selectIndex]
+                  ]
+                    ? (galleryOriginalListIOS[
+                        selectedPhotoIndexList[selectIndex]
+                      ].node.image.uri = 'file://' + res.uri)
+                    : null,
+                  android: (galleryList[
+                    selectedPhotoIndexList[selectIndex]
+                  ].node.image.uri = 'file://' + res.uri),
+                });
                 setCropPhoto(false);
               }}
               keepAspectRatio={true}
@@ -189,10 +203,19 @@ const Gallery = props => {
           <View style={{flex: 1}}>
             <Image
               source={{
-                uri: galleryList[selectedPhotoIndexList[selectIndex]]
-                  ? galleryList[selectedPhotoIndexList[selectIndex]].node.image
-                      .uri
-                  : null,
+                uri: Platform.select({
+                  ios: galleryOriginalListIOS[
+                    selectedPhotoIndexList[selectIndex]
+                  ]
+                    ? galleryOriginalListIOS[
+                        selectedPhotoIndexList[selectIndex]
+                      ].node.image.uri
+                    : null,
+                  android: galleryList[selectedPhotoIndexList[selectIndex]]
+                    ? galleryList[selectedPhotoIndexList[selectIndex]].node
+                        .image.uri
+                    : null,
+                }),
               }}
               style={styles.square}
             />
