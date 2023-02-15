@@ -9,7 +9,11 @@
     "test": "jest",
     "lint": "eslint .",
     "gradle": "cd android && bash gradlew clean && cd .. && react-native run-android",
-    "pod": "cd ios && arch -x86_64 pod install && cd .."
+    "pod": "cd ios && arch -x86_64 pod install && cd ..",
+    "ios-staging": "react-native run-ios --configuration Staging",
+    "android-staging": "react-native run-android --variant=releaseStaging",
+    "code-push-staging-ios": "appcenter codepush release-react -a fooiyteam/Fooiy-IOS -d Staging",
+    "code-push-staging-android": "appcenter codepush release-react -a fooiyteam/Fooiy-AOS -d Staging"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.5",
