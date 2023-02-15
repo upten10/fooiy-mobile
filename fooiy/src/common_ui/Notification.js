@@ -1,6 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
@@ -12,6 +20,7 @@ const Notification = props => {
   const [notification, setNotification] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+  const navigation = useNavigation();
 
   const getNotificationList = async (offset, notification) => {
     await ApiManagerV2.get(apiUrl.PUSH_NOTIFICATION, {
@@ -47,12 +56,28 @@ const Notification = props => {
   const NotificationItem = item => {
     const notificationList = item;
     return (
-      <View
+      <TouchableOpacity
         style={{
           padding: 16,
           justifyContent: 'center',
           backgroundColor:
             item.index > props.route.params - 1 ? fooiyColor.W : fooiyColor.P50,
+        }}
+        activeOpacity={0.8}
+        onPress={() => {
+          notification[item.index].navigation === 'feed'
+            ? navigation.navigate('StorageSingleFeed', {
+                feed_id: notification[item.index].navigation_id,
+              })
+            : notification[item.index].navigation === 'party'
+            ? navigation.navigate('PartyProfile', {
+                party_id: notification[item.index].navigation_id,
+              })
+            : notification[item.index].navigation === 'comment'
+            ? navigation.navigate('FeedComment', {
+                feed_id: notification[item.index].navigation_id,
+              })
+            : null;
         }}>
         <Text numberOfLines={1} style={styles.title}>
           {notificationList.title}
@@ -75,7 +100,7 @@ const Notification = props => {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
