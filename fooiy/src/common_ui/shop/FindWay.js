@@ -22,10 +22,7 @@ import {
 } from '../../../assets/icons/svg';
 import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {
-  CheckLocationPermission,
-  LocationPermission,
-} from '../../common/Permission';
+import {LocationPermission} from '../../common/Permission';
 import {StackHeader} from '../headers/StackHeader';
 
 const FindWay = props => {
@@ -58,13 +55,6 @@ const FindWay = props => {
         : mapView.current.setLocationTrackingMode(2)
       : null;
   };
-  useEffect(() => {
-    const checkPermission = async () => {
-      !(await CheckLocationPermission()) &&
-        FooiyToast.message('위치 권한을 허용해주세요!', false, 88 - 24);
-    };
-    checkPermission();
-  }, []);
   const onClickNaverMap = async () => {
     const destinationURL =
       'nmap://route/car?dlat=' +
