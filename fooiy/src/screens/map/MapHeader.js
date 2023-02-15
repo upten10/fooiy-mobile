@@ -29,12 +29,12 @@ const MapHeader = props => {
           width: globalVariable.width - 32,
           height: 56,
           marginTop: 8,
-          marginBottom: 16,
           borderRadius: 8,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingHorizontal: 16,
+          marginBottom: 24,
           // paddingVertical: 18,
           ...globalStyles.shadow,
         }}>
@@ -51,6 +51,7 @@ const MapHeader = props => {
       <View
         style={{
           width: '100%',
+          height: 20,
           paddingHorizontal: 16,
           flexDirection: 'row',
           alignItems: 'center',
@@ -63,7 +64,7 @@ const MapHeader = props => {
           setShopMarkers={setShopMarkers}
         />
         {/* 필터 */}
-        {depth < 3 ? null : (
+        {depth < 2 ? null : (
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
