@@ -1,5 +1,7 @@
 import {Dimensions, Platform} from 'react-native';
 import {PERMISSIONS} from 'react-native-permissions';
+import {version} from '../../package.json';
+
 const window = Dimensions.get('window');
 
 export const globalVariable = {
@@ -9,7 +11,7 @@ export const globalVariable = {
   width: window.width,
   height: window.height,
   tabBarHeight: 66,
-  app_version: '1.2.0',
+  app_version: version,
   default_longitude: 127.002736308322,
   default_latitude: 37.5833730477478,
   category_cafe: 'BAKERY/CAFE',
