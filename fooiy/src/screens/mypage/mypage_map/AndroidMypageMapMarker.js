@@ -5,59 +5,30 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 
 const AndroidMypageMapMarker = props => {
   // index는 MypageMap에서 준 id
-  const {
-    item,
-    index,
-    toggleModal,
-    setClickedIndex,
-    setModalVisible,
-    getFeedMarkerDetail,
-    clickedIndex,
-    zoomLevel,
-  } = props;
+  const {item, index, onClickMarker, clickedIndex, zoomLevel} = props;
   const {feed_image, feeds_count, latitude, longitude} = item;
-  const [isClicked, setIsClicked] = useState(false);
-
-  console.log(feed_image);
-
-  useEffect(() => {
-    if (clickedIndex === index) {
-      setIsClicked(true);
-    } else {
-      setIsClicked(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clickedIndex]);
-
-  // 마커 클릭 이벤트
-  const onClickMarker = (item, index) => {
-    toggleModal();
-    setClickedIndex(index);
-    setModalVisible(true);
-    getFeedMarkerDetail(item);
-  };
 
   return (
     <Marker
       key={index}
       style={
-        zoomLevel > 11
+        zoomLevel === 1
           ? styles.marker_big
-          : zoomLevel > 8
+          : zoomLevel === 2
           ? styles.marker_mid
           : styles.marker_small
       }
       onClick={() => onClickMarker(item, index)}
-      zIndex={isClicked ? 1 : null}
+      zIndex={clickedIndex === index ? 1 : null}
       coordinate={{
         latitude: latitude * 1,
         longitude: longitude * 1,
       }}>
       <View
         style={
-          zoomLevel > 11
+          zoomLevel === 1
             ? styles.marker_big
-            : zoomLevel > 8
+            : zoomLevel === 2
             ? styles.marker_mid
             : styles.marker_small
         }>
@@ -65,23 +36,23 @@ const AndroidMypageMapMarker = props => {
           source={{uri: feed_image}}
           resizeMode={'cover'}
           style={
-            zoomLevel > 11
+            zoomLevel === 1
               ? styles.image_big
-              : zoomLevel > 8
+              : zoomLevel === 2
               ? styles.image_mid
               : styles.image_small
           }
         />
         <Image
           source={
-            isClicked
+            clickedIndex === index
               ? require('../../../../assets/icons/marker/mypage_marker_clicked.png')
               : require('../../../../assets/icons/marker/mypage_marker_unclicked.png')
           }
           style={
-            zoomLevel > 11
+            zoomLevel === 1
               ? styles.frame_big
-              : zoomLevel > 8
+              : zoomLevel === 2
               ? styles.frame_mid
               : styles.frame_small
           }
@@ -89,37 +60,37 @@ const AndroidMypageMapMarker = props => {
       </View>
       <View
         style={
-          zoomLevel > 11
+          zoomLevel === 1
             ? styles.badge_big
-            : zoomLevel > 8
+            : zoomLevel === 2
             ? styles.badge_mid
             : styles.badge_small
         }>
         <Image
           style={
-            zoomLevel > 11
+            zoomLevel === 1
               ? styles.badge_big
-              : zoomLevel > 8
+              : zoomLevel === 2
               ? styles.badge_mid
               : styles.badge_small
           }
           source={
-            isClicked
+            clickedIndex === index
               ? require('../../../../assets/icons/marker/mypage_aos_marker_badge_clicked.png')
               : require('../../../../assets/icons/marker/mypage_aos_marker_badge_unclicked.png')
           }
         />
         <Text
           style={
-            isClicked
-              ? zoomLevel > 11
+            clickedIndex === index
+              ? zoomLevel === 1
                 ? [styles.badge_text_big, {color: fooiyColor.W}]
-                : zoomLevel > 8
+                : zoomLevel === 2
                 ? [styles.badge_text_mid, {color: fooiyColor.W}]
                 : [styles.badge_text_small, {color: fooiyColor.W}]
-              : zoomLevel > 11
+              : zoomLevel === 1
               ? styles.badge_text_big
-              : zoomLevel > 8
+              : zoomLevel === 2
               ? styles.badge_text_mid
               : styles.badge_text_small
           }>

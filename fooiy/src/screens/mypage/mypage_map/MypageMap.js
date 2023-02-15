@@ -1,26 +1,23 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import NaverMapView, {Marker} from 'react-native-nmap';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl, toastMessage} from '../../../common/Enums';
+import {apiUrl} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {useDebounce} from '../../../common/hooks/useDebounce';
 import {LocationPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import ShopModal from '../../map/ShopModal';
 import AndroidMypageMapMarker from './AndroidMypageMapMarker';
-import MypageMapMarker from './MypageMapMarker';
+import IosMypageMapMarker from './IosMypageMapMarker';
 
 // 다른 유저 페이지에서 접근 시 props에 account_id랑 nickname 들어있음
 const MypageMap = props => {
   const mapView = useRef(null);
   const [center, setCenter] = useState();
-  const {debounceCallback, isLoading} = useDebounce({time: 500});
-
   const {
     // other user page
     account_id,
@@ -31,7 +28,6 @@ const MypageMap = props => {
     party_id,
   } = props.route.params;
 
-  const [screenLocation, setScreenLocation] = useState([]);
   const [feedMarkers, setFeedMarkers] = useState([]);
   const [feedMarkerDetails, setFeedMarkerDetails] = useState([]);
 
@@ -40,11 +36,9 @@ const MypageMap = props => {
   const [zoomLevel, setZoomLevel] = useState(14);
 
   useEffect(() => {
-    if (screenLocation.length !== 0) {
-      getFeedMarkerList(screenLocation);
-    }
+    getFeedMarkerList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screenLocation]);
+  }, []);
   useEffect(() => {
     const center = async () => {
       (await LocationPermission())
@@ -54,8 +48,8 @@ const MypageMap = props => {
             ...{
               longitude: globalVariable.default_longitude,
               latitude: globalVariable.default_latitude,
-              zoom: 16,
             },
+            zoom: 16,
           }));
     };
     center();
@@ -82,20 +76,20 @@ const MypageMap = props => {
   };
 
   const onCameraChange = e => {
-    debounceCallback(() => {
-      setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
-      setZoomLevel(e.zoom);
-    });
+    setZoomLevel(e.zoom > 11 ? 1 : e.zoom > 8 ? 2 : 3);
+  };
+
+  const onClickMarker = (item, index) => {
+    toggleModal();
+    setClickedIndex(index);
+    setModalVisible(true);
+    getFeedMarkerDetail(item);
   };
 
   const getFeedMarkerList = async data => {
     ApiManagerV2.get(apiUrl.FEED_MAP_MARKER, {
       params: {
         type: party_id !== undefined ? 'party' : 'mypage',
-        longitude_left_bottom: screenLocation[0].longitude,
-        latitude_left_bottom: screenLocation[0].latitude,
-        latitude_right_top: screenLocation[1].latitude,
-        longitude_right_top: screenLocation[1].longitude,
         ...(account_id && {other_account_id: account_id}),
         ...(party_id && {party_id: party_id}),
       },
@@ -121,6 +115,37 @@ const MypageMap = props => {
       })
       .catch(e => console.log(e));
   };
+
+  const CustomMarker = useCallback(() => {
+    return feedMarkers.length > 0
+      ? Platform.select({
+          ios: feedMarkers.map(item => {
+            return (
+              <IosMypageMapMarker
+                key={item.id}
+                item={item}
+                index={item.id}
+                onClickMarker={onClickMarker}
+                clickedIndex={clickedIndex}
+                zoomLevel={zoomLevel}
+              />
+            );
+          }),
+          android: feedMarkers.map(item => {
+            return (
+              <AndroidMypageMapMarker
+                key={item.id}
+                item={item}
+                index={item.id}
+                onClickMarker={onClickMarker}
+                clickedIndex={clickedIndex}
+                zoomLevel={zoomLevel}
+              />
+            );
+          }),
+        })
+      : null;
+  }, [feedMarkers, zoomLevel, clickedIndex]);
 
   return (
     <SafeAreaView
@@ -149,9 +174,7 @@ const MypageMap = props => {
           maxZoomLevel={18}
           scaleBar={false}
           rotateGesturesEnabled={false}
-          tiltGesturesEnabled={false}
-          onCameraChange={e => onCameraChange(e)}
-          center={center}>
+          onCameraChange={e => onCameraChange(e)}>
           <Marker
             coordinate={{
               latitude: 47.61424127195381,
@@ -159,40 +182,7 @@ const MypageMap = props => {
             }}
             image={require('../../../../assets/icons/marker/marker.png')}
           />
-          {feedMarkers.length > 0
-            ? Platform.select({
-                ios: feedMarkers.map(item => {
-                  return (
-                    <MypageMapMarker
-                      key={item.id}
-                      item={item}
-                      index={item.id}
-                      toggleModal={toggleModal}
-                      setClickedIndex={setClickedIndex}
-                      setModalVisible={setModalVisible}
-                      getFeedMarkerDetail={getFeedMarkerDetail}
-                      clickedIndex={clickedIndex}
-                      zoomLevel={zoomLevel}
-                    />
-                  );
-                }),
-                android: feedMarkers.map(item => {
-                  return (
-                    <AndroidMypageMapMarker
-                      key={item.id}
-                      item={item}
-                      index={item.id}
-                      toggleModal={toggleModal}
-                      setClickedIndex={setClickedIndex}
-                      setModalVisible={setModalVisible}
-                      getFeedMarkerDetail={getFeedMarkerDetail}
-                      clickedIndex={clickedIndex}
-                      zoomLevel={zoomLevel}
-                    />
-                  );
-                }),
-              })
-            : null}
+          <CustomMarker />
         </NaverMapView>
         {isModalVisible && (
           <ShopModal
