@@ -9,10 +9,7 @@ import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {useDebounce} from '../../../common/hooks/useDebounce';
-import {
-  CheckLocationPermission,
-  LocationPermission,
-} from '../../../common/Permission';
+import {LocationPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import ShopModal from '../../map/ShopModal';
 import AndroidMypageMapMarker from './AndroidMypageMapMarker';
@@ -50,15 +47,15 @@ const MypageMap = props => {
   }, [screenLocation]);
   useEffect(() => {
     const center = async () => {
-      (await CheckLocationPermission())
+      (await LocationPermission())
         ? onClickLocationBtn()
         : (FooiyToast.message('위치 권한을 허용해주세요!', true, 0),
           setCenter({
             ...{
               longitude: globalVariable.default_longitude,
               latitude: globalVariable.default_latitude,
+              zoom: 16,
             },
-            zoom: 16,
           }));
     };
     center();
@@ -153,7 +150,8 @@ const MypageMap = props => {
           scaleBar={false}
           rotateGesturesEnabled={false}
           tiltGesturesEnabled={false}
-          onCameraChange={e => onCameraChange(e)}>
+          onCameraChange={e => onCameraChange(e)}
+          center={center}>
           <Marker
             coordinate={{
               latitude: 47.61424127195381,

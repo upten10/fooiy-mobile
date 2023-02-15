@@ -47,7 +47,11 @@ const SetAddress = props => {
     land_number2: 0,
   });
   const [fullAddress, setFullAddress] = useState('');
-  const [location, setLocation] = useState({longitude: 0, latitude: 0});
+  const [location, setLocation] = useState({
+    longitude: 0,
+    latitude: 0,
+    zoom: 17,
+  });
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -167,19 +171,19 @@ const SetAddress = props => {
 
   useEffect(() => {
     const center = async () => {
-      (await CheckLocationPermission())
-        ? Geolocation.getCurrentPosition(position => {
-            const {latitude, longitude} = position.coords;
-            setLocation({
-              longitude,
-              latitude,
-            });
+      props.route.params.address
+        ? setLocation({
+            longitude: props.route.params.address.longitude,
+            latitude: props.route.params.address.latitude,
+            zoom: 17,
           })
-        : (setLocation({
+        : (await CheckLocationPermission())
+        ? onClickLocationBtn()
+        : setLocation({
             longitude: globalVariable.default_longitude,
             latitude: globalVariable.default_latitude,
-          }),
-          FooiyToast.message('위치 권한을 허용해주세요!', false, 200));
+            zoom: 17,
+          });
     };
     center();
   }, []);
@@ -193,19 +197,7 @@ const SetAddress = props => {
           showsMyLocationButton={false}
           zoomControl={false}
           onCameraChange={e => onCameraChange(e)}
-          center={
-            props.route.params.address
-              ? {
-                  longitude: props.route.params.address.longitude,
-                  latitude: props.route.params.address.latitude,
-                  zoom: 17,
-                }
-              : {
-                  longitude: location.longitude,
-                  latitude: location.latitude,
-                  zoom: 17,
-                }
-          }
+          center={location}
           style={{
             width: '100%',
             height: globalVariable.height - 56 - insets.top - 258 + 16,
@@ -231,11 +223,7 @@ const SetAddress = props => {
                 height: 42,
                 left: globalVariable.width / 2 - 17,
                 top:
-                  ((globalVariable.height - insets.bottom - insets.top - 56) *
-                    0.85) /
-                    2 -
-                  42 -
-                  21,
+                  (globalVariable.height - 56 - insets.top - 258 + 16) / 2 - 21,
               }}
             />
           ) : (
@@ -246,11 +234,7 @@ const SetAddress = props => {
                 height: 42,
                 left: globalVariable.width / 2 - 17,
                 top:
-                  ((globalVariable.height - insets.bottom - insets.top - 56) *
-                    0.85) /
-                    2 -
-                  42 -
-                  21,
+                  (globalVariable.height - 56 - insets.top - 258 + 16) / 2 - 21,
               }}
             />
           )}
