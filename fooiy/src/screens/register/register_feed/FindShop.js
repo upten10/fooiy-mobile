@@ -29,6 +29,7 @@ const FindShop = props => {
     await ApiManagerV2.get(apiUrl.SHOP_NEARBY, {
       params: {
         address: props.route.params.address,
+        shop_category: props.route.params.category,
       },
     }).then(res => {
       setShopList(res.data.payload.shop_list.results),
@@ -84,12 +85,14 @@ const FindShop = props => {
             searchShop.map((item, index) => {
               return (
                 <TouchableOpacity
+                  key={index}
                   onPress={() =>
                     navigation.navigate('FindMenu', {
                       photo_list: props.route.params.photo_list,
                       shop: item,
                       menu: null,
                       address: props.route.params.address,
+                      category: props.route.params.category,
                     })
                   }>
                   <View style={styles.shop_view}>
@@ -109,6 +112,7 @@ const FindShop = props => {
                 shop: null,
                 menu: null,
                 address: props.route.params.address,
+                category: props.route.params.category,
               });
             }}>
             <Text style={styles.no_shop_text}>방문한 음식점이 없어요</Text>

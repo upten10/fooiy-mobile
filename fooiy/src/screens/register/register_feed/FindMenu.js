@@ -91,12 +91,14 @@ const FindMenu = props => {
             searchMenu.map((item, index) => {
               return (
                 <TouchableOpacity
+                  key={index}
                   onPress={() =>
                     navigation.navigate('RegisterFeed', {
                       photo_list: props.route.params.photo_list,
                       shop: props.route.params.shop,
                       menu: item,
                       address: address,
+                      category: props.route.params.category,
                     })
                   }>
                   <View style={styles.menu_view}>
@@ -116,6 +118,7 @@ const FindMenu = props => {
                 shop: props.route.params.shop,
                 menu: null,
                 address: address,
+                category: props.route.params.category,
               });
             }}>
             <Text style={styles.no_menu_text}>먹은 메뉴가 없어요</Text>

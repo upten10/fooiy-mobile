@@ -14,7 +14,7 @@ import {globalVariable} from '../../../../common/globalVariable';
 import {StackHeader} from '../../../../common_ui/headers/StackHeader';
 import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Notice} from '../../../../../assets/icons/svg';
+import {Notice, PartyCreateComplete} from '../../../../../assets/icons/svg';
 import Input from './Input';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import FooiytiRating from './FooiytiRating';
@@ -51,6 +51,7 @@ const RegisterFeed = props => {
   const [fooiytiRatingTF, setFooiytiRatingTF] = useState(2);
   const [fooiytiRatingAC, setFooiytiRatingAC] = useState(2);
   const [totalRating, setTotalRating] = useState(2);
+  const [visibleSuccess, setVisibleSuccess] = useState('');
   const valueSet = [90, 70, 50, 30, 10];
   const totalValueSet = [10, 30, 50, 70, 99];
   const navigation = useNavigation();
@@ -89,7 +90,15 @@ const RegisterFeed = props => {
           transformRequest: (data, headers) => {
             return data;
           },
-        }).catch(e => FooiyToast.error())
+        })
+          .then(res => {
+            res.data.payload === 'success' && setVisibleSuccess('record');
+            res.data.payload === 'success' &&
+              setTimeout(function () {
+                navigation.navigate('FeedStackNavigation', {screen: 'Feed'});
+              }, 3000);
+          })
+          .catch(e => FooiyToast.error())
       : await ApiManagerV2.post(apiUrl.REGISTER_PIONEER, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -97,8 +106,15 @@ const RegisterFeed = props => {
           transformRequest: (data, headers) => {
             return data;
           },
-        }).catch(e => FooiyToast.error());
-    navigation.navigate('FeedStackNavigation');
+        })
+          .then(res => {
+            res.data.payload === 'success' && setVisibleSuccess('pioneer');
+            res.data.payload === 'success' &&
+              setTimeout(function () {
+                navigation.navigate('FeedStackNavigation', {screen: 'Feed'});
+              }, 3000);
+          })
+          .catch(e => FooiyToast.error());
   };
   const onClickRegister = async () => {
     const match = /\.(\w+)$/.exec(photo_list[0].filename ?? '');
@@ -106,12 +122,12 @@ const RegisterFeed = props => {
     const type = Platform.OS === 'ios' ? `image.jpg` : `image/jpeg`;
     const formData = new FormData();
     formData.append('account', accountValue);
-    shop
-      ? formData.append('shop_id', shop_id)
-      : formData.append('shop_name', shopValue);
+    shop ? formData.append('shop_id', shop_id) : null;
+    formData.append('shop_name', shopValue);
     shop && menu
       ? formData.append('menu_id', menu.id)
       : formData.append('menu_name', menuValue);
+    formData.append('shop_category', props.route.params.category);
     formData.append('menu_price', 0);
     formData.append('comment', comment);
     formData.append('taste_evaluation', totalValueSet[totalRating]);
@@ -154,165 +170,193 @@ const RegisterFeed = props => {
 
     postRegister(formData);
   };
-  return (
-    <SafeAreaView style={styles.container}>
-      <StackHeader title="피드 등록" />
-      <KeyboardAwareScrollView
-        extraScrollHeight={insets.top}
-        style={styles.view}
-        bounces={false}
-        showsVerticalScrollIndicator={false}>
-        {/* 음식점 */}
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View>
-            {!shop && (
-              <Input
-                onChangeText={setShopValue}
-                holders="음식점 이름을 적어주세요"
-                title="음식점"
-                checkInput={checkShopInput}
-                value={shopValue}
-              />
-            )}
-            {/* 위치 */}
-            {!address && (
-              <Input
-                onChangeText={setLocationValue}
-                holders="대략적인 위치를 적어주세요"
-                title="위치"
-                checkInput={checkLocationInput}
-                value={locationValue}
-              />
-            )}
+  if (visibleSuccess === 'record' || visibleSuccess === 'pioneer') {
+    return (
+      <View
+        style={{
+          width: globalVariable.width,
+          height: globalVariable.height,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: fooiyColor.W,
+        }}>
+        <Text
+          style={{
+            ...fooiyFont.H3,
+            color: fooiyColor.G800,
+            textAlign: 'center',
+            marginBottom: 16,
+          }}>
+          {visibleSuccess === 'record'
+            ? '피드 등록이\n완료되었어요!'
+            : '피드가 등록될 때까지\n잠시만 기다려주세요 :)'}
+        </Text>
+        <PartyCreateComplete />
+      </View>
+    );
+  } else {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StackHeader title="피드 등록" />
+        <KeyboardAwareScrollView
+          extraScrollHeight={insets.top}
+          style={styles.view}
+          bounces={false}
+          showsVerticalScrollIndicator={false}>
+          {/* 음식점 */}
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View>
+              {!shop && (
+                <Input
+                  onChangeText={setShopValue}
+                  holders="음식점 이름을 적어주세요"
+                  title="음식점"
+                  checkInput={checkShopInput}
+                  value={shopValue}
+                />
+              )}
+              {/* 위치 */}
+              {!address && (
+                <Input
+                  onChangeText={setLocationValue}
+                  holders="대략적인 위치를 적어주세요"
+                  title="위치"
+                  checkInput={checkLocationInput}
+                  value={locationValue}
+                />
+              )}
 
-            {/* 메뉴 */}
-            {!menu && (
-              <Input
-                onChangeText={setMenuValue}
-                holders="메뉴 이름을 적어주세요"
-                title="메뉴"
-                checkInput={checkMenuInput}
-                value={menuValue}
-              />
-            )}
-            {/* 푸이티아이 평가 */}
-            <Text style={styles.fooiyti_evaluation}>푸이티아이 평가</Text>
-            <View style={styles.fooiyti_view}>
-              <FooiytiRating
-                left={{en: 'E', kor: '자극적인'}}
-                right={{en: 'I', kor: '순한'}}
-                setFooiytiRating={setFooiytiRatingEI}
-              />
-            </View>
-            <View style={styles.fooiyti_view}>
-              <FooiytiRating
-                left={{en: 'S', kor: '짠'}}
-                right={{en: 'N', kor: '싱거운'}}
-                setFooiytiRating={setFooiytiRatingSN}
-              />
-            </View>
-            <View style={styles.fooiyti_view}>
-              <FooiytiRating
-                left={{en: 'T', kor: '담백한'}}
-                right={{en: 'F', kor: '느끼한'}}
-                setFooiytiRating={setFooiytiRatingTF}
-              />
-            </View>
-            <View style={styles.fooiyti_view}>
-              <FooiytiRating
-                left={{en: 'A', kor: '어른'}}
-                right={{en: 'C', kor: '초딩'}}
-                setFooiytiRating={setFooiytiRatingAC}
-              />
-            </View>
-            {/* 종합 만족도 */}
-            <View>
-              <Text style={styles.total_evaluation}>종합 만족도</Text>
-              <View style={styles.fooiyti_view}>
-                <TotalRating
-                  totalRating={totalRating}
-                  setTotalRating={setTotalRating}
+              {/* 메뉴 */}
+              {!menu && (
+                <Input
+                  onChangeText={setMenuValue}
+                  holders="메뉴 이름을 적어주세요"
+                  title="메뉴"
+                  checkInput={checkMenuInput}
+                  value={menuValue}
                 />
+              )}
+              {/* 푸이티아이 평가 */}
+              {props.route.params.category !== globalVariable.category_cafe ? (
+                <>
+                  <Margin h={20} />
+                  <Text style={styles.fooiyti_evaluation}>푸이티아이 평가</Text>
+                  <View style={styles.fooiyti_view}>
+                    <FooiytiRating
+                      left={{en: 'E', kor: '자극적인'}}
+                      right={{en: 'I', kor: '순한'}}
+                      setFooiytiRating={setFooiytiRatingEI}
+                    />
+                  </View>
+                  <View style={styles.fooiyti_view}>
+                    <FooiytiRating
+                      left={{en: 'S', kor: '짠'}}
+                      right={{en: 'N', kor: '싱거운'}}
+                      setFooiytiRating={setFooiytiRatingSN}
+                    />
+                  </View>
+                  <View style={styles.fooiyti_view}>
+                    <FooiytiRating
+                      left={{en: 'T', kor: '담백한'}}
+                      right={{en: 'F', kor: '느끼한'}}
+                      setFooiytiRating={setFooiytiRatingTF}
+                    />
+                  </View>
+                  <View style={styles.fooiyti_view}>
+                    <FooiytiRating
+                      left={{en: 'A', kor: '어른'}}
+                      right={{en: 'C', kor: '초딩'}}
+                      setFooiytiRating={setFooiytiRatingAC}
+                    />
+                  </View>
+                  <Margin h={16} />
+                </>
+              ) : null}
+              {/* 종합 만족도 */}
+              <Margin h={20} />
+              <View>
+                <Text style={styles.total_evaluation}>종합 만족도</Text>
+                <View style={styles.fooiyti_view}>
+                  <TotalRating
+                    totalRating={totalRating}
+                    setTotalRating={setTotalRating}
+                  />
+                </View>
+              </View>
+              {/* 코멘트 */}
+              <View>
+                <View style={styles.comment}>
+                  <Text style={{...fooiyFont.Subtitle1}}>코멘트</Text>
+                  <Text style={styles.comment_limit}>
+                    ({comment.length}/500)
+                  </Text>
+                </View>
+                <View
+                  style={
+                    checkCommentInput()
+                      ? styles.comment_focus_active
+                      : styles.comment_focus_deactive
+                  }>
+                  <TextInput
+                    ref={commentRef}
+                    style={styles.comment_text_focus_active}
+                    multiline
+                    textAlignVertical="top"
+                    autoCapitalize={false}
+                    autoCorrect={false}
+                    spellCheck={false}
+                    onChangeText={setComment}
+                    maxLength={500}
+                    value={comment}
+                  />
+                </View>
               </View>
             </View>
-            {/* 코멘트 */}
-            <View>
-              <View style={styles.comment}>
-                <Text style={{...fooiyFont.Subtitle1}}>코멘트</Text>
-                <Text style={styles.comment_limit}>({comment.length}/500)</Text>
-              </View>
-              <View
-                style={
-                  checkCommentInput()
-                    ? styles.comment_focus_active
-                    : styles.comment_focus_deactive
-                }>
-                <TextInput
-                  ref={commentRef}
-                  style={styles.comment_text_focus_active}
-                  multiline
-                  textAlignVertical="top"
-                  autoCapitalize={false}
-                  autoCorrect={false}
-                  spellCheck={false}
-                  onChangeText={setComment}
-                  maxLength={500}
-                  value={comment}
-                />
-              </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-        <View style={styles.commnet_notice}>
-          <View style={{flexDirection: 'row'}}>
-            <Notice style={styles.comment_notice_icon} />
-            <Text style={[styles.commnet_notice_text, {marginBottom: 8}]}>
+          </TouchableWithoutFeedback>
+          <Margin h={16} />
+          <View style={styles.commnet_notice}>
+            <Notice />
+            <Text style={styles.commnet_notice_text}>
               욕설, 비방 등의 코멘트는 지양해주세요.
             </Text>
           </View>
-          <View style={{flexDirection: 'row'}}>
-            <Notice style={styles.comment_notice_icon} />
-            <Text style={styles.commnet_notice_text}>
-              개척이 완료되면 게시물을 삭제할 수 없어요.
-            </Text>
-          </View>
-        </View>
-        <Margin h={36} />
-        <SelectParties
-          selectedPartyList={selectedPartyList}
-          setSelectedPartyList={setSelectedPartyList}
-        />
-        <Margin h={48} />
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={
-            (shop || shopValue) &&
-            (address || locationValue) &&
-            (menu || menuValue)
-              ? styles.register_btn_active
-              : styles.register_btn_deactive
-          }
-          onPress={
-            (shop || shopValue) &&
-            (address || locationValue) &&
-            (menu || menuValue)
-              ? onClickRegister
-              : null
-          }>
-          <Text
+          <Margin h={36} />
+          <SelectParties
+            selectedPartyList={selectedPartyList}
+            setSelectedPartyList={setSelectedPartyList}
+          />
+          <Margin h={48} />
+          <TouchableOpacity
+            activeOpacity={0.8}
             style={
               (shop || shopValue) &&
               (address || locationValue) &&
               (menu || menuValue)
-                ? styles.register_btn_text_active
-                : styles.register_btn_text_deactive
+                ? styles.register_btn_active
+                : styles.register_btn_deactive
+            }
+            onPress={
+              (shop || shopValue) &&
+              (address || locationValue) &&
+              (menu || menuValue)
+                ? onClickRegister
+                : null
             }>
-            피드 등록
-          </Text>
-        </TouchableOpacity>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
-  );
+            <Text
+              style={
+                (shop || shopValue) &&
+                (address || locationValue) &&
+                (menu || menuValue)
+                  ? styles.register_btn_text_active
+                  : styles.register_btn_text_deactive
+              }>
+              피드 등록
+            </Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
+    );
+  }
 };
 
 export default RegisterFeed;
@@ -328,7 +372,6 @@ const styles = StyleSheet.create({
   },
   fooiyti_evaluation: {
     ...fooiyFont.Subtitle1,
-    marginTop: 16,
   },
   fooiyti_view: {
     justifyContent: 'center',
@@ -336,7 +379,6 @@ const styles = StyleSheet.create({
   },
   total_evaluation: {
     ...fooiyFont.Subtitle1,
-    marginTop: 36,
   },
   comment: {
     flexDirection: 'row',
@@ -354,7 +396,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     height: 104,
-    justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 8,
@@ -366,7 +407,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 104,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 8,
@@ -382,20 +422,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
   },
-  commnet_notice: {
-    width: '100%',
-    backgroundColor: fooiyColor.P50,
-    borderRadius: 8,
-    marginTop: 16,
-    padding: 16,
-    marginBottom: 16,
-  },
   comment_notice_icon: {
     ...fooiyFont.Subtitle3,
-    color: fooiyColor.G600,
-  },
-  commnet_notice_text: {
-    marginLeft: 8,
     color: fooiyColor.G600,
   },
   register_btn_active: {
@@ -419,11 +447,26 @@ const styles = StyleSheet.create({
   register_btn_text_active: {
     ...fooiyFont.Button,
     color: fooiyColor.W,
-    fontSize: 14,
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
   register_btn_text_deactive: {
     ...fooiyFont.Button,
     color: fooiyColor.G300,
-    fontSize: 14,
+    lineHeight: Platform.select({ios: 0, android: null}),
+  },
+  commnet_notice: {
+    width: '100%',
+    backgroundColor: fooiyColor.P50,
+    borderRadius: 8,
+    padding: 16,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  commnet_notice_text: {
+    textAlign: 'center',
+    ...fooiyFont.Caption1,
+    lineHeight: Platform.select({ios: 0, android: 20}),
+    marginLeft: 8,
+    color: fooiyColor.G600,
   },
 });

@@ -107,7 +107,7 @@ const UI_Feed = item => {
       );
       await ApiManagerV2.patch(apiUrl.FEED_LIKE, {
         feed_id: item.id,
-      });
+      }).catch(e => FooiyToast.error());
     } else if (feed.is_liked === (await liked)) {
       dispatch(
         feedsAction.append({
@@ -121,7 +121,7 @@ const UI_Feed = item => {
       );
       await ApiManagerV2.patch(apiUrl.FEED_LIKE, {
         feed_id: item.id,
-      });
+      }).catch(e => FooiyToast.error());
     }
   };
 
@@ -137,7 +137,7 @@ const UI_Feed = item => {
       );
       await ApiManagerV2.patch(apiUrl.FEED_STORAGE, {
         feed_id: item.id,
-      });
+      }).catch(e => FooiyToast.error());
     } else if (feed.is_store === (await stored)) {
       dispatch(
         feedsAction.append({
@@ -149,7 +149,7 @@ const UI_Feed = item => {
       );
       await ApiManagerV2.patch(apiUrl.FEED_STORAGE, {
         feed_id: item.id,
-      });
+      }).catch(e => FooiyToast.error());
     }
   };
 
@@ -200,8 +200,7 @@ const UI_Feed = item => {
           },
         });
       } catch (e) {
-        console.error(e);
-        console.error(e.message);
+        FooiyToast.error();
       }
     }
   };

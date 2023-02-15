@@ -9,6 +9,7 @@ import Margin from './Margin';
 
 const SelectParties = props => {
   const {selectedPartyList, setSelectedPartyList, feed_id} = props;
+  const [openParties, setOpenParties] = useState(false);
   const [partyList, setPartyList] = useState([]);
   const getMyParties = async () => {
     await ApiManagerV2.get(apiUrl.MY_PARTY_LIST, {
@@ -17,6 +18,12 @@ const SelectParties = props => {
       setPartyList(res.data.payload.party_list);
     });
   };
+
+  useEffect(() => {
+    if (partyList.length < 3 && partyList.length !== 0) {
+      setOpenParties(true);
+    }
+  }, [partyList]);
 
   useEffect(() => {
     getMyParties();
@@ -40,51 +47,90 @@ const SelectParties = props => {
   };
 
   const onClickParty = (is_subscribe, party_id) => {
-    is_subscribe
-      ? setSelectedPartyList(selectedPartyList.filter(e => e !== party_id))
-      : setSelectedPartyList([...selectedPartyList, party_id]);
+    if (is_subscribe) {
+      setSelectedPartyList(selectedPartyList.filter(e => e !== party_id));
+    } else {
+      if (selectedPartyList.length < 10) {
+        setSelectedPartyList([...selectedPartyList, party_id]);
+      }
+    }
+  };
+  const PartyUI = item => {
+    const is_subscribe = isSubscribe(item.party_id);
+    return (
+      <View key={item.index}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => onClickParty(is_subscribe, item.party_id)}>
+          <View
+            style={[
+              styles.party_container,
+              is_subscribe
+                ? {borderColor: fooiyColor.P500}
+                : {borderColor: fooiyColor.G200},
+            ]}>
+            <Text
+              style={[
+                styles.party_name,
+                is_subscribe
+                  ? {color: fooiyColor.P500}
+                  : {color: fooiyColor.G300},
+              ]}>
+              {item.name}
+            </Text>
+            {is_subscribe ? <Check /> : <Uncheck />}
+          </View>
+        </TouchableOpacity>
+        <Margin h={16} />
+      </View>
+    );
+  };
+
+  const Parties = () => {
+    if (openParties) {
+      return partyList.map((item, index) => {
+        return <PartyUI {...item} index={index} />;
+      });
+    } else {
+      return (
+        <>
+          <PartyUI {...partyList[0]} index={0} />
+          <PartyUI {...partyList[1]} index={1} />
+          <TouchableOpacity onPress={() => setOpenParties(true)}>
+            <View style={[styles.party_container, {justifyContent: 'center'}]}>
+              <Text style={styles.party_all_button}>전체보기</Text>
+            </View>
+          </TouchableOpacity>
+        </>
+      );
+    }
   };
 
   if (partyList.length !== 0) {
     return (
       <View>
-        <Text style={styles.title}>공유할 파티</Text>
+        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+          <Text style={styles.title}>공유할 파티</Text>
+          <Margin w={8} />
+          <Text style={styles.count}>({selectedPartyList.length}/10)</Text>
+        </View>
         <Margin h={16} />
-        {partyList.map((party, index) => {
-          const is_subscribe = isSubscribe(party.party_id);
-          return (
-            <View key={index}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => onClickParty(is_subscribe, party.party_id)}>
-                <View
-                  style={[
-                    styles.party_container,
-                    is_subscribe
-                      ? {borderColor: fooiyColor.P500}
-                      : {borderColor: fooiyColor.G200},
-                  ]}>
-                  <Text
-                    style={[
-                      styles.party_name,
-                      is_subscribe
-                        ? {color: fooiyColor.P500}
-                        : {color: fooiyColor.G300},
-                    ]}>
-                    {party.name}
-                  </Text>
-                  {is_subscribe ? <Check /> : <Uncheck />}
-                </View>
-              </TouchableOpacity>
-              <Margin h={16} />
-            </View>
-          );
-        })}
+        <Parties />
+        <Margin h={16} />
         <View style={styles.commnet_notice}>
-          <Notice />
-          <Text style={styles.commnet_notice_text}>
-            선택하지 않으면 개인 피드에만 게시돼요.
-          </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Notice />
+            <Text style={styles.commnet_notice_text}>
+              선택하지 않으면 개인 피드에만 게시돼요.
+            </Text>
+          </View>
+          <Margin h={8} />
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Notice />
+            <Text style={styles.commnet_notice_text}>
+              피드 1개당 공유할 파티는 10개만 선택할 수 있어요.
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -101,6 +147,11 @@ const styles = StyleSheet.create({
     color: fooiyColor.G800,
     lineHeight: Platform.select({ios: 0, android: 24}),
   },
+  count: {
+    ...fooiyFont.Caption1,
+    color: fooiyColor.G600,
+    lineHeight: Platform.select({ios: 0, android: 24}),
+  },
   party_container: {
     width: globalVariable.width - 32,
     height: 56,
@@ -110,6 +161,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     borderRadius: 8,
+    borderColor: fooiyColor.G200,
+  },
+  party_all_button: {
+    ...fooiyFont.Button,
+    color: fooiyColor.G600,
+    lineHeight: Platform.select({ios: 0, android: null}),
   },
   party_name: {
     ...fooiyFont.Button,
@@ -121,8 +178,6 @@ const styles = StyleSheet.create({
     backgroundColor: fooiyColor.P50,
     borderRadius: 8,
     padding: 16,
-    alignItems: 'center',
-    flexDirection: 'row',
   },
   commnet_notice_text: {
     textAlign: 'center',

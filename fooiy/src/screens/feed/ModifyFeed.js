@@ -26,6 +26,7 @@ import Margin from '../../common_ui/Margin';
 
 const ModifyFeed = props => {
   const {feed} = props.route.params;
+  const [isCafe, setIsCafe] = useState(false);
 
   const [selectedPartyList, setSelectedPartyList] = useState([]);
 
@@ -52,6 +53,19 @@ const ModifyFeed = props => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const commentRef = useRef();
+
+  const getFeed = async () => {
+    if (feed !== undefined) {
+      await ApiManagerV2.get(apiUrl.RETRIEVE_FEED, {
+        params: {feed_id: feed.id},
+      }).then(res => setIsCafe(res.data.payload.feed.is_cafe));
+    }
+  };
+
+  useEffect(() => {
+    getFeed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateFeed = async data => {
     await ApiManagerV2.patch(apiUrl.UPDATE_FEED, {
@@ -85,43 +99,50 @@ const ModifyFeed = props => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
             {/* 푸이티아이 평가 */}
-            <Text style={styles.fooiyti_evaluation}>푸이티아이 평가</Text>
-            <View style={styles.fooiyti_view} key={1}>
-              <FooiytiRating
-                key={1}
-                firstValue={fooiytiRatingEI}
-                left={{en: 'E', kor: '자극적인'}}
-                right={{en: 'I', kor: '순한'}}
-                setFooiytiRating={setFooiytiRatingEI}
-              />
-            </View>
-            <View style={styles.fooiyti_view} key={2}>
-              <FooiytiRating
-                key={2}
-                firstValue={fooiytiRatingSN}
-                left={{en: 'S', kor: '짠'}}
-                right={{en: 'N', kor: '싱거운'}}
-                setFooiytiRating={setFooiytiRatingSN}
-              />
-            </View>
-            <View style={styles.fooiyti_view} key={3}>
-              <FooiytiRating
-                key={3}
-                firstValue={fooiytiRatingTF}
-                left={{en: 'T', kor: '담백한'}}
-                right={{en: 'F', kor: '느끼한'}}
-                setFooiytiRating={setFooiytiRatingTF}
-              />
-            </View>
-            <View style={styles.fooiyti_view} key={4}>
-              <FooiytiRating
-                key={4}
-                firstValue={fooiytiRatingAC}
-                left={{en: 'A', kor: '어른'}}
-                right={{en: 'C', kor: '초딩'}}
-                setFooiytiRating={setFooiytiRatingAC}
-              />
-            </View>
+            {!isCafe && (
+              <>
+                <Margin h={16} />
+                <Text style={styles.fooiyti_evaluation}>푸이티아이 평가</Text>
+                <View style={styles.fooiyti_view} key={1}>
+                  <FooiytiRating
+                    key={1}
+                    firstValue={fooiytiRatingEI}
+                    left={{en: 'E', kor: '자극적인'}}
+                    right={{en: 'I', kor: '순한'}}
+                    setFooiytiRating={setFooiytiRatingEI}
+                  />
+                </View>
+                <View style={styles.fooiyti_view} key={2}>
+                  <FooiytiRating
+                    key={2}
+                    firstValue={fooiytiRatingSN}
+                    left={{en: 'S', kor: '짠'}}
+                    right={{en: 'N', kor: '싱거운'}}
+                    setFooiytiRating={setFooiytiRatingSN}
+                  />
+                </View>
+                <View style={styles.fooiyti_view} key={3}>
+                  <FooiytiRating
+                    key={3}
+                    firstValue={fooiytiRatingTF}
+                    left={{en: 'T', kor: '담백한'}}
+                    right={{en: 'F', kor: '느끼한'}}
+                    setFooiytiRating={setFooiytiRatingTF}
+                  />
+                </View>
+                <View style={styles.fooiyti_view} key={4}>
+                  <FooiytiRating
+                    key={4}
+                    firstValue={fooiytiRatingAC}
+                    left={{en: 'A', kor: '어른'}}
+                    right={{en: 'C', kor: '초딩'}}
+                    setFooiytiRating={setFooiytiRatingAC}
+                  />
+                </View>
+                <Margin h={20} />
+              </>
+            )}
+            <Margin h={16} />
             {/* 종합 만족도 */}
             <View>
               <Text style={styles.total_evaluation}>종합 만족도</Text>
@@ -156,18 +177,10 @@ const ModifyFeed = props => {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.commnet_notice}>
-          <View style={{flexDirection: 'row'}}>
-            <Notice style={styles.comment_notice_icon} />
-            <Text style={[styles.commnet_notice_text, {marginBottom: 8}]}>
-              욕설, 비방 등의 코멘트는 지양해주세요.
-            </Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Notice style={styles.comment_notice_icon} />
-            <Text style={styles.commnet_notice_text}>
-              개척이 완료되면 게시물을 삭제할 수 없어요.
-            </Text>
-          </View>
+          <Notice />
+          <Text style={styles.commnet_notice_text}>
+            욕설, 비방 등의 코멘트는 지양해주세요.
+          </Text>
         </View>
         <Margin h={36} />
         <SelectParties
@@ -200,7 +213,6 @@ const styles = StyleSheet.create({
   },
   fooiyti_evaluation: {
     ...fooiyFont.Subtitle1,
-    marginTop: 16,
   },
   fooiyti_view: {
     justifyContent: 'center',
@@ -208,7 +220,6 @@ const styles = StyleSheet.create({
   },
   total_evaluation: {
     ...fooiyFont.Subtitle1,
-    marginTop: 36,
   },
   comment: {
     flexDirection: 'row',
@@ -253,6 +264,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   commnet_notice: {
+    flexDirection: 'row',
     width: '100%',
     backgroundColor: fooiyColor.P50,
     borderRadius: 8,

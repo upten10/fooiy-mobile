@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...fooiyFont.Body2,
     color: fooiyColor.G500,
-    lineHeight: Platform.select({ios: 0, android: null}),
+    lineHeight: Platform.select({ios: 20, android: null}),
   },
   right_side_icon: {
     flex: 1,

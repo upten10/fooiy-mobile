@@ -29,6 +29,7 @@ import WorkingCommentModal from './WorkingCommentModal';
 import checkFeedAuthorization from './functions/checkFeedAuthorization';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import FooiyToast from '../../common/FooiyToast';
+import ApiLoading from '../../common_ui/loading/ApiLoading';
 
 const FeedComment = props => {
   const textInputRef = useRef(null);
@@ -50,6 +51,7 @@ const FeedComment = props => {
   const [textlineHeight, setTextlineHeight] = useState(24);
   const [textInputHeight, setTextInputHeight] = useState(68);
   const [buttons, setButtons] = useState([{}]);
+  const [firstLoading, setFirstLoading] = useState(false);
 
   //****** modal & textinput function ******//
   const openModal = (
@@ -122,8 +124,10 @@ const FeedComment = props => {
       .then(res => {
         if (res.data.payload.comment_list) {
           setComments([...comments, ...res.data.payload.comment_list.results]);
-          totalCount === 0 &&
-            setTotalCount(res.data.payload.comment_list.total_count);
+          setTotalCount(res.data.payload.comment_list.total_count);
+          setTimeout(function () {
+            setFirstLoading(true);
+          }, 1500);
         }
       })
       .catch(e => FooiyToast.error());
@@ -265,6 +269,15 @@ const FeedComment = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const ListEmptyComponent = useCallback(() => {
+    if (firstLoading === false) {
+      return <ApiLoading />;
+    }
+    return ListEmptyTextComponent(
+      '아직 댓글이 없어요.\n가장 먼저 댓글을 남겨보세요.',
+    );
+  }, [firstLoading]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -294,9 +307,7 @@ const FeedComment = props => {
           )}
           removeClippedSubviews={true}
           ListFooterComponent={<View style={styles.flat_footer} />}
-          ListEmptyComponent={ListEmptyTextComponent(
-            '아직 댓글이 없어요.\n가장 먼저 댓글을 남겨보세요.',
-          )}
+          ListEmptyComponent={ListEmptyComponent}
           keyExtractor={item => String(item.comment_id)}
           onEndReached={loadMoreItem}
           onEndReachedThreshold={0}

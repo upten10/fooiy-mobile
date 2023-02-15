@@ -32,9 +32,9 @@ export default props => {
   }, []);
 
   const getQuestionList = async () => {
-    await ApiManagerV2.get(apiUrl.FOOIYTI_QUESTION_LIST, {}).then(res =>
-      setQuestionList(res.data.payload.fooiyti_questions),
-    );
+    await ApiManagerV2.get(apiUrl.FOOIYTI_QUESTION_LIST, {
+      params: {type: 'app'},
+    }).then(res => setQuestionList(res.data.payload.fooiyti_questions));
   };
 
   const CheckBox = props => {
