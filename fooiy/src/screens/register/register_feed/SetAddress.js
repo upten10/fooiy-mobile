@@ -103,15 +103,16 @@ const SetAddress = props => {
               land_name +
               ' ' +
               land_number1 +
-              '-' +
-              land_number2,
+              (land_number2 && '-' + land_number2),
           );
         } else {
           setBtnActivate(false);
           setAddress('', '', '', '', '', 0, 0);
+          setFullAddress('');
         }
       });
   }, 700);
+  console.log(fullAddress);
   const onCameraChange = e => {
     debounceCallback(e.longitude, e.latitude);
   };
@@ -284,21 +285,13 @@ const SetAddress = props => {
           <View style={styles.select_container}>
             <TouchableOpacity
               onPress={() => {
-                fullAddress
-                  ? navigation.navigate(navigateName, {
-                      photo_list: photo_list,
-                      shop: null,
-                      menu: null,
-                      address: fullAddress,
-                      category: 'common',
-                    })
-                  : navigation.navigate(navigateName, {
-                      photo_list: photo_list,
-                      shop: null,
-                      menu: null,
-                      address: null,
-                      category: 'common',
-                    });
+                navigation.navigate(navigateName, {
+                  photo_list: photo_list,
+                  shop: null,
+                  menu: null,
+                  address: navigateName === 'RegisterFeed' ? null : fullAddress,
+                  category: 'common',
+                });
                 toggleModal();
               }}
               activeOpacity={0.8}
@@ -311,21 +304,13 @@ const SetAddress = props => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                fullAddress
-                  ? navigation.navigate(navigateName, {
-                      photo_list: photo_list,
-                      shop: null,
-                      menu: null,
-                      address: fullAddress,
-                      category: globalVariable.category_cafe,
-                    })
-                  : navigation.navigate(navigateName, {
-                      photo_list: photo_list,
-                      shop: null,
-                      menu: null,
-                      address: null,
-                      category: globalVariable.category_cafe,
-                    });
+                navigation.navigate(navigateName, {
+                  photo_list: photo_list,
+                  shop: null,
+                  menu: null,
+                  address: navigateName === 'RegisterFeed' ? null : fullAddress,
+                  category: globalVariable.category_cafe,
+                });
                 toggleModal();
               }}
               activeOpacity={0.8}
