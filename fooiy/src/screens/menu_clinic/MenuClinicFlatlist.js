@@ -31,15 +31,13 @@ const MenuClinicFlatlist = props => {
   } = props;
 
   const [categoryFeedlist, setCategoryFeedlist] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [totalCount, setTotalCount] = useState(0);
   const navigation = useNavigation();
   const onClickImage = shop_id => {
     navigation.navigate('Shop', {
       shop_id: shop_id,
     });
   };
-  const RenderItem = item => {
+  const RenderItem = useCallback(item => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -57,7 +55,7 @@ const MenuClinicFlatlist = props => {
         </View>
       </TouchableOpacity>
     );
-  };
+  }, []);
   const endSetOffsetY = e => {
     setOffsetY(e.nativeEvent.contentOffset.y);
   };
@@ -67,7 +65,7 @@ const MenuClinicFlatlist = props => {
       params: {
         category: categoryToEnglish[categoryList[tabIndex]],
         offset: offset,
-        limit: globalVariable.Limit20,
+        limit: 21,
       },
     })
       .then(res => {
@@ -75,15 +73,8 @@ const MenuClinicFlatlist = props => {
           ...categoryFeedlist,
           ...res.data.payload.feed_list.results,
         ]);
-        setTotalCount(res.data.payload.feed_list.total_count);
       })
       .catch(e => FooiyToast.error());
-  };
-  const loadMoreItem = () => {
-    if (totalCount > offset + globalVariable.Limit20) {
-      setOffset(offset + globalVariable.Limit20);
-      getShopList(offset + globalVariable.Limit20, categoryFeedlist);
-    }
   };
   const ListFooterComponent = useCallback(() => {
     return <Margin h={footerBottomHeight} />;
@@ -105,9 +96,10 @@ const MenuClinicFlatlist = props => {
         onScrollEndDrag={endSetOffsetY}
         onMomentumScrollEnd={endSetOffsetY}
         numColumns={3}
-        onEndReached={loadMoreItem}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={10}
+        removeClippedSubviews={true}
         ListFooterComponent={ListFooterComponent}
-        onEndReachedThreshold={5}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: scrollY}}}],
           {

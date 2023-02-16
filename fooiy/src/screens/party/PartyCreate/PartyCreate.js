@@ -21,6 +21,7 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import ProfileImg from '../../mypage/setting/ProfileImg';
 import {useDebounce} from '../../../common/hooks/useDebounce';
 import {isEmpty} from 'lodash';
+import Margin from '../../../common_ui/Margin';
 
 const Title = props => {
   const {index} = props;
@@ -374,6 +375,7 @@ export default props => {
             android: null,
           })}>
           <StackHeader title={'파티 생성'} />
+          <Margin h={16} />
           {/* Body */}
           <View
             style={{

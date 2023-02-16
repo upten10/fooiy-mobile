@@ -8,6 +8,7 @@ import {fooiyFont, fooiyColor} from '../../common/globalStyles';
 
 import Rank from '../Rank';
 import {MoreVertIcon} from '../../../assets/icons/svg';
+import Margin from '../Margin';
 
 const FeedProfile = props => {
   const {
@@ -41,9 +42,10 @@ const FeedProfile = props => {
           <View>
             <Text style={styles.nickname}>{nickname}</Text>
             <View style={styles.profile_detail_container}>
+              <Margin w={8} />
               {rank && (
                 <Rank
-                  containerStyle={{marginLeft: 8}}
+                  containerStyle={{marginRight: 4}}
                   rank={rank}
                   font={fooiyFont.Subtitle4}
                 />
@@ -106,7 +108,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     textAlign: 'center',
     ...fooiyFont.Subtitle4,
-    marginLeft: 4,
     borderRadius: 4,
     borderWidth: 1,
     borderColor: fooiyColor.G200,
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
   },
   more_vert_container: {
     width: 24,
-    height: 40,
+    marginTop: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },

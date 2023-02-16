@@ -72,7 +72,7 @@ const ShopListUI = item => {
             color: fooiyColor.B,
             width: imageWidth,
           }}>
-          {name.length >= 10 ? name.substr(0, 10) + '...' : name}
+          {name.length >= 11 ? name.substr(0, 11) + '...' : name}
         </Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {owner !== undefined ? (
