@@ -378,6 +378,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     right: 16,
+    justifyContent: 'center',
   },
   gallery_item: {
     width: globalVariable.width / 4,

@@ -28,6 +28,7 @@ import Margin from '../../../../common_ui/Margin';
 import FooiyToast from '../../../../common/FooiyToast';
 
 const RegisterFeed = props => {
+  console.log(props.route.params.address);
   const {photo_list, shop, menu, address} = props.route.params;
   const [selectedPartyList, setSelectedPartyList] = useState([]);
   const shop_init = shop
