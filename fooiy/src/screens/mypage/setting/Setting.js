@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import {
   Image,
   Keyboard,
+  Linking,
   Platform,
   StyleSheet,
   Text,
@@ -34,9 +35,9 @@ const Setting = props => {
     {text: '문의함', navigation: 'Suggestion'},
     {text: '푸이티아이', navigation: 'FooiyTI'},
     {text: '닉네임 변경', navigation: 'EditName'},
-    {text: '서비스 이용약관', navigation: ''},
-    {text: '위치기반 이용약관', navigation: ''},
-    {text: '개인정보 수집 및 이용', navigation: ''},
+    {text: '서비스 이용약관', link: 'https://fooiy.com/policy/terms'},
+    {text: '위치기반 이용약관', link: 'https://fooiy.com/policy/location'},
+    {text: '개인정보 수집 및 이용', link: 'https://fooiy.com/policy/privacy'},
     {text: '마케팅 수신 알림'},
   ];
 
@@ -74,6 +75,15 @@ const Setting = props => {
 
   const onItemPress = navi => {
     navigation.navigate(navi, {});
+  };
+
+  const onLinkPress = link => {
+    Linking.canOpenURL(link).then(
+      supported => {
+        supported && Linking.openURL(link);
+      },
+      err => console.log(err),
+    );
   };
 
   const onPressLogout = () => {
@@ -139,7 +149,11 @@ const Setting = props => {
                   key={index}
                   activeOpacity={0.8}
                   onPress={() =>
-                    elem.navigation ? onItemPress(elem.navigation) : null
+                    elem.navigation
+                      ? onItemPress(elem.navigation)
+                      : elem.link
+                      ? onLinkPress(elem.link)
+                      : null
                   }>
                   <View key={index} style={styles.setting}>
                     <View>

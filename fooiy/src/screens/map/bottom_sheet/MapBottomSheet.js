@@ -7,6 +7,7 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {FlatList} from 'react-native-gesture-handler';
 import CatalogedList from './CatalogedList';
+import Margin from '../../../common_ui/Margin';
 
 const MapBottomSheet = props => {
   const {screenLocation, isCafe, sheetRef} = props;
@@ -57,6 +58,7 @@ const MapBottomSheet = props => {
       containerStyle={{zIndex: 5}}
       onChange={handleSheetChange}>
       <Text style={styles.title}>주변 {isCafe ? '카페' : '맛집'} 리스트</Text>
+      <Margin h={16} />
       <View style={styles.bodyContainer}>
         <Pressable
           style={styles.categoryTab}
@@ -90,6 +92,7 @@ const MapBottomSheet = props => {
             style={{
               ...fooiyFont.Subtitle1,
               color: currentIndex === 1 ? fooiyColor.G800 : fooiyColor.G400,
+              marginTop: 8,
             }}>
             전체 인기순
           </Text>
@@ -138,12 +141,13 @@ const styles = StyleSheet.create({
   bodyContainer: {
     flexDirection: 'row',
     backgroundColor: fooiyColor.W,
+    alignItems: 'center',
     paddingBottom: 12,
   },
   title: {
     alignSelf: 'center',
     marginTop: 5,
-    marginBottom: 16,
+    // marginBottom: 16,
     ...fooiyFont.Subtitle2,
   },
   categoryTab: {

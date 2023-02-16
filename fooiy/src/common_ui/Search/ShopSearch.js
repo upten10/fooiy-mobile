@@ -149,7 +149,7 @@ const ShopSearch = () => {
         {/* shop info */}
         <View style={{marginBottom: 8}}>
           <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.B}}>
-            {name}
+            {name.length >= 11 ? name.substr(0, 11) + '...' : name}
           </Text>
           <Text style={{...fooiyFont.Body2, color: fooiyColor.G800}}>
             {menu_price}
