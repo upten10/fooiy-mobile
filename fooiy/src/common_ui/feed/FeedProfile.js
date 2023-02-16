@@ -34,7 +34,7 @@ const FeedProfile = props => {
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() =>
-          isLogin
+          isLogin !== false
             ? onPressProfileImg()
             : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
         }>
@@ -66,7 +66,7 @@ const FeedProfile = props => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() =>
-            isLogin
+            isLogin !== false
               ? is_confirm !== true &&
                 openModal(
                   id,
