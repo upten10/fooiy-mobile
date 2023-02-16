@@ -35,8 +35,8 @@ const FeedUsefulContent = props => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() =>
-            isLogin
-              ? onClickLikeIcon
+            isLogin !== false
+              ? onClickLikeIcon()
               : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
           }
           hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
@@ -51,7 +51,7 @@ const FeedUsefulContent = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() =>
-              isLogin
+              isLogin !== false
                 ? is_confirm !== true &&
                   navigation.navigate('FeedComment', {
                     feed_id: feed_id,
@@ -73,8 +73,8 @@ const FeedUsefulContent = props => {
             activeOpacity={0.8}
             hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}
             onPress={() =>
-              isLogin
-                ? onClickShareIcon
+              isLogin !== false
+                ? onClickShareIcon()
                 : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
             }>
             <Share />
@@ -84,8 +84,8 @@ const FeedUsefulContent = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() =>
-              isLogin
-                ? onClickStoreIcon
+              isLogin !== false
+                ? onClickStoreIcon()
                 : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
             }
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>

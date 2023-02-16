@@ -54,8 +54,8 @@ const FeedImage = props => {
     return (
       <TouchableWithoutFeedback
         onPress={() =>
-          isLogin
-            ? handleDoubleTap
+          isLogin !== false
+            ? handleDoubleTap()
             : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
         }>
         <View>

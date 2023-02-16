@@ -36,7 +36,7 @@ const FeedShopInfo = props => {
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() =>
-          isLogin
+          isLogin !== false
             ? !is_confirm &&
               !disableShopButton &&
               navigation.push('Shop', {
