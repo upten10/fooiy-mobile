@@ -48,9 +48,11 @@ const Register = props => {
         ? navigation.navigate('Gallery', {
             shop: props.route.params.shop,
             navigation: 'FindMenu',
+            is_multi: true,
           })
         : navigation.navigate('Gallery', {
             navigation: 'SetAddress',
+            is_multi: true,
           }));
   };
 

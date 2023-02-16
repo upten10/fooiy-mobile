@@ -73,7 +73,10 @@ const Setting = props => {
   };
 
   const onImgPress = async () => {
-    (await GalleryPermission()) && navigation.navigate('ProfileImg');
+    navigation.navigate('Gallery', {
+      navigation: 'Mypage',
+      is_multi: false,
+    });
   };
 
   const onItemPress = navi => {

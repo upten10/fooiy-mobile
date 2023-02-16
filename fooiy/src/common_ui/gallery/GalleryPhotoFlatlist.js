@@ -12,25 +12,56 @@ const GalleryPhotoFlatlist = props => {
     setSelectedPhotoList,
     setSelectIndex,
     setCropPhoto,
+    is_multi,
   } = props;
 
   const selectPhoto = index => {
-    setCropPhoto(false);
-    if (selectedPhotoIndexList.findIndex(element => element === index) === -1) {
-      if (selectedPhotoIndexList.length === 3) {
-        return;
+    if (is_multi) {
+      setCropPhoto(false);
+      if (
+        selectedPhotoIndexList.findIndex(element => element === index) === -1
+      ) {
+        if (selectedPhotoIndexList.length === 3) {
+          return;
+        }
+        setSelectIndex(selectedPhotoIndexList.length);
+        setSelectedPhotoList([...selectedPhotoIndexList, index]);
+      } else {
+        setSelectIndex(selectedPhotoIndexList.length - 2);
+        setSelectedPhotoList(
+          selectedPhotoIndexList.filter(idx => idx !== index),
+        );
       }
-      setSelectIndex(selectedPhotoIndexList.length);
-      setSelectedPhotoList([...selectedPhotoIndexList, index]);
     } else {
-      setSelectIndex(selectedPhotoIndexList.length - 2);
-      setSelectedPhotoList(selectedPhotoIndexList.filter(idx => idx !== index));
+      setSelectedPhotoList([index]);
     }
   };
 
   const RenderPhoto = useCallback(
     props => {
       const {item, index} = props;
+      const PhotoIndicator = props => {
+        if (
+          selectedPhotoIndexList.findIndex(
+            element => element === props.index,
+          ) !== -1 &&
+          is_multi
+        ) {
+          return (
+            <View style={styles.item_index}>
+              <Text
+                style={{
+                  ...fooiyFont.Caption2,
+                  color: fooiyColor.W,
+                }}>
+                {selectedPhotoIndexList.findIndex(
+                  element => element === props.index,
+                ) + 1}
+              </Text>
+            </View>
+          );
+        }
+      };
       if (item?.node) {
         return (
           <View>
@@ -43,21 +74,7 @@ const GalleryPhotoFlatlist = props => {
                 source={{uri: item.node.image.url}}
                 style={styles.gallery_item}
               />
-              {selectedPhotoIndexList.findIndex(
-                element => element === index,
-              ) === -1 ? null : (
-                <View style={styles.item_index}>
-                  <Text
-                    style={{
-                      ...fooiyFont.Caption2,
-                      color: fooiyColor.W,
-                    }}>
-                    {selectedPhotoIndexList.findIndex(
-                      element => element === index,
-                    ) + 1}
-                  </Text>
-                </View>
-              )}
+              <PhotoIndicator index={index} />
             </TouchableOpacity>
           </View>
         );

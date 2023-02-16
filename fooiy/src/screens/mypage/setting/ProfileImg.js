@@ -41,6 +41,8 @@ const ProfileImg = props => {
 
   const dispatch = useDispatch();
 
+  console.log('here');
+
   const patchProfileImg = async data => {
     isParty === 'profile'
       ? await ApiManagerV2.patch(apiUrl.EDIT_PARTY, data, {

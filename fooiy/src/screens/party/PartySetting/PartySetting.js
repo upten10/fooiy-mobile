@@ -103,11 +103,17 @@ export default props => {
   const [curIntro, setCurIntro] = useState(introduction);
   const [isFocused, setIsFocused] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const navigation = useNavigation();
 
   const insets = useSafeAreaInsets();
 
   const onImgPress = async () => {
-    (await GalleryPermission()) && setIsVisible(true);
+    (await GalleryPermission()) &&
+      navigation.navigate('Gallery', {
+        navigation: 'Party',
+        party_id: party_id,
+        is_multi: false,
+      });
   };
 
   const onIntroFocus = () => {

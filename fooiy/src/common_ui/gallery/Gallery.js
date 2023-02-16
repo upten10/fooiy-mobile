@@ -2,11 +2,9 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor} from '../../common/globalStyles';
 import {StackHeader} from '../headers/StackHeader';
 import getGalleryPhotos from './functions/getGalleryPhotos';
-import getPhotoAddress from './functions/getPhotoAddress';
 import goNext from './functions/goNext';
 import GalleryPhotoFlatlist from './GalleryPhotoFlatlist';
 import MainPhotoView from './MainPhotoView';
@@ -23,6 +21,8 @@ const Gallery = props => {
   const onClickNextButton = () => {
     goNext(props.route.params, navigation, selectedPhotoIndexList, galleryList);
   };
+
+  console.log(props.route.params);
 
   const getPhotos = () => {
     getGalleryPhotos(
@@ -81,6 +81,7 @@ const Gallery = props => {
         setSelectedPhotoList={setSelectedPhotoList}
         setSelectIndex={setSelectIndex}
         setCropPhoto={setCropPhoto}
+        is_multi={props.route.params.is_multi}
       />
     </SafeAreaView>
   );
