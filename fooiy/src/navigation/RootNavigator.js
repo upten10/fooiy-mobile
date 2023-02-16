@@ -1,5 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../common/Enums';
 import Notification from '../common_ui/Notification';
 import Search from '../common_ui/Search/Search';
 import FindWay from '../common_ui/shop/FindWay';
@@ -13,6 +15,7 @@ import FooiytiTest from '../screens/FooiytiTest/FooiytiTest';
 import FooiytiTestHome from '../screens/FooiytiTest/FooiytiTestHome';
 import FooiytiTestResultLoading from '../screens/FooiytiTest/FooiytiTestResultLoading';
 import InformationInput from '../screens/FooiytiTest/InformationInput';
+import Agree from '../screens/Login/Agree';
 import Login from '../screens/Login/Login';
 import Map from '../screens/map/Map';
 import MenuClinic from '../screens/menu_clinic/MenuClinic';
@@ -38,12 +41,26 @@ const Stack = createStackNavigator();
 
 const RootNavigator = props => {
   const {isLoggedIn} = props;
+  const [fooiyti, setFooiyti] = useState('');
+
+  useEffect(() => {
+    getAccountInfo();
+  }, []);
+
+  const getAccountInfo = async data => {
+    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
+      params: {},
+    }).then(res => setFooiyti(res.data.payload.fooiyti));
+  };
 
   return (
     <Stack.Navigator
-      initialRouteName={isLoggedIn ? 'TabNavigator' : 'Login'}
+      initialRouteName={
+        isLoggedIn ? (fooiyti ? 'TabNavigator' : 'FooiytiTestHome') : 'Login'
+      }
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Agree" component={Agree} />
       <Stack.Screen
         name="TabNavigator"
         component={TabNavigator}

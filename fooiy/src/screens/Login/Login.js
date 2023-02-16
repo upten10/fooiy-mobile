@@ -28,13 +28,23 @@ const Login = () => {
   const dispatch = useDispatch();
   const [isLogin, setisLogin] = useState(false);
   const [auth, setAuth] = useState('');
+  const [isJoin, setIsJoin] = useState(false);
+
+  useEffect(() => {
+    route();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth, isLogin]);
+
+  useEffect(() => {
+    auth !== '' ? AsyncStorage.setItem('auth', auth) : null;
+  }, [auth, isLogin]);
 
   const getAccountInfo = async data => {
     await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
       params: {},
     }).then(res => {
       if (res.data.payload.account_info.fooiyti === null) {
-        navigation.navigate('FooiytiTestHome');
+        navigation.navigate('Agree');
       } else {
         dispatch(userInfoAction.init(res.data.payload.account_info));
         navigation.navigate('TabNavigator');
@@ -51,15 +61,6 @@ const Login = () => {
       setTimeout(() => SplashScreen.hide(), 500);
     }
   };
-
-  useEffect(() => {
-    route();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth, isLogin]);
-
-  useEffect(() => {
-    auth !== '' ? AsyncStorage.setItem('auth', auth) : null;
-  }, [auth, isLogin]);
 
   const signInWithKakao = async data => {
     const token = await login();

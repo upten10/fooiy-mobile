@@ -35,9 +35,7 @@ const Mypage = props => {
   const [feeds, setFeeds] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const [noFeedImage, setNoFeedImage] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-  const [apiLoading, setApiLoading] = useState(true);
 
   useEffect(() => {
     getFeedList(0);
@@ -79,8 +77,6 @@ const Mypage = props => {
           }
           totalCount === 0 &&
             setTotalCount(res.data.payload.feed_list.total_count);
-        } else {
-          setNoFeedImage(res.data.payload.image);
         }
       })
       .catch(e => {
@@ -148,27 +144,23 @@ const Mypage = props => {
   }, []);
 
   const ListEmptyComponent = () => {
-    if (apiLoading) {
-      return null;
-    } else {
-      return (
-        <View style={{alignItems: 'center'}}>
-          <FastImage
-            source={require('../../../../assets/image/empty_notice.png')}
-            style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
-          />
-          <Text
-            style={{
-              ...fooiyFont.Body1,
-              color: fooiyColor.G600,
-              textAlign: 'center',
-            }}>
-            아직 등록한 피드가 없어요.{'\n'}
-            방문한 음식점을 등록해보세요!
-          </Text>
-        </View>
-      );
-    }
+    return (
+      <View style={{alignItems: 'center'}}>
+        <FastImage
+          source={require('../../../../assets/image/empty_notice.png')}
+          style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
+        />
+        <Text
+          style={{
+            ...fooiyFont.Body1,
+            color: fooiyColor.G600,
+            textAlign: 'center',
+          }}>
+          아직 등록한 피드가 없어요.{'\n'}
+          방문한 음식점을 등록해보세요!
+        </Text>
+      </View>
+    );
   };
 
   const keyExtractor = useCallback((item, index) => index.toString(), []);

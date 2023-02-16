@@ -120,3 +120,8 @@ export {default as FooiytiSummary} from './fooiyti/FooiytiSummary.svg';
 export {default as FooiytiUncheck} from './fooiyti/FooiytiUncheck.svg';
 export {default as Fooiyticheck} from './fooiyti/FooiytiCheck.svg';
 export {default as Musang} from './fooiyti/Musang.svg';
+
+export {default as AgreeUncheck} from './agree_uncheck.svg';
+export {default as AgreeCheck} from './agree_check.svg';
+export {default as AgreeAllCheck} from './agree_all_check.svg';
+export {default as ArrowRight24G400} from './ArrowRight24G400.svg';
