@@ -12,10 +12,17 @@ import AnimatedLottieView from 'lottie-react-native';
 import {globalVariable} from '../../common/globalVariable';
 import FastImage from 'react-native-fast-image';
 import {fooiyColor} from '../../common/globalStyles';
+import FooiyToast from '../../common/FooiyToast';
 
 const FeedImage = props => {
-  const {images, is_confirm, animationProgress, onClickLikeIcon, likeIcon} =
-    props;
+  const {
+    images,
+    is_confirm,
+    animationProgress,
+    onClickLikeIcon,
+    likeIcon,
+    isLogin,
+  } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
   // 두번 터치 감지
   var lastTap = null;
@@ -45,7 +52,12 @@ const FeedImage = props => {
 
   const ImageUI = item => {
     return (
-      <TouchableWithoutFeedback onPress={handleDoubleTap}>
+      <TouchableWithoutFeedback
+        onPress={() =>
+          isLogin
+            ? handleDoubleTap
+            : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
+        }>
         <View>
           <FastImage
             source={{

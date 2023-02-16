@@ -108,8 +108,9 @@ export const StackHeader = props => {
 
 const styles = StyleSheet.create({
   header_container: {
+    ...fooiyFont.Subtitle2,
+    color: fooiyColor.B,
     height: 56,
-    fontSize: 14,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

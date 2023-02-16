@@ -1,10 +1,10 @@
-import React, {memo} from 'react';
-import {View, Text, StyleSheet, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {globalVariable} from '../../common/globalVariable';
+import React, {memo} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-
+import {globalVariable} from '../../common/globalVariable';
 import {
+  ArrowIcon,
   TasteEvaluation10,
   TasteEvaluation30,
   TasteEvaluation50,
@@ -12,7 +12,7 @@ import {
   TasteEvaluation99,
 } from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {ArrowIcon} from '../../../assets/icons/svg';
+import FooiyToast from '../../common/FooiyToast';
 
 const FeedShopInfo = props => {
   const {
@@ -27,6 +27,7 @@ const FeedShopInfo = props => {
     disableShopButton,
     setModalVisible,
     is_confirm,
+    isLogin,
   } = props;
   const navigation = useNavigation();
 
@@ -34,18 +35,19 @@ const FeedShopInfo = props => {
     <View style={styles.container}>
       <TouchableOpacity
         activeOpacity={0.8}
-        onPress={() => {
-          if (!is_confirm) {
-            !disableShopButton &&
+        onPress={() =>
+          isLogin
+            ? !is_confirm &&
+              !disableShopButton &&
               navigation.push('Shop', {
                 shop_id: shop_id,
                 shop_name: shop_name,
                 shop_address: shop_address,
                 shop_longitude: longitude,
                 shop_latitude: latitude,
-              });
-          }
-        }}>
+              })
+            : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
+        }>
         <View style={styles.shop_info_container}>
           <View style={styles.shop_info}>
             <View>

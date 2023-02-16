@@ -5,12 +5,14 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
   Image,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import Modal from 'react-native-modal';
 import NaverMapView from 'react-native-nmap';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
@@ -19,7 +21,6 @@ import {
   CommonShop36,
   Current_Location,
 } from '../../../../assets/icons/svg';
-import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {
@@ -27,8 +28,8 @@ import {
   LocationPermission,
 } from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import Modal from 'react-native-modal';
 import Margin from '../../../common_ui/Margin';
+
 const width = Dimensions.get('window').width;
 const SetAddress = props => {
   const navigation = useNavigation();
@@ -205,40 +206,7 @@ const SetAddress = props => {
           scaleBar={false}
           rotateGesturesEnabled={false}
           tiltGesturesEnabled={false}
-          logoMargin={Platform.select({
-            ios: {
-              left: 16,
-              bottom: 16 + 24,
-            },
-            android: {
-              left: 16,
-              bottom: 16 + 24 + 24,
-            },
-          })}>
-          {btnActivate ? (
-            <Image
-              source={require('../../../../assets/image/Center_Marker.png')}
-              style={{
-                width: 34,
-                height: 42,
-                left: globalVariable.width / 2 - 17,
-                top:
-                  (globalVariable.height - 56 - insets.top - 258 + 16) / 2 - 21,
-              }}
-            />
-          ) : (
-            <Image
-              source={require('../../../../assets/image/Center_Marker_Gray.png')}
-              style={{
-                width: 34,
-                height: 42,
-                left: globalVariable.width / 2 - 17,
-                top:
-                  (globalVariable.height - 56 - insets.top - 258 + 16) / 2 - 21,
-              }}
-            />
-          )}
-        </NaverMapView>
+          logoMargin={{left: 16, bottom: 16 + 24}}></NaverMapView>
       </View>
       <View style={styles.current_location}>
         <TouchableOpacity onPress={onClickLocationBtn}>
@@ -269,6 +237,37 @@ const SetAddress = props => {
           <Text style={styles.input_adress_text}>주소 직접 입력</Text>
         </TouchableOpacity>
       </View>
+      {btnActivate ? (
+        <Image
+          source={require('../../../../assets/image/Center_Marker.png')}
+          style={{
+            position: 'absolute',
+            width: 34,
+            height: 42,
+            left: globalVariable.width / 2 - 17,
+            top:
+              insets.top +
+              56 +
+              (globalVariable.height - 56 - insets.top - 258 + 16) / 2 -
+              42,
+          }}
+        />
+      ) : (
+        <Image
+          source={require('../../../../assets/image/Center_Marker_Gray.png')}
+          style={{
+            position: 'absolute',
+            width: 34,
+            height: 42,
+            left: globalVariable.width / 2 - 17,
+            top:
+              insets.top +
+              56 +
+              (globalVariable.height - 56 - insets.top - 258 + 16) / 2 -
+              42,
+          }}
+        />
+      )}
       <Modal
         isVisible={isModalVisible}
         onBackdropPress={toggleModal}

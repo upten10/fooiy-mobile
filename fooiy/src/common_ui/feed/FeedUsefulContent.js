@@ -12,6 +12,7 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {useNavigation} from '@react-navigation/native';
+import FooiyToast from '../../common/FooiyToast';
 
 const FeedUsefulContent = props => {
   const {
@@ -25,6 +26,7 @@ const FeedUsefulContent = props => {
     storeIcon,
     is_confirm,
     count_comment,
+    isLogin,
   } = props;
   const navigation = useNavigation();
   return (
@@ -32,7 +34,11 @@ const FeedUsefulContent = props => {
       <View style={styles.ic_fork}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={onClickLikeIcon}
+          onPress={() =>
+            isLogin
+              ? onClickLikeIcon
+              : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
+          }
           hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
           {likeIcon ? <ForkFocused /> : <Fork />}
         </TouchableOpacity>
@@ -45,11 +51,13 @@ const FeedUsefulContent = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() =>
-              is_confirm !== true &&
-              navigation.navigate('FeedComment', {
-                feed_id: feed_id,
-                feed_account_id: account_id,
-              })
+              isLogin
+                ? is_confirm !== true &&
+                  navigation.navigate('FeedComment', {
+                    feed_id: feed_id,
+                    feed_account_id: account_id,
+                  })
+                : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
             }
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
             <Comment />
@@ -64,14 +72,22 @@ const FeedUsefulContent = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}
-            onPress={onClickShareIcon}>
+            onPress={() =>
+              isLogin
+                ? onClickShareIcon
+                : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
+            }>
             <Share />
           </TouchableOpacity>
         </View>
         <View style={styles.ic_store}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={onClickStoreIcon}
+            onPress={() =>
+              isLogin
+                ? onClickStoreIcon
+                : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
+            }
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
             {storeIcon ? <StoreFocused /> : <Store />}
           </TouchableOpacity>

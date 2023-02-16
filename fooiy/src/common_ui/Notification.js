@@ -55,6 +55,7 @@ const Notification = props => {
 
   const NotificationItem = item => {
     const notificationList = item;
+    console.log(notificationList.image);
     return (
       <TouchableOpacity
         style={{
@@ -83,7 +84,7 @@ const Notification = props => {
           {notificationList.title}
         </Text>
         <View style={{flexDirection: 'row'}}>
-          {notificationList.image === '' ? null : (
+          {notificationList.image === null ? null : (
             <Image
               source={{uri: notificationList.image}}
               style={styles.image}

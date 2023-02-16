@@ -21,7 +21,10 @@ export const globalVariable = {
   }),
   permission_gallery: Platform.select({
     ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
-    android: PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+    android: [
+      PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+      PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+    ],
   }),
   permission_location: Platform.select({
     ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,

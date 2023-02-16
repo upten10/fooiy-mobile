@@ -225,6 +225,7 @@ const UI_Feed = item => {
           openModal={openModal}
           id={item.id}
           is_confirm={item.is_confirm}
+          isLogin={item.isLogin}
         />
       </View>
       <Margin h={16} />
@@ -235,6 +236,7 @@ const UI_Feed = item => {
         animationProgress={animationProgress}
         onClickLikeIcon={onClickLikeIcon}
         likeIcon={likeIcon}
+        isLogin={item.isLogin}
       />
 
       {/* 유용한 기능 포크, 댓글 등등 */}
@@ -249,6 +251,7 @@ const UI_Feed = item => {
         is_confirm={item.is_confirm}
         storeIcon={storeIcon}
         count_comment={item.count_comment}
+        isLogin={item.isLogin}
       />
 
       <FeedShopInfo
@@ -263,6 +266,7 @@ const UI_Feed = item => {
         disableShopButton={disableShopButton}
         setModalVisible={setModalVisible}
         is_confirm={item.is_confirm}
+        isLogin={item.isLogin}
       />
 
       <FeedDescription

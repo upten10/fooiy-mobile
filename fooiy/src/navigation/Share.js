@@ -1,18 +1,18 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {Text, TouchableOpacity, View, Image} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import MainNavigator from './MainNavigator';
+import React, {useEffect, useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import SplashScreen from 'react-native-splash-screen';
+import {GoBackArrow} from '../../assets/icons/svg';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
+import {fooiyColor, fooiyFont} from '../common/globalStyles';
 import UI_Feed from '../common_ui/feed/UI_Feed';
-import {GuestFeed} from '../common_ui/feed/GuestFeed';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Share = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  console.log(route.params);
 
   const [item, setItem] = useState();
   const [isLogin, setisLogin] = useState(false);
@@ -22,8 +22,6 @@ const Share = () => {
     if (value) {
       setisLogin(true);
     }
-    console.log(value);
-    console.log(123);
   };
 
   const getFeedId = async () => {
@@ -48,16 +46,15 @@ const Share = () => {
   useEffect(() => {
     getFeedId();
     check_login();
+    SplashScreen.hide();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <SafeAreaView style={{backgroundColor: 'white'}}>
-      {/* <StackHeader title={'피드'} /> */}
       <View
         style={{
-          width: '100%',
-          height: 30,
+          height: 56,
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'row',
@@ -65,22 +62,17 @@ const Share = () => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
-            navigation.navigate(MainNavigator, {
-              screen: 'TabNavigator',
-            });
+            isLogin
+              ? navigation.navigate('TabNavigator')
+              : navigation.navigate('Login');
           }}
           style={{position: 'absolute', left: 16}}>
-          <Image
-            // style={styles.go_back_logo}
-            source={require('../../assets/icons/navigation/ic_go_back.png')}
-          />
+          <GoBackArrow />
         </TouchableOpacity>
-        <Text>피드</Text>
+        <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.B}}>피드</Text>
       </View>
       <View style={{backgroundColor: 'white', height: '100%'}}>
-        {isLogin
-          ? item && <UI_Feed {...item} />
-          : item && <GuestFeed {...item} />}
+        {item && <UI_Feed {...item} isLogin={isLogin} />}
       </View>
     </SafeAreaView>
   );

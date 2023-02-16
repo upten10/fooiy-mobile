@@ -1,13 +1,12 @@
-import React, {memo} from 'react';
-import {Text, StyleSheet, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
-
+import React, {memo} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {fooiyFont, fooiyColor} from '../../common/globalStyles';
-
-import Rank from '../Rank';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {MoreVertIcon} from '../../../assets/icons/svg';
+import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import Rank from '../Rank';
 
 const FeedProfile = props => {
   const {
@@ -20,6 +19,7 @@ const FeedProfile = props => {
     id,
     content,
     is_confirm,
+    isLogin,
   } = props;
   const navigation = useNavigation();
   const onPressProfileImg = () => {
@@ -30,7 +30,13 @@ const FeedProfile = props => {
 
   return (
     <View style={styles.profile_container}>
-      <TouchableOpacity activeOpacity={0.8} onPress={() => onPressProfileImg()}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() =>
+          isLogin
+            ? onPressProfileImg()
+            : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
+        }>
         <View style={styles.info_container}>
           <FastImage
             source={{
@@ -58,16 +64,18 @@ const FeedProfile = props => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() =>
-            is_confirm !== true &&
-            openModal(
-              id,
-              account_id,
-              profile_image,
-              nickname,
-              rank,
-              fooiyti,
-              content,
-            )
+            isLogin
+              ? is_confirm !== true &&
+                openModal(
+                  id,
+                  account_id,
+                  profile_image,
+                  nickname,
+                  rank,
+                  fooiyti,
+                  content,
+                )
+              : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
           }>
           <MoreVertIcon />
         </TouchableOpacity>

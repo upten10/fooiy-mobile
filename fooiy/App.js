@@ -116,7 +116,7 @@ const App = () => {
     prefixes: ['kakaoadeeb3a64a0ef610048dbcbe1010c07f://'],
     config: {
       screens: {
-        Test: 'kakaolink',
+        Share: 'kakaolink',
       },
     },
   };
