@@ -79,6 +79,10 @@ const goNext = (params, navigation, selectedPhotoIndexList, galleryList) => {
             res.data.success && navigation.navigate(params.navigation);
           })
           .catch(e => FooiyToast.error());
+      } else if (params.partyCreate) {
+        params.toggleAlbum();
+        params.setImage(galleryList[selectedPhotoIndexList].node.image);
+        params.setImageType(type);
       }
     }
   }

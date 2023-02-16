@@ -19,10 +19,15 @@ const Gallery = props => {
   const [selectIndex, setSelectIndex] = useState(0);
   const [selectedPhotoIndexList, setSelectedPhotoList] = useState([]);
   const onClickNextButton = () => {
-    goNext(props.route.params, navigation, selectedPhotoIndexList, galleryList);
+    props['partyCreate']
+      ? goNext(props, navigation, selectedPhotoIndexList, galleryList)
+      : goNext(
+          props.route.params,
+          navigation,
+          selectedPhotoIndexList,
+          galleryList,
+        );
   };
-
-  console.log(props.route.params);
 
   const getPhotos = () => {
     getGalleryPhotos(
@@ -81,7 +86,7 @@ const Gallery = props => {
         setSelectedPhotoList={setSelectedPhotoList}
         setSelectIndex={setSelectIndex}
         setCropPhoto={setCropPhoto}
-        is_multi={props.route.params.is_multi}
+        is_multi={props.route?.params.is_multi}
       />
     </SafeAreaView>
   );

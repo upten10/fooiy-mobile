@@ -22,6 +22,7 @@ import ProfileImg from '../../mypage/setting/ProfileImg';
 import {useDebounce} from '../../../common/hooks/useDebounce';
 import {isEmpty} from 'lodash';
 import Margin from '../../../common_ui/Margin';
+import Gallery from '../../../common_ui/gallery/Gallery';
 
 const Title = props => {
   const {index} = props;
@@ -356,8 +357,8 @@ export default props => {
           height: globalVariable.height,
           // borderWidth: 1,
         }}>
-        <ProfileImg
-          isParty={'create'}
+        <Gallery
+          partyCreate={true}
           toggleAlbum={toggleAlbum}
           setImage={setImage}
           setIsVisible={setIsVisible}
