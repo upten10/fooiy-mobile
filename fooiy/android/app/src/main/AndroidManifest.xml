@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     
     <!-- 갤러리 권한 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     
     <!-- 위치 권한 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -57,5 +57,11 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="oingm1h0rz" />
       <!-- 네이버 지도 -->
+      <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+      <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/P500" />
     </application>
 </manifest>

@@ -45,10 +45,8 @@ const GalleryPermission = async () => {
     : await requestMultiple(globalVariable.permission_gallery)
         .then(res => {
           if (
-            res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === 'denied' ||
-            res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === 'denied' ||
-            res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === 'blocked' ||
-            res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === 'blocked'
+            res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] !== 'granted' &&
+            res[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] !== 'granted'
           ) {
             Alert.alert(
               '서비스 이용 알림',
