@@ -10,7 +10,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import messaging from '@react-native-firebase/messaging';
 import {requestNotifications, RESULTS} from 'react-native-permissions';
-import {ArrowIconRight24, Total_2} from '../../../assets/icons/svg';
+import {ArrowIconRight24, MenuClinicIcon} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -134,8 +134,10 @@ const Feed = props => {
           onPress={() => stackNavigation.navigate('MenuClinic')}>
           <View style={styles.header_container}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Total_2 />
-              <View style={{marginLeft: 14}}>
+              <View style={{paddingTop: 8, paddingLeft: 4}}>
+                <MenuClinicIcon />
+              </View>
+              <View style={{marginLeft: 16}}>
                 <Text style={{...fooiyFont.Body2, color: fooiyColor.G600}}>
                   지금 뭐 먹을지 고민된다면?
                 </Text>

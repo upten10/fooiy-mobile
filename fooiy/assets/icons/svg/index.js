@@ -125,3 +125,5 @@ export {default as AgreeUncheck} from './agree_uncheck.svg';
 export {default as AgreeCheck} from './agree_check.svg';
 export {default as AgreeAllCheck} from './agree_all_check.svg';
 export {default as ArrowRight24G400} from './ArrowRight24G400.svg';
+
+export {default as MenuClinicIcon} from './menu_clinic_icon.svg';
