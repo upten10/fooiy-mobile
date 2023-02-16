@@ -56,7 +56,6 @@ const ShopSearch = () => {
         {
           setShop([...shops, ...res.data.payload.shop_list.results]);
           setTotalCount(res.data.payload.shop_list.total_count);
-          console.log('토탈카운트', res.data.payload.shop_list.total_count);
         }
       })
       .catch(e => FooiyToast.error());

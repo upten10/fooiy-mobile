@@ -115,7 +115,7 @@ const AnnouncementModal = props => {
         supported => {
           supported && Linking.openURL(link);
         },
-        err => console.log(err),
+        err => FooiyToast.error(),
       );
     };
 

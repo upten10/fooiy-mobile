@@ -81,12 +81,9 @@ const Setting = props => {
   };
 
   const onLinkPress = link => {
-    Linking.canOpenURL(link).then(
-      supported => {
-        supported && Linking.openURL(link);
-      },
-      err => console.log(err),
-    );
+    Linking.canOpenURL(link).then(supported => {
+      supported && Linking.openURL(link);
+    });
   };
 
   const onPressLogout = () => {

@@ -26,16 +26,11 @@ const Share = () => {
   };
 
   const getFeedId = async () => {
-    ApiManagerV2.interceptors.request.use(
-      async config => {
-        config.headers.Authorization =
-          'fooiy!@123hzqlfhrmdls02WEBasejkfbkajsbefkj123123123fassjefbkasjb!@*sgdrkln1aeg123';
-        return config;
-      },
-      error => {
-        // console.log("requestError====>", error);
-      },
-    );
+    ApiManagerV2.interceptors.request.use(async config => {
+      config.headers.Authorization =
+        'fooiy!@123hzqlfhrmdls02WEBasejkfbkajsbefkj123123123fassjefbkasjb!@*sgdrkln1aeg123';
+      return config;
+    });
     await ApiManagerV2.get(apiUrl.RETRIEVE_FEED, {
       params: {
         feed_id: route.params.feed_id,

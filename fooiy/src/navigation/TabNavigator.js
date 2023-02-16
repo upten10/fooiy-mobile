@@ -85,13 +85,6 @@ const TabNavigator = () => {
                 navigation.navigate(route.name);
               } catch (error) {}
             },
-            // beforeRemove: e => {
-            //   try {
-            //     e.preventDefault();
-            //   } catch (error) {
-            //     console.log(error);
-            //   }
-            // },
           })}
         />
       ))}

@@ -62,7 +62,6 @@ const ProfileImg = props => {
           },
         })
           .then(res => {
-            console.log(JSON.stringify(data));
             dispatch(userInfoAction.edit(res.data.payload.account_info));
           })
           .then(navigation.goBack())
@@ -72,7 +71,6 @@ const ProfileImg = props => {
   const enroll = async () => {
     if (selectIndex === -1) {
       // 사진 하나는 골라야한다는 경고 로직 추가
-      console.warn('프사 안고름');
     } else {
       const photo = Platform.select({
         ios: galleryOriginalListIOS[selectIndex]
@@ -161,7 +159,7 @@ const ProfileImg = props => {
         setGalleryList([...galleryList, ...edges]);
       }
     } catch (error) {
-      console.log('[takeStore getPhotos error occured] ', error);
+      FooiyToast.error();
     }
   };
 

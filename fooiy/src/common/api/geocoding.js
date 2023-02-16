@@ -1,6 +1,5 @@
 import axios from 'axios';
 export const geocoding = async (longitude, latitude, setAddress) => {
-  console.log(longitude, latitude);
   await axios
     .get(
       'https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=' +

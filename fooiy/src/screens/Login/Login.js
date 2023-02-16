@@ -91,13 +91,6 @@ const Login = () => {
       requestedOperation: appleAuth.Operation.LOGIN,
       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
     });
-    console.log('responseObject:::', responseObject);
-    const credentialState = await appleAuth.getCredentialStateForUser(
-      responseObject.user,
-    );
-    if (credentialState === appleAuth.State.AUTHORIZED) {
-      console.log('user is authenticated');
-    }
 
     ApiManagerV2.post(apiUrl.APPLE_LOGIN, {
       social_id: responseObject.user,

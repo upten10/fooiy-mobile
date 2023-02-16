@@ -51,10 +51,8 @@ export default props => {
   const onPressSubscribeBtn = () => {
     switch (join_state) {
       case 'subscribe':
-        console.log('가입돼있음');
         break;
       case 'confirm':
-        console.log('승인 대기중');
         break;
       default:
         joinParty();

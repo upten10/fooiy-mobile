@@ -59,7 +59,6 @@ export const DefaultHeader = props => {
         {flatListRef !== undefined ? (
           <TouchableWithoutFeedback
             onPress={() => {
-              console.log('header');
               if (flatListRef.current !== null) {
                 toTop();
               }

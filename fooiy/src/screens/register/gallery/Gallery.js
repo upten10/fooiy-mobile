@@ -15,6 +15,7 @@ import RNFS from 'react-native-fs';
 import {CropView} from 'react-native-image-crop-tools';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -121,7 +122,7 @@ const Gallery = props => {
         setGalleryList([...galleryList, ...edges]);
       }
     } catch (error) {
-      console.log('[takeStore getPhotos error occured] ', error);
+      FooiyToast.error();
     }
   };
 

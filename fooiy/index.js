@@ -7,7 +7,9 @@ import App from './App';
 import {name as appName} from './app.json';
 
 if (__DEV__) {
-  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
+  import('./ReactotronConfig')
+    .then(() => console.log('Reactotron Configured'))
+    .catch(e => {});
 }
 
 Text.defaultProps = Text.defaultProps || {};

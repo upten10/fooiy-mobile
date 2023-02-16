@@ -140,7 +140,6 @@ const FeedComment = props => {
   };
 
   const registerComment = async () => {
-    console.log(feed_id, workingComment.comment_id, value);
     value.length !== 0 &&
       (await ApiManagerV2.post(apiUrl.FEED_COMMENT, {
         feed_id: feed_id,

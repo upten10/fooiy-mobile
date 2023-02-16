@@ -33,9 +33,7 @@ export default props => {
       transformRequest: (formData, headers) => {
         return formData;
       },
-    })
-      .then(res => console.log('파티 생성'))
-      .catch(e => FooiyToast.error());
+    }).catch(e => FooiyToast.error());
   };
 
   useEffect(() => {

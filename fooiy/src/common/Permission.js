@@ -23,9 +23,7 @@ const CameraPermission = async () => {
         return true;
       }
     })
-    .catch(error => {
-      console.log(error, 'Error!');
-    });
+    .catch(error => {});
 };
 
 const GalleryPermission = async () => {
@@ -43,9 +41,7 @@ const GalleryPermission = async () => {
             return true;
           }
         })
-        .catch(error => {
-          console.log(error, 'Error!');
-        })
+        .catch(error => {})
     : await requestMultiple(globalVariable.permission_gallery)
         .then(res => {
           if (
@@ -64,16 +60,14 @@ const GalleryPermission = async () => {
             return true;
           }
         })
-        .catch(error => {
-          console.log(error, 'Error!');
-        });
+        .catch(error => {});
 };
 
 const LocationPermission = async () => {
   return Platform.OS === 'ios'
-    ? (requestLocationAccuracy({purposeKey: 'full-accuracy'})
-        .then(accuracy => console.log(`Location accuracy is: ${accuracy}`))
-        .catch(() => console.warn('Cannot request location accuracy')),
+    ? (requestLocationAccuracy({purposeKey: 'full-accuracy'}).catch(
+        error => {},
+      ),
       await request(globalVariable.permission_location)
         .then(res => {
           if (res === 'blocked' || res === 'denied') {
@@ -87,9 +81,7 @@ const LocationPermission = async () => {
             return true;
           }
         })
-        .catch(error => {
-          console.log(error, 'Error!');
-        }))
+        .catch(error => {}))
     : await requestMultiple(globalVariable.permission_location)
         .then(res => {
           if (
@@ -108,9 +100,7 @@ const LocationPermission = async () => {
             return true;
           }
         })
-        .catch(error => {
-          console.log(error, 'Error!');
-        });
+        .catch(error => {});
 };
 const CheckLocationPermission = async () => {
   return Platform.OS === 'ios'
@@ -122,9 +112,7 @@ const CheckLocationPermission = async () => {
             return true;
           }
         })
-        .catch(error => {
-          console.log(error, 'Error!');
-        })
+        .catch(error => {})
     : await checkMultiple(globalVariable.permission_location)
         .then(res => {
           if (
@@ -138,9 +126,7 @@ const CheckLocationPermission = async () => {
             return true;
           }
         })
-        .catch(error => {
-          console.log(error, 'Error!');
-        });
+        .catch(error => {});
 };
 
 export {CameraPermission};

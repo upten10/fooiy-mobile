@@ -66,10 +66,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // Test
   useEffect(() => {
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      // remoteMessage ? console.log('true') : console.log('false');
-      console.log(remoteMessage, 'Test notification');
-    });
+    messaging().setBackgroundMessageHandler(async remoteMessage => {});
   }, []);
   // Background Notification
   useEffect(() => {
@@ -85,10 +82,10 @@ const App = () => {
   //       console.log(remoteMessage, 'Quit notification');
   //     });
   // }, []);
+  //
   // Foreground Notification
   useEffect(() => {
     messaging().onMessage(async remoteMessage => {
-      console.log(remoteMessage, 'Foreground notification');
       const {notification} = remoteMessage;
       if (notification !== null) {
         const {title, body} = notification;
@@ -146,9 +143,7 @@ const App = () => {
                   screen_class: currentRouteName,
                 })
                 .then(() => {})
-                .catch(err => {
-                  console.warn(err);
-                });
+                .catch(err => {});
             }
             routeNameRef.current = currentRouteName;
           }}>

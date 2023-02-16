@@ -62,7 +62,6 @@ const Storage = () => {
   }, [value]);
 
   const toTop = () => {
-    console.log('top');
     if (flatListRef.current !== null) {
       flatListRef.current.scrollToOffset({
         offset: 0,

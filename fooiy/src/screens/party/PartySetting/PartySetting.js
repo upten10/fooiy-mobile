@@ -125,9 +125,7 @@ export default props => {
     await ApiManagerV2.patch(apiUrl.EDIT_PARTY, {
       party_id,
       introduction: curIntro === '' ? ' ' : curIntro,
-    })
-      .then(res => console.log('인사말 수정'))
-      .catch(e => FooiyToast.error());
+    }).catch(e => FooiyToast.error());
   };
   const toggleAlbum = () => {
     setIsVisible(false);

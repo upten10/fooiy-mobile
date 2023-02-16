@@ -2,6 +2,7 @@ import axios from 'axios';
 import {Platform} from 'react-native';
 import {getUniqueId} from 'react-native-device-info';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FooiyToast from '../../FooiyToast';
 // import {BASEURL, AUTHORIZATION, DEVICEID} from '@env';
 const BASEURL = 'http://dev-api.fooiy.com/api/v2/';
 // const BASEURL = 'https://api.fooiy.com/api/v2/';
@@ -29,18 +30,14 @@ ApiManagerV2.interceptors.request.use(
     }
     return config;
   },
-  error => {
-    console.log('requestError====>', error);
-  },
+  error => FooiyToast.error(),
 );
 
 ApiManagerV2.interceptors.response.use(
   response => {
     return response;
   },
-  error => {
-    // console.log("responseError====>", error);
-  },
+  error => FooiyToast.error(),
 );
 
 export {ApiManagerV2};

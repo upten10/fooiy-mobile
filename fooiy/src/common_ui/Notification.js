@@ -58,7 +58,6 @@ const Notification = props => {
 
   const NotificationItem = item => {
     const notificationList = item;
-    console.log(notificationList.image);
     return (
       <TouchableOpacity
         style={{

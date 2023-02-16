@@ -69,9 +69,7 @@ const Suggestion = () => {
     await ApiManagerV2.post(apiUrl.SUGGESTION, {
       content,
       type,
-    })
-      .then(console.log('문의함 전송 완료'))
-      .catch(e => FooiyToast.error());
+    }).catch(e => FooiyToast.error());
   };
 
   const onPressBtn = () => {
