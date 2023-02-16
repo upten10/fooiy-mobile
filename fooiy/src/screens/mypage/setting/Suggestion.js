@@ -23,6 +23,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
+import FooiyToast from '../../../common/FooiyToast';
 
 const Suggestion = () => {
   const insets = useSafeAreaInsets();
@@ -68,7 +69,9 @@ const Suggestion = () => {
     await ApiManagerV2.post(apiUrl.SUGGESTION, {
       content,
       type,
-    }).then(console.log('문의함 전송 완료'));
+    })
+      .then(console.log('문의함 전송 완료'))
+      .catch(e => FooiyToast.error());
   };
 
   const onPressBtn = () => {

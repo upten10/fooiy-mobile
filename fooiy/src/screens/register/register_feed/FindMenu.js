@@ -17,6 +17,7 @@ import {apiUrl} from '../../../common/Enums';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {Search_Icon} from '../../../../assets/icons/svg';
+import FooiyToast from '../../../common/FooiyToast';
 
 const FindMenu = props => {
   const shop_id = props.route.params.shop.shop_id
@@ -37,10 +38,12 @@ const FindMenu = props => {
         type: 'select_menu',
         shop_id: shop_id,
       },
-    }).then(res => {
-      setMenuList(res.data.payload.menu_list);
-      setSearchMenu(res.data.payload.menu_list);
-    });
+    })
+      .then(res => {
+        setMenuList(res.data.payload.menu_list);
+        setSearchMenu(res.data.payload.menu_list);
+      })
+      .catch(e => FooiyToast.error());
   };
   const onChangeText = text => {
     const nextData = menuList.filter(

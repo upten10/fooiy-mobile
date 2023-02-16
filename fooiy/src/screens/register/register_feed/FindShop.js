@@ -17,6 +17,7 @@ import {apiUrl} from '../../../common/Enums';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {Search_Icon} from '../../../../assets/icons/svg';
+import FooiyToast from '../../../common/FooiyToast';
 
 const FindShop = props => {
   const [shopList, setShopList] = useState([]);
@@ -31,10 +32,12 @@ const FindShop = props => {
         address: props.route.params.address,
         shop_category: props.route.params.category,
       },
-    }).then(res => {
-      setShopList(res.data.payload.shop_list.results),
-        setSearchShop(res.data.payload.shop_list.results);
-    });
+    })
+      .then(res => {
+        setShopList(res.data.payload.shop_list.results),
+          setSearchShop(res.data.payload.shop_list.results);
+      })
+      .catch(e => FooiyToast.error());
   };
   const onChangeText = text => {
     const nextData = shopList.filter(

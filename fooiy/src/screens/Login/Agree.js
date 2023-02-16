@@ -76,7 +76,7 @@ export default props => {
         res =>
           res.data.success === true && navigation.navigate('FooiytiTestHome'),
       )
-      .catch(FooiyToast.error());
+      .catch(e => FooiyToast.error());
   };
 
   const AgreeAllTab = () => {

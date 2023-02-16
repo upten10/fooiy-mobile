@@ -12,6 +12,7 @@ import FastImage from 'react-native-fast-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -41,9 +42,11 @@ const OtherUserPage = props => {
       params: {
         other_account_id,
       },
-    }).then(res => {
-      setOtherUserInfo(res.data.payload.account_info);
-    });
+    })
+      .then(res => {
+        setOtherUserInfo(res.data.payload.account_info);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const getFeedList = async data => {
@@ -54,17 +57,19 @@ const OtherUserPage = props => {
         type: 'image',
         other_account_id,
       },
-    }).then(res => {
-      if (res.data.payload.image === undefined) {
-        setFeeds([...feeds, ...res.data.payload.feed_list.results]);
-        if (totalCount === -1) {
-          setOffset(offset + limit);
-          setTotalCount(res.data.payload.feed_list.total_count);
+    })
+      .then(res => {
+        if (res.data.payload.image === undefined) {
+          setFeeds([...feeds, ...res.data.payload.feed_list.results]);
+          if (totalCount === -1) {
+            setOffset(offset + limit);
+            setTotalCount(res.data.payload.feed_list.total_count);
+          }
+        } else {
+          setNoFeedImage(res.data.payload.image);
         }
-      } else {
-        setNoFeedImage(res.data.payload.image);
-      }
-    });
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const loadMoreFeeds = () => {

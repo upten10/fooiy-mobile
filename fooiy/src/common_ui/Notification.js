@@ -12,6 +12,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
+import FooiyToast from '../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../common/globalStyles';
 import elapsedTime from '../common/helpers/elapsedTime';
 import {StackHeader} from './headers/StackHeader';
@@ -28,16 +29,18 @@ const Notification = props => {
         limit: 20,
         offset: offset,
       },
-    }).then(res => {
-      if (res.data.payload.push_notifications) {
-        setNotification([
-          ...notification,
-          ...res.data.payload.push_notifications.results,
-        ]);
-        totalCount === 0 &&
-          setTotalCount(res.data.payload.push_notifications.total_count);
-      }
-    });
+    })
+      .then(res => {
+        if (res.data.payload.push_notifications) {
+          setNotification([
+            ...notification,
+            ...res.data.payload.push_notifications.results,
+          ]);
+          totalCount === 0 &&
+            setTotalCount(res.data.payload.push_notifications.total_count);
+        }
+      })
+      .catch(e => FooiyToast.error());
   };
   const loadMoreItem = () => {
     if (totalCount > offset + 20) {

@@ -12,6 +12,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {PartyIcon} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
@@ -31,9 +32,11 @@ const Party = props => {
   const getPartyList = async () => {
     await ApiManagerV2.get(apiUrl.MY_PARTY_LIST, {
       params: {},
-    }).then(res => {
-      setPartyList(res.data.payload.party_list);
-    });
+    })
+      .then(res => {
+        setPartyList(res.data.payload.party_list);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const onPressCreate = () => {

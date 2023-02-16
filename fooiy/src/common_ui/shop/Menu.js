@@ -12,6 +12,7 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Notice_24, Notice_24_Bold} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../headers/StackHeader';
@@ -47,7 +48,9 @@ const Menu = props => {
       params: {
         shop_id: shopInfo.shop_id,
       },
-    }).then(res => setMenu(res.data.payload.menu_list));
+    })
+      .then(res => setMenu(res.data.payload.menu_list))
+      .catch(e => FooiyToast.error());
   };
 
   const onclickReport = () => {

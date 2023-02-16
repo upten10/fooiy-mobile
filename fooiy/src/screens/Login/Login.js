@@ -19,6 +19,7 @@ import {
 } from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
@@ -42,14 +43,16 @@ const Login = () => {
   const getAccountInfo = async data => {
     await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
       params: {},
-    }).then(res => {
-      if (res.data.payload.account_info.fooiyti === null) {
-        navigation.navigate('Agree');
-      } else {
-        dispatch(userInfoAction.init(res.data.payload.account_info));
-        navigation.navigate('TabNavigator');
-      }
-    });
+    })
+      .then(res => {
+        if (res.data.payload.account_info.fooiyti === null) {
+          navigation.navigate('Agree');
+        } else {
+          dispatch(userInfoAction.init(res.data.payload.account_info));
+          navigation.navigate('TabNavigator');
+        }
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const route = async () => {
@@ -73,9 +76,11 @@ const Login = () => {
       app_version: globalVariable.app_version,
       device_id: DEVICEID,
       fcm_token: '0',
-    }).then(res => {
-      setAuth(res.data.payload.account_info.account_token);
-    });
+    })
+      .then(res => {
+        setAuth(res.data.payload.account_info.account_token);
+      })
+      .catch(e => FooiyToast.error());
     token ? setisLogin(true) : null;
   };
 
@@ -100,10 +105,12 @@ const Login = () => {
       app_version: '1.2.0',
       device_id: DEVICEID,
       fcm_token: '0',
-    }).then(res => {
-      setAuth(res.data.payload.account_info.account_token);
-      appleAuth.State.AUTHORIZED === 1 ? setisLogin(true) : null;
-    });
+    })
+      .then(res => {
+        setAuth(res.data.payload.account_info.account_token);
+        appleAuth.State.AUTHORIZED === 1 ? setisLogin(true) : null;
+      })
+      .catch(e => FooiyToast.error());
   };
 
   if (Platform.OS === 'android') {

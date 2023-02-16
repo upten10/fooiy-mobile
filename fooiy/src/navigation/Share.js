@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {GoBackArrow} from '../../assets/icons/svg';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
+import FooiyToast from '../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../common/globalStyles';
 import UI_Feed from '../common_ui/feed/UI_Feed';
 
@@ -39,9 +40,11 @@ const Share = () => {
       params: {
         feed_id: route.params.feed_id,
       },
-    }).then(res => {
-      setItem(res.data.payload.feed);
-    });
+    })
+      .then(res => {
+        setItem(res.data.payload.feed);
+      })
+      .catch(e => FooiyToast.error());
   };
   useEffect(() => {
     getFeedId();

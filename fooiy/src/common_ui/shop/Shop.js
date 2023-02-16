@@ -21,6 +21,7 @@ import {Menu} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import ShopFooiyti from './ShopFooiyti';
 import FlatListFooter from '../footer/FlatListFooter';
+import FooiyToast from '../../common/FooiyToast';
 
 const Shop = props => {
   const [feeds, setFeeds] = useState([]);
@@ -43,7 +44,7 @@ const Shop = props => {
       .then(res => {
         setShopInfo(res.data.payload.shop_info);
       })
-      .catch(e => console.log(e));
+      .catch(e => FooiyToast.error());
   };
   useEffect(() => {
     getShopInfo();
@@ -60,12 +61,13 @@ const Shop = props => {
         ...(type && {type: type}),
         ...(other_account_id && {other_account_id: other_account_id}),
       },
-    }).then(res => {
-      setFeeds([...feeds, ...res.data.payload.feed_list.results]);
-      setIsLoading(false);
-      setTotalCount(res.data.payload.feed_list.total_count);
-    });
-    // .catch(function (error) => console.log(error));
+    })
+      .then(res => {
+        setFeeds([...feeds, ...res.data.payload.feed_list.results]);
+        setIsLoading(false);
+        setTotalCount(res.data.payload.feed_list.total_count);
+      })
+      .catch(e => FooiyToast.error());
   };
   const loadMoreItem = () => {
     if (totalCount > offset) {

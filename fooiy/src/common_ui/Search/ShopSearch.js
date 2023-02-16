@@ -59,7 +59,7 @@ const ShopSearch = () => {
           console.log('토탈카운트', res.data.payload.shop_list.total_count);
         }
       })
-      .catch(e => null);
+      .catch(e => FooiyToast.error());
   };
   const loadMoreItem = () => {
     if (totalCount > offset + globalVariable.FeedLimit) {

@@ -71,9 +71,9 @@ const RegisterFeed = props => {
     return comment ? true : false;
   };
   const getAccountInfo = async () => {
-    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {params: {}}).then(res =>
-      setAccountValue(res.data.payload.account_info.public_id),
-    );
+    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {params: {}})
+      .then(res => setAccountValue(res.data.payload.account_info.public_id))
+      .catch(e => FooiyToast.error());
   };
 
   useEffect(() => {

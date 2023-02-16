@@ -43,7 +43,7 @@ const Feed = props => {
   const patchFCM = async () => {
     await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
       fcm_token: token,
-    });
+    }).catch(e => FooiyToast.error());
   };
   useEffect(() => {
     patchFCM();

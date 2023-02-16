@@ -15,6 +15,7 @@ import Modal from 'react-native-modal';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -61,17 +62,21 @@ const AnnouncementModal = props => {
         version: globalVariable.app_version,
         os: Platform.OS,
       },
-    }).then(res => {
-      setUpdate(res.data.payload.update_info ?? {});
-      setEmergency(res.data.payload.emergency_notice ?? {});
-    });
+    })
+      .then(res => {
+        setUpdate(res.data.payload.update_info ?? {});
+        setEmergency(res.data.payload.emergency_notice ?? {});
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const getAnnouncement = () => {
-    ApiManagerV2.get(apiUrl.ANNOUNCEMENT, {}).then(res => {
-      setAnnouncement(res.data.payload.notice_list);
-      checkAnnouncementId(res.data.payload.notice_list);
-    });
+    ApiManagerV2.get(apiUrl.ANNOUNCEMENT, {})
+      .then(res => {
+        setAnnouncement(res.data.payload.notice_list);
+        checkAnnouncementId(res.data.payload.notice_list);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const onPressDontSee = () => {

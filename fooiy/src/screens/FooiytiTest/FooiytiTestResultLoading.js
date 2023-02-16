@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 import {Musang} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import ApiLoading from '../../common_ui/loading/ApiLoading';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
@@ -42,7 +43,9 @@ export default props => {
       fooiyti_c_percentage: C.toString(),
       fooiyti_a_percentage: A.toString(),
     }).then(res =>
-      dispatch(userInfoAction.edit(res.data.payload.account_info)),
+      dispatch(userInfoAction.edit(res.data.payload.account_info)).catch(e =>
+        FooiyToast.error(),
+      ),
     );
   };
 
@@ -51,9 +54,11 @@ export default props => {
       params: {
         fooiyti_answers: JSON.stringify(testResult),
       },
-    }).then(res => {
-      editProfile(res.data.payload.fooiyti_result);
-    });
+    })
+      .then(res => {
+        editProfile(res.data.payload.fooiyti_result);
+      })
+      .catch(e => FooiyToast.error());
   };
   return (
     <SafeAreaView

@@ -18,6 +18,7 @@ import {useDispatch} from 'react-redux';
 import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -49,7 +50,9 @@ const ProfileImg = props => {
           transformRequest: (data, headers) => {
             return data;
           },
-        }).then(navigation.goBack())
+        })
+          .then(navigation.goBack())
+          .catch(e => FooiyToast.error())
       : await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -62,7 +65,8 @@ const ProfileImg = props => {
             console.log(JSON.stringify(data));
             dispatch(userInfoAction.edit(res.data.payload.account_info));
           })
-          .then(navigation.goBack());
+          .then(navigation.goBack())
+          .catch(e => FooiyToast.error());
   };
 
   const enroll = async () => {

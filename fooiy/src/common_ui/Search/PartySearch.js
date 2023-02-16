@@ -14,6 +14,7 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ArrowIconRight} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {useDebounce} from '../../common/hooks/useDebounce';
@@ -41,9 +42,9 @@ export default props => {
       params: {
         keyword: value,
       },
-    }).then(res =>
-      setSearchedPartyList(res.data.payload.accounts_list.results),
-    );
+    })
+      .then(res => setSearchedPartyList(res.data.payload.accounts_list.results))
+      .catch(e => FooiyToast.error());
   };
 
   const renderItem = ({item}) => {

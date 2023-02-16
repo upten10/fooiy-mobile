@@ -23,6 +23,7 @@ import {apiUrl} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {debounce} from 'lodash';
 import {useNavigation} from '@react-navigation/native';
+import FooiyToast from '../../common/FooiyToast';
 
 const LocationSearch = () => {
   const navigation = useNavigation();
@@ -42,15 +43,17 @@ const LocationSearch = () => {
   }, []);
   const debounceSearch = debounce(async value => {
     value &&
-      (await ApiManagerV2.get(apiUrl.SPOT_SEARCH, {
-        params: {
-          keyword: value,
-          limit: 30,
-          offset: 0,
-        },
-      }).then(res => {
-        setSpot(res.data.payload.spot_list.results);
-      }));
+      (
+        await ApiManagerV2.get(apiUrl.SPOT_SEARCH, {
+          params: {
+            keyword: value,
+            limit: 30,
+            offset: 0,
+          },
+        }).then(res => {
+          setSpot(res.data.payload.spot_list.results);
+        })
+      ).catch(e => FooiyToast.error());
   }, 300);
   const ListEmptyComponent = () => {
     return (

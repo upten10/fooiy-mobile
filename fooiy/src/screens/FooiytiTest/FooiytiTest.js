@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Fooiyticheck, FooiytiUncheck} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
@@ -34,7 +35,9 @@ export default props => {
   const getQuestionList = async () => {
     await ApiManagerV2.get(apiUrl.FOOIYTI_QUESTION_LIST, {
       params: {type: 'app'},
-    }).then(res => setQuestionList(res.data.payload.fooiyti_questions));
+    })
+      .then(res => setQuestionList(res.data.payload.fooiyti_questions))
+      .catch(e => FooiyToast.error());
   };
 
   const CheckBox = props => {

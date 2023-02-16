@@ -7,6 +7,7 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {LocationDarkIcon} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {globalVariable} from '../../common/globalVariable';
 import {useDebounce} from '../../common/hooks/useDebounce';
 import {LocationPermission} from '../../common/Permission';
@@ -139,7 +140,7 @@ const NaverMap = props => {
           setShopMarkers([]);
         }
       })
-      .catch(e => console.log('getShopMarkerList: ', e));
+      .catch(e => FooiyToast.error());
   };
 
   const getShopMarkerDetail = data => {
@@ -152,7 +153,7 @@ const NaverMap = props => {
       .then(res => {
         setClickedShop(res.data.payload.shop_list);
       })
-      .catch(e => console.warn('getShopMarkerDetail: ', e));
+      .catch(e => FooiyToast.error());
   };
 
   useEffect(() => {

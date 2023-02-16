@@ -16,6 +16,7 @@ import {
 } from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -41,7 +42,9 @@ export default props => {
         party_id,
         type: 'confirm',
       },
-    }).then(res => setPartyConfirmList(res.data.payload.party_members));
+    })
+      .then(res => setPartyConfirmList(res.data.payload.party_members))
+      .catch(e => FooiyToast.error());
   };
 
   const renderItem = ({item, index}) => {
@@ -185,10 +188,12 @@ export default props => {
       party_id,
       confirm_accounts: checkedList,
       confirm: type,
-    }).then(res => {
-      setIsOpenModal(false);
-      getPartyConfirm();
-    });
+    })
+      .then(res => {
+        setIsOpenModal(false);
+        getPartyConfirm();
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const ConfirmModal = () => {

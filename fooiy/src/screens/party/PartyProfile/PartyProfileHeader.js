@@ -8,6 +8,7 @@ import {globalVariable} from '../../../common/globalVariable';
 import Rank from '../../../common_ui/Rank';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 
 //  ("subscribe", "가입 중"),
 // ("confirm", "검수"),
@@ -42,7 +43,9 @@ export default props => {
   const joinParty = async () => {
     await ApiManagerV2.post(apiUrl.JOIN_PARTY, {
       party_id,
-    }).then(res => setJoinState('confirm'));
+    })
+      .then(res => setJoinState('confirm'))
+      .catch(e => FooiyToast.error());
   };
 
   const onPressSubscribeBtn = () => {

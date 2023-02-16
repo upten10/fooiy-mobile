@@ -128,10 +128,12 @@ export default props => {
         party_id: party_id,
         type: 'subscribe',
       },
-    }).then(res => {
-      setMembers(res.data.payload.party_members);
-      setFilteredMembers(res.data.payload.party_members);
-    });
+    })
+      .then(res => {
+        setMembers(res.data.payload.party_members);
+        setFilteredMembers(res.data.payload.party_members);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const onPressSetting = () => {
@@ -147,11 +149,13 @@ export default props => {
       party_id,
       confirm_accounts: checkedMembers,
       confirm: 'expulsion',
-    }).then(res => {
-      getPartyMemberList();
-      setCheckedMembers([]);
-      FooiyToast.message('파티원을 내보냈습니다.');
-    });
+    })
+      .then(res => {
+        getPartyMemberList();
+        setCheckedMembers([]);
+        FooiyToast.message('파티원을 내보냈습니다.');
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const ConfirmModal = () => {

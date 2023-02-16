@@ -4,6 +4,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import ShopListUI from '../../../common_ui/shop/ShopListUI';
@@ -55,7 +56,7 @@ const CatalogedList = props => {
           setEmptyShopImage(res.data.payload.image);
         }
       })
-      .catch(e => console.log(e));
+      .catch(e => FooiyToast.error());
   };
 
   const loadMoreItem = () => {

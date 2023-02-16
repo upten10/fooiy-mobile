@@ -41,23 +41,10 @@ const Stack = createStackNavigator();
 
 const RootNavigator = props => {
   const {isLoggedIn} = props;
-  const [fooiyti, setFooiyti] = useState('');
-
-  useEffect(() => {
-    getAccountInfo();
-  }, []);
-
-  const getAccountInfo = async data => {
-    await ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
-      params: {},
-    }).then(res => setFooiyti(res.data.payload.fooiyti));
-  };
 
   return (
     <Stack.Navigator
-      initialRouteName={
-        isLoggedIn ? (fooiyti ? 'TabNavigator' : 'FooiytiTestHome') : 'Login'
-      }
+      initialRouteName={'Login'}
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Agree" component={Agree} />

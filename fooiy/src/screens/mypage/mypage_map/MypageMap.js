@@ -97,7 +97,7 @@ const MypageMap = props => {
       .then(res => {
         setFeedMarkers(res.data.payload.feed_list);
       })
-      .catch(e => console.log(e));
+      .catch(e => FooiyToast.error());
   };
 
   const getFeedMarkerDetail = async data => {
@@ -113,7 +113,7 @@ const MypageMap = props => {
       .then(res => {
         setFeedMarkerDetails(res.data.payload.shop_list);
       })
-      .catch(e => console.log(e));
+      .catch(e => FooiyToast.error());
   };
 
   const CustomMarker = useCallback(() => {

@@ -13,6 +13,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -80,16 +81,18 @@ const Storage = () => {
         limit,
         offset,
       },
-    }).then(res => {
-      if (res.data.payload.image) {
-        setNoFeedImage(res.data.payload.image);
-      } else if (lastIndex === -1 || offset < lastIndex) {
-        setNoFeedImage('');
-        setLastIndex(res.data.payload.storage_list.total_count);
-        setFeeds([...feeds, ...res.data.payload.storage_list.results]);
-        setOffset(offset + limit);
-      }
-    });
+    })
+      .then(res => {
+        if (res.data.payload.image) {
+          setNoFeedImage(res.data.payload.image);
+        } else if (lastIndex === -1 || offset < lastIndex) {
+          setNoFeedImage('');
+          setLastIndex(res.data.payload.storage_list.total_count);
+          setFeeds([...feeds, ...res.data.payload.storage_list.results]);
+          setOffset(offset + limit);
+        }
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const setFilter = address => {
@@ -100,9 +103,11 @@ const Storage = () => {
   };
 
   const getAddress = async () => {
-    await ApiManagerV2.get(apiUrl.STORAGE_ADRESS, {}).then(res => {
-      setFilter(res.data.payload.address_list);
-    });
+    await ApiManagerV2.get(apiUrl.STORAGE_ADRESS, {})
+      .then(res => {
+        setFilter(res.data.payload.address_list);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const Filter = useCallback(() => {

@@ -15,6 +15,7 @@ import {
 // import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../headers/StackHeader';
@@ -33,7 +34,9 @@ const MenuReport = props => {
     await ApiManagerV2.post(apiUrl.MENU_REPORT, {
       shop_id: shopInfo.shop_id,
       content: value,
-    }).then(navigation.goBack());
+    })
+      .then(navigation.goBack())
+      .catch(e => FooiyToast.error());
   };
 
   return (

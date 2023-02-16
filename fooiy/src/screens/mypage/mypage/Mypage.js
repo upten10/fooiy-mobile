@@ -87,9 +87,11 @@ const Mypage = props => {
   const getAccountInfo = async data => {
     ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
       params: {},
-    }).then(res => {
-      dispatch(userInfoAction.init(res.data.payload.account_info));
-    });
+    })
+      .then(res => {
+        dispatch(userInfoAction.init(res.data.payload.account_info));
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const loadMoreFeeds = () => {

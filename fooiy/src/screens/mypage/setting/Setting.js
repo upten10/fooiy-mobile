@@ -18,6 +18,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {ArrowIcon, Camera_Profile, Pencil} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
@@ -47,9 +48,11 @@ const Setting = props => {
   const editIntro = async () => {
     await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
       introduction: curIntro === '' ? ' ' : curIntro,
-    }).then(res => {
-      dispatch(userInfoAction.edit(res.data.payload.account_info));
-    });
+    })
+      .then(res => {
+        dispatch(userInfoAction.edit(res.data.payload.account_info));
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const onPressWithdraw = () => {

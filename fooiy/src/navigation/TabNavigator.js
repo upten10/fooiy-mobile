@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux';
 import TabBarIcon from '../../assets/icons/svg/TabBar/TabBarIcon';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
+import FooiyToast from '../common/FooiyToast';
 import {fooiyColor, fooiyFont, globalStyles} from '../common/globalStyles';
 import {globalVariable} from '../common/globalVariable';
 import {insetsAction} from '../redux/actions/insetsAction';
@@ -24,13 +25,15 @@ const TabNavigator = () => {
   const getAccountInfo = async data => {
     ApiManagerV2.get(apiUrl.ACCOUNT_INFO, {
       params: {},
-    }).then(res => {
-      if (res.data.payload.account_info.fooiyti === null) {
-        navigation.navigate('FooiytiTestHome');
-      } else {
-        dispatch(userInfoAction.init(res.data.payload.account_info));
-      }
-    });
+    })
+      .then(res => {
+        if (res.data.payload.account_info.fooiyti === null) {
+          navigation.navigate('FooiytiTestHome');
+        } else {
+          dispatch(userInfoAction.init(res.data.payload.account_info));
+        }
+      })
+      .catch(e => FooiyToast.error());
   };
 
   dispatch(insetsAction.setInsets(insets));

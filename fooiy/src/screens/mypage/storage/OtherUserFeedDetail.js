@@ -3,6 +3,7 @@ import {FlatList, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {globalVariable} from '../../../common/globalVariable';
 import UI_Feed from '../../../common_ui/feed/UI_Feed';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -31,12 +32,14 @@ const OtherUserFeedDetail = props => {
         [idType]: id,
         other_account_id: data.other_account_id,
       },
-    }).then(res => {
-      setFeeds([...res.data.payload.feed_list.results]);
-      setIsLoading(false);
-      setTotalCount(res.data.payload.feed_list.total_count);
-      setNickname(res.data.payload.feed_list.results[0].nickname);
-    });
+    })
+      .then(res => {
+        setFeeds([...res.data.payload.feed_list.results]);
+        setIsLoading(false);
+        setTotalCount(res.data.payload.feed_list.total_count);
+        setNickname(res.data.payload.feed_list.results[0].nickname);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const loadMoreItem = () => {

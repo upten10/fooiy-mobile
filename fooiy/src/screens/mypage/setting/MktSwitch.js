@@ -7,6 +7,7 @@ import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import {useDispatch, useSelector} from 'react-redux';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
+import FooiyToast from '../../../common/FooiyToast';
 
 const MktSwitch = () => {
   const dispatch = useDispatch();
@@ -17,9 +18,11 @@ const MktSwitch = () => {
   const patchMkt = async switchOn => {
     await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, {
       is_mkt_agree: `${switchOn}`,
-    }).then(res => {
-      dispatch(userInfoAction.edit(res.data.payload.account_info));
-    });
+    })
+      .then(res => {
+        dispatch(userInfoAction.edit(res.data.payload.account_info));
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const onToggleSwitch = () => {

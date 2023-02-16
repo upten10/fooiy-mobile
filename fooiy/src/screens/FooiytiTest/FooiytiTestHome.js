@@ -22,7 +22,7 @@ export default props => {
 
   return (
     <SafeAreaView style={{backgroundColor: fooiyColor.W, flex: 1}}>
-      <StackHeader />
+      <StackHeader title={'푸이티아이'} />
       <View
         style={{
           flex: 1,

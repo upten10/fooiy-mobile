@@ -15,6 +15,7 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ArrowIcon, Camera_Profile, Pencil} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
@@ -124,7 +125,9 @@ export default props => {
     await ApiManagerV2.patch(apiUrl.EDIT_PARTY, {
       party_id,
       introduction: curIntro === '' ? ' ' : curIntro,
-    }).then(res => console.log('인사말 수정'));
+    })
+      .then(res => console.log('인사말 수정'))
+      .catch(e => FooiyToast.error());
   };
   const toggleAlbum = () => {
     setIsVisible(false);

@@ -23,6 +23,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import transformFooiytiRating from './functions/transformFooiytiRating';
 import SelectParties from '../../common_ui/SelectParties';
 import Margin from '../../common_ui/Margin';
+import FooiyToast from '../../common/FooiyToast';
 
 const ModifyFeed = props => {
   const {feed} = props.route.params;
@@ -58,7 +59,9 @@ const ModifyFeed = props => {
     if (feed !== undefined) {
       await ApiManagerV2.get(apiUrl.RETRIEVE_FEED, {
         params: {feed_id: feed.id},
-      }).then(res => setIsCafe(res.data.payload.feed.is_cafe));
+      })
+        .then(res => setIsCafe(res.data.payload.feed.is_cafe))
+        .catch(e => FooiyToast.error());
     }
   };
 
@@ -82,9 +85,11 @@ const ModifyFeed = props => {
       fooiyti_f: valueSet[4 - fooiytiRatingTF],
       fooiyti_a: valueSet[fooiytiRatingAC],
       fooiyti_c: valueSet[4 - fooiytiRatingAC],
-    }).then(res => {
-      res.data.payload === 'success' && navigation.goBack();
-    });
+    })
+      .then(res => {
+        res.data.payload === 'success' && navigation.goBack();
+      })
+      .catch(e => FooiyToast.error());
   };
 
   return (

@@ -8,6 +8,7 @@ import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 
 export default props => {
   const navigation = useNavigation();
@@ -56,7 +57,9 @@ export default props => {
       gender,
       birth_year: date.getFullYear().toString(),
       birth_day: convertBirthDay(date),
-    }).then(navigation.navigate('FooiytiTest'));
+    })
+      .then(navigation.navigate('FooiytiTest'))
+      .catch(e => FooiyToast.error());
   };
 
   const onPressNext = () => {

@@ -44,9 +44,11 @@ export default props => {
       params: {
         party_id,
       },
-    }).then(res => {
-      setPartyInfo(res.data.payload.party_info);
-    });
+    })
+      .then(res => {
+        setPartyInfo(res.data.payload.party_info);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const getPartyFeeds = async offset => {

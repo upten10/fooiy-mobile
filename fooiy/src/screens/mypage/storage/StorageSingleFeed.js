@@ -8,6 +8,7 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import UI_Feed from '../../../common_ui/feed/UI_Feed';
 import {RenderLoader} from '../../../common_ui/RenderLoader';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import FooiyToast from '../../../common/FooiyToast';
 
 const StorageSingleFeed = props => {
   const [feeds, setFeeds] = useState([]);
@@ -32,12 +33,14 @@ const StorageSingleFeed = props => {
   const getFeed = async feed_id => {
     await ApiManagerV2.get(apiUrl.RETRIEVE_FEED, {
       params: {feed_id},
-    }).then(res => {
-      setFeeds([res.data.payload.feed]);
-      setIsLoading(false);
-      setShopName(res.data.payload.feed.shop_name);
-      setAdress(res.data.payload.feed.shop_address);
-    });
+    })
+      .then(res => {
+        setFeeds([res.data.payload.feed]);
+        setIsLoading(false);
+        setShopName(res.data.payload.feed.shop_name);
+        setAdress(res.data.payload.feed.shop_address);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const getMyFeed = async data => {
@@ -49,12 +52,14 @@ const StorageSingleFeed = props => {
         [idType]: id,
         other_account_id: props.route.params.public_id,
       },
-    }).then(res => {
-      setFeeds([...res.data.payload.feed_list.results]);
-      setIsLoading(false);
-      setTotalCount(res.data.payload.feed_list.total_count);
-      setNickname(res.data.payload.feed_list.results[0].nickname);
-    });
+    })
+      .then(res => {
+        setFeeds([...res.data.payload.feed_list.results]);
+        setIsLoading(false);
+        setTotalCount(res.data.payload.feed_list.total_count);
+        setNickname(res.data.payload.feed_list.results[0].nickname);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const loadMoreItem = () => {

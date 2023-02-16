@@ -11,6 +11,7 @@ import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginActions} from '../../../redux/reducer/login';
+import FooiyToast from '../../../common/FooiyToast';
 
 const WithdrawConfirm = props => {
   const insets = useSafeAreaInsets();
@@ -23,13 +24,25 @@ const WithdrawConfirm = props => {
     navigation.popToTop();
   };
 
+  const goLogin = () => {
+    setTimeout(() => {
+      navigation.navigate('Login');
+    }, 1500);
+  };
+
   const onPressConfirm = async () => {
     await ApiManagerV2.delete(apiUrl.WITHDRAW, {
       params: {reason},
     })
-      .then(dispatch(loginActions.setLogin(false)))
-      .then(navigation.navigate('Login'));
-    AsyncStorage.clear();
+      .then(res => {
+        res.data.payload === 'success' &&
+          dispatch(loginActions.setLogin(false));
+        res.data.payload === 'success' && AsyncStorage.clear();
+        res.data.payload === 'success' &&
+          FooiyToast.message('탈퇴가 완료되면 로그인 페이지로 이동합니다.');
+        res.data.payload === 'success' && goLogin();
+      })
+      .catch(e => FooiyToast.error());
   };
 
   return (

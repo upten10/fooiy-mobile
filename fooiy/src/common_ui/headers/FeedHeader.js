@@ -14,6 +14,7 @@ import {
 } from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {globalVariable} from '../../common/globalVariable';
 
 const FeedHeader = props => {
@@ -23,14 +24,16 @@ const FeedHeader = props => {
 
   const pushHandler = async () => {
     const cnt = await AsyncStorage.getItem('push_count');
-    await ApiManagerV2.get(apiUrl.PUSH_NOTIFICATION).then(res => {
-      if (res.data.payload.push_notifications.total_count > cnt) {
-        setPushCount(res.data.payload.push_notifications.total_count - cnt);
-        setIsPush(true);
-      } else {
-        setIsPush(false);
-      }
-    });
+    await ApiManagerV2.get(apiUrl.PUSH_NOTIFICATION)
+      .then(res => {
+        if (res.data.payload.push_notifications.total_count > cnt) {
+          setPushCount(res.data.payload.push_notifications.total_count - cnt);
+          setIsPush(true);
+        } else {
+          setIsPush(false);
+        }
+      })
+      .catch(e => FooiyToast.error());
   };
   useEffect(() => {
     pushHandler();

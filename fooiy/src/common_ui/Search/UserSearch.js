@@ -25,6 +25,7 @@ import {debounce} from 'lodash';
 import {useNavigation} from '@react-navigation/native';
 import Rank from '../Rank';
 import {globalVariable} from '../../common/globalVariable';
+import FooiyToast from '../../common/FooiyToast';
 
 const UserSearch = () => {
   const navigation = useNavigation();
@@ -52,10 +53,12 @@ const UserSearch = () => {
         offset: offset,
         limit: globalVariable.FeedLimit,
       },
-    }).then(res => {
-      setUser([...users, ...res.data.payload.accounts_list.results]);
-      setTotalCount(res.data.payload.accounts_list.total_count);
-    });
+    })
+      .then(res => {
+        setUser([...users, ...res.data.payload.accounts_list.results]);
+        setTotalCount(res.data.payload.accounts_list.total_count);
+      })
+      .catch(e => FooiyToast.error());
   };
 
   const loadMoreItem = () => {
@@ -72,9 +75,9 @@ const UserSearch = () => {
   }, 300);
 
   const rankerSearch = async () => {
-    await ApiManagerV2.get(apiUrl.ACCOUNT_RANKER).then(res =>
-      setRanker(res.data.payload.ranker_list),
-    );
+    await ApiManagerV2.get(apiUrl.ACCOUNT_RANKER)
+      .then(res => setRanker(res.data.payload.ranker_list))
+      .catch(e => FooiyToast.error());
   };
   const ListEmptyComponent = () => {
     return (

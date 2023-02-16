@@ -4,6 +4,7 @@ import {Text, View} from 'react-native';
 import {PartyCreateComplete} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 
@@ -32,7 +33,9 @@ export default props => {
       transformRequest: (formData, headers) => {
         return formData;
       },
-    }).then(res => console.log('파티 생성'));
+    })
+      .then(res => console.log('파티 생성'))
+      .catch(e => FooiyToast.error());
   };
 
   useEffect(() => {
