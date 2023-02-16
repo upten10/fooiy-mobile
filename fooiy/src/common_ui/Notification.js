@@ -73,8 +73,8 @@ const Notification = props => {
                 feed_id: notification[item.index].navigation_id,
               })
             : notification[item.index].navigation === 'party'
-            ? navigation.navigate('PartyProfile', {
-                party_id: notification[item.index].navigation_id,
+            ? navigation.navigate('PartyStackNavigation', {
+                params: {party_id: notification[item.index].navigation_id},
               })
             : notification[item.index].navigation === 'comment'
             ? navigation.navigate('FeedComment', {
