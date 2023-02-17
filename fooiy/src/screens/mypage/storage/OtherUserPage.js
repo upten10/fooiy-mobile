@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {EmptyMenuClinic} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
+import ListEmptyTextComponent from '../../../common_ui/empty_component/ListEmptyTextComponent';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import OtherUserPageProfile from './OtherUserPageProfile';
 
@@ -81,6 +83,27 @@ const OtherUserPage = props => {
     }
   };
 
+  const ListEmptyComponent = useCallback(() => {
+    const EmptyText = () => {
+      return ListEmptyTextComponent(
+        '아직 등록한 피드가 없어요.\n방문한 음식점을 등록해보세요!',
+      );
+    };
+    return (
+      <View
+        style={{
+          flex: 1,
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 65,
+        }}>
+        <EmptyMenuClinic />
+        <EmptyText />
+      </View>
+    );
+  }, []);
+
   const renderItem = useCallback(({item, index}) => {
     const onPressFeed = () => {
       navigation.push('OtherUserFeedDetail', {
@@ -117,30 +140,19 @@ const OtherUserPage = props => {
   return (
     <SafeAreaView style={styles.rootContainer}>
       <StackHeader title={otherUserInfo.nickname} />
-      {noFeedImage === '' ? (
-        <FlatList
-          data={feeds}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          scrollEventThrottle={16}
-          bounces={true}
-          numColumns={3}
-          // scrollToOverflowEnabled
-          onEndReached={loadMoreFeeds}
-          ListHeaderComponent={() => OtherUserPageProfile(otherUserInfo)}
-          ListFooterComponent={() => <View style={styles.emptyComp}></View>}
-        />
-      ) : (
-        <View>
-          <OtherUserPageProfile otherUserInfo={otherUserInfo} />
-          <View style={{alignItems: 'center'}}>
-            <FastImage
-              source={require('../../../../assets/image/empty_notice.png')}
-              style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
-            />
-          </View>
-        </View>
-      )}
+      <FlatList
+        data={feeds}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        scrollEventThrottle={16}
+        onEndReached={loadMoreFeeds}
+        bounces={true}
+        numColumns={3}
+        scrollToOverflowEnabled
+        ListHeaderComponent={() => OtherUserPageProfile(otherUserInfo)}
+        ListFooterComponent={() => <View style={styles.emptyComp}></View>}
+        ListEmptyComponent={ListEmptyComponent}
+      />
     </SafeAreaView>
   );
 };
