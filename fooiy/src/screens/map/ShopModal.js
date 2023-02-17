@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 16,
     backgroundColor: '#fff',
-    height: globalVariable.height / 6,
+    height: 136,
   },
   item_separator: {
     width: 32,

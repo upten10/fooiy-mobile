@@ -266,8 +266,8 @@ const styles = StyleSheet.create({
   },
   introFocus: {
     borderColor: fooiyColor.G400,
+    ...fooiyFont.Body1,
     color: fooiyColor.B,
-    fontWeight: '400',
   },
   pencilBlur: {
     opacity: 0,
