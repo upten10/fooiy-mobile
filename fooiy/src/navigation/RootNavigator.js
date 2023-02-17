@@ -39,9 +39,7 @@ import TabNavigator from './TabNavigator';
 
 const Stack = createStackNavigator();
 
-const RootNavigator = props => {
-  const {isLoggedIn} = props;
-
+const RootNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName={'Login'}

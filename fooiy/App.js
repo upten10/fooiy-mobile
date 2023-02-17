@@ -61,9 +61,7 @@ const toastConfig = {
 };
 
 const App = () => {
-  const {progress, updating} = useCodePush();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {updating} = useCodePush();
   // Test
   useEffect(() => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {});
@@ -98,17 +96,6 @@ const App = () => {
     });
   }, []);
 
-  useEffect(() => {
-    checkLogIn();
-  }, []);
-
-  const checkLogIn = async () => {
-    const auth = await AsyncStorage.getItem('auth');
-    if (auth) {
-      setIsLoggedIn(true);
-    }
-  };
-
   const linking = {
     prefixes: ['kakaoadeeb3a64a0ef610048dbcbe1010c07f://'],
     config: {
@@ -124,32 +111,34 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <NavigationContainer
-          linking={linking}
-          ref={navigationRef}
-          onReady={() =>
-            (routeNameRef.current =
-              navigationRef.current.getCurrentRoute().name)
-          }
-          onStateChange={state => {
-            const previousRouteName = routeNameRef.current;
-            const currentRouteName =
-              navigationRef.current.getCurrentRoute().name;
-
-            if (previousRouteName !== currentRouteName) {
-              analytics()
-                .logScreenView({
-                  screen_name: currentRouteName,
-                  screen_class: currentRouteName,
-                })
-                .then(() => {})
-                .catch(err => {});
+        {updating ? null : (
+          <NavigationContainer
+            linking={linking}
+            ref={navigationRef}
+            onReady={() =>
+              (routeNameRef.current =
+                navigationRef.current.getCurrentRoute().name)
             }
-            routeNameRef.current = currentRouteName;
-          }}>
-          <RootNavigator isLoggedIn={isLoggedIn} />
-          <StatusBar barStyle={'dark-content'} />
-        </NavigationContainer>
+            onStateChange={state => {
+              const previousRouteName = routeNameRef.current;
+              const currentRouteName =
+                navigationRef.current.getCurrentRoute().name;
+
+              if (previousRouteName !== currentRouteName) {
+                analytics()
+                  .logScreenView({
+                    screen_name: currentRouteName,
+                    screen_class: currentRouteName,
+                  })
+                  .then(() => {})
+                  .catch(err => {});
+              }
+              routeNameRef.current = currentRouteName;
+            }}>
+            <RootNavigator />
+            <StatusBar barStyle={'dark-content'} />
+          </NavigationContainer>
+        )}
         <Toast config={toastConfig} />
       </Provider>
     </SafeAreaProvider>

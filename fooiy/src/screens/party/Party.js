@@ -130,7 +130,6 @@ const Party = props => {
           refreshing={refreshing}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => <ShopListUI {...item} />}
-          // onEndReached={loadMoreItem}
           numColumns={2}
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={true}
