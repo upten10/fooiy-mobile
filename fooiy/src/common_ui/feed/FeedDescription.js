@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   feed_time: {
     position: 'absolute',
     right: 0,
+    ...fooiyFont.Body2,
     color: fooiyColor.G400,
   },
 });
