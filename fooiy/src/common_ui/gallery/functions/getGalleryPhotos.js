@@ -30,9 +30,7 @@ const getGalleryPhotos = async (
   };
   try {
     if (galleryCursor !== false) {
-      const {edges, page_info} = await CameraRoll.getPhotos(params).catch(e =>
-        console.log(e),
-      );
+      const {edges, page_info} = await CameraRoll.getPhotos(params);
       if (page_info.has_next_page === false) {
         setGalleryCursor(false);
       } else {
@@ -54,9 +52,7 @@ const getGalleryPhotos = async (
       }
       setGalleryList([...galleryList, ...edges]);
     }
-  } catch (error) {
-    FooiyToast.error();
-  }
+  } catch (error) {}
 };
 
 export default getGalleryPhotos;

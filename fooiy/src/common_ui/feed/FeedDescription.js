@@ -63,11 +63,11 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   more_text: {
-    color: '#FF5C5C',
+    color: fooiyColor.G400,
   },
   feed_time: {
     position: 'absolute',
     right: 0,
-    color: '#B3BBD3',
+    color: fooiyColor.G400,
   },
 });
