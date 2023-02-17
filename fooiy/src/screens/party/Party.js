@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
   Platform,
@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {PartyIcon} from '../../../assets/icons/svg';
+import {EmptyMenuClinic, PartyIcon} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -18,6 +18,7 @@ import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 import ShopListUI from '../../common_ui/shop/ShopListUI';
+import ListEmptyTextComponent from '../../common_ui/empty_component/ListEmptyTextComponent';
 
 const Party = props => {
   const insets = useSafeAreaInsets();
@@ -64,31 +65,26 @@ const Party = props => {
     );
   };
 
-  const ListEmptyComponent = () => {
+  const ListEmptyComponent = useCallback(() => {
+    const EmptyText = () => {
+      return ListEmptyTextComponent(
+        '아직 가입한 파티가 없어요.\n새로운 파티를 생성하거나 가입해보세요!',
+      );
+    };
     return (
       <View
         style={{
-          height:
-            globalVariable.height -
-            insets.top -
-            56 -
-            insets.bottom -
-            globalVariable.tabBarHeight -
-            56 -
-            20,
+          flex: 1,
+          height: '100%',
           justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 190 - 16,
         }}>
-        <Text
-          style={{
-            ...fooiyFont.Body1,
-            color: fooiyColor.G600,
-            textAlign: 'center',
-          }}>
-          아직 가입한 파티가 없어요.{'\n'}새로운 파티를 생성하거나 가입해보세요!
-        </Text>
+        <EmptyMenuClinic />
+        <EmptyText />
       </View>
     );
-  };
+  }, []);
 
   const onRefresh = () => {
     if (!refreshing) {
