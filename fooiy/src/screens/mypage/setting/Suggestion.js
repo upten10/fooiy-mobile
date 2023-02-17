@@ -218,16 +218,8 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   titleText: {
-    fontSize: 24,
-    fontWeight: '600',
-    lineHeight: 32,
+    ...fooiyFont.H3,
     color: fooiyColor.B,
-  },
-  categoryPlaceHolder: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: fooiyColor.G400,
-    lineHeight: 18,
   },
   inputContainer: {
     marginTop: 8,
@@ -258,9 +250,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   textInputLength: {
-    fontSize: 12,
-    fontWeight: '400',
-    lineHeight: 18,
+    ...fooiyFont.Caption1,
     color: fooiyColor.G600,
   },
   noticeContainer: {
@@ -278,18 +268,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   noticeTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    lineHeight: 20,
+    ...fooiyFont.Subtitle3,
     color: fooiyColor.G600,
   },
   noticeIcon: {
     marginRight: 8,
   },
   noticeText: {
-    fontSize: 12,
-    fontWeight: '400',
-    lineHeight: 18,
+    ...fooiyFont.Caption1,
     color: fooiyColor.G600,
   },
   sendBtnContainer: {
@@ -317,11 +303,11 @@ const styles = StyleSheet.create({
     backgroundColor: fooiyColor.G100,
   },
   sendBtnText: {
+    ...fooiyFont.Button,
     color: fooiyColor.W,
-    fontSize: 16,
-    fontWeight: '600',
   },
   sendBtnTextOff: {
+    ...fooiyFont.Button,
     color: fooiyColor.G300,
   },
   categoryContainer: {

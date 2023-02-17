@@ -267,8 +267,7 @@ const styles = StyleSheet.create({
     ...globalStyles.transparency,
   },
   reBtnText: {
-    fontSize: 16,
-    fontWeight: '600',
+    ...fooiyFont.Button,
     color: fooiyColor.W,
   },
 });

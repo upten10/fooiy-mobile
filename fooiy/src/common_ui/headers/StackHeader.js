@@ -149,8 +149,7 @@ const styles = StyleSheet.create({
     color: fooiyColor.B,
   },
   title_name: {
-    fontSize: 16,
-    fontWeight: '600',
+    ...fooiyFont.Subtitle2,
     color: fooiyColor.B,
     width: globalVariable.width - 56 * 2,
     textAlign: 'center',
