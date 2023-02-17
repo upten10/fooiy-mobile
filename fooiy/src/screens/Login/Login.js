@@ -20,7 +20,7 @@ import {
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
-import {fooiyColor} from '../../common/globalStyles';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
 
@@ -202,11 +202,8 @@ const styles = StyleSheet.create({
     marginLeft: 24,
   },
   kakao_text: {
-    color: '#000000',
-    fontFamily: 'Pretendard-SemiBold',
-    fontWeight: '600',
-    fontSize: 16,
-    lineHeight: 16,
+    ...fooiyFont.Button,
+    color: fooiyColor.B,
     letterSpacing: 0.5,
     alignItems: 'center',
   },
@@ -229,11 +226,8 @@ const styles = StyleSheet.create({
     marginLeft: 24,
   },
   apple_text: {
-    color: '#FFFFFF',
-    fontFamily: 'Pretendard-SemiBold',
-    fontWeight: '600',
-    fontSize: 16,
-    lineHeight: 16,
+    ...fooiyFont.Button,
+    color: fooiyColor.W,
     letterSpacing: 0.5,
     alignItems: 'center',
   },

@@ -89,10 +89,6 @@ const styles = StyleSheet.create({
   },
   shop_detail_container: {justifyContent: 'center', flex: 1},
   score_container: {justifyContent: 'flex-end', flex: 1},
-  score: {
-    fontSize: 18,
-  },
-
   menu_image: {
     width: 104,
     height: 104,

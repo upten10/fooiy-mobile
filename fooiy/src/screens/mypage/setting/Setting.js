@@ -241,9 +241,7 @@ const styles = StyleSheet.create({
     bottom: -4,
   },
   nickName: {
-    height: 24,
-    fontSize: 18,
-    fontWeight: '600',
+    ...fooiyFont.Subtitle1,
     color: fooiyColor.B,
     width: globalVariable.width - 120,
   },
@@ -336,8 +334,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   footerText: {
-    fontSize: 10,
-    fontWeight: '600',
+    ...fooiyFont.Caption2,
     color: fooiyColor.G400,
   },
 });

@@ -314,14 +314,12 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   infoTextBig: {
+    ...fooiyFont.Subtitle3,
     color: fooiyColor.G600,
-    fontSize: 14,
-    fontWeight: '600',
   },
   infoText: {
+    ...fooiyFont.Caption1,
     color: fooiyColor.G600,
-    fontSize: 12,
-    fontWeight: '400',
   },
   changeBtnContainer: {
     backgroundColor: 'pink',
@@ -346,11 +344,11 @@ const styles = StyleSheet.create({
     backgroundColor: fooiyColor.G100,
   },
   changeBtnText: {
+    ...fooiyFont.Button,
     color: fooiyColor.W,
-    fontSize: 16,
-    fontWeight: '600',
   },
   changeBtnTextOff: {
+    ...fooiyFont.Button,
     color: fooiyColor.G300,
   },
 });

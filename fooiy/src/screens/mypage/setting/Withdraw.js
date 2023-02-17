@@ -251,11 +251,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   textInput: {
-    width: '100%',
-    height: '100%',
-    fontSize: 14,
-    fontWeight: '400',
+    ...fooiyFont.Body2,
     color: fooiyColor.G600,
+    lineHeight: Platform.OS === 'ios' ? 0 : null,
   },
   textInputLength: {
     ...fooiyFont.Caption1,
