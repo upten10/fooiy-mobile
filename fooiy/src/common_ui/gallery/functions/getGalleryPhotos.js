@@ -1,7 +1,6 @@
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {Platform} from 'react-native';
 import RNFS from 'react-native-fs';
-import FooiyToast from '../../../common/FooiyToast';
 // 갤러리에서 사진 받아오기
 
 const phPathToFilePath = async uri => {

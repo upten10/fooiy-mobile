@@ -17,7 +17,11 @@ const MenuFrame = props => {
           <View key={item.id}>
             <Margin h={12} />
             <View style={styles.menu_container}>
-              <Text style={styles.menu_name}>{item.name}</Text>
+              <Text style={styles.menu_name}>
+                {item.name.length >= 20
+                  ? item.name.substr(0, 19) + '...'
+                  : item.name}
+              </Text>
               <Text style={styles.menu_price}>{item.price}원</Text>
             </View>
             <Margin h={12} />

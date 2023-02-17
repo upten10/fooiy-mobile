@@ -137,6 +137,7 @@ const NaverMap = props => {
             setShopCount(res.data.payload.shop_count);
           }
         } else {
+          setShopCount(res.data.payload.shop_count);
           setShopMarkers([]);
         }
       })
@@ -148,6 +149,7 @@ const NaverMap = props => {
       params: {
         latitude: data.latitude,
         longitude: data.longitude,
+        shop_category: isCafe ? globalVariable.category_cafe : '',
       },
     })
       .then(res => {

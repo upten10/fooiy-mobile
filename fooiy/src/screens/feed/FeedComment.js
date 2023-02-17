@@ -53,6 +53,8 @@ const FeedComment = props => {
   const [buttons, setButtons] = useState([{}]);
   const [firstLoading, setFirstLoading] = useState(false);
 
+  const [mountTime, setMountTime] = useState(false);
+
   //****** modal & textinput function ******//
   const openModal = (
     comment_id,
@@ -140,6 +142,7 @@ const FeedComment = props => {
   };
 
   const registerComment = async () => {
+    setMountTime(true);
     value.length !== 0 &&
       (await ApiManagerV2.post(apiUrl.FEED_COMMENT, {
         feed_id: feed_id,
@@ -158,9 +161,13 @@ const FeedComment = props => {
           dismissKeyboard();
           FooiyToast.error();
         }));
+    setTimeout(() => {
+      setMountTime(false);
+    }, 2000);
   };
 
   const patchComment = async () => {
+    setMountTime(true);
     await ApiManagerV2.patch(apiUrl.FEED_COMMENT, {
       feed_id: feed_id,
       comment_id: workingComment.comment_id,
@@ -178,6 +185,9 @@ const FeedComment = props => {
         dismissKeyboard();
         FooiyToast.error();
       });
+    setTimeout(() => {
+      setMountTime(false);
+    }, 2000);
   };
 
   const deleteComment = async () => {
@@ -430,7 +440,9 @@ const FeedComment = props => {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() =>
-                workingState === 'update' ? patchComment() : registerComment()
+                workingState === 'update'
+                  ? !mountTime && patchComment()
+                  : !mountTime && registerComment()
               }>
               {value.length === 0 ? (
                 <RegistComment style={styles.register_comment} />
@@ -478,7 +490,9 @@ const FeedComment = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() =>
-              workingState === 'update' ? patchComment() : registerComment()
+              workingState === 'update'
+                ? !mountTime && patchComment()
+                : !mountTime && registerComment()
             }>
             {value.length === 0 ? (
               <RegistComment style={styles.register_comment} />
