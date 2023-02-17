@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.fooiy.fooiy">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.fooiy.fooiy" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -57,11 +56,7 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="oingm1h0rz" />
       <!-- 네이버 지도 -->
-      <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@mipmap/ic_launcher" />
-      <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/P500" />
+      
+      <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification" />
     </application>
 </manifest>
