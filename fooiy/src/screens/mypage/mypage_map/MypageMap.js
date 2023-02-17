@@ -190,6 +190,7 @@ const MypageMap = props => {
             myPage={true}
             shops_info={feedMarkerDetails}
             other_account_id={account_id && account_id}
+            party_id={party_id && party_id}
           />
         )}
       </View>

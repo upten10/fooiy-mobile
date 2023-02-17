@@ -8,7 +8,8 @@ const ShopModal = props => {
   const insets = useSafeAreaInsets();
   const [current, setCurrent] = useState(0);
   const shopRef = useRef(null);
-  const {onBackdropPress, shops_info, other_account_id, myPage} = props;
+  const {onBackdropPress, shops_info, other_account_id, myPage, party_id} =
+    props;
 
   useEffect(() => {
     if (shops_info.length !== 0) {
@@ -34,6 +35,7 @@ const ShopModal = props => {
       shop_address: shop.address,
       other_account_id,
       score: shop.score,
+
       onBackdropPress: onBackdropPress,
     };
   });
@@ -83,7 +85,7 @@ const ShopModal = props => {
         }}
         renderItem={({item, index}) => (
           <View style={styles.shop_container}>
-            <ShopModalUI {...item} key={index} />
+            <ShopModalUI {...item} key={index} party_id={party_id} />
           </View>
         )}
       />

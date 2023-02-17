@@ -5,7 +5,18 @@ import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
 const ShopModalUI = item => {
-  const category_list = item.category_list;
+  const {
+    category_list,
+    feed_count,
+    image,
+    menu_price,
+    other_account_id,
+    public_id,
+    shop_address,
+    shop_name,
+    party_id,
+    score,
+  } = item;
   const navigation = useNavigation();
 
   return (
@@ -13,30 +24,29 @@ const ShopModalUI = item => {
       activeOpacity={0.8}
       onPress={() => {
         navigation.navigate('Shop', {
-          shop_id: item.public_id,
-          shop_name: item.shop_name,
-          shop_address: item.shop_address,
-          ...(item.score || {
-            type: 'mypage',
-          }),
-          ...(item.other_account_id && {
-            other_account_id: item.other_account_id,
-          }),
+          shop_id: public_id,
+          shop_name: shop_name,
+          shop_address: shop_address,
+          ...(party_id !== undefined
+            ? {type: 'party', party_id}
+            : other_account_id !== undefined
+            ? {type: 'mypage', other_account_id}
+            : {type: 'mypage'}),
         });
       }}>
       <View style={styles.container}>
         <View style={styles.menu_image_container}>
-          <Image source={{uri: item.image}} style={styles.menu_image} />
+          <Image source={{uri: image}} style={styles.menu_image} />
         </View>
         <View style={styles.shop_info_container}>
           <View style={styles.shop_detail_container}>
             <Text style={styles.shop_detail_feeds_count}>
-              {item.score
-                ? `만족 예상률 ${item.score}%`
-                : `${item.feed_count}개의 피드가 있어요`}
+              {score
+                ? `만족 예상률 ${score}%`
+                : `${feed_count}개의 피드가 있어요`}
             </Text>
-            <Text style={styles.shop_detail_name}>{item.shop_name}</Text>
-            <Text style={styles.shop_detail_price}>{item.menu_price}</Text>
+            <Text style={styles.shop_detail_name}>{shop_name}</Text>
+            <Text style={styles.shop_detail_price}>{menu_price}</Text>
           </View>
           <View style={styles.category_list_container}>
             {category_list

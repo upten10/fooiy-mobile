@@ -49,6 +49,11 @@
 	<true/>
 	<key>NMFClientId</key>
 	<string>oingm1h0rz</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>카메라는 피드 등록을 위한 푸이 서비스 필수 정보로 활용됩니다.</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>

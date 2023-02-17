@@ -34,6 +34,7 @@ const Shop = props => {
   const type = props.route.params.type && props.route.params.type;
   const other_account_id =
     props.route.params.other_account_id && props.route.params.other_account_id;
+  const party_id = props.route.params.party_id && props.route.params.party_id;
 
   const getShopInfo = async () => {
     await ApiManagerV2.get(apiUrl.SHOP_INFO, {
@@ -60,6 +61,7 @@ const Shop = props => {
         shop_id: data,
         ...(type && {type: type}),
         ...(other_account_id && {other_account_id: other_account_id}),
+        ...(party_id && {party_id: party_id}),
       },
     })
       .then(res => {
