@@ -17,12 +17,13 @@ const FindShopButton = props => {
       });
   };
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={() => onClickFindShop()}>
-      <View style={[styles.container, {bottom: bottomHeight}]}>
-        <Text style={styles.find_shop_text}>
-          '{categoryToKorean[categoryList[tabIndex]]}' 주변 맛집 찾기
-        </Text>
-      </View>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onClickFindShop}
+      style={[styles.container, {bottom: bottomHeight}]}>
+      <Text style={styles.find_shop_text}>
+        '{categoryToKorean[categoryList[tabIndex]]}' 주변 맛집 찾기
+      </Text>
     </TouchableOpacity>
   );
 };
