@@ -73,7 +73,10 @@ const Setting = props => {
   };
 
   const onImgPress = async () => {
-    (await GalleryPermission()) && navigation.navigate('ProfileImg');
+    navigation.navigate('Gallery', {
+      navigation: 'Mypage',
+      is_multi: false,
+    });
   };
 
   const onItemPress = navi => {
@@ -197,7 +200,9 @@ const Setting = props => {
             <TouchableOpacity activeOpacity={0.8} onPress={onPressWithdraw}>
               <Text style={styles.footerText}>회원 탈퇴</Text>
             </TouchableOpacity>
-            <Text style={styles.footerText}>버전 정보 0.0.1</Text>
+            <Text style={styles.footerText}>
+              버전 정보 {globalVariable.app_version}
+            </Text>
           </View>
         </View>
       </SafeAreaView>

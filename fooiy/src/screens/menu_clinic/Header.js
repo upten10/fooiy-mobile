@@ -1,17 +1,10 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {Notice_24} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
 import Margin from '../../common_ui/Margin';
-import {
-  categoryList,
-  categoryToEnglish,
-  categoryToKorean,
-} from './categoryList';
 const Header = () => {
   return (
     <>

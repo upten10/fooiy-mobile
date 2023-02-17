@@ -28,7 +28,7 @@ import StorageSingleFeed from '../screens/mypage/storage/StorageSingleFeed';
 import PartyProfile from '../screens/party/PartyProfile/PartyProfile';
 import ImageCrop from '../screens/register/camera/ImageCrop';
 import RegisterCamera from '../screens/register/camera/RegisterCamera';
-import Gallery from '../screens/register/gallery/Gallery';
+import Gallery from '../common_ui/gallery/Gallery';
 import Register from '../screens/register/Register';
 import FindMenu from '../screens/register/register_feed/FindMenu';
 import FindShop from '../screens/register/register_feed/FindShop';
@@ -39,9 +39,7 @@ import TabNavigator from './TabNavigator';
 
 const Stack = createStackNavigator();
 
-const RootNavigator = props => {
-  const {isLoggedIn} = props;
-
+const RootNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName={'Login'}

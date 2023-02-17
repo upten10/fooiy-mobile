@@ -18,7 +18,6 @@ import PartySearch from '../../common_ui/Search/PartySearch';
 import PartyConfirm from './PartySetting/PartyConfirm';
 import MypageMap from '../mypage/mypage_map/MypageMap';
 import EditName from '../mypage/setting/EditName';
-import ProfileImg from '../mypage/setting/ProfileImg';
 
 const PartyStack = createStackNavigator();
 
@@ -192,8 +191,6 @@ const PartyStackNavigation = props => {
           });
         }}
       />
-      {/* 파티 프로필 */}
-      <PartyStack.Screen name="ProfileImg" component={ProfileImg} />
     </PartyStack.Navigator>
   );
 };
