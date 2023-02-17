@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -101,6 +102,16 @@ const Party = props => {
     setRefreshing(false);
   };
 
+  const ListFooterComponent = () => {
+    return (
+      <View
+        style={{
+          height: globalVariable.tabBarHeight,
+        }}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={{backgroundColor: fooiyColor.W, flex: 1}}>
       <DefaultHeader isParty={true} />
@@ -114,14 +125,16 @@ const Party = props => {
           data={partyList}
           ListHeaderComponent={listHeaderComponent}
           ListEmptyComponent={ListEmptyComponent}
+          ListFooterComponent={ListFooterComponent}
           onRefresh={onRefresh}
           refreshing={refreshing}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => <ShopListUI {...item} />}
-          // onEndReached={loadMoreItem}
           numColumns={2}
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={true}
+          initialNumToRender={4}
+          maxToRenderPerBatch={4}
           style={{height: '100%'}}
         />
       </View>

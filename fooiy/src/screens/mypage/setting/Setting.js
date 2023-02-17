@@ -200,7 +200,9 @@ const Setting = props => {
             <TouchableOpacity activeOpacity={0.8} onPress={onPressWithdraw}>
               <Text style={styles.footerText}>회원 탈퇴</Text>
             </TouchableOpacity>
-            <Text style={styles.footerText}>버전 정보 0.0.1</Text>
+            <Text style={styles.footerText}>
+              버전 정보 {globalVariable.app_version}
+            </Text>
           </View>
         </View>
       </SafeAreaView>
