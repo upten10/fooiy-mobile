@@ -263,7 +263,11 @@ const NaverMap = props => {
       </NaverMapView>
       <LocationBtn />
       {isModalVisible ? (
-        <ShopModal onBackdropPress={toggleModal} shops_info={clickedShop} />
+        <ShopModal
+          onBackdropPress={toggleModal}
+          shops_info={clickedShop}
+          type={'map'}
+        />
       ) : null}
       <MapBottomSheet
         screenLocation={screenLocation}

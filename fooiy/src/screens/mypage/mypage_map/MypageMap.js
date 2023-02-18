@@ -191,6 +191,7 @@ const MypageMap = props => {
             shops_info={feedMarkerDetails}
             other_account_id={account_id && account_id}
             party_id={party_id && party_id}
+            type={party_id !== undefined ? 'party' : 'mypage'}
           />
         )}
       </View>

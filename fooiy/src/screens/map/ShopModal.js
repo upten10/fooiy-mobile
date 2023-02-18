@@ -8,8 +8,14 @@ const ShopModal = props => {
   const insets = useSafeAreaInsets();
   const [current, setCurrent] = useState(0);
   const shopRef = useRef(null);
-  const {onBackdropPress, shops_info, other_account_id, myPage, party_id} =
-    props;
+  const {
+    onBackdropPress,
+    shops_info,
+    other_account_id,
+    myPage,
+    party_id,
+    type,
+  } = props;
 
   useEffect(() => {
     if (shops_info.length !== 0) {
@@ -35,6 +41,7 @@ const ShopModal = props => {
       shop_address: shop.address,
       other_account_id,
       score: shop.score,
+      type: type === 'map' ? null : type,
 
       onBackdropPress: onBackdropPress,
     };

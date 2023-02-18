@@ -16,6 +16,7 @@ const ShopModalUI = item => {
     shop_name,
     party_id,
     score,
+    type,
   } = item;
   const navigation = useNavigation();
 
@@ -27,11 +28,11 @@ const ShopModalUI = item => {
           shop_id: public_id,
           shop_name: shop_name,
           shop_address: shop_address,
-          ...(party_id !== undefined
-            ? {type: 'party', party_id}
-            : other_account_id !== undefined
-            ? {type: 'mypage', other_account_id}
-            : {type: 'mypage'}),
+          type: type,
+          ...(party_id !== undefined ? {party_id: party_id} : null),
+          ...(other_account_id !== undefined
+            ? {other_account_id: other_account_id}
+            : null),
         });
       }}>
       <View style={styles.container}>
