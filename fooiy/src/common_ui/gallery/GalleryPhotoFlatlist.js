@@ -3,6 +3,7 @@ import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
+import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 
 const GalleryPhotoFlatlist = props => {
   const {
@@ -87,13 +88,19 @@ const GalleryPhotoFlatlist = props => {
   return (
     <FlatList
       data={galleryList}
-      style={{
-        height: globalVariable.height - globalVariable.width - 56,
-      }}
+      // style={{
+      //   height: globalVariable.height - 56,
+      // }}
       keyExtractor={(item, index) => index.toString()}
       maxToRenderPerBatch={12}
       updateCellsBatchingPeriod={12}
       removeClippedSubviews={true}
+      contentContainerStyle={{
+        backgroundColor: fooiyColor.W,
+        minHeight: globalVariable.height - 56 - 80,
+      }}
+      ListFooterComponent={<FlatListFooter h={150} />}
+      onEndReachedThreshold={30}
       numColumns={4}
       onEndReached={getPhotos}
       renderItem={item => <RenderPhoto {...item} />}

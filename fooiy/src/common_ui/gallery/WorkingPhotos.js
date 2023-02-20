@@ -17,6 +17,7 @@ const WorkingPhotos = props => {
     selectedPhotoIndexList,
     saveImage,
     setCropPhoto,
+    downSpring,
   } = props;
 
   const RenderPhotos = useCallback(
@@ -26,6 +27,7 @@ const WorkingPhotos = props => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
+            downSpring();
             setSelectIndex(index);
             setCropPhoto(false);
           }}>
@@ -54,7 +56,10 @@ const WorkingPhotos = props => {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-          onPress={() => setCropPhoto(true)}
+          onPress={() => {
+            downSpring();
+            setCropPhoto(true);
+          }}
           style={styles.mid_text}>
           <Text style={styles.crop_photo_text}>편집</Text>
         </TouchableOpacity>
