@@ -4,8 +4,10 @@ import {getUniqueId} from 'react-native-device-info';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FooiyToast from '../../FooiyToast';
 // import {BASEURL, AUTHORIZATION, DEVICEID} from '@env';
-// const BASEURL = 'http://dev-api.fooiy.com/api/v2/';
-const BASEURL = 'https://api.fooiy.com/api/v2/';
+
+const BASEURL = __DEV__
+  ? 'http://dev-api.fooiy.com/api/v2/'
+  : 'https://api.fooiy.com/api/v2/';
 const baseURL = BASEURL;
 const ApiManagerV2 = axios.create({
   baseURL: baseURL, // your url

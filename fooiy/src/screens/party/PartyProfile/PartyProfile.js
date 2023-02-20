@@ -182,7 +182,9 @@ export default props => {
             <PartyProfileHeader partyInfo={{...partyInfo, party_id}} />
           }
           ListEmptyComponent={ListEmptyComponent}
-          ListFooterComponent={ListFooterComponent}
+          ListFooterComponent={
+            <ListFooterComponent h={globalVariable.tabBarHeight} />
+          }
         />
       </View>
     </SafeAreaView>

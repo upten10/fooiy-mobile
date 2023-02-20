@@ -1,6 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Geolocation from 'react-native-geolocation-service';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -171,7 +178,12 @@ const MenuClinicFindShop = props => {
   }, [isCheck, innerTabIndex]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={styles.container}
+      edges={Platform.select({
+        android: null,
+        ios: 'top',
+      })}>
       <StackHeader title={'메뉴 상담소'} />
       <TabView
         categoryList={categoryList}
