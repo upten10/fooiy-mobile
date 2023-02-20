@@ -112,7 +112,7 @@ const SetAddress = props => {
         }
       });
   }, 700);
-  console.log(fullAddress);
+
   const onCameraChange = e => {
     debounceCallback(e.longitude, e.latitude);
   };

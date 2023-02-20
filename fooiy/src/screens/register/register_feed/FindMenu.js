@@ -31,7 +31,7 @@ const FindMenu = props => {
   const [isFocus, setFocused] = useState(false);
   const [value, setValue] = useState('');
   const navigation = useNavigation();
-  console.log(props.route.params);
+
   const getMenuList = async () => {
     await ApiManagerV2.get(apiUrl.SHOP_MENU, {
       params: {
