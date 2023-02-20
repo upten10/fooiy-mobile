@@ -53,6 +53,7 @@ const Shop = props => {
   }, [props.route.params]);
 
   const getFeedList = async data => {
+    console.log(type, other_account_id, party_id);
     setIsLoading(true);
     await ApiManagerV2.get(apiUrl.SHOP_LIST, {
       params: {
