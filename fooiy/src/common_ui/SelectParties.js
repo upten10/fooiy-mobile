@@ -92,7 +92,7 @@ const SelectParties = props => {
   const Parties = () => {
     if (openParties) {
       return partyList.map((item, index) => {
-        return <PartyUI {...item} index={index} />;
+        return <PartyUI key={index} {...item} index={index} />;
       });
     } else {
       return (
