@@ -28,7 +28,6 @@ import Margin from '../../../../common_ui/Margin';
 import FooiyToast from '../../../../common/FooiyToast';
 
 const RegisterFeed = props => {
-  console.log(props.route.params.address);
   const {photo_list, shop, menu, address} = props.route.params;
   const [selectedPartyList, setSelectedPartyList] = useState([]);
   const shop_init = shop
@@ -53,6 +52,7 @@ const RegisterFeed = props => {
   const [fooiytiRatingAC, setFooiytiRatingAC] = useState(2);
   const [totalRating, setTotalRating] = useState(2);
   const [visibleSuccess, setVisibleSuccess] = useState('');
+  const [isClicked, setIsClicked] = useState(false);
   const valueSet = [90, 70, 50, 30, 10];
   const totalValueSet = [10, 30, 50, 70, 99];
   const navigation = useNavigation();
@@ -118,58 +118,61 @@ const RegisterFeed = props => {
           .catch(e => FooiyToast.error());
   };
   const onClickRegister = async () => {
-    const match = /\.(\w+)$/.exec(photo_list[0].filename ?? '');
-    // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
-    const type = Platform.OS === 'ios' ? `image.jpg` : `image/jpeg`;
-    const formData = new FormData();
-    formData.append('account', accountValue);
-    shop ? formData.append('shop_id', shop_id) : null;
-    formData.append('shop_name', shopValue);
-    shop && menu
-      ? formData.append('menu_id', menu.id)
-      : formData.append('menu_name', menuValue);
-    formData.append('shop_category', props.route.params.category);
-    formData.append('menu_price', 0);
-    formData.append('comment', comment);
-    formData.append('taste_evaluation', totalValueSet[totalRating]);
-    formData.append('address', locationValue);
-    formData.append('image_1', {
-      uri: photo_list[0].image.uri,
-      name:
-        photo_list[0].image.filename !== null
-          ? photo_list[0].image.filename
-          : 'image.jpg',
-      type,
-    });
-    photo_list[1] &&
-      formData.append('image_2', {
-        uri: photo_list[1].image.uri,
+    if (!isClicked) {
+      setIsClicked(true);
+      const match = /\.(\w+)$/.exec(photo_list[0].filename ?? '');
+      // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
+      const type = Platform.OS === 'ios' ? `image.jpg` : `image/jpeg`;
+      const formData = new FormData();
+      formData.append('account', accountValue);
+      shop ? formData.append('shop_id', shop_id) : null;
+      formData.append('shop_name', shopValue);
+      shop && menu
+        ? formData.append('menu_id', menu.id)
+        : formData.append('menu_name', menuValue);
+      formData.append('shop_category', props.route.params.category);
+      formData.append('menu_price', 0);
+      formData.append('comment', comment);
+      formData.append('taste_evaluation', totalValueSet[totalRating]);
+      formData.append('address', locationValue);
+      formData.append('image_1', {
+        uri: photo_list[0].image.uri,
         name:
-          photo_list[1].image.filename !== null
-            ? photo_list[1].image.filename
+          photo_list[0].image.filename !== null
+            ? photo_list[0].image.filename
             : 'image.jpg',
         type,
       });
-    photo_list[2] &&
-      formData.append('image_3', {
-        uri: photo_list[2].image.uri,
-        name:
-          photo_list[2].image.filename !== null
-            ? photo_list[2].image.filename
-            : 'image.jpg',
-        type,
-      });
-    formData.append('fooiyti_e', valueSet[fooiytiRatingEI]);
-    formData.append('fooiyti_i', 100 - valueSet[fooiytiRatingEI]);
-    formData.append('fooiyti_s', valueSet[fooiytiRatingSN]);
-    formData.append('fooiyti_n', 100 - valueSet[fooiytiRatingSN]);
-    formData.append('fooiyti_t', valueSet[fooiytiRatingTF]);
-    formData.append('fooiyti_f', 100 - valueSet[fooiytiRatingTF]);
-    formData.append('fooiyti_a', valueSet[fooiytiRatingAC]);
-    formData.append('fooiyti_c', 100 - valueSet[fooiytiRatingAC]);
-    formData.append('subscribe_parties', selectedPartyList);
+      photo_list[1] &&
+        formData.append('image_2', {
+          uri: photo_list[1].image.uri,
+          name:
+            photo_list[1].image.filename !== null
+              ? photo_list[1].image.filename
+              : 'image.jpg',
+          type,
+        });
+      photo_list[2] &&
+        formData.append('image_3', {
+          uri: photo_list[2].image.uri,
+          name:
+            photo_list[2].image.filename !== null
+              ? photo_list[2].image.filename
+              : 'image.jpg',
+          type,
+        });
+      formData.append('fooiyti_e', valueSet[fooiytiRatingEI]);
+      formData.append('fooiyti_i', 100 - valueSet[fooiytiRatingEI]);
+      formData.append('fooiyti_s', valueSet[fooiytiRatingSN]);
+      formData.append('fooiyti_n', 100 - valueSet[fooiytiRatingSN]);
+      formData.append('fooiyti_t', valueSet[fooiytiRatingTF]);
+      formData.append('fooiyti_f', 100 - valueSet[fooiytiRatingTF]);
+      formData.append('fooiyti_a', valueSet[fooiytiRatingAC]);
+      formData.append('fooiyti_c', 100 - valueSet[fooiytiRatingAC]);
+      formData.append('subscribe_parties', selectedPartyList);
 
-    postRegister(formData);
+      postRegister(formData);
+    }
   };
   if (visibleSuccess === 'record' || visibleSuccess === 'pioneer') {
     return (
