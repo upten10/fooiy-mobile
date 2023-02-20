@@ -1,9 +1,11 @@
 import React, {useCallback} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
+import ApiLoading from '../../common_ui/loading/ApiLoading';
 
 const GalleryPhotoFlatlist = props => {
   const {
@@ -15,6 +17,8 @@ const GalleryPhotoFlatlist = props => {
     setCropPhoto,
     is_multi,
   } = props;
+
+  const insets = useSafeAreaInsets();
 
   const selectPhoto = index => {
     if (is_multi) {
@@ -85,12 +89,20 @@ const GalleryPhotoFlatlist = props => {
     [selectedPhotoIndexList],
   );
 
+  const ListEmptyComponent = useCallback(() => {
+    return (
+      <View
+        style={{
+          height: globalVariable.width / 2,
+        }}>
+        <ApiLoading />
+      </View>
+    );
+  }, []);
   return (
     <FlatList
       data={galleryList}
-      // style={{
-      //   height: globalVariable.height - 56,
-      // }}
+      ListEmptyComponent={ListEmptyComponent}
       keyExtractor={(item, index) => index.toString()}
       maxToRenderPerBatch={12}
       updateCellsBatchingPeriod={12}

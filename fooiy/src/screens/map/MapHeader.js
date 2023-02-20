@@ -43,7 +43,7 @@ const MapHeader = props => {
             ...fooiyFont.Subtitle3,
             color: fooiyColor.G600,
           }}>
-          먹고싶은 음식을 검색해볼까요?
+          방문할 지역을 검색해볼까요?
         </Text>
         <SearchDark />
       </TouchableOpacity>

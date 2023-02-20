@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Platform, PanResponder, Animated, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor} from '../../common/globalStyles';
-import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../headers/StackHeader';
 import getGalleryPhotos from './functions/getGalleryPhotos';
 import goNext from './functions/goNext';
@@ -45,7 +44,6 @@ const Gallery = props => {
   };
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (evt, gestureState) => {
-      console.log(gestureState.dy > 0, currentValue.current < -100);
       if (gestureState.dy > 0) {
         if (isCollapse.current) {
           return true;
