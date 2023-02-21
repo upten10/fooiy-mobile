@@ -2,17 +2,15 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform, PanResponder, Animated, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ArrowIconBottom} from '../../../assets/icons/svg';
 import {fooiyColor} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
-import SelectCategoryModal from '../../screens/feed/SelectCategoryModal';
 import {StackHeader} from '../headers/StackHeader';
 import getGalleryPhotos from './functions/getGalleryPhotos';
 import goNext from './functions/goNext';
 import GalleryPhotoFlatlist from './GalleryPhotoFlatlist';
 import MainPhotoView from './MainPhotoView';
 import WorkingPhotos from './WorkingPhotos';
-// import {useAnimatedValue} from 'react-native-reanimated';
+import SelectCategoryModal from '../../screens/feed/SelectCategoryModal';
 
 const Gallery = props => {
   const collapsingY = -globalVariable.width;
@@ -23,9 +21,13 @@ const Gallery = props => {
   const [galleryList, setGalleryList] = useState([]);
   const [selectIndex, setSelectIndex] = useState(0);
   const [selectedPhotoIndexList, setSelectedPhotoList] = useState([]);
+  const [flatlistHeight, setFlatlistHeight] = useState(
+    (globalVariable.width / 4) * 3,
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const isCollapse = useRef(false);
   const [open, setOpen] = useState(false);
   const [album, setAlbum] = useState('all');
-  const isCollapse = useRef(false);
 
   const workingPhotosPositionY = useRef(new Animated.Value(0)).current;
   const currentValue = useRef(0);
@@ -37,6 +39,7 @@ const Gallery = props => {
       useNativeDriver: true,
     }).start();
     isCollapse.current = true;
+    setFlatlistHeight(globalVariable.height - 80);
   };
   const downSpring = () => {
     currentValue.current = 0;
@@ -46,6 +49,7 @@ const Gallery = props => {
       useNativeDriver: true,
     }).start();
     isCollapse.current = false;
+    setFlatlistHeight((globalVariable.width / 4) * 3);
   };
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (evt, gestureState) => {
@@ -94,6 +98,8 @@ const Gallery = props => {
       galleryList,
       setGalleryList,
       album,
+      setIsLoading,
+      isLoading,
     );
   };
 
@@ -109,13 +115,10 @@ const Gallery = props => {
     cropViewRef.current.rotateImage(true);
   };
 
-  useEffect(() => {
-    getPhotos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const selectItem = () => {
-    setOpen(!open);
+    if (!isLoading) {
+      setOpen(!open);
+    }
   };
 
   return (
@@ -138,8 +141,10 @@ const Gallery = props => {
             album={album}
             galleryCursor={galleryCursor}
             setGalleryCursor={setGalleryCursor}
+            setSelectedPhotoList={setSelectedPhotoList}
             galleryList={galleryList}
             setGalleryList={setGalleryList}
+            setIsLoading={setIsLoading}
           />
         )}
       </View>
@@ -163,15 +168,20 @@ const Gallery = props => {
         <WorkingPhotos
           cropPhoto={cropPhoto}
           galleryList={galleryList}
+          selectIndex={selectIndex}
           setSelectIndex={setSelectIndex}
           selectedPhotoIndexList={selectedPhotoIndexList}
+          setSelectedPhotoList={setSelectedPhotoList}
           saveImage={saveImage}
           setCropPhoto={setCropPhoto}
           downSpring={downSpring}
         />
       </Animated.View>
       <Animated.View
-        style={[{transform: [{translateY: workingPhotosPositionY}]}]}>
+        style={[
+          {transform: [{translateY: workingPhotosPositionY}]},
+          {height: flatlistHeight, backgroundColor: fooiyColor.W},
+        ]}>
         <GalleryPhotoFlatlist
           cropPhoto={cropPhoto}
           getPhotos={getPhotos}
@@ -181,6 +191,7 @@ const Gallery = props => {
           setSelectIndex={setSelectIndex}
           setCropPhoto={setCropPhoto}
           downSpring={downSpring}
+          isLoading={isLoading}
           is_multi={props.route?.params.is_multi}
         />
       </Animated.View>

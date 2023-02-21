@@ -127,3 +127,4 @@ export {default as AgreeAllCheck} from './agree_all_check.svg';
 export {default as ArrowRight24G400} from './ArrowRight24G400.svg';
 
 export {default as MenuClinicIcon} from './menu_clinic_icon.svg';
+export {default as PhotoCancel} from './photo_cancel.svg';

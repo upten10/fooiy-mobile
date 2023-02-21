@@ -22,6 +22,7 @@ import {
 } from '../../../assets/icons/svg';
 import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {elapsedText} from '../../common/helpers/elapsedText';
 import {LocationPermission} from '../../common/Permission';
 import {StackHeader} from '../headers/StackHeader';
 
@@ -129,7 +130,9 @@ const FindWay = props => {
           </NaverMapView>
         </View>
         <View style={styles.copy_container}>
-          <Text style={styles.shop_address}>{shop.address}</Text>
+          <Text style={styles.shop_address}>
+            {elapsedText(shop.address, 20)}
+          </Text>
           <TouchableOpacity
             style={styles.copy_btn}
             onPress={onClickCopy}

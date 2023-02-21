@@ -1,16 +1,14 @@
+import React, {useState, useEffect} from 'react';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
-import React, {useCallback} from 'react';
-import {useState} from 'react';
-import {useEffect} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import ApiLoading from '../../common_ui/loading/ApiLoading';
+import {FlashList} from '@shopify/flash-list';
 
 const GalleryPhotoFlatlist = props => {
-  const [album, setAlbum] = useState();
   const {
     getPhotos,
     galleryList,
@@ -19,18 +17,8 @@ const GalleryPhotoFlatlist = props => {
     setSelectIndex,
     setCropPhoto,
     is_multi,
+    isLoading,
   } = props;
-
-  const getSmartAlbum = async () => {
-    const getSmartAlbums = await CameraRoll.getSmartAlbums({
-      assetType: 'Photos',
-    });
-    setAlbum(getSmartAlbums[1] && getSmartAlbums[1].title === 'Favorites');
-  };
-
-  useEffect(() => {
-    getSmartAlbum();
-  }, []);
 
   const selectPhoto = index => {
     if (is_multi) {
@@ -54,56 +42,51 @@ const GalleryPhotoFlatlist = props => {
     }
   };
 
-  const RenderPhoto = useCallback(
-    props => {
-      const {item, index} = props;
-      const PhotoIndicator = props => {
-        if (
-          selectedPhotoIndexList.findIndex(
-            element => element === props.index,
-          ) !== -1 &&
-          is_multi
-        ) {
-          return (
-            <View style={styles.item_index}>
-              <Text
-                style={{
-                  ...fooiyFont.Caption2,
-                  color: fooiyColor.W,
-                }}>
-                {selectedPhotoIndexList.findIndex(
-                  element => element === props.index,
-                ) + 1}
-              </Text>
-            </View>
-          );
-        }
-      };
-      if (item?.node) {
+  const RenderPhoto = props => {
+    const {item, index} = props;
+    const PhotoIndicator = props => {
+      if (
+        selectedPhotoIndexList.findIndex(element => element === props.index) !==
+          -1 &&
+        is_multi
+      ) {
         return (
-          <View>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                selectPhoto(index);
+          <View style={styles.item_index}>
+            <Text
+              style={{
+                ...fooiyFont.Caption2,
+                color: fooiyColor.W,
               }}>
-              <FastImage
-                source={{uri: item.node.image.url}}
-                style={styles.gallery_item}
-              />
-              <PhotoIndicator index={index} />
-            </TouchableOpacity>
+              {selectedPhotoIndexList.findIndex(
+                element => element === props.index,
+              ) + 1}
+            </Text>
           </View>
         );
       }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selectedPhotoIndexList],
-  );
+    };
+    if (item?.node) {
+      return (
+        <View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              selectPhoto(index);
+            }}>
+            <FastImage
+              source={{uri: item.node.image.url}}
+              style={styles.gallery_item}
+            />
+            <PhotoIndicator index={index} />
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
 
   const ListEmptyComponent = () => {
     return (
-      album && (
+      isLoading && (
         <View
           style={{
             height: globalVariable.width / 2,
@@ -115,21 +98,21 @@ const GalleryPhotoFlatlist = props => {
   };
 
   return (
-    <FlatList
+    <FlashList
       data={galleryList}
       ListEmptyComponent={ListEmptyComponent}
       keyExtractor={(item, index) => index.toString()}
-      maxToRenderPerBatch={30}
-      updateCellsBatchingPeriod={10}
-      contentContainerStyle={{
-        backgroundColor: fooiyColor.W,
-        minHeight: (globalVariable.width / 4) * 3,
-      }}
+      estimatedItemSize={95.7}
       ListFooterComponent={<FlatListFooter h={150} />}
-      onEndReachedThreshold={50}
       numColumns={4}
-      onEndReached={getPhotos}
+      onEndReachedThreshold={8}
+      removeClippedSubviews={true}
+      onEndReached={() => {
+        getPhotos();
+        console.log('end');
+      }}
       renderItem={RenderPhoto}
+      extraData={selectedPhotoIndexList}
     />
   );
 };

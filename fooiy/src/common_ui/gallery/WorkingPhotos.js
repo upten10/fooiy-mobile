@@ -7,6 +7,7 @@ import {
   Image,
   View,
 } from 'react-native';
+import {PhotoCancel} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 
 const WorkingPhotos = props => {
@@ -14,42 +15,56 @@ const WorkingPhotos = props => {
     cropPhoto,
     galleryList,
     setSelectIndex,
+    setSelectedPhotoList,
     selectedPhotoIndexList,
     saveImage,
     setCropPhoto,
     downSpring,
   } = props;
 
+  const selectedLength = selectedPhotoIndexList.length;
+
   const RenderPhotos = useCallback(
-    props => {
-      const {item, index} = props;
+    (uri, index) => {
       return (
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            downSpring();
-            setSelectIndex(index);
-            setCropPhoto(false);
-          }}>
-          <Image
-            source={{uri: galleryList[item]?.node.image.uri}}
-            style={styles.select_image}
-          />
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              downSpring();
+              setSelectIndex(index);
+              setCropPhoto(false);
+            }}>
+            <Image source={{uri: uri}} style={styles.select_image} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            hitSlop={{top: 18, bottom: 18, left: 18, right: 18}}
+            onPress={() => {
+              setSelectIndex(selectedPhotoIndexList.length - 2);
+              setSelectedPhotoList(
+                selectedPhotoIndexList.filter(
+                  idx => idx !== selectedPhotoIndexList[index],
+                ),
+              );
+            }}
+            style={styles.delete_button}>
+            <PhotoCancel />
+          </TouchableOpacity>
+        </View>
       );
     },
-    [galleryList],
+    [selectedPhotoIndexList],
   );
 
   return (
     <View style={styles.mid_view}>
-      <FlatList
-        data={selectedPhotoIndexList}
-        keyExtractor={index => index.toString()}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        renderItem={item => <RenderPhotos {...item} />}
-      />
+      {selectedLength >= 1 &&
+        RenderPhotos(galleryList[selectedPhotoIndexList[0]]?.node.image.uri, 0)}
+      {selectedLength >= 2 &&
+        RenderPhotos(galleryList[selectedPhotoIndexList[1]]?.node.image.uri, 1)}
+      {selectedLength >= 3 &&
+        RenderPhotos(galleryList[selectedPhotoIndexList[2]]?.node.image.uri, 2)}
       {cropPhoto ? (
         <TouchableOpacity onPress={saveImage} style={styles.mid_text}>
           <Text style={styles.crop_photo_text}>저장</Text>
@@ -74,7 +89,6 @@ const styles = StyleSheet.create({
   mid_view: {
     height: 80,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     paddingLeft: 8,
   },
@@ -92,6 +106,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     right: 16,
+    position: 'absolute',
   },
   crop_photo_text: {...fooiyFont.Button, color: fooiyColor.P500},
+  delete_button: {
+    width: 16,
+    height: 16,
+    zIndex: 100,
+    position: 'absolute',
+    right: 0,
+    top: -8,
+  },
 });

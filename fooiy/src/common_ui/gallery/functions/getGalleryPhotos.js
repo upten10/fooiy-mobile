@@ -22,24 +22,30 @@ const getGalleryPhotos = async (
   galleryList,
   setGalleryList,
   album,
+  setIsLoading,
+  isLoading,
 ) => {
+  if (isLoading) {
+    return;
+  }
+  setIsLoading(true);
   const getSmartAlbums = await CameraRoll.getSmartAlbums({
     assetType: 'Photos',
   });
   const params = {
     first:
       album === 'favorite'
-        ? getSmartAlbums[1] &&
-          getSmartAlbums[1].title === 'Favorites' &&
-          getSmartAlbums[1].count > 300
-          ? 300
-          : getSmartAlbums[1] && getSmartAlbums[1].count
-        : 100,
-
+        ? getSmartAlbums[1] && getSmartAlbums[1].title === 'Favorites'
+          ? getSmartAlbums[1].count > 300
+            ? 300
+            : getSmartAlbums[1].count
+          : 0
+        : 80,
     ...(galleryCursor && {after: galleryCursor}),
     groupTypes: album === 'all' ? 'All' : 'Album',
     assetType: 'Photos',
   };
+
   try {
     if (galleryCursor !== false) {
       const {edges, page_info} = await CameraRoll.getPhotos(params);
@@ -64,9 +70,14 @@ const getGalleryPhotos = async (
         // uri: 크롭뷰랑 위에 하나씩 뜨는 쪽
         // url : 아래 이미지 flat
       }
+      // console.log(edges);
       setGalleryList([...galleryList, ...edges]);
+      setIsLoading(false);
+      console.log('끝');
     }
-  } catch (error) {}
+  } catch (error) {
+    setIsLoading(false);
+  }
 };
 
 export default getGalleryPhotos;

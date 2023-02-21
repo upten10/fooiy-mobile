@@ -22,7 +22,7 @@ const MainPhotoView = props => {
         <View style={styles.square}>
           <CropView
             ref={cropViewRef}
-            sourceUrl={galleryList[galleryListIndex].node.image.uri}
+            sourceUrl={galleryList[galleryListIndex]?.node.image.uri}
             style={styles.crop_view}
             onImageCrop={res => {
               galleryList[galleryListIndex].node.image.uri =
