@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Platform, PanResponder, Animated, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../headers/StackHeader';
 import getGalleryPhotos from './functions/getGalleryPhotos';
 import goNext from './functions/goNext';
@@ -10,9 +11,9 @@ import GalleryPhotoFlatlist from './GalleryPhotoFlatlist';
 import MainPhotoView from './MainPhotoView';
 import WorkingPhotos from './WorkingPhotos';
 // import {useAnimatedValue} from 'react-native-reanimated';
-const collapsingY = -414;
 
 const Gallery = props => {
+  const collapsingY = -globalVariable.width;
   const navigation = useNavigation();
   const cropViewRef = useRef(null);
   const [cropPhoto, setCropPhoto] = useState(false);

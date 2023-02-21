@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
@@ -17,8 +16,6 @@ const GalleryPhotoFlatlist = props => {
     setCropPhoto,
     is_multi,
   } = props;
-
-  const insets = useSafeAreaInsets();
 
   const selectPhoto = index => {
     if (is_multi) {
@@ -89,7 +86,7 @@ const GalleryPhotoFlatlist = props => {
     [selectedPhotoIndexList],
   );
 
-  const ListEmptyComponent = useCallback(() => {
+  const ListEmptyComponent = () => {
     return (
       <View
         style={{
@@ -98,7 +95,8 @@ const GalleryPhotoFlatlist = props => {
         <ApiLoading />
       </View>
     );
-  }, []);
+  };
+
   return (
     <FlatList
       data={galleryList}
@@ -109,13 +107,13 @@ const GalleryPhotoFlatlist = props => {
       removeClippedSubviews={true}
       contentContainerStyle={{
         backgroundColor: fooiyColor.W,
-        minHeight: globalVariable.height - 56 - 80,
+        minHeight: globalVariable.width,
       }}
       ListFooterComponent={<FlatListFooter h={150} />}
       onEndReachedThreshold={30}
       numColumns={4}
       onEndReached={getPhotos}
-      renderItem={item => <RenderPhoto {...item} />}
+      renderItem={RenderPhoto}
     />
   );
 };
