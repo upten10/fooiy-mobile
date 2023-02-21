@@ -6,9 +6,23 @@ import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CafeShop, CommonShop} from '../../../assets/icons/svg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import getGalleryPhotos from '../../common_ui/gallery/functions/getGalleryPhotos';
+import Gallery from '../../common_ui/gallery/Gallery';
 
 const SelectCategoryModal = props => {
-  const {currentCategory, setCategory, setOpen, toTop} = props;
+  const {
+    currentCategory,
+    setCategory,
+    setOpen,
+    toTop,
+    isAlbum,
+    album,
+    setAlbum,
+    galleryCursor,
+    setGalleryCursor,
+    galleryList,
+    setGalleryList,
+  } = props;
   const insets = useSafeAreaInsets();
   const changeCategory = category => {
     toTop();
@@ -17,7 +31,34 @@ const SelectCategoryModal = props => {
     }
     setOpen(false);
   };
-  return (
+  const changeAlbum = album => {
+    setAlbum(album);
+    setOpen(false);
+    getGalleryPhotos(null, setGalleryCursor, [], setGalleryList, album);
+  };
+  return isAlbum ? (
+    <View style={styles.selectAlbum}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => changeAlbum('all')}>
+        <View style={styles.albumItem}>
+          <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.G600}}>
+            모든 앨범
+          </Text>
+        </View>
+      </TouchableOpacity>
+      <View
+        style={{borderBottomWidth: 1, borderBottomColor: fooiyColor.G100}}
+      />
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => changeAlbum('favorite')}>
+        <View style={styles.albumItem}>
+          <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.G600}}>
+            즐겨찾기
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  ) : (
     <View style={[styles.select_category_container, {top: 56 + insets.top}]}>
       <TouchableOpacity
         style={styles.each_category_container}
@@ -74,5 +115,22 @@ const styles = StyleSheet.create({
     marginRight: 16,
     width: 24,
     height: 24,
+  },
+
+  selectAlbum: {
+    width: 124,
+    height: 112,
+    borderWidth: 1,
+    borderColor: fooiyColor.G200,
+    position: 'absolute',
+    top: 56,
+    backgroundColor: fooiyColor.W,
+    borderRadius: 8,
+    left: globalVariable.width / 2 - 62,
+  },
+  albumItem: {
+    height: 56,
+    justifyContent: 'center',
+    marginLeft: 16,
   },
 });

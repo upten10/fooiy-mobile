@@ -1,4 +1,7 @@
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import React, {useCallback} from 'react';
+import {useState} from 'react';
+import {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
@@ -7,6 +10,7 @@ import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import ApiLoading from '../../common_ui/loading/ApiLoading';
 
 const GalleryPhotoFlatlist = props => {
+  const [album, setAlbum] = useState();
   const {
     getPhotos,
     galleryList,
@@ -16,6 +20,17 @@ const GalleryPhotoFlatlist = props => {
     setCropPhoto,
     is_multi,
   } = props;
+
+  const getSmartAlbum = async () => {
+    const getSmartAlbums = await CameraRoll.getSmartAlbums({
+      assetType: 'Photos',
+    });
+    setAlbum(getSmartAlbums[1] && getSmartAlbums[1].title === 'Favorites');
+  };
+
+  useEffect(() => {
+    getSmartAlbum();
+  }, []);
 
   const selectPhoto = index => {
     if (is_multi) {
@@ -88,12 +103,14 @@ const GalleryPhotoFlatlist = props => {
 
   const ListEmptyComponent = () => {
     return (
-      <View
-        style={{
-          height: globalVariable.width / 2,
-        }}>
-        <ApiLoading />
-      </View>
+      album && (
+        <View
+          style={{
+            height: globalVariable.width / 2,
+          }}>
+          <ApiLoading />
+        </View>
+      )
     );
   };
 

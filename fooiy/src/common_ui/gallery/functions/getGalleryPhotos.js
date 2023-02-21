@@ -21,11 +21,24 @@ const getGalleryPhotos = async (
   setGalleryCursor,
   galleryList,
   setGalleryList,
+  album,
 ) => {
-  const params = {
-    first: 100,
+  const getSmartAlbums = await CameraRoll.getSmartAlbums({
     assetType: 'Photos',
+  });
+  const params = {
+    first:
+      album === 'favorite'
+        ? getSmartAlbums[1] &&
+          getSmartAlbums[1].title === 'Favorites' &&
+          getSmartAlbums[1].count > 300
+          ? 300
+          : getSmartAlbums[1] && getSmartAlbums[1].count
+        : 100,
+
     ...(galleryCursor && {after: galleryCursor}),
+    groupTypes: album === 'all' ? 'All' : 'Album',
+    assetType: 'Photos',
   };
   try {
     if (galleryCursor !== false) {
@@ -33,7 +46,9 @@ const getGalleryPhotos = async (
       if (page_info.has_next_page === false) {
         setGalleryCursor(false);
       } else {
-        setGalleryCursor(page_info.end_cursor);
+        album === 'favorite'
+          ? setGalleryCursor(false)
+          : setGalleryCursor(page_info.end_cursor);
       }
       /*ios인 경우는 ph:// 형식으로 사진이 저장 uri가 아닌 url 이기에 읽을 수 없어
             react-native-fs의 파일 시스템을 이용하여 변환.*/

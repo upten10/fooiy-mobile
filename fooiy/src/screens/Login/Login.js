@@ -95,7 +95,7 @@ const Login = () => {
     ApiManagerV2.post(apiUrl.APPLE_LOGIN, {
       social_id: responseObject.user,
       os: Platform.OS,
-      app_version: '1.2.0',
+      app_version: globalVariable.app_version,
       device_id: DEVICEID,
       fcm_token: '0',
     })
