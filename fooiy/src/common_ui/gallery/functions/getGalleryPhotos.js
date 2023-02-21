@@ -23,7 +23,7 @@ const getGalleryPhotos = async (
   setGalleryList,
 ) => {
   const params = {
-    first: 100,
+    first: 150,
     assetType: 'Photos',
     ...(galleryCursor && {after: galleryCursor}),
   };
