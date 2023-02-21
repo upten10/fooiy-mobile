@@ -119,15 +119,14 @@ const GalleryPhotoFlatlist = props => {
       data={galleryList}
       ListEmptyComponent={ListEmptyComponent}
       keyExtractor={(item, index) => index.toString()}
-      maxToRenderPerBatch={12}
-      updateCellsBatchingPeriod={12}
-      removeClippedSubviews={true}
+      maxToRenderPerBatch={30}
+      updateCellsBatchingPeriod={10}
       contentContainerStyle={{
         backgroundColor: fooiyColor.W,
-        minHeight: globalVariable.width,
+        minHeight: (globalVariable.width / 4) * 3,
       }}
       ListFooterComponent={<FlatListFooter h={150} />}
-      onEndReachedThreshold={30}
+      onEndReachedThreshold={50}
       numColumns={4}
       onEndReached={getPhotos}
       renderItem={RenderPhoto}
