@@ -268,6 +268,10 @@ const styles = StyleSheet.create({
     borderColor: fooiyColor.G400,
     ...fooiyFont.Body1,
     color: fooiyColor.B,
+    lineHeight: Platform.select({
+      ios: 0,
+      android: null,
+    }),
   },
   pencilBlur: {
     opacity: 0,
