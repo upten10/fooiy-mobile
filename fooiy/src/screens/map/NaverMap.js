@@ -192,7 +192,7 @@ const NaverMap = props => {
         scaleBar={false}
         rotateGesturesEnabled={false}
         tiltGesturesEnabled={false}
-        minZoomLevel={5}
+        minZoomLevel={5.5}
         maxZoomLevel={18}
         style={styles.map}
         onMapClick={() => toggleModal()}

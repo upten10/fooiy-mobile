@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {elapsedText} from '../../common/helpers/elapsedText';
 import Margin from '../Margin';
 
 const MenuFrame = props => {
@@ -17,11 +18,7 @@ const MenuFrame = props => {
           <View key={item.id}>
             <Margin h={12} />
             <View style={styles.menu_container}>
-              <Text style={styles.menu_name}>
-                {item.name.length >= 20
-                  ? item.name.substr(0, 19) + '...'
-                  : item.name}
-              </Text>
+              <Text style={styles.menu_name}>{elapsedText(item.name, 20)}</Text>
               <Text style={styles.menu_price}>{item.price}원</Text>
             </View>
             <Margin h={12} />

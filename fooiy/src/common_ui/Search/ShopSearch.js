@@ -21,6 +21,7 @@ import {debounce} from 'lodash';
 import {useNavigation} from '@react-navigation/native';
 import {CheckLocationPermission} from '../../common/Permission';
 import FooiyToast from '../../common/FooiyToast';
+import {elapsedText} from '../../common/helpers/elapsedText';
 
 const ShopSearch = () => {
   const navigation = useNavigation();
@@ -148,7 +149,7 @@ const ShopSearch = () => {
         {/* shop info */}
         <View style={{marginBottom: 8}}>
           <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.B}}>
-            {name.length >= 11 ? name.substr(0, 11) + '...' : name}
+            {elapsedText(name, 11)}
           </Text>
           <Text style={{...fooiyFont.Body2, color: fooiyColor.G800}}>
             {menu_price}

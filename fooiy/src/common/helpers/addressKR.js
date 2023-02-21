@@ -6,8 +6,8 @@ export const area_1 = [
   },
   {
     name: '경기',
-    longitude: 126.987638,
-    latitude: 37.429201,
+    longitude: 127.017638,
+    latitude: 37.285201,
   },
 
   {

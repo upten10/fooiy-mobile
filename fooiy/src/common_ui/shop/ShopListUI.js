@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import {PartyCrown} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
+import {elapsedText} from '../../common/helpers/elapsedText';
 
 const ShopListUI = item => {
   const {
@@ -72,7 +73,7 @@ const ShopListUI = item => {
             color: fooiyColor.B,
             width: imageWidth,
           }}>
-          {name.length >= 11 ? name.substr(0, 11) + '...' : name}
+          {elapsedText(name, 11)}
         </Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {owner !== undefined ? (

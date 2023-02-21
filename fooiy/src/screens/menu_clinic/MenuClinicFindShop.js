@@ -58,16 +58,11 @@ const MenuClinicFindShop = props => {
   useEffect(() => {
     if (location.longitude !== 0) {
       setIsCheck(true);
+      geocoding(location.longitude, location.latitude, setAddress);
     }
   }, [location]);
 
   const navigation = useNavigation();
-
-  const onClickImage = shop_id => {
-    navigation.navigate('Shop', {
-      shop_id: shop_id,
-    });
-  };
 
   const ShopList = useCallback(
     item => {
@@ -75,7 +70,11 @@ const MenuClinicFindShop = props => {
       return (
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => onClickImage(shop.shop_id)}>
+          onPress={() =>
+            navigation.navigate('Shop', {
+              shop_id: shop.shop_id,
+            })
+          }>
           <View
             style={[
               item.index % 2 === 0 ? {left: 16} : {left: 31},
@@ -102,7 +101,7 @@ const MenuClinicFindShop = props => {
         </TouchableOpacity>
       );
     },
-    [onClickImage],
+    [navigation],
   );
 
   const ListHeaderComponent = useCallback(() => {
@@ -166,11 +165,6 @@ const MenuClinicFindShop = props => {
       </View>
     );
   }, []);
-
-  useEffect(() => {
-    isCheck && geocoding(location.longitude, location.latitude, setAddress);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCheck]);
 
   useEffect(() => {
     isCheck && getNearShop(0, []);

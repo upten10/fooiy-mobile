@@ -13,6 +13,7 @@ import {
 } from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import FooiyToast from '../../common/FooiyToast';
+import {elapsedText} from '../../common/helpers/elapsedText';
 
 const FeedShopInfo = props => {
   const {
@@ -53,7 +54,9 @@ const FeedShopInfo = props => {
             <View>
               <Text style={styles.shop_name}>{shop_name}</Text>
               <View style={styles.menu_container}>
-                <Text style={styles.menu_name}>{menu_name}</Text>
+                <Text style={styles.menu_name}>
+                  {elapsedText(menu_name, 14)}
+                </Text>
                 <Text style={styles.menu_price}>{menu_price}</Text>
               </View>
             </View>
