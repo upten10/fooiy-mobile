@@ -13,8 +13,8 @@ const MapMarker = props => {
             latitude: item.latitude * 1,
             longitude: item.longitude * 1,
           }}
-          width={32}
-          height={36}
+          width={38}
+          height={42}
           onClick={() => {
             onClickMarker(item);
           }}
