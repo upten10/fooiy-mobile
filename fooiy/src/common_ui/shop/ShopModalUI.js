@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -37,7 +38,7 @@ const ShopModalUI = item => {
       }}>
       <View style={styles.container}>
         <View style={styles.menu_image_container}>
-          <Image source={{uri: image}} style={styles.menu_image} />
+          <FastImage source={{uri: image}} style={styles.menu_image} />
         </View>
         <View style={styles.shop_info_container}>
           <View style={styles.shop_detail_container}>
