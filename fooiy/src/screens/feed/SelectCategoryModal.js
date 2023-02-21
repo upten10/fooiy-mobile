@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
 import {globalVariable} from '../../common/globalVariable';
@@ -6,7 +6,6 @@ import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CafeShop, CommonShop} from '../../../assets/icons/svg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import getGalleryPhotos from '../../common_ui/gallery/functions/getGalleryPhotos';
 
 const SelectCategoryModal = props => {
   const {
@@ -17,10 +16,6 @@ const SelectCategoryModal = props => {
     isAlbum,
     album,
     setAlbum,
-    setSelectedPhotoList,
-    setGalleryCursor,
-    setGalleryList,
-    setIsLoading,
   } = props;
   const insets = useSafeAreaInsets();
   const changeCategory = category => {
@@ -33,15 +28,6 @@ const SelectCategoryModal = props => {
   const changeAlbum = selectedAlbum => {
     if (album !== selectedAlbum) {
       setAlbum(selectedAlbum);
-      setSelectedPhotoList([]);
-      getGalleryPhotos(
-        null,
-        setGalleryCursor,
-        [],
-        setGalleryList,
-        selectedAlbum,
-        setIsLoading,
-      );
     }
     setOpen(false);
   };

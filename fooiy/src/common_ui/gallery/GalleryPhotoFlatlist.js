@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import {CameraRoll} from '@react-native-camera-roll/camera-roll';
+import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
@@ -10,6 +9,7 @@ import {FlashList} from '@shopify/flash-list';
 
 const GalleryPhotoFlatlist = props => {
   const {
+    album,
     getPhotos,
     galleryList,
     selectedPhotoIndexList,
@@ -17,7 +17,8 @@ const GalleryPhotoFlatlist = props => {
     setSelectIndex,
     setCropPhoto,
     is_multi,
-    isLoading,
+    isFirstLoading,
+    favoriteCount,
   } = props;
 
   const selectPhoto = index => {
@@ -71,13 +72,15 @@ const GalleryPhotoFlatlist = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
-              selectPhoto(index);
+              selectPhoto(album === 'all' ? favoriteCount + index : index);
             }}>
             <FastImage
               source={{uri: item.node.image.url}}
               style={styles.gallery_item}
             />
-            <PhotoIndicator index={index} />
+            <PhotoIndicator
+              index={album === 'all' ? favoriteCount + index : index}
+            />
           </TouchableOpacity>
         </View>
       );
@@ -86,7 +89,7 @@ const GalleryPhotoFlatlist = props => {
 
   const ListEmptyComponent = () => {
     return (
-      isLoading && (
+      !isFirstLoading && (
         <View
           style={{
             height: globalVariable.width / 2,
@@ -99,18 +102,18 @@ const GalleryPhotoFlatlist = props => {
 
   return (
     <FlashList
-      data={galleryList}
+      data={
+        album === 'all'
+          ? galleryList.slice(favoriteCount)
+          : galleryList.slice(undefined, favoriteCount)
+      }
       ListEmptyComponent={ListEmptyComponent}
       keyExtractor={(item, index) => index.toString()}
       estimatedItemSize={95.7}
       ListFooterComponent={<FlatListFooter h={150} />}
       numColumns={4}
-      onEndReachedThreshold={8}
       removeClippedSubviews={true}
-      onEndReached={() => {
-        getPhotos();
-        console.log('end');
-      }}
+      onEndReached={getPhotos}
       renderItem={RenderPhoto}
       extraData={selectedPhotoIndexList}
     />

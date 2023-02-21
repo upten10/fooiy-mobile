@@ -5,7 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../headers/StackHeader';
-import getGalleryPhotos from './functions/getGalleryPhotos';
+import {getGalleryPhotos, getFirstPhotos} from './functions/getGalleryPhotos';
 import goNext from './functions/goNext';
 import GalleryPhotoFlatlist from './GalleryPhotoFlatlist';
 import MainPhotoView from './MainPhotoView';
@@ -20,11 +20,10 @@ const Gallery = props => {
   const [galleryCursor, setGalleryCursor] = useState(null);
   const [galleryList, setGalleryList] = useState([]);
   const [selectIndex, setSelectIndex] = useState(0);
+  const [favoriteCount, setFavoriteCount] = useState(0);
   const [selectedPhotoIndexList, setSelectedPhotoList] = useState([]);
-  const [flatlistHeight, setFlatlistHeight] = useState(
-    (globalVariable.width / 4) * 3,
-  );
-  const [isLoading, setIsLoading] = useState(false);
+  const [flatlistHeight, setFlatlistHeight] = useState(globalVariable.width);
+  const [isFirstLoading, setIsFirstLoading] = useState(false);
   const isCollapse = useRef(false);
   const [open, setOpen] = useState(false);
   const [album, setAlbum] = useState('all');
@@ -49,7 +48,7 @@ const Gallery = props => {
       useNativeDriver: true,
     }).start();
     isCollapse.current = false;
-    setFlatlistHeight((globalVariable.width / 4) * 3);
+    setFlatlistHeight(globalVariable.width);
   };
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (evt, gestureState) => {
@@ -92,16 +91,26 @@ const Gallery = props => {
   };
 
   const getPhotos = () => {
-    getGalleryPhotos(
+    if (isFirstLoading) {
+      getGalleryPhotos(
+        galleryCursor,
+        setGalleryCursor,
+        galleryList,
+        setGalleryList,
+        setFavoriteCount,
+      );
+    }
+  };
+
+  useEffect(() => {
+    getFirstPhotos(
       galleryCursor,
       setGalleryCursor,
-      galleryList,
       setGalleryList,
-      album,
-      setIsLoading,
-      isLoading,
+      setFavoriteCount,
+      setIsFirstLoading,
     );
-  };
+  }, []);
 
   const saveImage = () => {
     selectedPhotoIndexList.length !== 0 && cropViewRef.current.saveImage(true);
@@ -116,9 +125,7 @@ const Gallery = props => {
   };
 
   const selectItem = () => {
-    if (!isLoading) {
-      setOpen(!open);
-    }
+    setOpen(!open);
   };
 
   return (
@@ -144,7 +151,6 @@ const Gallery = props => {
             setSelectedPhotoList={setSelectedPhotoList}
             galleryList={galleryList}
             setGalleryList={setGalleryList}
-            setIsLoading={setIsLoading}
           />
         )}
       </View>
@@ -183,6 +189,7 @@ const Gallery = props => {
           {height: flatlistHeight, backgroundColor: fooiyColor.W},
         ]}>
         <GalleryPhotoFlatlist
+          album={album}
           cropPhoto={cropPhoto}
           getPhotos={getPhotos}
           galleryList={galleryList}
@@ -191,7 +198,8 @@ const Gallery = props => {
           setSelectIndex={setSelectIndex}
           setCropPhoto={setCropPhoto}
           downSpring={downSpring}
-          isLoading={isLoading}
+          isFirstLoading={isFirstLoading}
+          favoriteCount={favoriteCount}
           is_multi={props.route?.params.is_multi}
         />
       </Animated.View>

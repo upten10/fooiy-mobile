@@ -1,12 +1,5 @@
-import React, {useCallback, useEffect} from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-  View,
-} from 'react-native';
+import React, {useCallback} from 'react';
+import {StyleSheet, Text, TouchableOpacity, Image, View} from 'react-native';
 import {PhotoCancel} from '../../../assets/icons/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 
