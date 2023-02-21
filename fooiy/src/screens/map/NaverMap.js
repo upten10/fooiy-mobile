@@ -11,17 +11,14 @@ import FooiyToast from '../../common/FooiyToast';
 import {globalVariable} from '../../common/globalVariable';
 import {useDebounce} from '../../common/hooks/useDebounce';
 import {LocationPermission} from '../../common/Permission';
-import AndroidMapMarker from './AndroidMapMarker';
+import AreaMarker from '../../common_ui/marker/AreaMarker';
+import HotSpotMarker from '../../common_ui/marker/hotSpotMarker/HotSpotMarker';
+import MapMarker from '../../common_ui/marker/MapMarker';
 import MapBottomSheet from './bottom_sheet/MapBottomSheet';
 import MapHeader from './MapHeader';
-import MapMarker from './MapMarker';
 import ShopModal from './ShopModal';
 
 const NaverMap = props => {
-  const depthOneScreenLocation = [
-    {latitude: 30.397517566296486, longitude: 124.91716542482237},
-    {latitude: 40.26662580495315, longitude: 130.52104864676795},
-  ];
   const insets = useSafeAreaInsets();
   //map ref 초기화
   const mapView = useRef(null);
@@ -58,10 +55,10 @@ const NaverMap = props => {
 
   // 맵 움직이고 몇초 후에 설정됨 -> throttle
   const onCameraChange = e => {
+    // 10 < 4단계, 8 < 2단계 < 10, 1단계 < 8
+    setDepth(e.zoom > 14 ? 4 : e.zoom > 11 ? 2 : 1);
     debounceCallback(() => {
       setScreenLocation([e.contentRegion[0], e.contentRegion[2]]);
-      // 10 < 4단계, 8 < 2단계 < 10, 1단계 < 8
-      setDepth(e.zoom > 10 ? 4 : e.zoom > 8 ? 2 : 1);
     });
   };
 
@@ -70,15 +67,6 @@ const NaverMap = props => {
     setModalVisible(false);
     setClickedIndex(null);
     setClickedShop([]);
-  };
-
-  const onPressClusterMarker = id => {
-    const curMarker = shopMarkers.filter(shop => shop.id === id);
-    setCenter({
-      longitude: curMarker[0].longitude * 1,
-      latitude: curMarker[0].latitude * 1,
-      zoom: depth === 1 ? 8.01 : 11.01,
-    });
   };
 
   // 현위치 버튼 클릭 이벤트
@@ -114,34 +102,27 @@ const NaverMap = props => {
   };
 
   const getShopMarkerList = data => {
-    ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER, {
-      params: {
-        longitude_left_bottom:
-          depth === 1 ? depthOneScreenLocation[0].longitude : data[0].longitude,
-        latitude_left_bottom:
-          depth === 1 ? depthOneScreenLocation[0].latitude : data[0].latitude,
-        latitude_right_top:
-          depth === 1 ? depthOneScreenLocation[1].latitude : data[1].latitude,
-        longitude_right_top:
-          depth === 1 ? depthOneScreenLocation[1].longitude : data[1].longitude,
-        shop_category: isCafe ? globalVariable.category_cafe : null,
-        depth: depth,
-      },
-    })
-      .then(res => {
-        if (res.data.payload.shop_list) {
-          if (depth === 1) {
-            setShopMarkers(res.data.payload.shop_list.regions);
-          } else {
+    depth !== 1 &&
+      ApiManagerV2.get(apiUrl.MAP_SHOP_MARKER, {
+        params: {
+          longitude_left_bottom: data[0].longitude,
+          latitude_left_bottom: data[0].latitude,
+          latitude_right_top: data[1].latitude,
+          longitude_right_top: data[1].longitude,
+          shop_category: isCafe ? globalVariable.category_cafe : null,
+          depth: depth,
+        },
+      })
+        .then(res => {
+          if (res.data.payload.shop_list) {
             setShopMarkers(res.data.payload.shop_list);
             setShopCount(res.data.payload.shop_count);
+          } else {
+            setShopCount(res.data.payload.shop_count);
+            setShopMarkers([]);
           }
-        } else {
-          setShopCount(res.data.payload.shop_count);
-          setShopMarkers([]);
-        }
-      })
-      .catch(e => FooiyToast.error());
+        })
+        .catch(e => FooiyToast.error());
   };
 
   const getShopMarkerDetail = data => {
@@ -182,9 +163,14 @@ const NaverMap = props => {
             zoom: 16,
           });
     };
-
     center();
   }, []);
+
+  const onClickMarker = item => {
+    setClickedIndex(item.id);
+    getShopMarkerDetail({latitude: item.latitude, longitude: item.longitude});
+    setModalVisible(true);
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -199,7 +185,7 @@ const NaverMap = props => {
       <NaverMapView
         ref={mapView}
         // liteModeEnabled
-        // useTextureView={true}
+        useTextureView={true}
         center={center}
         showsMyLocationButton={false}
         zoomControl={false}
@@ -221,45 +207,15 @@ const NaverMap = props => {
             bottom: globalVariable.tabBarHeight + 54 + 24 + 16,
           },
         })}>
-        <Marker
-          coordinate={{
-            latitude: 47.61424127195381,
-            longitude: -122.33682336610559,
-          }}
-          image={require('../../../assets/icons/marker/marker.png')}
+        <AreaMarker setCenter={setCenter} mapView={mapView} />
+        {depth >= 2 && (
+          <HotSpotMarker setCenter={setCenter} mapView={mapView} />
+        )}
+        <MapMarker
+          shopMarkers={shopMarkers}
+          clickedIndex={clickedIndex}
+          onClickMarker={onClickMarker}
         />
-        {shopMarkers.length > 0
-          ? Platform.select({
-              ios: shopMarkers.map(item => {
-                return (
-                  <MapMarker
-                    key={item.id}
-                    {...item}
-                    setClickedIndex={setClickedIndex}
-                    clickedIndex={clickedIndex}
-                    getShopMarkerDetail={getShopMarkerDetail}
-                    setModalVisible={setModalVisible}
-                    depth={depth}
-                    onPressClusterMarker={onPressClusterMarker}
-                  />
-                );
-              }),
-              android: shopMarkers.map(item => {
-                return (
-                  <AndroidMapMarker
-                    key={item.id}
-                    {...item}
-                    setClickedIndex={setClickedIndex}
-                    clickedIndex={clickedIndex}
-                    getShopMarkerDetail={getShopMarkerDetail}
-                    setModalVisible={setModalVisible}
-                    depth={depth}
-                    onPressClusterMarker={onPressClusterMarker}
-                  />
-                );
-              }),
-            })
-          : null}
       </NaverMapView>
       <LocationBtn />
       {isModalVisible ? (
