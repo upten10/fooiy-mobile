@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CodePushDeploymentKey</key>
-	<string>$(CODEPUSH_KEY)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -36,26 +34,26 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>202302212</string>
+	<string>202302232</string>
+	<key>CodePushDeploymentKey</key>
+	<string>$(CODEPUSH_KEY)</string>
+	<key>KAKAO_APP_KEY</key>
+	<string>adeeb3a64a0ef610048dbcbe1010c07f</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaokompassauth</string>
 		<string>storykompassauth</string>
 		<string>kakaolink</string>
 	</array>
-	<key>KAKAO_APP_KEY</key>
-	<string>adeeb3a64a0ef610048dbcbe1010c07f</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NMFClientId</key>
 	<string>oingm1h0rz</string>
-	<!-- http -->
-	<!-- <key>NSAppTransportSecurity</key>
+	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict> -->
-	<!-- http -->
+		<false/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>카메라는 피드 등록을 위한 푸이 서비스 필수 정보로 활용됩니다.</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
@@ -73,7 +71,6 @@
 		<string>Pretendard-SemiBold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
-	
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
@@ -84,6 +81,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

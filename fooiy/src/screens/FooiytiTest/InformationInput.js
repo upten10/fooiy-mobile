@@ -17,7 +17,6 @@ export default props => {
   const [open, setOpen] = useState(false);
   const [displayDate, setDisplayDate] = useState('');
   const [gender, setGender] = useState('');
-  const [btnActivate, setBtnActivate] = useState(false);
 
   const convertBirthDay = date => {
     let month = date.getMonth() + 1;
@@ -32,13 +31,13 @@ export default props => {
     return month + day;
   };
 
-  useEffect(() => {
-    if (displayDate.length > 0 && gender.length > 0) {
-      setBtnActivate(true);
-    } else {
-      setBtnActivate(false);
-    }
-  }, [btnActivate, displayDate, gender]);
+  // useEffect(() => {
+  //   if (displayDate.length > 0 && gender.length > 0) {
+  //     setBtnActivate(true);
+  //   } else {
+  //     setBtnActivate(false);
+  //   }
+  // }, [btnActivate, displayDate, gender]);
 
   const onPressPicker = () => {
     setOpen(true);
@@ -63,9 +62,7 @@ export default props => {
   };
 
   const onPressNext = () => {
-    if (btnActivate) {
-      patchUserInfo();
-    }
+    patchUserInfo();
   };
 
   return (
@@ -191,10 +188,22 @@ export default props => {
             }}>
             안내사항
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', marginBottom: 8}}>
             <Notice style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               선택하신 정보는 푸이티아이 결과 도출에 활용해요.
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', marginBottom: 8}}>
+            <Notice style={{marginRight: 8}} />
+            <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
+              생년월일과 성별은 선택사항이에요.
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Notice style={{marginRight: 8}} />
+            <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
+              이 정보는 더 자세한 맛집 추천에 쓰여요.
             </Text>
           </View>
         </View>
@@ -202,19 +211,8 @@ export default props => {
         <TouchableOpacity
           onPress={onPressNext}
           activeOpacity={0.8}
-          style={
-            btnActivate
-              ? styles.activateBtn
-              : [styles.activateBtn, styles.noActivateBtn]
-          }>
-          <Text
-            style={
-              btnActivate
-                ? styles.activateBtnText
-                : [styles.activateBtnText, styles.noActivateBtnText]
-            }>
-            다음
-          </Text>
+          style={styles.activateBtn}>
+          <Text style={styles.activateBtnText}>다음</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
