@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import NaverMapView, {Marker} from 'react-native-nmap';
+import NaverMapView from 'react-native-nmap';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {LocationDarkIcon} from '../../../assets/icons/svg';
@@ -29,7 +29,11 @@ const NaverMap = props => {
   const [clickedIndex, setClickedIndex] = useState(null);
   const [clickedShop, setClickedShop] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [center, setCenter] = useState();
+  const [center, setCenter] = useState({
+    longitude: globalVariable.default_longitude,
+    latitude: globalVariable.default_latitude,
+    zoom: 16,
+  });
   // 좌측 하단, 우측 하단 순으로 들어감
   const [screenLocation, setScreenLocation] = useState([]);
   const [depth, setDepth] = useState(4);
@@ -71,18 +75,16 @@ const NaverMap = props => {
 
   // 현위치 버튼 클릭 이벤트
   const onClickLocationBtn = async () => {
-    (await LocationPermission())
-      ? Platform.OS === 'android'
-        ? Geolocation.getCurrentPosition(
-            async position => {
-              const {longitude, latitude} = position.coords;
-              mapView.current.animateToCoordinate({longitude, latitude});
-            },
-            error => this.setState({error: error.message}),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-          )
-        : mapView.current.setLocationTrackingMode(2)
-      : null;
+    (await LocationPermission()) && mapView.current.setLocationTrackingMode(2);
+    Geolocation.getCurrentPosition(async position => {
+      const {longitude, latitude} = position.coords;
+      mapView.current.animateToRegion({
+        longitude,
+        latitude,
+        longitudeDelta: 0.005,
+        latitudeDelta: 0.005,
+      });
+    });
   };
 
   // 현위치 버튼 컴포넌트
@@ -153,15 +155,7 @@ const NaverMap = props => {
   }, [props.center]);
   useEffect(() => {
     const center = async () => {
-      (await LocationPermission())
-        ? onClickLocationBtn()
-        : setCenter({
-            ...{
-              longitude: globalVariable.default_longitude,
-              latitude: globalVariable.default_latitude,
-            },
-            zoom: 16,
-          });
+      (await LocationPermission()) && onClickLocationBtn();
     };
     center();
   }, []);

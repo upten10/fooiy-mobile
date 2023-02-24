@@ -9,7 +9,6 @@ import {FlashList} from '@shopify/flash-list';
 
 const GalleryPhotoFlatlist = props => {
   const {
-    album,
     getPhotos,
     galleryList,
     selectedPhotoIndexList,
@@ -17,8 +16,6 @@ const GalleryPhotoFlatlist = props => {
     setSelectIndex,
     setCropPhoto,
     is_multi,
-    isFirstLoading,
-    favoriteCount,
   } = props;
 
   const selectPhoto = index => {
@@ -72,15 +69,13 @@ const GalleryPhotoFlatlist = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
-              selectPhoto(album === 'all' ? favoriteCount + index : index);
+              selectPhoto(index);
             }}>
             <FastImage
               source={{uri: item.node.image.url}}
               style={styles.gallery_item}
             />
-            <PhotoIndicator
-              index={album === 'all' ? favoriteCount + index : index}
-            />
+            <PhotoIndicator index={index} />
           </TouchableOpacity>
         </View>
       );
@@ -89,24 +84,18 @@ const GalleryPhotoFlatlist = props => {
 
   const ListEmptyComponent = () => {
     return (
-      !isFirstLoading && (
-        <View
-          style={{
-            height: globalVariable.width / 2,
-          }}>
-          <ApiLoading />
-        </View>
-      )
+      <View
+        style={{
+          height: globalVariable.width / 2,
+        }}>
+        <ApiLoading />
+      </View>
     );
   };
 
   return (
     <FlashList
-      data={
-        album === 'all'
-          ? galleryList.slice(favoriteCount)
-          : galleryList.slice(undefined, favoriteCount)
-      }
+      data={galleryList}
       ListEmptyComponent={ListEmptyComponent}
       keyExtractor={(item, index) => index.toString()}
       estimatedItemSize={95.7}
@@ -114,6 +103,7 @@ const GalleryPhotoFlatlist = props => {
       numColumns={4}
       removeClippedSubviews={true}
       onEndReached={getPhotos}
+      onEndReachedThreshold={32}
       renderItem={RenderPhoto}
       extraData={selectedPhotoIndexList}
     />

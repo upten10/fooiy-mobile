@@ -68,17 +68,17 @@ const Notification = props => {
         }}
         activeOpacity={0.8}
         onPress={() => {
-          notification[item.index].navigation === 'feed'
+          notificationList.navigation === 'feed'
             ? navigation.navigate('StorageSingleFeed', {
-                feed_id: notification[item.index].navigation_id,
+                feed_id: notificationList.navigation_id,
               })
-            : notification[item.index].navigation === 'party'
+            : notificationList.navigation === 'party'
             ? navigation.navigate('PartyStackNavigation', {
-                params: {party_id: notification[item.index].navigation_id},
+                params: {party_id: notificationList.navigation_id},
               })
-            : notification[item.index].navigation === 'comment'
+            : notificationList.navigation === 'comment'
             ? navigation.navigate('FeedComment', {
-                feed_id: notification[item.index].navigation_id,
+                feed_id: notificationList.navigation_id,
               })
             : null;
         }}>

@@ -1,16 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
-import {Platform, PanResponder, Animated, View} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {Animated, PanResponder, Platform, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {StackHeader} from '../headers/StackHeader';
-import {getGalleryPhotos, getFirstPhotos} from './functions/getGalleryPhotos';
+import {getGalleryPhotos} from './functions/getGalleryPhotos';
 import goNext from './functions/goNext';
 import GalleryPhotoFlatlist from './GalleryPhotoFlatlist';
 import MainPhotoView from './MainPhotoView';
 import WorkingPhotos from './WorkingPhotos';
-import SelectCategoryModal from '../../screens/feed/SelectCategoryModal';
 
 const Gallery = props => {
   const collapsingY = -globalVariable.width;
@@ -20,13 +19,9 @@ const Gallery = props => {
   const [galleryCursor, setGalleryCursor] = useState(null);
   const [galleryList, setGalleryList] = useState([]);
   const [selectIndex, setSelectIndex] = useState(0);
-  const [favoriteCount, setFavoriteCount] = useState(0);
   const [selectedPhotoIndexList, setSelectedPhotoList] = useState([]);
   const [flatlistHeight, setFlatlistHeight] = useState(globalVariable.width);
-  const [isFirstLoading, setIsFirstLoading] = useState(false);
   const isCollapse = useRef(false);
-  const [open, setOpen] = useState(false);
-  const [album, setAlbum] = useState('all');
 
   const workingPhotosPositionY = useRef(new Animated.Value(0)).current;
   const currentValue = useRef(0);
@@ -91,26 +86,13 @@ const Gallery = props => {
   };
 
   const getPhotos = () => {
-    if (isFirstLoading) {
-      getGalleryPhotos(
-        galleryCursor,
-        setGalleryCursor,
-        galleryList,
-        setGalleryList,
-        setFavoriteCount,
-      );
-    }
-  };
-
-  useEffect(() => {
-    getFirstPhotos(
+    getGalleryPhotos(
       galleryCursor,
       setGalleryCursor,
+      galleryList,
       setGalleryList,
-      setFavoriteCount,
-      setIsFirstLoading,
     );
-  }, []);
+  };
 
   const saveImage = () => {
     selectedPhotoIndexList.length !== 0 && cropViewRef.current.saveImage(true);
@@ -124,35 +106,12 @@ const Gallery = props => {
     cropViewRef.current.rotateImage(true);
   };
 
-  const selectItem = () => {
-    setOpen(!open);
-  };
-
   return (
     <SafeAreaView
       style={{backgroundColor: fooiyColor.W, flex: 1, zIndex: 100}}
       edges={Platform.OS === 'ios' ? 'top' : null}>
       <View style={{zIndex: 100}}>
-        <StackHeader
-          title={album === 'all' ? '모든 앨범' : '즐겨찾기'}
-          next={onClickNextButton}
-          toTop={Platform.OS === 'ios' ? selectItem : undefined}
-          isAlbum={true}
-        />
-        {open && (
-          <SelectCategoryModal
-            isAlbum={true}
-            setOpen={setOpen}
-            open={open}
-            setAlbum={setAlbum}
-            album={album}
-            galleryCursor={galleryCursor}
-            setGalleryCursor={setGalleryCursor}
-            setSelectedPhotoList={setSelectedPhotoList}
-            galleryList={galleryList}
-            setGalleryList={setGalleryList}
-          />
-        )}
+        <StackHeader title={'앨범'} next={onClickNextButton} />
       </View>
 
       <MainPhotoView
@@ -189,7 +148,6 @@ const Gallery = props => {
           {height: flatlistHeight, backgroundColor: fooiyColor.W},
         ]}>
         <GalleryPhotoFlatlist
-          album={album}
           cropPhoto={cropPhoto}
           getPhotos={getPhotos}
           galleryList={galleryList}
@@ -198,8 +156,6 @@ const Gallery = props => {
           setSelectIndex={setSelectIndex}
           setCropPhoto={setCropPhoto}
           downSpring={downSpring}
-          isFirstLoading={isFirstLoading}
-          favoriteCount={favoriteCount}
           is_multi={props.route?.params.is_multi}
         />
       </Animated.View>

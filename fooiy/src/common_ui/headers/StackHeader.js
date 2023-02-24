@@ -1,25 +1,13 @@
-import React from 'react';
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {
-  ArrowIconBottom,
-  GoBackArrow,
-  Map_shop,
-  PartySetting,
-} from '../../../assets/icons/svg';
-import {globalVariable} from '../../common/globalVariable';
+import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
+import {GoBackArrow, Map_shop, PartySetting} from '../../../assets/icons/svg';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
 
 export const StackHeader = props => {
-  const {toTop, blockGoBack, isAlbum} = props;
+  const {toTop, blockGoBack} = props;
   const navigation = useNavigation();
   const userInfoRedux = useSelector(state => state.userInfo.value);
 
@@ -42,16 +30,8 @@ export const StackHeader = props => {
                 hitSlop={{top: 16, bottom: 16}}
                 onPress={() => {
                   toTop();
-                }}
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
                 }}>
                 <Text style={styles.title_name}>{props.title}</Text>
-                {Platform.OS === 'ios' && isAlbum && (
-                  <ArrowIconBottom style={{marginLeft: 4}} />
-                )}
               </TouchableOpacity>
             )}
           </View>
@@ -164,7 +144,7 @@ const styles = StyleSheet.create({
   title_name: {
     ...fooiyFont.Subtitle2,
     color: fooiyColor.B,
-    // width: globalVariable.width - 56 * 2,
+    width: globalVariable.width - 56 * 2,
     textAlign: 'center',
   },
   menu_container: {
