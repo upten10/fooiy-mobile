@@ -579,10 +579,12 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = fooiy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				KAKAO_APP_KEY = adeeb3a64a0ef610048dbcbe1010c07f;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				NAVER_MAP_KEY = oingm1h0rz;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -612,10 +614,12 @@
 				DISPLAY_NAME = "푸이";
 				INFOPLIST_FILE = fooiy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				KAKAO_APP_KEY = adeeb3a64a0ef610048dbcbe1010c07f;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				NAVER_MAP_KEY = oingm1h0rz;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -712,10 +716,12 @@
 				DISPLAY_NAME = "푸이 Staging";
 				INFOPLIST_FILE = fooiy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				KAKAO_APP_KEY = adeeb3a64a0ef610048dbcbe1010c07f;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				NAVER_MAP_KEY = oingm1h0rz;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

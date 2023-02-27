@@ -103,7 +103,7 @@ const GalleryPhotoFlatlist = props => {
       numColumns={4}
       removeClippedSubviews={true}
       onEndReached={getPhotos}
-      onEndReachedThreshold={32}
+      onEndReachedThreshold={8}
       renderItem={RenderPhoto}
       extraData={selectedPhotoIndexList}
     />
