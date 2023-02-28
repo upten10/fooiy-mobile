@@ -1,0 +1,27 @@
+diff --git a/node_modules/react-native-image-picker/ios/ImagePickerManager.mm b/node_modules/react-native-image-picker/ios/ImagePickerManager.mm
+index f9e9f48..b7123d6 100644
+--- a/node_modules/react-native-image-picker/ios/ImagePickerManager.mm
++++ b/node_modules/react-native-image-picker/ios/ImagePickerManager.mm
+@@ -207,6 +207,8 @@ -(NSMutableDictionary *)mapImageToAsset:(UIImage *)image data:(NSData *)data phA
+     if(phAsset){
+         asset[@"timestamp"] = [self getDateTimeInUTC:phAsset.creationDate];
+         asset[@"id"] = phAsset.localIdentifier;
++        asset[@"longitude"] = @(phAsset.location.coordinate.longitude);
++        asset[@"latitude"] = @(phAsset.location.coordinate.latitude);
+         // Add more extra data here ...
+     }
+     
+diff --git a/node_modules/react-native-image-picker/ios/ImagePickerUtils.m b/node_modules/react-native-image-picker/ios/ImagePickerUtils.m
+index 3afe9d6..dd44ab0 100644
+--- a/node_modules/react-native-image-picker/ios/ImagePickerUtils.m
++++ b/node_modules/react-native-image-picker/ios/ImagePickerUtils.m
+@@ -60,6 +60,9 @@ + (PHPickerConfiguration *)makeConfigurationFromOptions:(NSDictionary *)options
+     
+     configuration.preferredAssetRepresentationMode = PHPickerConfigurationAssetRepresentationModeAutomatic;
+     configuration.selectionLimit = [options[@"selectionLimit"] integerValue];
++    if (configuration.selectionLimit != 1) {
++        configuration.selection = 1;
++    }
+ 
+     if ([options[@"mediaType"] isEqualToString:@"video"]) {
+         configuration.filter = [PHPickerFilter videosFilter];
