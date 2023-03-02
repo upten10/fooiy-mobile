@@ -1,11 +1,13 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import ApiLoading from '../../common_ui/loading/ApiLoading';
 import {FlashList} from '@shopify/flash-list';
+import {phPathToFilePath} from './functions/getGalleryPhotos';
+import RNFS from 'react-native-fs';
 
 const GalleryPhotoFlatlist = props => {
   const {
@@ -42,6 +44,10 @@ const GalleryPhotoFlatlist = props => {
 
   const RenderPhoto = props => {
     const {item, index} = props;
+    // console.log(
+    //   item.node.image,
+    //   `file:/${RNFS.DocumentDirectoryPath}/${item.node.image.filename}`,
+    // );
     const PhotoIndicator = props => {
       if (
         selectedPhotoIndexList.findIndex(element => element === props.index) !==
@@ -71,9 +77,12 @@ const GalleryPhotoFlatlist = props => {
             onPress={() => {
               selectPhoto(index);
             }}>
-            <FastImage
-              source={{uri: item.node.image.url}}
+            <Image
+              source={{
+                uri: item.node.image.url,
+              }}
               style={styles.gallery_item}
+              // onError={require('../../../assets/icon_fork.png')}
             />
             <PhotoIndicator index={index} />
           </TouchableOpacity>
@@ -103,9 +112,9 @@ const GalleryPhotoFlatlist = props => {
       numColumns={4}
       removeClippedSubviews={true}
       onEndReached={getPhotos}
-      onEndReachedThreshold={8}
+      onEndReachedThreshold={32}
       renderItem={RenderPhoto}
-      extraData={selectedPhotoIndexList}
+      extraData={(selectedPhotoIndexList, galleryList)}
     />
   );
 };

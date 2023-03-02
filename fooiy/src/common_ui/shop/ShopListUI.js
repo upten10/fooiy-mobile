@@ -3,9 +3,11 @@ import React from 'react';
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {PartyCrown} from '../../../assets/icons/svg';
+import {resizeImageType} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {elapsedText} from '../../common/helpers/elapsedText';
+import ResizeImage from '../ResizeImage';
 
 const ShopListUI = item => {
   const {
@@ -59,9 +61,10 @@ const ShopListUI = item => {
           </View>
         ) : null}
         <View style={{backgroundColor: fooiyColor.G100, borderRadius: 16}}>
-          <FastImage
-            source={{uri: thumbnail !== undefined ? thumbnail : image}}
-            style={{width: '100%', height: '100%', borderRadius: 16}}
+          <ResizeImage
+            uri={thumbnail !== undefined ? thumbnail : image}
+            size={resizeImageType.SMALL}
+            imageStyle={{width: '100%', height: '100%', borderRadius: 16}}
           />
         </View>
       </View>

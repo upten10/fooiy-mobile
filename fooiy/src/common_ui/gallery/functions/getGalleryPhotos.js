@@ -15,15 +15,16 @@ const phPathToFilePath = async uri => {
   }
   return fileURI;
 };
-
 const getGalleryPhotos = async (
   galleryCursor,
   setGalleryCursor,
   galleryList,
   setGalleryList,
 ) => {
+  let startTime = new Date().getTime();
+
   const params = {
-    first: 80,
+    first: 48,
     ...(galleryCursor && {after: galleryCursor}),
     assetType: 'Photos',
   };
@@ -36,22 +37,20 @@ const getGalleryPhotos = async (
       } else {
         setGalleryCursor(page_info.end_cursor);
       }
-      /*ios인 경우는 ph:// 형식으로 사진이 저장 uri가 아닌 url 이기에 읽을 수 없어
-            react-native-fs의 파일 시스템을 이용하여 변환.*/
       for await (const item of edges) {
-        if (Platform.OS === 'ios') {
-          item.node.image.url = item.node.image.uri;
-          const fileName = item.node.image.url.replace('ph://', '');
-          const result = await phPathToFilePath(item.node.image.url, fileName);
-          item.node.image.url = result;
-        } else {
-          item.node.image.url = item.node.image.uri;
-        }
+        item.node.image.url = item.node.image.uri;
+        // if (Platform.OS === 'ios') {
+        //   item.node.image.url = await phPathToFilePath(
+        //     item.node.image.url,
+        //     item.node.image.filename,
+        //   );
+        // }
         // uri: 크롭뷰랑 위에 하나씩 뜨는 쪽
         // url : 아래 이미지 flat
       }
-      // console.log(edges);
       setGalleryList([...galleryList, ...edges]);
+      let endTime = new Date().getTime();
+      console.log(endTime - startTime);
     }
   } catch (error) {}
 };

@@ -15,12 +15,13 @@ import {
   PartyConfirmUncheck,
 } from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
+import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import Rank from '../../../common_ui/Rank';
+import ResizeImage from '../../../common_ui/ResizeImage';
 
 export default props => {
   const {party_id} = props.route.params;
@@ -76,9 +77,15 @@ export default props => {
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {/* img */}
-            <FastImage
-              source={{uri: profile_image}}
-              style={{width: 56, height: 56, borderRadius: 100, marginRight: 8}}
+            <ResizeImage
+              uri={profile_image}
+              size={resizeImageType.SMALL}
+              imageStyle={{
+                width: 56,
+                height: 56,
+                borderRadius: 100,
+                marginRight: 8,
+              }}
             />
             {/* info */}
             <View>
