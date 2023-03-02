@@ -21,7 +21,6 @@ import {
 import {fooiyColor} from '../../common/globalStyles';
 import {CameraPermission, GalleryPermission} from '../../common/Permission';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const width = Dimensions.get('window').width;
 

@@ -10,7 +10,6 @@ import goNext from './functions/goNext';
 import GalleryPhotoFlatlist from './GalleryPhotoFlatlist';
 import MainPhotoView from './MainPhotoView';
 import WorkingPhotos from './WorkingPhotos';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Gallery = props => {
   const collapsingY = -globalVariable.width;
@@ -85,15 +84,6 @@ const Gallery = props => {
           galleryList,
         );
   };
-  const test123 = async () => {
-    const result = await launchImageLibrary();
-    console.log(result);
-  };
-
-  useEffect(() => {
-    test123();
-  }, []);
-  // test123();
 
   const getPhotos = () => {
     getGalleryPhotos(

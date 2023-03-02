@@ -1,4 +1,5 @@
-import React, {useRef, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -11,31 +12,153 @@ import {
   View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {CropView} from 'react-native-image-crop-tools';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {GalleryPencil, Notice} from '../../../../assets/icons/svg';
 import {
-  fooiyColor,
-  fooiyFont,
-  globalStyles,
-} from '../../../common/globalStyles';
+  GalleryPencil,
+  Notice,
+  TurnLeft,
+  TurnRight,
+} from '../../../../assets/icons/svg';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../headers/StackHeader';
+import goNext from '../functions/goNext';
 
 export default props => {
+  const navigation = useNavigation();
+
   const list = useRef(null);
   const currentOffset = useRef(0);
+  const cropViewRef = useRef(null);
+
   const [photoList, setPhotoList] = useState(props.route.params.photos);
+  const [selectedPhoto, setSelectedPhoto] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
 
   let imageWidth = globalVariable.width - (59 + 16);
 
   const onClickNextButton = () => {
-    console.log('next');
+    const photos = photoList.map(photo => {
+      return {
+        node: {
+          image: {
+            uri: photo.uri,
+            filename: photo.fileName,
+            id: photo.id,
+            timestamp: photo.timestamp,
+          },
+          location: photo.location,
+          type: photo.type,
+        },
+      };
+    });
+    goNext(props.route.params, navigation, [0, 1, 2], photos);
+  };
+
+  const onEdit = index => {
+    setSelectedPhoto(index);
+    setIsVisible(true);
+  };
+
+  const onScrollEndDrag = e => {
+    if (e.nativeEvent.contentOffset.x > currentOffset.current) {
+      list.current.scrollToOffset({
+        offset: currentOffset.current + imageWidth - 16,
+        animated: true,
+      });
+    } else if (e.nativeEvent.contentOffset.x < currentOffset.current) {
+      list.current.scrollToOffset({
+        offset: currentOffset.current - imageWidth + 16,
+        animated: true,
+      });
+    }
+  };
+
+  const EditPhotoView = () => {
+    const saveImage = () => {
+      cropViewRef.current.saveImage(true);
+    };
+
+    const leftRotateImage = () => {
+      cropViewRef.current.rotateImage(false);
+    };
+
+    const rightRotateImage = () => {
+      cropViewRef.current.rotateImage(true);
+    };
+    return (
+      <SafeAreaView
+        style={{
+          position: 'absolute',
+          height: globalVariable.height,
+          backgroundColor: fooiyColor.W,
+        }}>
+        <StackHeader
+          title={'사진 편집'}
+          isParty={true}
+          setIsVisible={setIsVisible}
+        />
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <View style={styles.square}>
+            <CropView
+              ref={cropViewRef}
+              sourceUrl={photoList[selectedPhoto].uri}
+              style={styles.crop_view}
+              onImageCrop={res => {
+                photoList[selectedPhoto].uri = 'file://' + res.uri;
+                setIsVisible(false);
+              }}
+              keepAspectRatio={true}
+              aspectRatio={{width: 1, height: 1}}
+            />
+            <View style={styles.rotate_button_container}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={[styles.rotate_icon, {left: 16}]}
+                onPress={leftRotateImage}>
+                <TurnLeft />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={[styles.rotate_icon, {right: 16}]}
+                onPress={rightRotateImage}>
+                <TurnRight />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <TouchableOpacity
+          onPress={saveImage}
+          style={{
+            width: globalVariable.width - 32,
+            height: 56,
+            backgroundColor: fooiyColor.P500,
+            borderRadius: 8,
+            marginLeft: 16,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              ...fooiyFont.Button,
+              color: fooiyColor.W,
+              lineHeight: Platform.select({
+                ios: 0,
+                android: null,
+              }),
+            }}>
+            저장
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
   };
 
   const renderItem = image => {
-    const {item} = image;
+    const {item, index} = image;
     return (
-      <Pressable onPress={() => console.log('jijiji')}>
+      <Pressable key={index} onPress={() => onEdit(index)}>
         <FastImage
           source={{uri: item.uri}}
           style={{
@@ -75,20 +198,6 @@ export default props => {
       </Pressable>
     );
   };
-  const onScrollEndDrag = e => {
-    console.log(e.nativeEvent.contentOffset.x, currentOffset.current);
-    if (e.nativeEvent.contentOffset.x > currentOffset.current) {
-      list.current.scrollToOffset({
-        offset: currentOffset.current + imageWidth - 16,
-        animated: true,
-      });
-    } else if (e.nativeEvent.contentOffset.x < currentOffset.current) {
-      list.current.scrollToOffset({
-        offset: currentOffset.current - imageWidth + 16,
-        animated: true,
-      });
-    }
-  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: fooiyColor.W}}>
@@ -119,7 +228,7 @@ export default props => {
               marginTop: 24,
               paddingHorizontal: 16,
             }}
-            onPress={() => console.log('jijiji')}>
+            onPress={() => onEdit(photoList[0])}>
             <FastImage
               source={{uri: photoList[0].uri}}
               style={{
@@ -194,8 +303,32 @@ export default props => {
           </Text>
         </View>
       </View>
+      {isVisible ? <EditPhotoView /> : null}
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  square: {
+    width: globalVariable.width,
+    height: globalVariable.width,
+  },
+  crop_view: {
+    width: globalVariable.width,
+    height: globalVariable.width,
+    backgroundColor: fooiyColor.G100,
+  },
+  rotate_button_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  rotate_icon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255, 255, 255,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: 64,
+  },
+});
