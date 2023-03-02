@@ -9,17 +9,17 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {TextInput} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ArrowIcon, Camera_Profile, Pencil} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
+import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import ResizeImage from '../../../common_ui/ResizeImage';
 
 const SettingTab = props => {
   const {title, description, party_id, owner_id} = props;
@@ -157,9 +157,10 @@ export default props => {
                   activeOpacity={0.8}
                   onPress={onImgPress}
                   style={{marginRight: 16}}>
-                  <FastImage
-                    source={{uri: image}}
-                    style={{
+                  <ResizeImage
+                    uri={image}
+                    size={resizeImageType.SMALL}
+                    imageStyle={{
                       width: 72,
                       height: 72,
                       borderWidth: 1,

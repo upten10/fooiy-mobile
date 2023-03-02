@@ -1,9 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {resizeImageType} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
+import ResizeImage from '../ResizeImage';
 
 const ShopModalUI = item => {
   const {
@@ -38,7 +40,11 @@ const ShopModalUI = item => {
       }}>
       <View style={styles.container}>
         <View style={styles.menu_image_container}>
-          <FastImage source={{uri: image}} style={styles.menu_image} />
+          <ResizeImage
+            uri={image}
+            size={resizeImageType.SMALL}
+            imageStyle={styles.menu_image}
+          />
         </View>
         <View style={styles.shop_info_container}>
           <View style={styles.shop_detail_container}>

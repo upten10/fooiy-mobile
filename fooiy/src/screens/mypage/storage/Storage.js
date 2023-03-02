@@ -12,11 +12,12 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
+import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import ResizeImage from '../../../common_ui/ResizeImage';
 
 const imageWidth = (globalVariable.width - 32 - 15) / 2;
 
@@ -164,7 +165,11 @@ const Storage = () => {
             <Text style={item_styles.fooiytiText}>{fooiyti}</Text>
           </View>
           <View>
-            <Image source={{uri: image}} style={item_styles.shopImg} />
+            <ResizeImage
+              uri={image}
+              size={resizeImageType.SMALL}
+              imageStyle={item_styles.shopImg}
+            />
           </View>
         </View>
         {/* shop info */}

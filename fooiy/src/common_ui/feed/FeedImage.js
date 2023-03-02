@@ -13,6 +13,8 @@ import {globalVariable} from '../../common/globalVariable';
 import FastImage from 'react-native-fast-image';
 import {fooiyColor} from '../../common/globalStyles';
 import FooiyToast from '../../common/FooiyToast';
+import ResizeImage from '../ResizeImage';
+import {resizeImageType} from '../../common/Enums';
 
 const FeedImage = props => {
   const {
@@ -59,11 +61,10 @@ const FeedImage = props => {
             : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
         }>
         <View>
-          <FastImage
-            source={{
-              uri: item.item,
-            }}
-            style={styles.image}
+          <ResizeImage
+            uri={item.item}
+            size={resizeImageType.MEDIUM}
+            imageStyle={styles.image}
           />
           <AnimatedLottieView
             source={require('../../../assets/lottie/fork.json')}

@@ -12,11 +12,12 @@ import {categoryToEnglish} from './categoryList';
 import Animated from 'react-native-reanimated';
 import {globalVariable} from '../../common/globalVariable';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
+import {apiUrl, resizeImageType} from '../../common/Enums';
 import {useNavigation} from '@react-navigation/native';
 
 import FastImage from 'react-native-fast-image';
 import FooiyToast from '../../common/FooiyToast';
+import ResizeImage from '../../common_ui/ResizeImage';
 
 const MenuClinicFlatlist = props => {
   const {
@@ -51,7 +52,11 @@ const MenuClinicFlatlist = props => {
               ? {borderLeftWidth: 0}
               : null,
           ]}>
-          <FastImage style={styles.image} source={{uri: item.item.image}} />
+          <ResizeImage
+            uri={item.item.image}
+            size={resizeImageType.SMALL}
+            imageStyle={styles.image}
+          />
         </View>
       </TouchableOpacity>
     );

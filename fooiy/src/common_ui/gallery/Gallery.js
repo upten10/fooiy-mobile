@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Animated, PanResponder, Platform, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor} from '../../common/globalStyles';
@@ -10,6 +10,7 @@ import goNext from './functions/goNext';
 import GalleryPhotoFlatlist from './GalleryPhotoFlatlist';
 import MainPhotoView from './MainPhotoView';
 import WorkingPhotos from './WorkingPhotos';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Gallery = props => {
   const collapsingY = -globalVariable.width;
@@ -84,6 +85,15 @@ const Gallery = props => {
           galleryList,
         );
   };
+  const test123 = async () => {
+    const result = await launchImageLibrary();
+    console.log(result);
+  };
+
+  useEffect(() => {
+    test123();
+  }, []);
+  // test123();
 
   const getPhotos = () => {
     getGalleryPhotos(

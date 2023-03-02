@@ -8,6 +8,8 @@ import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import Rank from '../Rank';
 import Margin from '../Margin';
+import ResizeImage from '../ResizeImage';
+import {resizeImageType} from '../../common/Enums';
 
 const FeedProfile = props => {
   const {
@@ -39,11 +41,10 @@ const FeedProfile = props => {
             : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
         }>
         <View style={styles.info_container}>
-          <FastImage
-            source={{
-              uri: profile_image,
-            }}
-            style={styles.profile_image}
+          <ResizeImage
+            uri={profile_image}
+            size={resizeImageType.SMALL}
+            imageStyle={styles.profile_image}
           />
           <View>
             <Text style={styles.nickname}>{nickname}</Text>
