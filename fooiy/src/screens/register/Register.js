@@ -2,12 +2,14 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   Dimensions,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 import {
   Album,
@@ -42,18 +44,36 @@ const Register = props => {
         : navigation.navigate('RegisterCamera'));
   };
   const goGallery = async () => {
-    setModalVisible(false);
-    (await GalleryPermission()) &&
-      (props.route.params
-        ? navigation.navigate('Gallery', {
-            shop: props.route.params.shop,
-            navigation: 'FindMenu',
-            is_multi: true,
-          })
-        : navigation.navigate('Gallery', {
-            navigation: 'SetAddress',
-            is_multi: true,
-          }));
+    (await GalleryPermission()) && Platform.OS === 'ios'
+      ? launchImageLibrary({includeExtra: true, selectionLimit: 3}, res => {
+          if (res.didCancel) {
+            console.log('Cancel');
+          } else {
+            setModalVisible(false);
+            props.route.params
+              ? navigation.navigate('IOSCrop', {
+                  shop: props.route.params.shop,
+                  navigation: 'FindMenu',
+                  is_multi: true,
+                  photos: res.assets,
+                })
+              : navigation.navigate('IOSCrop', {
+                  navigation: 'SetAddress',
+                  is_multi: true,
+                  photos: res.assets,
+                });
+          }
+        })
+      : props.route.params
+      ? navigation.navigate('Gallery', {
+          shop: props.route.params.shop,
+          navigation: 'FindMenu',
+          is_multi: true,
+        })
+      : navigation.navigate('Gallery', {
+          navigation: 'SetAddress',
+          is_multi: true,
+        });
   };
 
   return (

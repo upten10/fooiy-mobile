@@ -36,6 +36,7 @@ import RegisterFeed from '../screens/register/register_feed/register_feed_ui/Reg
 import SetAddress from '../screens/register/register_feed/SetAddress';
 import Share from './Share';
 import TabNavigator from './TabNavigator';
+import CropScreen from '../common_ui/gallery/iosGallery/CropScreen';
 
 const Stack = createStackNavigator();
 
@@ -73,6 +74,7 @@ const RootNavigator = () => {
       <Stack.Screen name="RegisterCamera" component={RegisterCamera} />
       <Stack.Screen name="ImageCrop" component={ImageCrop} />
       <Stack.Screen name="Gallery" component={Gallery} />
+      <Stack.Screen name="IOSCrop" component={CropScreen} />
       <Stack.Screen name="SetAddress" component={SetAddress} />
       <Stack.Screen name="FindShop" component={FindShop} />
       <Stack.Screen name="FindMenu" component={FindMenu} />
