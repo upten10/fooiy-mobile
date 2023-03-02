@@ -7,8 +7,9 @@ import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import Rank from '../../../common_ui/Rank';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
+import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
+import ResizeImage from '../../../common_ui/ResizeImage';
 
 //  ("subscribe", "가입 중"),
 // ("confirm", "검수"),
@@ -112,7 +113,11 @@ export default props => {
       {/* 프로필 사진 있는 로우 */}
       <View
         style={{flexDirection: 'row', marginBottom: 16, alignItems: 'center'}}>
-        <FastImage source={{uri: image}} style={styles.profile_image} />
+        <ResizeImage
+          uri={image}
+          size={resizeImageType.SMALL}
+          imageStyle={styles.profile_image}
+        />
         <View>
           <View style={{flexDirection: 'row', marginBottom: 16}}>
             <View style={styles.party_info_text_container}>

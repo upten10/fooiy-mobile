@@ -12,12 +12,13 @@ import FastImage from 'react-native-fast-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {EmptyMenuClinic} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
+import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import ListEmptyTextComponent from '../../../common_ui/empty_component/ListEmptyTextComponent';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import ResizeImage from '../../../common_ui/ResizeImage';
 import OtherUserPageProfile from './OtherUserPageProfile';
 
 const limit = 12;
@@ -123,11 +124,10 @@ const OtherUserPage = props => {
             />
           </ImageBackground>
         ) : (
-          <FastImage
-            source={{
-              uri: item.image[0],
-            }}
-            style={styles.feedImage}
+          <ResizeImage
+            uri={item.image[0]}
+            size={resizeImageType.SMALL}
+            imageStyle={styles.feedImage}
           />
         )}
       </TouchableOpacity>

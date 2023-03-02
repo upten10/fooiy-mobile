@@ -13,13 +13,14 @@ import FastImage from 'react-native-fast-image';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ArrowIconRight} from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
+import {apiUrl, resizeImageType} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import {useDebounce} from '../../common/hooks/useDebounce';
 import {SearchBar} from '../../screens/party/PartyProfile/PartyMemberList';
 import {StackHeader} from '../headers/StackHeader';
+import ResizeImage from '../ResizeImage';
 
 export default props => {
   const insets = useSafeAreaInsets();
@@ -78,9 +79,10 @@ export default props => {
                 }}
               />
             ) : (
-              <FastImage
-                source={{uri: image}}
-                style={{
+              <ResizeImage
+                uri={image}
+                size={resizeImageType.SMALL}
+                imageStyle={{
                   width: 56,
                   height: 56,
                   borderRadius: 100,

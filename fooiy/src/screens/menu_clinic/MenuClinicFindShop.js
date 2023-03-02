@@ -14,13 +14,14 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {EmptyMenuClinic, LocationGrayIcon} from '../../../assets/icons/svg';
 import {geocoding} from '../../common/api/geocoding';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
+import {apiUrl, resizeImageType} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import ListEmptyTextComponent from '../../common_ui/empty_component/ListEmptyTextComponent';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
 import Margin from '../../common_ui/Margin';
+import ResizeImage from '../../common_ui/ResizeImage';
 import {categoryToEnglish} from './categoryList';
 import TabView from './TabView';
 
@@ -80,9 +81,10 @@ const MenuClinicFindShop = props => {
               item.index % 2 === 0 ? {left: 16} : {left: 31},
               styles.shop_container,
             ]}>
-            <FastImage
-              source={{uri: shop.thumbnail}}
-              style={styles.shop_thumbnail}
+            <ResizeImage
+              uri={shop.thumbnail}
+              size={resizeImageType.SMALL}
+              imageStyle={styles.shop_thumbnail}
             />
             <Margin h={8} />
             <Text style={styles.shop_name}>{shop.shop_name}</Text>

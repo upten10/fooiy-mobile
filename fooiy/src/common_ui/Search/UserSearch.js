@@ -19,13 +19,14 @@ import {
   Ranker_3rd,
 } from '../../../assets/icons/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../common/Enums';
+import {apiUrl, resizeImageType} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {debounce} from 'lodash';
 import {useNavigation} from '@react-navigation/native';
 import Rank from '../Rank';
 import {globalVariable} from '../../common/globalVariable';
 import FooiyToast from '../../common/FooiyToast';
+import ResizeImage from '../ResizeImage';
 
 const UserSearch = () => {
   const navigation = useNavigation();
@@ -127,7 +128,11 @@ const UserSearch = () => {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Image source={{uri: profile_image}} style={styles.profile_image} />
+          <ResizeImage
+            uri={profile_image}
+            size={resizeImageType.SMALL}
+            imageStyle={styles.profile_image}
+          />
           <View style={{justifyContent: 'center', alignItems: 'flex-start'}}>
             <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G800}}>
               {nickname}
@@ -200,7 +205,11 @@ const UserSearch = () => {
               <Text style={styles.rank}>{index + 1}</Text>
             )}
           </View>
-          <Image source={{uri: profile_image}} style={styles.profile_image} />
+          <ResizeImage
+            uri={profile_image}
+            size={resizeImageType.SMALL}
+            imageStyle={styles.profile_image}
+          />
           <View style={{justifyContent: 'center', alignItems: 'flex-start'}}>
             <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G800}}>
               {nickname}

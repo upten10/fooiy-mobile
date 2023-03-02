@@ -120,3 +120,8 @@ export const toastMessage = {
   FEED_COMMENT_REPORT: '댓글 신고가 완료되었습니다.',
   FEED_COMMENT_UPDATE: '댓글 수정이 완료되었습니다.',
 };
+
+export const resizeImageType = {
+  SMALL: 'small',
+  MEDIUM: 'medium',
+};

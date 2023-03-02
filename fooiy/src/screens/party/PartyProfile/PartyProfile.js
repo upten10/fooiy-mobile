@@ -13,13 +13,14 @@ import {
 import FastImage from 'react-native-fast-image';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
+import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import PartyProfileHeader from './PartyProfileHeader';
 import ListFooterComponent from '../../../common_ui/footer/FlatListFooter';
+import ResizeImage from '../../../common_ui/ResizeImage';
 
 export default props => {
   const {party_id} = props.route.params;
@@ -106,11 +107,10 @@ export default props => {
             />
           </ImageBackground>
         ) : (
-          <FastImage
-            source={{
-              uri: item.image[0],
-            }}
-            style={styles.feedImage}
+          <ResizeImage
+            uri={item.image[0]}
+            size={resizeImageType.SMALL}
+            imageStyle={styles.feedImage}
           />
         )}
       </TouchableOpacity>

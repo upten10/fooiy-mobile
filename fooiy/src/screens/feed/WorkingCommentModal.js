@@ -2,8 +2,10 @@ import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {resizeImageType} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import Rank from '../../common_ui/Rank';
+import ResizeImage from '../../common_ui/ResizeImage';
 // import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 // import Margin from '../Margin';
 
@@ -14,11 +16,10 @@ const WorkingCommentModal = props => {
     <SafeAreaView style={[styles.modal_container]}>
       <View style={styles.container}>
         <View style={styles.info_container}>
-          <FastImage
-            source={{
-              uri: workingComment.profile_image,
-            }}
-            style={styles.profile_image}
+          <ResizeImage
+            uri={workingComment.profile_image}
+            size={resizeImageType.SMALL}
+            imageStyle={styles.profile_image}
           />
           <View>
             <Text style={styles.nickname}>{workingComment.nickname}</Text>

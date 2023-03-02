@@ -19,6 +19,7 @@ import {
 import {fooiyColor} from '../../common/globalStyles';
 import {CameraPermission, GalleryPermission} from '../../common/Permission';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const width = Dimensions.get('window').width;
 
@@ -42,18 +43,24 @@ const Register = props => {
         : navigation.navigate('RegisterCamera'));
   };
   const goGallery = async () => {
-    setModalVisible(false);
-    (await GalleryPermission()) &&
-      (props.route.params
-        ? navigation.navigate('Gallery', {
-            shop: props.route.params.shop,
-            navigation: 'FindMenu',
-            is_multi: true,
-          })
-        : navigation.navigate('Gallery', {
-            navigation: 'SetAddress',
-            is_multi: true,
-          }));
+    // setModalVisible(false);
+    // (await GalleryPermission()) &&
+    //   (props.route.params
+    //     ? navigation.navigate('Gallery', {
+    //         shop: props.route.params.shop,
+    //         navigation: 'FindMenu',
+    //         is_multi: true,
+    //       })
+    //     : navigation.navigate('Gallery', {
+    //         navigation: 'SetAddress',
+    //         is_multi: true,
+    //       }));
+
+    const result = await launchImageLibrary({
+      includeExtra: true,
+      selectionLimit: 3,
+    });
+    console.log(result.assets[0].id);
   };
 
   return (
