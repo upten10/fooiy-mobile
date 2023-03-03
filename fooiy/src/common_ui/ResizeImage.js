@@ -7,7 +7,6 @@ const ResizeImage = props => {
 
   const [resizeUri, setResizeUri] = useState(uri);
 
-  console.log(resizeUri);
   const onError = useCallback(() => {
     setResizeUri(uri);
   }, [uri]);

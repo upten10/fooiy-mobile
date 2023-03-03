@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ArrowIcon, Camera_Profile, Pencil} from '../../../../assets/icons/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
@@ -106,12 +107,23 @@ export default props => {
   const insets = useSafeAreaInsets();
 
   const onImgPress = async () => {
-    (await GalleryPermission()) &&
-      navigation.navigate('Gallery', {
-        navigation: 'Party',
-        party_id: party_id,
-        is_multi: false,
-      });
+    (await GalleryPermission()) && Platform.OS === 'ios'
+      ? launchImageLibrary({includeExtra: true, selectionLimit: 1}, res => {
+          if (res.didCancel) {
+            console.log('Cancel');
+          } else {
+            navigation.navigate('IOSCrop', {
+              isParty: 'party',
+              photos: res.assets,
+              party_id,
+            });
+          }
+        })
+      : navigation.navigate('Gallery', {
+          navigation: 'Party',
+          party_id: party_id,
+          is_multi: false,
+        });
   };
 
   const onIntroFocus = () => {

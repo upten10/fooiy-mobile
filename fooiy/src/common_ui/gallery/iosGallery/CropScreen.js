@@ -14,27 +14,38 @@ import {
 import FastImage from 'react-native-fast-image';
 import {CropView} from 'react-native-image-crop-tools';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
 import {
   GalleryPencil,
   Notice,
   TurnLeft,
   TurnRight,
 } from '../../../../assets/icons/svg';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
+import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import {StackHeader} from '../../headers/StackHeader';
 import goNext from '../functions/goNext';
 
 export default props => {
+  const {isParty, party_id, toggleAlbum, setImage, setImageType} = props.route
+    ? props.route.params
+    : props;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const list = useRef(null);
   const currentOffset = useRef(0);
   const cropViewRef = useRef(null);
 
-  const [photoList, setPhotoList] = useState(props.route.params.photos);
+  const [photoList, setPhotoList] = useState(
+    props.route ? props.route.params.photos : props && [props.photos],
+  );
   const [selectedPhoto, setSelectedPhoto] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(isParty ? true : false);
 
   let imageWidth = globalVariable.width - (59 + 16);
 
@@ -53,7 +64,12 @@ export default props => {
         },
       };
     });
-    goNext(props.route.params, navigation, [0, 1, 2], photos);
+    goNext(
+      props.route ? props.route.params : props,
+      navigation,
+      [0, 1, 2],
+      photos,
+    );
   };
 
   const onEdit = index => {
@@ -73,6 +89,70 @@ export default props => {
         animated: true,
       });
     }
+  };
+
+  const enroll = async () => {
+    const photo = photoList[0];
+
+    const match = /\.(\w+)$/.exec(photo.filename ?? '');
+    // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
+    const type =
+      photo.type === 'image'
+        ? match
+          ? `image/${match[1]}`
+          : `image`
+        : photo.type;
+
+    const formData = new FormData();
+    isParty !== 'profile'
+      ? (formData.append('party_id', party_id),
+        formData.append('party_image', {
+          uri: photo.uri,
+          name: photo.fileName !== null ? photo.fileName : 'image.jpg',
+          type,
+        }))
+      : formData.append('profile_image', {
+          uri: photo.uri,
+          name: photo.fileName !== null ? photo.fileName : 'image.jpg',
+          type,
+        });
+    if (isParty === 'create') {
+      toggleAlbum();
+      setImage(photo);
+      setImageType(type);
+    } else {
+      patchProfileImg(formData);
+    }
+  };
+
+  const patchProfileImg = async data => {
+    isParty !== 'profile'
+      ? await ApiManagerV2.patch(apiUrl.EDIT_PARTY, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          transformRequest: (data, headers) => {
+            return data;
+          },
+        })
+          .then(
+            navigation.goBack(),
+            FooiyToast.message('파티 프로필 이미지 변경을 성공했습니다.'),
+          )
+          .catch(e => FooiyToast.error())
+      : await ApiManagerV2.patch(apiUrl.PROFILE_EDIT, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          transformRequest: (data, headers) => {
+            return data;
+          },
+        })
+          .then(res => {
+            dispatch(userInfoAction.edit(res.data.payload.account_info));
+          })
+          .then(navigation.goBack())
+          .catch(e => FooiyToast.error());
   };
 
   const EditPhotoView = () => {
@@ -96,7 +176,7 @@ export default props => {
         }}>
         <StackHeader
           title={'사진 편집'}
-          isParty={true}
+          isParty={isParty ? null : true}
           setIsVisible={setIsVisible}
         />
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -107,6 +187,26 @@ export default props => {
               style={styles.crop_view}
               onImageCrop={res => {
                 photoList[selectedPhoto].uri = 'file://' + res.uri;
+                if (isParty && isParty !== 'create') {
+                  setIsVisible(false);
+                  enroll();
+                } else if (isParty === 'create') {
+                  const photos = photoList.map(photo => {
+                    return {
+                      node: {
+                        image: {
+                          uri: photo.uri,
+                          filename: photo.fileName,
+                          id: photo.id,
+                          timestamp: photo.timestamp,
+                        },
+                        location: photo.location,
+                        type: photo.type,
+                      },
+                    };
+                  });
+                  goNext(props, navigation, [0], photos);
+                }
                 setIsVisible(false);
               }}
               keepAspectRatio={true}

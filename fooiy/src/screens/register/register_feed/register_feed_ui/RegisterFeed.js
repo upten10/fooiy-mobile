@@ -26,6 +26,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SelectParties from '../../../../common_ui/SelectParties';
 import Margin from '../../../../common_ui/Margin';
 import FooiyToast from '../../../../common/FooiyToast';
+import ApiLoading from '../../../../common_ui/loading/ApiLoading';
 
 const RegisterFeed = props => {
   const {photo_list, shop, menu, address} = props.route.params;
@@ -52,7 +53,7 @@ const RegisterFeed = props => {
   const [fooiytiRatingAC, setFooiytiRatingAC] = useState(2);
   const [totalRating, setTotalRating] = useState(2);
   const [visibleSuccess, setVisibleSuccess] = useState('');
-  const [isClicked, setIsClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const valueSet = [90, 70, 50, 30, 10];
   const totalValueSet = [10, 30, 50, 70, 99];
   const navigation = useNavigation();
@@ -94,12 +95,16 @@ const RegisterFeed = props => {
         })
           .then(res => {
             res.data.payload === 'success' && setVisibleSuccess('record');
+            res.data.payload === 'success' && setIsLoading(false);
             res.data.payload === 'success' &&
               setTimeout(function () {
                 navigation.navigate('FeedStackNavigation', {screen: 'Feed'});
               }, 3000);
           })
-          .catch(e => FooiyToast.error())
+          .catch(e => {
+            FooiyToast.error();
+            setIsLoading(false);
+          })
       : await ApiManagerV2.post(apiUrl.REGISTER_PIONEER, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -110,16 +115,20 @@ const RegisterFeed = props => {
         })
           .then(res => {
             res.data.payload === 'success' && setVisibleSuccess('pioneer');
+            res.data.payload === 'success' && setIsLoading(false);
             res.data.payload === 'success' &&
               setTimeout(function () {
                 navigation.navigate('FeedStackNavigation', {screen: 'Feed'});
               }, 3000);
           })
-          .catch(e => FooiyToast.error());
+          .catch(e => {
+            FooiyToast.error();
+            setIsLoading(false);
+          });
   };
   const onClickRegister = async () => {
-    if (!isClicked) {
-      setIsClicked(true);
+    if (!isLoading) {
+      setIsLoading(true);
       const match = /\.(\w+)$/.exec(photo_list[0].filename ?? '');
       // file name이 없을 때 type 지정이 제대로 안돼서 node에 있는 type 정보를 대신 사용
       const type = Platform.OS === 'ios' ? `image.jpg` : `image/jpeg`;
@@ -174,7 +183,10 @@ const RegisterFeed = props => {
       postRegister(formData);
     }
   };
-  if (visibleSuccess === 'record' || visibleSuccess === 'pioneer') {
+
+  if (isLoading) {
+    return <ApiLoading />;
+  } else if (visibleSuccess === 'record' || visibleSuccess === 'pioneer') {
     return (
       <View
         style={{

@@ -23,6 +23,8 @@ import {useDebounce} from '../../../common/hooks/useDebounce';
 import {isEmpty} from 'lodash';
 import Margin from '../../../common_ui/Margin';
 import Gallery from '../../../common_ui/gallery/Gallery';
+import {launchImageLibrary} from 'react-native-image-picker';
+import CropScreen from '../../../common_ui/gallery/iosGallery/CropScreen';
 
 const Title = props => {
   const {index} = props;
@@ -293,15 +295,29 @@ const NavigateBtn = props => {
 };
 
 const InsertImage = props => {
-  const {setIsVisible} = props;
+  const {setIsVisible, navigation, setImage} = props;
 
   const onPressInsertImage = async () => {
     (await GalleryPermission()) && setIsVisible(true);
   };
 
+  const onPressIOSInsertImage = async () => {
+    (await GalleryPermission()) &&
+      launchImageLibrary({includeExtra: true, selectionLimit: 1}, res => {
+        if (res.didCancel) {
+          console.log('Cancel');
+        } else {
+          setIsVisible(true);
+          setImage(res.assets[0]);
+        }
+      });
+  };
+
   return (
     <TouchableOpacity
-      onPress={onPressInsertImage}
+      onPress={
+        Platform.OS === 'ios' ? onPressIOSInsertImage : onPressInsertImage
+      }
       activeOpacity={0.8}
       style={{
         width: globalVariable.width - 32,
@@ -348,7 +364,7 @@ export default props => {
     setIsVisible(false);
   };
 
-  if (isVisible) {
+  if (isVisible && Platform.OS === 'android') {
     return (
       <View
         style={{
@@ -362,6 +378,23 @@ export default props => {
           toggleAlbum={toggleAlbum}
           setImage={setImage}
           setIsVisible={setIsVisible}
+          setImageType={setImageType}
+        />
+      </View>
+    );
+  } else if (
+    isVisible &&
+    Platform.OS === 'ios' &&
+    typeof image.uri !== 'undefined'
+  ) {
+    return (
+      <View>
+        <CropScreen
+          photos={image}
+          partyCreate={true}
+          isParty={'create'}
+          toggleAlbum={toggleAlbum}
+          setImage={setImage}
           setImageType={setImageType}
         />
       </View>
@@ -412,7 +445,11 @@ export default props => {
                 />
               </TouchableOpacity>
             ) : (
-              <InsertImage setIsVisible={setIsVisible} />
+              <InsertImage
+                setIsVisible={setIsVisible}
+                navigation={navigation}
+                setImage={setImage}
+              />
             )}
           </View>
           <NavigateBtn

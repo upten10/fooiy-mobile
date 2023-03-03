@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
 import {ArrowIcon, Camera_Profile, Pencil} from '../../../../assets/icons/svg';
@@ -73,10 +74,21 @@ const Setting = props => {
   };
 
   const onImgPress = async () => {
-    navigation.navigate('Gallery', {
-      navigation: 'Mypage',
-      is_multi: false,
-    });
+    (await GalleryPermission()) && Platform.OS === 'ios'
+      ? launchImageLibrary({includeExtra: true, selectionLimit: 1}, res => {
+          if (res.didCancel) {
+            console.log('Cancel');
+          } else {
+            navigation.navigate('IOSCrop', {
+              isParty: 'profile',
+              photos: res.assets,
+            });
+          }
+        })
+      : navigation.navigate('Gallery', {
+          navigation: 'Mypage',
+          is_multi: false,
+        });
   };
 
   const onItemPress = navi => {

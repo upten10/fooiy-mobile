@@ -50,7 +50,6 @@ const getGalleryPhotos = async (
       }
       setGalleryList([...galleryList, ...edges]);
       let endTime = new Date().getTime();
-      console.log(endTime - startTime);
     }
   } catch (error) {}
 };
