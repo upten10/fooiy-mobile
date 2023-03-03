@@ -257,6 +257,7 @@ export default props => {
 
   const renderItem = image => {
     const {item, index} = image;
+    console.log(index);
     return (
       <Pressable key={index} onPress={() => onEdit(index)}>
         <FastImage
@@ -328,7 +329,7 @@ export default props => {
               marginTop: 24,
               paddingHorizontal: 16,
             }}
-            onPress={() => onEdit(photoList[0])}>
+            onPress={() => onEdit(0)}>
             <FastImage
               source={{uri: photoList[0].uri}}
               style={{
