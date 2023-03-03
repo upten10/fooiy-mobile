@@ -13,6 +13,8 @@ import {globalVariable} from '../../../common/globalVariable';
 import {useDispatch, useSelector} from 'react-redux';
 import {Archive, Map, Settings} from '../../../../assets/icons/svg';
 import Rank from '../../../common_ui/Rank';
+import FooiyText from '../../../components/FooiyText';
+import {fooiyFontType} from '../../../common/Enums';
 
 const MypageProfile = props => {
   const navigation = useNavigation();
@@ -91,7 +93,9 @@ const MypageProfile = props => {
                     {props.otherUserInfo.nickname}
                   </Text>
                 ) : (
-                  <Text style={styles.userName}>{userInfoRedux.nickname}</Text>
+                  <FooiyText font={fooiyFontType.Subtitle1}>
+                    {userInfoRedux.nickname}
+                  </FooiyText>
                 )}
               </View>
             </View>

@@ -114,7 +114,7 @@ const GalleryPhotoFlatlist = props => {
       onEndReached={getPhotos}
       onEndReachedThreshold={32}
       renderItem={RenderPhoto}
-      extraData={(selectedPhotoIndexList, galleryList)}
+      extraData={selectedPhotoIndexList}
     />
   );
 };

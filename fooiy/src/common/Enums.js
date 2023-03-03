@@ -125,3 +125,20 @@ export const resizeImageType = {
   SMALL: 'small',
   MEDIUM: 'medium',
 };
+
+export const fooiyFontType = {
+  H1: 'H1',
+  H2: 'H2',
+  H3: 'H3',
+  H4: 'H4',
+  Subtitle1: 'Subtitle1',
+  Subtitle2: 'Subtitle2',
+  Subtitle3: 'Subtitle3',
+  Subtitle4: 'Subtitle4',
+  Body1: 'Body1',
+  Body2: 'Body2',
+  Caption1: 'Caption1',
+  Caption1_1: 'Caption1_1',
+  Caption2: 'Caption2',
+  Button: 'Button',
+};
