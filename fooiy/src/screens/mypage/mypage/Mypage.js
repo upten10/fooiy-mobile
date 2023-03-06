@@ -23,6 +23,7 @@ import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import MypageProfile from './MypageProfile';
 import ListEmptyTextComponent from '../../../common_ui/empty_component/ListEmptyTextComponent';
 import ResizeImage from '../../../common_ui/ResizeImage';
+import {Header} from '../../../common_ui/headers/Header';
 
 const limit = 12;
 
@@ -172,7 +173,14 @@ const Mypage = props => {
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <DefaultHeader flatListRef={flatListRef} toTop={toTop} />
+      {/* <DefaultHeader flatListRef={flatListRef} toTop={toTop} /> */}
+
+      <Header>
+        <Header.Group direction={'column'}>
+          <Header.Title></Header.Title>
+          <Header.GoBack></Header.GoBack>
+        </Header.Group>
+      </Header>
       <FlatList
         ref={flatListRef}
         data={feeds}
