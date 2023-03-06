@@ -81,7 +81,10 @@ const Feed = props => {
   });
   const toTop = useCallback(() => {
     flatListRef &&
-      flatListRef.current.scrollToIndex({index: 0, animated: true});
+      flatListRef.current.scrollToOffset({
+        offset: 0,
+        animated: true,
+      });
   }, [flatListRef]);
 
   const getFeedList = async data => {

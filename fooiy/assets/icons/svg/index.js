@@ -16,7 +16,7 @@ export {default as Apple} from './apple.svg';
 export {default as Login_img} from './login_img.svg';
 export {default as Login_icon} from './login_icon.svg';
 export {default as Register_icon} from './Register_icon.svg';
-export {default as Notice} from './notice.svg';
+export {default as Notice} from './Notice.svg';
 export {default as Notice_24} from './Icon_notice_24';
 export {default as Notice_24_Bold} from './Icon_Notice_24_Bold';
 export {default as Camera} from './Camera.svg';
