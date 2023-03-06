@@ -173,14 +173,14 @@ const Mypage = props => {
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      {/* <DefaultHeader flatListRef={flatListRef} toTop={toTop} /> */}
+      <DefaultHeader flatListRef={flatListRef} toTop={toTop} />
 
-      <Header>
+      {/* <Header>
         <Header.Group direction={'column'}>
           <Header.Title></Header.Title>
           <Header.GoBack></Header.GoBack>
         </Header.Group>
-      </Header>
+      </Header> */}
       <FlatList
         ref={flatListRef}
         data={feeds}
