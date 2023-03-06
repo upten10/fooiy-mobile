@@ -3,8 +3,8 @@ import {Platform, StyleSheet, Text} from 'react-native';
 import {fooiyColor} from '../common/globalStyles';
 
 export default props => {
-  const {children, font} = props;
-  return <Text style={styles[font]}>{children}</Text>;
+  const {children, font, color} = props;
+  return <Text style={[styles[font], {color: color}]}>{children}</Text>;
 };
 
 const styles = StyleSheet.create({
