@@ -96,7 +96,7 @@ const FeedImage = props => {
               pagingEnabled
               showsHorizontalScrollIndicator={false}
               data={images}
-              renderItem={image => <ImageUI {...image} />}
+              renderItem={ImageUI}
               keyExtractor={item => item}
               bounces={false}
               onMomentumScrollEnd={event => {
