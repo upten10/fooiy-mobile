@@ -90,7 +90,9 @@ const MypageProfile = props => {
                     {props.otherUserInfo.nickname}
                   </Text>
                 ) : (
-                  <FooiyText font={fooiyFontType.Subtitle1}>
+                  <FooiyText
+                    font={fooiyFontType.Subtitle1}
+                    color={fooiyColor.B}>
                     {userInfoRedux.nickname}
                   </FooiyText>
                 )}

@@ -1,10 +1,16 @@
 import React from 'react';
 import {Platform, StyleSheet, Text} from 'react-native';
 import {fooiyColor} from '../common/globalStyles';
+import {elapsedText} from '../common/helpers/elapsedText';
 
 export default props => {
-  const {children, font} = props;
-  return <Text style={styles[font]}>{children}</Text>;
+  const {children, font, color, elapsed} = props;
+
+  return (
+    <Text style={[styles[font], {color: color}]}>
+      {elapsed ? elapsedText(children, elapsed) : children}
+    </Text>
+  );
 };
 
 const styles = StyleSheet.create({

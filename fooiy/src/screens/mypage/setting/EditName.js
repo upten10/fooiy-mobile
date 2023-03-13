@@ -40,7 +40,7 @@ const EditName = props => {
   const insets = useSafeAreaInsets();
 
   const NICKNAME_RULE =
-    /^[0-9A-Za-z가-힣][0-9A-Za-z가-힣._/]{0,18}[0-9A-Za-z가-힣]$/;
+    /^[0-9A-Za-z가-힣][0-9A-Za-z가-힣._/]{0,13}[0-9A-Za-z가-힣]$/;
 
   useEffect(() => {
     if (inputValue.length !== 0) {
@@ -146,7 +146,7 @@ const EditName = props => {
                       ]
                 }>
                 <TextInput
-                  maxLength={20}
+                  maxLength={15}
                   autoCapitalize="none"
                   autoCorrect={false}
                   spellCheck={false}
@@ -199,7 +199,7 @@ const EditName = props => {
               <View style={styles.infoTextContainer}>
                 <Ic_info_18_G600 style={styles.infoIcon} />
                 <Text style={styles.infoText}>
-                  최소 2자, 최대 20자만 가능해요.
+                  최소 2자, 최대 15자만 가능해요.
                 </Text>
               </View>
               <View style={styles.infoTextContainer}>
