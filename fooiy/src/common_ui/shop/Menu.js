@@ -1,15 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Notice_24, Notice_24_Bold} from '../../../assets/icons/svg';
+import {Ic_info_G400} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -120,7 +120,7 @@ const Menu = props => {
         <View style={styles.empty_space}>
           <Margin h={8} />
           <View style={styles.report_text_container}>
-            <Notice_24 />
+            <Ic_info_G400 />
             <Margin w={8} />
             <Text style={styles.report_text}>
               메뉴와 가격은 음식점 사정에 따라 달라질 수 있어요.{'\n'}

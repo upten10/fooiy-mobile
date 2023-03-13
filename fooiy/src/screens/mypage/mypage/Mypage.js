@@ -1,29 +1,20 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {FlatList, Image, ImageBackground, StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {EmptyMenuClinic} from '../../../../assets/icons/svg';
+import {Menu_clinic_musang_transparency} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
-import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
+import ListEmptyTextComponent from '../../../common_ui/empty_component/ListEmptyTextComponent';
 import {DefaultHeader} from '../../../common_ui/headers/DefaultHeader';
+import ResizeImage from '../../../common_ui/ResizeImage';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
 import MypageProfile from './MypageProfile';
-import ListEmptyTextComponent from '../../../common_ui/empty_component/ListEmptyTextComponent';
-import ResizeImage from '../../../common_ui/ResizeImage';
-import {Header} from '../../../common_ui/headers/Header';
 
 const limit = 12;
 
@@ -131,7 +122,7 @@ const Mypage = props => {
             source={{uri: item.image[0]}}
             style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}>
             <Image
-              source={require('../../../../assets/image/feed_confirm_simple.png')}
+              source={require('../../../../assets/images/feed_confirm_simple.png')}
               style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}
             />
           </ImageBackground>
@@ -163,7 +154,7 @@ const Mypage = props => {
           alignItems: 'center',
           marginTop: 65,
         }}>
-        <EmptyMenuClinic />
+        <Menu_clinic_musang_transparency style={{marginBottom: 16}} />
         <EmptyText />
       </View>
     );

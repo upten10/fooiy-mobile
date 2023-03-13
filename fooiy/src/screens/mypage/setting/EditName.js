@@ -7,13 +7,13 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {Clear, Notice} from '../../../../assets/icons/svg';
+import {Ic_clear_G400, Ic_info_18_G600} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
@@ -176,7 +176,7 @@ const EditName = props => {
                     onPress={() => {
                       setInputValue('');
                     }}>
-                    <Clear />
+                    <Ic_clear_G400 />
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -197,19 +197,19 @@ const EditName = props => {
                 <Text style={styles.infoTextBig}>안내사항</Text>
               </View>
               <View style={styles.infoTextContainer}>
-                <Notice style={styles.infoIcon} />
+                <Ic_info_18_G600 style={styles.infoIcon} />
                 <Text style={styles.infoText}>
                   최소 2자, 최대 20자만 가능해요.
                 </Text>
               </View>
               <View style={styles.infoTextContainer}>
-                <Notice style={styles.infoIcon} />
+                <Ic_info_18_G600 style={styles.infoIcon} />
                 <Text style={styles.infoText}>
                   특수문자는 [./_]만 가능해요.
                 </Text>
               </View>
               <View style={styles.infoTextContainerLast}>
-                <Notice style={styles.infoIcon} />
+                <Ic_info_18_G600 style={styles.infoIcon} />
                 <Text style={styles.infoText}>[./_]는 중간에만 가능해요.</Text>
               </View>
             </View>

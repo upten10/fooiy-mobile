@@ -175,13 +175,6 @@ const MypageMap = props => {
           scaleBar={false}
           rotateGesturesEnabled={false}
           onCameraChange={e => onCameraChange(e)}>
-          <Marker
-            coordinate={{
-              latitude: 47.61424127195381,
-              longitude: -122.33682336610559,
-            }}
-            image={require('../../../../assets/icons/marker/marker.png')}
-          />
           <CustomMarker />
         </NaverMapView>
         {isModalVisible && (

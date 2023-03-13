@@ -2,7 +2,11 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {GoBackArrow, Map_shop, PartySetting} from '../../../assets/icons/svg';
+import {
+  Ic_arrow_left_large_K,
+  Ic_map_G600,
+  Ic_settings_G600,
+} from '../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -52,7 +56,7 @@ export const StackHeader = props => {
             onPress={() => {
               props.isParty ? props.setIsVisible(false) : navigation.goBack();
             }}>
-            <GoBackArrow />
+            <Ic_arrow_left_large_K />
           </TouchableOpacity>
         </View>
       )}
@@ -82,7 +86,7 @@ export const StackHeader = props => {
             onPress={() => {
               props.map();
             }}>
-            <Map_shop style={styles.map_icon} />
+            <Ic_map_G600 style={styles.map_icon} />
           </TouchableOpacity>
         ) : props.owner_id && props.owner_id === userInfoRedux.public_id ? (
           <TouchableOpacity
@@ -91,7 +95,7 @@ export const StackHeader = props => {
             onPress={() => {
               props.onPressSetting();
             }}>
-            <PartySetting />
+            <Ic_settings_G600 />
           </TouchableOpacity>
         ) : null}
       </View>

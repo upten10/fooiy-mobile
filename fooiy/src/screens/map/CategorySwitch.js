@@ -1,19 +1,12 @@
 import React, {useRef} from 'react';
-import {
-  Animated,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import {
-  CafeShopDark,
-  CafeShopLight,
-  CommonShopDark,
-  CommonShopLight,
-} from '../../../assets/icons/svg';
+  Ic_cafe_18_G600,
+  Ic_cafe_18_W,
+  Ic_dining_18_G600,
+  Ic_dining_18_W,
+} from '../../../assets/svg';
 import {fooiyColor, fooiyFont, globalStyles} from '../../common/globalStyles';
 import {useDebounce} from '../../common/hooks/useDebounce';
 
@@ -47,8 +40,8 @@ const CategorySwitch = props => {
   return (
     <View>
       <View style={styles.background}>
-        <CommonShopLight />
-        <CafeShopLight />
+        <Ic_dining_18_W />
+        <Ic_cafe_18_W />
         <GestureHandlerRootView style={styles.swipeContainer}>
           <Swipeable
             containerStyle={{width: '100%'}}
@@ -62,7 +55,7 @@ const CategorySwitch = props => {
               onPress={() => swipeable.current.openLeft()}
               style={styles.swipeBtn}>
               <View style={{marginHorizontal: 2}}>
-                {isCafe ? <CafeShopDark /> : <CommonShopDark />}
+                {isCafe ? <Ic_cafe_18_G600 /> : <Ic_dining_18_G600 />}
               </View>
               <Text style={styles.swipeBtnText}>
                 {isCafe ? '카페' : '맛집'}

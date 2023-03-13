@@ -4,11 +4,11 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {
-  Logo,
-  Notification,
-  Notification_Push,
-  Search_Icon,
-} from '../../../assets/icons/svg';
+  Ic_logo,
+  Ic_notifications_badge_G400,
+  Ic_notifications_G400,
+  Ic_search_G400,
+} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -69,11 +69,11 @@ export const DefaultHeader = props => {
                 height: 56,
                 justifyContent: 'center',
               }}>
-              <Logo />
+              <Ic_logo />
             </View>
           </TouchableWithoutFeedback>
         ) : (
-          <Logo />
+          <Ic_logo />
         )}
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
@@ -82,13 +82,17 @@ export const DefaultHeader = props => {
               notification(pushCount);
               setIsPush(false);
             }}>
-            {isPush ? <Notification_Push /> : <Notification />}
+            {isPush ? (
+              <Ic_notifications_badge_G400 />
+            ) : (
+              <Ic_notifications_G400 />
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               isParty === undefined ? search() : partySearch();
             }}>
-            <Search_Icon />
+            <Ic_search_G400 />
           </TouchableOpacity>
         </View>
       </View>

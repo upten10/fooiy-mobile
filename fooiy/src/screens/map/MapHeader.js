@@ -3,7 +3,10 @@ import React from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
-import {ArrowIconBottomDark, SearchDark} from '../../../assets/icons/svg';
+import {
+  Ic_arrow_bottom_regular_G800,
+  Ic_search_G600,
+} from '../../../assets/svg';
 import {fooiyColor, fooiyFont, globalStyles} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import CategorySwitch from './CategorySwitch';
@@ -45,7 +48,7 @@ const MapHeader = props => {
           }}>
           방문할 지역을 검색해볼까요?
         </Text>
-        <SearchDark />
+        <Ic_search_G600 />
       </TouchableOpacity>
       {/* 버튼 로우 */}
       <View
@@ -87,7 +90,7 @@ const MapHeader = props => {
               }}>
               주변 {isCafe ? '카페' : '맛집'} {shopCount}개
             </Text>
-            <ArrowIconBottomDark />
+            <Ic_arrow_bottom_regular_G800 />
           </TouchableOpacity>
         )}
       </View>

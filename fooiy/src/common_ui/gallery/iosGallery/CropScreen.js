@@ -1,9 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
-  Dimensions,
   FlatList,
-  Image,
   Platform,
   Pressable,
   StyleSheet,
@@ -16,11 +14,11 @@ import {CropView} from 'react-native-image-crop-tools';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {
-  GalleryPencil,
-  Notice,
-  TurnLeft,
-  TurnRight,
-} from '../../../../assets/icons/svg';
+  Ic_edit_G600,
+  Ic_info_18_G600,
+  Ic_rotate_left,
+  Ic_rotate_right,
+} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
@@ -217,13 +215,13 @@ export default props => {
                 activeOpacity={0.8}
                 style={[styles.rotate_icon, {left: 16}]}
                 onPress={leftRotateImage}>
-                <TurnLeft />
+                <Ic_rotate_left />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={[styles.rotate_icon, {right: 16}]}
                 onPress={rightRotateImage}>
-                <TurnRight />
+                <Ic_rotate_right />
               </TouchableOpacity>
             </View>
           </View>
@@ -294,7 +292,7 @@ export default props => {
               },
             }),
           }}>
-          <GalleryPencil />
+          <Ic_edit_G600 />
         </View>
       </Pressable>
     );
@@ -364,7 +362,7 @@ export default props => {
                   },
                 }),
               }}>
-              <GalleryPencil />
+              <Ic_edit_G600 />
             </View>
           </Pressable>
         )}
@@ -386,19 +384,19 @@ export default props => {
           사진 등록 안내사항
         </Text>
         <View style={{flexDirection: 'row', marginBottom: 8}}>
-          <Notice style={{marginRight: 8}} />
+          <Ic_info_18_G600 style={{marginRight: 8}} />
           <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
             정방형 (1:1) 사진으로 촬영해요.
           </Text>
         </View>
         <View style={{flexDirection: 'row', marginBottom: 8}}>
-          <Notice style={{marginRight: 8}} />
+          <Ic_info_18_G600 style={{marginRight: 8}} />
           <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
             사진에 주소가 등록되어있으면 편해요.
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Notice style={{marginRight: 8}} />
+          <Ic_info_18_G600 style={{marginRight: 8}} />
           <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
             카메라로 촬영하면 1장만 등록 가능해요.
           </Text>

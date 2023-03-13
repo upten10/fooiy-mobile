@@ -1,29 +1,29 @@
-import React, {useEffect, useState, useRef} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import {globalVariable} from '../../common/globalVariable';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Notice} from '../../../assets/icons/svg';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import FooiytiRating from '../../screens/register/register_feed/register_feed_ui/FooiytiRating';
+import {Ic_info_18_G600} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
-import {useNavigation} from '@react-navigation/native';
-import TotalRating from '../register/register_feed/register_feed_ui/TotalRating';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import transformFooiytiRating from './functions/transformFooiytiRating';
-import SelectParties from '../../common_ui/SelectParties';
-import Margin from '../../common_ui/Margin';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
+import {StackHeader} from '../../common_ui/headers/StackHeader';
+import Margin from '../../common_ui/Margin';
+import SelectParties from '../../common_ui/SelectParties';
+import FooiytiRating from '../../screens/register/register_feed/register_feed_ui/FooiytiRating';
+import TotalRating from '../register/register_feed/register_feed_ui/TotalRating';
+import transformFooiytiRating from './functions/transformFooiytiRating';
 
 const ModifyFeed = props => {
   const {feed} = props.route.params;
@@ -182,7 +182,7 @@ const ModifyFeed = props => {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.commnet_notice}>
-          <Notice />
+          <Ic_info_18_G600 />
           <Text style={styles.commnet_notice_text}>
             욕설, 비방 등의 코멘트는 지양해주세요.
           </Text>

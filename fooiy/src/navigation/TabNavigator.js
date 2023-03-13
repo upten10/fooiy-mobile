@@ -5,7 +5,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import {useDispatch} from 'react-redux';
-import TabBarIcon from '../../assets/icons/svg/TabBar/TabBarIcon';
+import TabBarIcon from '../../assets/TabBarIcon';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
 import FooiyToast from '../common/FooiyToast';

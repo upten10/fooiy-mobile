@@ -12,12 +12,12 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 import {
-  Album,
-  Camera,
-  Cancel,
-  Notice,
-  Register_icon,
-} from '../../../assets/icons/svg';
+  Ic_album_G600,
+  Ic_camera_G600,
+  Ic_close_K,
+  Ic_info_18_G600,
+  Ic_plus_G600,
+} from '../../../assets/svg';
 import {fooiyColor} from '../../common/globalStyles';
 import {CameraPermission, GalleryPermission} from '../../common/Permission';
 import {StackHeader} from '../../common_ui/headers/StackHeader';
@@ -84,7 +84,7 @@ const Register = props => {
         activeOpacity={0.8}
         style={styles.register_photo_container}>
         <View style={styles.register_photo}>
-          <Register_icon style={styles.register_icon} />
+          <Ic_plus_G600 style={styles.register_icon} />
           <Text style={styles.register_text}>사진 등록</Text>
         </View>
       </TouchableOpacity>
@@ -97,7 +97,7 @@ const Register = props => {
             <TouchableOpacity
               style={styles.cancel_btn}
               onPress={() => setModalVisible(false)}>
-              <Cancel />
+              <Ic_close_K />
             </TouchableOpacity>
             <Text style={styles.register_method_text}>사진 등록 방법</Text>
           </View>
@@ -107,7 +107,7 @@ const Register = props => {
               activeOpacity={0.8}
               style={{width: (width - 71) / 2}}>
               <View style={styles.camera}>
-                <Camera style={styles.camera_icon} />
+                <Ic_camera_G600 style={styles.camera_icon} />
                 <Text style={styles.camera_text}>카메라</Text>
               </View>
             </TouchableOpacity>
@@ -116,7 +116,7 @@ const Register = props => {
               activeOpacity={0.8}
               style={{width: (width - 71) / 2}}>
               <View style={styles.album}>
-                <Album style={styles.album_icon} />
+                <Ic_album_G600 style={styles.album_icon} />
                 <Text style={styles.album_text}>앨범</Text>
               </View>
             </TouchableOpacity>
@@ -127,19 +127,19 @@ const Register = props => {
         <View style={styles.info_title}>
           <Text style={styles.info_title_text}>사진 등록 안내 사항</Text>
           <View style={styles.info}>
-            <Notice style={styles.notice_icon} />
+            <Ic_info_18_G600 style={styles.notice_icon} />
             <Text style={styles.info_text}>
               정방형 (1:1) 사진으로 촬영해요.
             </Text>
           </View>
           <View style={styles.info}>
-            <Notice style={styles.notice_icon} />
+            <Ic_info_18_G600 style={styles.notice_icon} />
             <Text style={styles.info_text}>
               사진에 주소가 등록되어있으면 편해요.
             </Text>
           </View>
           <View style={styles.info}>
-            <Notice style={styles.notice_icon} />
+            <Ic_info_18_G600 style={styles.notice_icon} />
             <Text style={styles.info_text}>
               메뉴 1개에 사진 여러 장 등록 가능해요.
             </Text>

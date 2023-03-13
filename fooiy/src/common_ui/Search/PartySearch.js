@@ -9,9 +9,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ArrowIconRight} from '../../../assets/icons/svg';
+import {Ic_arrow_right_regular_24_G600} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -127,7 +126,7 @@ export default props => {
             </View>
           </View>
         </View>
-        <ArrowIconRight />
+        <Ic_arrow_right_regular_24_G600 />
       </TouchableOpacity>
     );
   };

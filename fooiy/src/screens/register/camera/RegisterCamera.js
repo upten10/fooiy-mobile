@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import {Change, FlashOff, FlashOn} from '../../../../assets/icons/svg';
+import {Ic_flash_off, Ic_flash_on, Ic_switch} from '../../../../assets/svg';
 import {fooiyColor} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
@@ -74,7 +74,7 @@ const RegisterCamera = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => setPosition(!position)}>
-            <Change />
+            <Ic_switch />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={takePhoto}
@@ -85,7 +85,7 @@ const RegisterCamera = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => setFlash(!flash)}>
-            {flash ? <FlashOn /> : <FlashOff />}
+            {flash ? <Ic_flash_on /> : <Ic_flash_off />}
           </TouchableOpacity>
         </View>
       </View>

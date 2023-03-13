@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {Profiler, useEffect, useState} from 'react';
+import {isEmpty} from 'lodash';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Keyboard,
@@ -12,19 +13,21 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Clear, Notice, Register_icon} from '../../../../assets/icons/svg';
+import {
+  Ic_clear_G400,
+  Ic_info_18_G600,
+  Ic_plus_G600,
+} from '../../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {GalleryPermission} from '../../../common/Permission';
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import ProfileImg from '../../mypage/setting/ProfileImg';
 import {useDebounce} from '../../../common/hooks/useDebounce';
-import {isEmpty} from 'lodash';
-import Margin from '../../../common_ui/Margin';
+import {GalleryPermission} from '../../../common/Permission';
 import Gallery from '../../../common_ui/gallery/Gallery';
-import {launchImageLibrary} from 'react-native-image-picker';
 import CropScreen from '../../../common_ui/gallery/iosGallery/CropScreen';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
+import Margin from '../../../common_ui/Margin';
 
 const Title = props => {
   const {index} = props;
@@ -133,7 +136,7 @@ const UserInput = props => {
             onPress={() => {
               setInputValue('');
             }}>
-            <Clear />
+            <Ic_clear_G400 />
           </TouchableOpacity>
         ) : null}
       </View>
@@ -161,28 +164,28 @@ const NoticeComp = props => {
       {index === 1 ? (
         <>
           <View style={styles.infoTextContainer}>
-            <Notice style={styles.infoIcon} />
+            <Ic_info_18_G600 style={styles.infoIcon} />
             <Text style={styles.infoText}>최소 2자, 최대 20자만 가능해요.</Text>
           </View>
           <View style={styles.infoTextContainer}>
-            <Notice style={styles.infoIcon} />
+            <Ic_info_18_G600 style={styles.infoIcon} />
             <Text style={styles.infoText}>특수문자는 [./_]만 가능해요.</Text>
           </View>
           <View style={styles.infoTextContainerLast}>
-            <Notice style={styles.infoIcon} />
+            <Ic_info_18_G600 style={styles.infoIcon} />
             <Text style={styles.infoText}>[./_]는 중간에만 가능해요.</Text>
           </View>
         </>
       ) : (
         <>
           <View style={styles.infoTextContainer}>
-            <Notice style={styles.infoIcon} />
+            <Ic_info_18_G600 style={styles.infoIcon} />
             <Text style={styles.infoText}>
               파티를 잘 설명할수록 가입 신청에 도움이 돼요.
             </Text>
           </View>
           <View style={styles.infoTextContainerLast}>
-            <Notice style={styles.infoIcon} />
+            <Ic_info_18_G600 style={styles.infoIcon} />
             <Text style={styles.infoText}>최대 20자만 가능해요.</Text>
           </View>
         </>
@@ -328,7 +331,7 @@ const InsertImage = props => {
         alignItems: 'center',
       }}>
       <View style={{marginBottom: 8}}>
-        <Register_icon />
+        <Ic_plus_G600 />
       </View>
       <Text style={{...fooiyFont.Subtitle1, color: fooiyColor.G600}}>
         사진 등록

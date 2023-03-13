@@ -1,20 +1,16 @@
-import React, {useState, useRef} from 'react';
-import {
-  Image,
-  View,
-  Button,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import React, {useRef, useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {CropView} from 'react-native-image-crop-tools';
-
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {globalVariable} from '../../../common/globalVariable';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Notice, TurnLeft, TurnRight} from '../../../../assets/icons/svg';
+import {
+  Ic_info_18_G600,
+  Ic_rotate_left,
+  Ic_rotate_right,
+} from '../../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const ImageCrop = props => {
   const navigation = useNavigation();
@@ -56,12 +52,12 @@ const ImageCrop = props => {
             <TouchableOpacity
               style={[styles.rotate_icon, {left: 16}]}
               onPress={() => cropViewRef.current.rotateImage(false)}>
-              <TurnLeft />
+              <Ic_rotate_left />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.rotate_icon, {right: 16}]}
               onPress={() => cropViewRef.current.rotateImage(true)}>
-              <TurnRight />
+              <Ic_rotate_right />
             </TouchableOpacity>
           </View>
         </View>
@@ -99,19 +95,19 @@ const ImageCrop = props => {
           사진 등록 안내사항
         </Text>
         <View style={{flexDirection: 'row'}}>
-          <Notice style={{marginRight: 8, marginTop: 8}} />
+          <Ic_info_18_G600 style={{marginRight: 8, marginTop: 8}} />
           <Text style={styles.notice_text}>
             정방형 (1:1) 사진으로 촬영해요.
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Notice style={{marginRight: 8, marginTop: 8}} />
+          <Ic_info_18_G600 style={{marginRight: 8, marginTop: 8}} />
           <Text style={styles.notice_text}>
             사진에 주소가 등록되어있으면 편해요.
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Notice style={{marginRight: 8, marginTop: 8}} />
+          <Ic_info_18_G600 style={{marginRight: 8, marginTop: 8}} />
           <Text style={styles.notice_text}>
             카메라로 촬영하면 1장만 등록 가능해요.
           </Text>

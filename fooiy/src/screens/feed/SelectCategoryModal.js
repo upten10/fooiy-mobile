@@ -1,11 +1,10 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-
-import {globalVariable} from '../../common/globalVariable';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {CafeShop, CommonShop} from '../../../assets/icons/svg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Ic_cafe_24_G400, Ic_dining_24_G400} from '../../../assets/svg';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
 
 const SelectCategoryModal = props => {
   const {currentCategory, setCategory, setOpen, toTop} = props;
@@ -26,7 +25,7 @@ const SelectCategoryModal = props => {
         <View style={styles.each_category_container}>
           <Text style={styles.each_category_text}>맛집</Text>
           <View style={styles.each_category_imogi}>
-            <CommonShop />
+            <Ic_dining_24_G400 />
           </View>
         </View>
       </TouchableOpacity>
@@ -35,7 +34,7 @@ const SelectCategoryModal = props => {
         <View style={[styles.each_category_container, {borderBottomWidth: 0}]}>
           <Text style={styles.each_category_text}>카페</Text>
           <View style={styles.each_category_imogi}>
-            <CafeShop />
+            <Ic_cafe_24_G400 />
           </View>
         </View>
       </TouchableOpacity>

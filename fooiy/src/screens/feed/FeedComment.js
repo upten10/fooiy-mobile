@@ -1,35 +1,30 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  StyleSheet,
-  TextInput,
   Keyboard,
-  Platform,
-  View,
-  Text,
-  TouchableOpacity,
   KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSelector} from 'react-redux';
+import {Ic_close_W, Ic_send_G400, Ic_send_P500} from '../../../assets/svg';
+import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
+import {apiUrl, toastMessage} from '../../common/Enums';
+import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
-import {apiUrl, toastMessage} from '../../common/Enums';
-import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import UI_Comment from '../../common_ui/feed/UI_Comment';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {
-  RegistComment,
-  RegistCommentFocused,
-  WhiteClear,
-} from '../../../assets/icons/svg';
-import MoreVertModal from '../../common_ui/modal/MoreVertModal';
 import ListEmptyTextComponent from '../../common_ui/empty_component/ListEmptyTextComponent';
-import {useSelector} from 'react-redux';
-import WorkingCommentModal from './WorkingCommentModal';
-import checkFeedAuthorization from './functions/checkFeedAuthorization';
-import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
-import FooiyToast from '../../common/FooiyToast';
+import UI_Comment from '../../common_ui/feed/UI_Comment';
+import {StackHeader} from '../../common_ui/headers/StackHeader';
 import ApiLoading from '../../common_ui/loading/ApiLoading';
+import MoreVertModal from '../../common_ui/modal/MoreVertModal';
+import checkFeedAuthorization from './functions/checkFeedAuthorization';
+import WorkingCommentModal from './WorkingCommentModal';
 
 const FeedComment = props => {
   const textInputRef = useRef(null);
@@ -357,7 +352,7 @@ const FeedComment = props => {
                 hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
                 onPress={() => clearIsWorking()}>
                 <View style={{paddingRight: 16}}>
-                  <WhiteClear />
+                  <Ic_close_W />
                 </View>
               </TouchableOpacity>
             </View>
@@ -386,7 +381,7 @@ const FeedComment = props => {
               hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
               onPress={() => clearIsWorking()}>
               <View style={{paddingRight: 16}}>
-                <WhiteClear />
+                <Ic_close_W />
               </View>
             </TouchableOpacity>
           </View>
@@ -445,9 +440,9 @@ const FeedComment = props => {
                   : !mountTime && registerComment()
               }>
               {value.length === 0 ? (
-                <RegistComment style={styles.register_comment} />
+                <Ic_send_G400 style={styles.register_comment} />
               ) : (
-                <RegistCommentFocused style={styles.register_comment} />
+                <Ic_send_P500 style={styles.register_comment} />
               )}
             </TouchableOpacity>
           </View>
@@ -495,9 +490,9 @@ const FeedComment = props => {
                 : !mountTime && registerComment()
             }>
             {value.length === 0 ? (
-              <RegistComment style={styles.register_comment} />
+              <Ic_send_G400 style={styles.register_comment} />
             ) : (
-              <RegistCommentFocused style={styles.register_comment} />
+              <Ic_send_P500 style={styles.register_comment} />
             )}
           </TouchableOpacity>
         </View>

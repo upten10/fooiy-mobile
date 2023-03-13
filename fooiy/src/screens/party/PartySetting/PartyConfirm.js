@@ -7,13 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import Modal from 'react-native-modal';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {
-  PartyConfirmCheck,
-  PartyConfirmUncheck,
-} from '../../../../assets/icons/svg';
+import {Ic_check_24_P500, Ic_uncheck_G400} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
@@ -153,9 +149,9 @@ export default props => {
             </View>
           </View>
           {checkedList.findIndex(elem => elem === account_id) !== -1 ? (
-            <PartyConfirmCheck />
+            <Ic_check_24_P500 />
           ) : (
-            <PartyConfirmUncheck />
+            <Ic_uncheck_G400 />
           )}
         </View>
       </TouchableOpacity>

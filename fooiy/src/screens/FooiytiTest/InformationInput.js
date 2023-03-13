@@ -1,14 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ArrowIconBottom, Notice} from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {StackHeader} from '../../common_ui/headers/StackHeader';
+import {Ic_arrow_bottom_regular_K, Ic_info_18_G600} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {StackHeader} from '../../common_ui/headers/StackHeader';
 
 export default props => {
   const navigation = useNavigation();
@@ -98,7 +98,7 @@ export default props => {
                 ? '생년월일을 입력해주세요'
                 : displayDate}
             </Text>
-            <ArrowIconBottom />
+            <Ic_arrow_bottom_regular_K />
           </TouchableOpacity>
           <DatePicker
             modal
@@ -189,19 +189,19 @@ export default props => {
             안내사항
           </Text>
           <View style={{flexDirection: 'row', marginBottom: 8}}>
-            <Notice style={{marginRight: 8}} />
+            <Ic_info_18_G600 style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               선택하신 정보는 푸이티아이 결과 도출에 활용해요.
             </Text>
           </View>
           <View style={{flexDirection: 'row', marginBottom: 8}}>
-            <Notice style={{marginRight: 8}} />
+            <Ic_info_18_G600 style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               생년월일과 성별은 선택사항이에요.
             </Text>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <Notice style={{marginRight: 8}} />
+            <Ic_info_18_G600 style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               이 정보는 더 자세한 맛집 추천에 쓰여요.
             </Text>

@@ -8,7 +8,7 @@ const AreaMarker = props => {
   return area_1.map((item, index) => {
     return (
       <Marker
-        image={require('../../../assets/marker/area1Marker.png')}
+        image={require('../../../assets/images/map_marker_area1.png')}
         key={index + 14235123}
         coordinate={{
           latitude: item.latitude * 1,

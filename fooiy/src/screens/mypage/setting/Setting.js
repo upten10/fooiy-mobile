@@ -16,7 +16,11 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
-import {ArrowIcon, Camera_Profile, Pencil} from '../../../../assets/icons/svg';
+import {
+  Ic_arrow_right_large_G400,
+  Ic_camera_static_G400,
+  Ic_edit_G400,
+} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
@@ -25,7 +29,6 @@ import {globalVariable} from '../../../common/globalVariable';
 import {GalleryPermission} from '../../../common/Permission';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import {userInfoAction} from '../../../redux/actions/userInfoAction';
-import {loginActions} from '../../../redux/reducer/login';
 import MktSwitch from './MktSwitch';
 
 const Setting = props => {
@@ -128,7 +131,7 @@ const Setting = props => {
                 }}
                 style={styles.profileImage}
               />
-              <Camera_Profile style={styles.cameraIcon} />
+              <Ic_camera_static_G400 style={styles.cameraIcon} />
             </TouchableOpacity>
             <View>
               <Text style={styles.nickName}>
@@ -152,7 +155,7 @@ const Setting = props => {
               onFocus={onIntroFocus}
               onBlur={onIntroBlur}
             />
-            <Pencil
+            <Ic_edit_G400
               style={isFocused ? styles.pencilFocus : styles.pencilBlur}
             />
           </View>
@@ -192,7 +195,7 @@ const Setting = props => {
                         {elem.text === '마케팅 수신 알림' ? (
                           <MktSwitch />
                         ) : (
-                          <ArrowIcon />
+                          <Ic_arrow_right_large_G400 />
                         )}
                       </View>
                     </View>

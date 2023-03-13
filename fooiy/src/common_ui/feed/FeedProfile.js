@@ -1,15 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {MoreVertIcon} from '../../../assets/icons/svg';
+import {Ic_more_G200} from '../../../assets/svg';
+import {resizeImageType} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import Rank from '../Rank';
 import Margin from '../Margin';
+import Rank from '../Rank';
 import ResizeImage from '../ResizeImage';
-import {resizeImageType} from '../../common/Enums';
 
 const FeedProfile = props => {
   const {
@@ -80,7 +79,7 @@ const FeedProfile = props => {
                 )
               : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
           }>
-          <MoreVertIcon />
+          <Ic_more_G200 />
         </TouchableOpacity>
       </View>
     </View>

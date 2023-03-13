@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
-import {Image, TouchableOpacity, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {CropView} from 'react-native-image-crop-tools';
-import {TurnLeft, TurnRight} from '../../../assets/icons/svg';
+import {Ic_rotate_left, Ic_rotate_right} from '../../../assets/svg';
 import {fooiyColor} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 
@@ -37,13 +37,13 @@ const MainPhotoView = props => {
               activeOpacity={0.8}
               style={[styles.rotate_icon, {left: 16}]}
               onPress={leftRotateImage}>
-              <TurnLeft />
+              <Ic_rotate_left />
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.8}
               style={[styles.rotate_icon, {right: 16}]}
               onPress={rightRotateImage}>
-              <TurnRight />
+              <Ic_rotate_right />
             </TouchableOpacity>
           </View>
         </View>

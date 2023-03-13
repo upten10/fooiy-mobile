@@ -2,7 +2,6 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
-  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -10,15 +9,18 @@ import {
   View,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {EmptyMenuClinic, PartyIcon} from '../../../assets/icons/svg';
+import {
+  Ic_party_G800,
+  Menu_clinic_musang_transparency,
+} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
+import ListEmptyTextComponent from '../../common_ui/empty_component/ListEmptyTextComponent';
 import {DefaultHeader} from '../../common_ui/headers/DefaultHeader';
 import ShopListUI from '../../common_ui/shop/ShopListUI';
-import ListEmptyTextComponent from '../../common_ui/empty_component/ListEmptyTextComponent';
 
 const Party = props => {
   const insets = useSafeAreaInsets();
@@ -51,7 +53,7 @@ const Party = props => {
         {/* 왼쪽 */}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View style={{marginRight: 8}}>
-            <PartyIcon />
+            <Ic_party_G800 />
           </View>
           <Text style={styles.list_header_title}>내 파티</Text>
         </View>
@@ -80,7 +82,7 @@ const Party = props => {
           alignItems: 'center',
           marginTop: 190 - 16,
         }}>
-        <EmptyMenuClinic />
+        <Menu_clinic_musang_transparency />
         <EmptyText />
       </View>
     );

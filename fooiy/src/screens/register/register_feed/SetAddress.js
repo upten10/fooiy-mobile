@@ -5,7 +5,6 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
   Image,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -16,11 +15,11 @@ import Modal from 'react-native-modal';
 import NaverMapView from 'react-native-nmap';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
-  CafeShop36,
-  Cancel,
-  CommonShop36,
-  Current_Location,
-} from '../../../../assets/icons/svg';
+  Ic_cafe_36_G600,
+  Ic_close_K,
+  Ic_dining_36_G600,
+  Ic_my_location_background_G600,
+} from '../../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {
@@ -210,7 +209,7 @@ const SetAddress = props => {
       </View>
       <View style={styles.current_location}>
         <TouchableOpacity onPress={onClickLocationBtn}>
-          <Current_Location />
+          <Ic_my_location_background_G600 />
         </TouchableOpacity>
       </View>
       <View style={styles.bottom_container}>
@@ -239,7 +238,7 @@ const SetAddress = props => {
       </View>
       {btnActivate ? (
         <Image
-          source={require('../../../../assets/image/Center_Marker.png')}
+          source={require('../../../../assets/images/center_marker_P500.png')}
           style={{
             position: 'absolute',
             width: 34,
@@ -254,7 +253,7 @@ const SetAddress = props => {
         />
       ) : (
         <Image
-          source={require('../../../../assets/image/Center_Marker_Gray.png')}
+          source={require('../../../../assets/images/center_marker_G400.png')}
           style={{
             position: 'absolute',
             width: 34,
@@ -277,7 +276,7 @@ const SetAddress = props => {
             <TouchableOpacity
               style={styles.cancel_btn}
               onPress={() => setModalVisible(false)}>
-              <Cancel />
+              <Ic_close_K />
             </TouchableOpacity>
             <Text style={styles.register_method_text}>방문한 매장 종류</Text>
           </View>
@@ -296,7 +295,7 @@ const SetAddress = props => {
               activeOpacity={0.8}
               style={{width: (width - 71) / 2}}>
               <View style={styles.camera}>
-                <CommonShop36 />
+                <Ic_dining_36_G600 />
                 <Margin h={8} />
                 <Text style={styles.camera_text}>음식점</Text>
               </View>
@@ -315,7 +314,7 @@ const SetAddress = props => {
               activeOpacity={0.8}
               style={{width: (width - 71) / 2}}>
               <View style={styles.album}>
-                <CafeShop36 />
+                <Ic_cafe_36_G600 />
                 <Margin h={8} />
                 <Text style={styles.album_text}>카페</Text>
               </View>
