@@ -1,11 +1,8 @@
 import React, {memo} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
-
-import {globalVariable} from '../../common/globalVariable';
+import {Ic_close_K, Taste_evaluation_description} from '../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {Cancel} from '../../../assets/icons/svg';
-import {TasteEvaluationDescription} from '../../../assets/icons/svg';
 
 const TasteEvaluationModal = props => {
   const {isModalVisible, setModalVisible} = props;
@@ -22,7 +19,7 @@ const TasteEvaluationModal = props => {
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
             onPress={() => toggleModal()}
             style={styles.icon_cancel}>
-            <Cancel />
+            <Ic_close_K />
           </TouchableOpacity>
         </View>
         <Text style={styles.description}>
@@ -31,9 +28,7 @@ const TasteEvaluationModal = props => {
           높아져요.
         </Text>
         <View style={styles.taste_evaluation_image}>
-          <TasteEvaluationDescription
-            style={{width: globalVariable.width - 280}}
-          />
+          <Taste_evaluation_description />
         </View>
       </View>
     </Modal>
@@ -44,8 +39,6 @@ export default memo(TasteEvaluationModal);
 
 const styles = StyleSheet.create({
   container: {
-    height: 248,
-    width: globalVariable.width - 32,
     borderRadius: 16,
     backgroundColor: fooiyColor.W,
   },
@@ -61,8 +54,6 @@ const styles = StyleSheet.create({
   },
   icon_cancel: {
     marginRight: 24,
-    width: 24,
-    height: 24,
   },
   description: {
     marginTop: 8,
@@ -71,10 +62,8 @@ const styles = StyleSheet.create({
     color: fooiyColor.G800,
   },
   taste_evaluation_image: {
-    height: 80,
-    width: globalVariable.width - 80,
-    marginLeft: 24,
     marginTop: 16,
     marginBottom: 24,
+    alignItems: 'center',
   },
 });

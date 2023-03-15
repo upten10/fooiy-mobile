@@ -1,5 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Linking,
   Platform,
@@ -14,12 +14,12 @@ import NaverMapView, {Marker} from 'react-native-nmap';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {
-  Copy,
-  Current_Location_2,
-  KakaoMap,
-  NaverMap,
-  Tmap,
-} from '../../../assets/icons/svg';
+  Ic_copy_G600,
+  Ic_kakao_map,
+  Ic_my_location_P500,
+  Ic_naver_map,
+  Ic_t_map,
+} from '../../../assets/svg';
 import FooiyToast from '../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {elapsedText} from '../../common/helpers/elapsedText';
@@ -125,7 +125,7 @@ const FindWay = props => {
               }}
               width={34}
               height={42}
-              image={require('../../../assets/image/Center_Marker.png')}
+              image={require('../../../assets/images/center_marker_P500.png')}
             />
           </NaverMapView>
         </View>
@@ -138,7 +138,7 @@ const FindWay = props => {
             onPress={onClickCopy}
             activeOpacity={0.8}>
             <Text style={styles.copy_text}>주소 복사</Text>
-            <Copy style={styles.copy_icon} />
+            <Ic_copy_G600 style={styles.copy_icon} />
           </TouchableOpacity>
         </View>
       </View>
@@ -147,7 +147,7 @@ const FindWay = props => {
           style={styles.current_location_container}
           activeOpacity={0.8}
           onPress={onClickLocationBtn}>
-          <Current_Location_2 style={styles.current_location_icon} />
+          <Ic_my_location_P500 style={styles.current_location_icon} />
           <Text style={styles.current_location_text}>현위치</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -168,21 +168,21 @@ const FindWay = props => {
                 onPress={onClickNaverMap}
                 style={{alignItems: 'center'}}
                 activeOpacity={0.8}>
-                <NaverMap />
+                <Ic_naver_map />
                 <Text style={styles.item_text}>네이버 지도</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={onClickKakaoMap}
                 style={{marginLeft: 48, marginRight: 48, alignItems: 'center'}}
                 activeOpacity={0.8}>
-                <KakaoMap />
+                <Ic_kakao_map />
                 <Text style={styles.item_text}>카카오맵</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={onClickTMap}
                 style={{alignItems: 'center'}}
                 activeOpacity={0.8}>
-                <Tmap />
+                <Ic_t_map />
                 <Text style={styles.item_text}>티맵</Text>
               </TouchableOpacity>
             </View>

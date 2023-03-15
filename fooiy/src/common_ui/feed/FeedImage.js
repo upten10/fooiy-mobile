@@ -84,7 +84,7 @@ const FeedImage = props => {
         {is_confirm ? (
           <ImageBackground source={{uri: images[0]}} style={styles.image}>
             <Image
-              source={require('../../../assets/image/feed_confirm_detail.png')}
+              source={require('../../../assets/images/feed_confirm_detail.png')}
               style={styles.image}
             />
           </ImageBackground>

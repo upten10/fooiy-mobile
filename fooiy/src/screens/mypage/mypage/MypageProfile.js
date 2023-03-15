@@ -1,20 +1,17 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+  Ic_map_G400,
+  Ic_settings_G400,
+  Ic_storage_G400,
+} from '../../../../assets/svg';
+import {fooiyFontType} from '../../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {useDispatch, useSelector} from 'react-redux';
-import {Archive, Map, Settings} from '../../../../assets/icons/svg';
 import Rank from '../../../common_ui/Rank';
 import FooiyText from '../../../components/FooiyText';
-import {fooiyFontType} from '../../../common/Enums';
 
 const MypageProfile = props => {
   const navigation = useNavigation();
@@ -124,7 +121,7 @@ const MypageProfile = props => {
             onPress={() => {
               navigation.navigate('MypageMap');
             }}>
-            <Map style={styles.otherBtnIcon} />
+            <Ic_map_G400 style={styles.otherBtnIcon} />
             <Text style={styles.otherBtnText}>지도</Text>
           </TouchableOpacity>
         ) : (
@@ -135,7 +132,7 @@ const MypageProfile = props => {
               onPress={() => {
                 navigation.navigate('MypageMap', {});
               }}>
-              <Map style={styles.btnIcon} />
+              <Ic_map_G400 style={styles.btnIcon} />
               <Text style={styles.btnText}>내 지도</Text>
             </TouchableOpacity>
             <View style={styles.btnLine} />
@@ -145,7 +142,7 @@ const MypageProfile = props => {
               onPress={() => {
                 navigation.navigate('Storage');
               }}>
-              <Archive style={styles.btnIcon} />
+              <Ic_storage_G400 style={styles.btnIcon} />
               <Text style={styles.btnText}>보관함</Text>
             </TouchableOpacity>
             <View style={styles.btnLine} />
@@ -155,7 +152,7 @@ const MypageProfile = props => {
               onPress={() => {
                 navigation.navigate('Setting');
               }}>
-              <Settings style={styles.btnIcon} />
+              <Ic_settings_G400 style={styles.btnIcon} />
               <Text style={styles.btnText}>설정</Text>
             </TouchableOpacity>
           </View>

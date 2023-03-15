@@ -7,7 +7,7 @@ const MapMarker = props => {
     if (clickedIndex === item.id) {
       return (
         <Marker
-          image={require('../../../assets/marker/clickedMapMarker.png')}
+          image={require('../../../assets/images/map_marker_clicked.png')}
           key={item.id}
           coordinate={{
             latitude: item.latitude * 1,
@@ -24,7 +24,7 @@ const MapMarker = props => {
     } else {
       return (
         <Marker
-          image={require('../../../assets/marker/mapMarker.png')}
+          image={require('../../../assets/images/map_marker_unclicked.png')}
           key={item.id}
           coordinate={{
             latitude: item.latitude * 1,

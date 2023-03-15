@@ -1,18 +1,17 @@
-import React from 'react';
-import {View, Text, StyleSheet, Platform} from 'react-native';
-import {globalVariable} from '../../common/globalVariable';
-import {
-  Fork,
-  ForkFocused,
-  Store,
-  StoreFocused,
-  Share,
-  Comment,
-} from '../../../assets/icons/svg';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  Ic_comment_G400,
+  Ic_fork_G400,
+  Ic_fork_P500,
+  Ic_share_G400,
+  Ic_storage_G400,
+  Ic_storage_P500,
+} from '../../../assets/svg';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 
 const FeedUsefulContent = props => {
   const {
@@ -39,8 +38,8 @@ const FeedUsefulContent = props => {
               ? onClickLikeIcon()
               : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
           }
-          hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
-          {likeIcon ? <ForkFocused /> : <Fork />}
+          hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+          {likeIcon ? <Ic_fork_P500 /> : <Ic_fork_G400 />}
         </TouchableOpacity>
       </View>
       {likeCount > 0 ? (
@@ -59,8 +58,8 @@ const FeedUsefulContent = props => {
                   })
                 : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
             }
-            hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
-            <Comment />
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+            <Ic_comment_G400 />
           </TouchableOpacity>
           {!is_confirm && count_comment !== 0 && (
             <View style={styles.comment_count_container}>
@@ -71,13 +70,13 @@ const FeedUsefulContent = props => {
         <View style={styles.ic_share}>
           <TouchableOpacity
             activeOpacity={0.8}
-            hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
             onPress={() =>
               isLogin !== false
                 ? onClickShareIcon()
                 : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
             }>
-            <Share />
+            <Ic_share_G400 />
           </TouchableOpacity>
         </View>
         <View style={styles.ic_store}>
@@ -88,8 +87,8 @@ const FeedUsefulContent = props => {
                 ? onClickStoreIcon()
                 : FooiyToast.message('뒤로가기 후 로그인해주세요', false, 0)
             }
-            hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}>
-            {storeIcon ? <StoreFocused /> : <Store />}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+            {storeIcon ? <Ic_storage_P500 /> : <Ic_storage_G400 />}
           </TouchableOpacity>
         </View>
       </View>
@@ -101,11 +100,8 @@ export default FeedUsefulContent;
 
 const styles = StyleSheet.create({
   content: {
-    height: 24,
-    width: globalVariable.width - 16,
     flexDirection: 'row',
-    marginLeft: 16,
-    paddingRight: 16,
+    paddingHorizontal: 16,
     marginTop: 16,
     alignItems: 'center',
   },
@@ -116,11 +112,9 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   fork_count: {
-    height: 24,
     textAlign: 'center',
     ...fooiyFont.Body2,
     color: fooiyColor.G500,
-    lineHeight: Platform.select({ios: 20, android: null}),
   },
   right_side_icon: {
     flex: 1,

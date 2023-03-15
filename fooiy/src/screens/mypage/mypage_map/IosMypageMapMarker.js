@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet} from 'react-native';
 import {Marker} from 'react-native-nmap';
 import {fooiyColor} from '../../../common/globalStyles';
@@ -10,11 +10,11 @@ const IosMypageMapMarker = props => {
 
   // 마커 클릭 이벤트
   const markerImage = category_is_cafe
-    ? require('../../../../assets/icons/marker/ios_cafe_marker.png')
-    : require('../../../../assets/icons/marker/ios_common_marker.png');
+    ? require('../../../../assets/images/ios_mypage_cafe_marker_unclicked.png')
+    : require('../../../../assets/images/ios_mypage_dining_marker_unclicked.png');
   const markerClickedImage = category_is_cafe
-    ? require('../../../../assets/icons/marker/ios_cafe_marker_clicked.png')
-    : require('../../../../assets/icons/marker/ios_common_marker_clicked.png');
+    ? require('../../../../assets/images/ios_mypage_cafe_marker_clicked.png')
+    : require('../../../../assets/images/ios_mypage_dining_marker_clicked.png');
 
   return (
     <>

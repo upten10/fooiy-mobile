@@ -102,7 +102,7 @@ export default props => {
             source={{uri: item.image[0]}}
             style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}>
             <Image
-              source={require('../../../../assets/image/feed_confirm_simple.png')}
+              source={require('../../../../assets/images/feed_confirm_simple.png')}
               style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}
             />
           </ImageBackground>
@@ -141,7 +141,7 @@ export default props => {
     return (
       <View style={{alignItems: 'center'}}>
         <FastImage
-          source={require('../../../../assets/image/empty_notice.png')}
+          source={require('../../../../assets/images/empty_notice.png')}
           style={{width: 137, height: 56, marginBottom: 16, marginTop: 76}}
         />
         <Text

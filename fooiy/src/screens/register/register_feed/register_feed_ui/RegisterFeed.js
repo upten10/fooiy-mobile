@@ -1,32 +1,30 @@
-import React, {useEffect, useState, useRef} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
 import {
-  View,
-  Text,
+  Keyboard,
+  Platform,
   StyleSheet,
+  Text,
   TextInput,
   TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  Platform,
-  KeyboardAvoidingView,
+  View,
 } from 'react-native';
-import {globalVariable} from '../../../../common/globalVariable';
-import {StackHeader} from '../../../../common_ui/headers/StackHeader';
-import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Notice, PartyCreateComplete} from '../../../../../assets/icons/svg';
-import Input from './Input';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import FooiytiRating from './FooiytiRating';
+import {Ic_check_120_P500, Ic_info_18_G600} from '../../../../../assets/svg';
 import {ApiManagerV2} from '../../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../../common/Enums';
-import {useNavigation} from '@react-navigation/native';
-import TotalRating from './TotalRating';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import SelectParties from '../../../../common_ui/SelectParties';
-import Margin from '../../../../common_ui/Margin';
 import FooiyToast from '../../../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
+import {globalVariable} from '../../../../common/globalVariable';
+import {StackHeader} from '../../../../common_ui/headers/StackHeader';
 import ApiLoading from '../../../../common_ui/loading/ApiLoading';
+import Margin from '../../../../common_ui/Margin';
+import SelectParties from '../../../../common_ui/SelectParties';
+import FooiytiRating from './FooiytiRating';
+import Input from './Input';
+import TotalRating from './TotalRating';
 
 const RegisterFeed = props => {
   const {photo_list, shop, menu, address} = props.route.params;
@@ -207,7 +205,7 @@ const RegisterFeed = props => {
             ? '피드 등록이\n완료되었어요!'
             : '피드가 등록될 때까지\n잠시만 기다려주세요 :)'}
         </Text>
-        <PartyCreateComplete />
+        <Ic_check_120_P500 />
       </View>
     );
   } else {
@@ -331,7 +329,7 @@ const RegisterFeed = props => {
           </TouchableWithoutFeedback>
           <Margin h={16} />
           <View style={styles.commnet_notice}>
-            <Notice />
+            <Ic_info_18_G600 />
             <Text style={styles.commnet_notice_text}>
               욕설, 비방 등의 코멘트는 지양해주세요.
             </Text>

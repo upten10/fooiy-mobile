@@ -1,31 +1,30 @@
+import {useNavigation} from '@react-navigation/native';
+import {debounce} from 'lodash';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  Keyboard,
   FlatList,
-  TouchableOpacity,
-  Image,
+  Keyboard,
   Platform,
   StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {
-  ArrowIconRight,
-  Search_Icon,
-  Ranker_1st,
-  Ranker_2nd,
-  Ranker_3rd,
-} from '../../../assets/icons/svg';
+  Ic_1st,
+  Ic_2nd,
+  Ic_3rd,
+  Ic_arrow_right_regular_24_G600,
+  Ic_search_G400,
+} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../common/Enums';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {debounce} from 'lodash';
-import {useNavigation} from '@react-navigation/native';
-import Rank from '../Rank';
-import {globalVariable} from '../../common/globalVariable';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
+import Rank from '../Rank';
 import ResizeImage from '../ResizeImage';
 
 const UserSearch = () => {
@@ -166,7 +165,7 @@ const UserSearch = () => {
               />
             </View>
           </View>
-          <ArrowIconRight
+          <Ic_arrow_right_regular_24_G600
             style={{position: 'absolute', right: 0, width: 24, height: 24}}
           />
         </View>
@@ -196,11 +195,11 @@ const UserSearch = () => {
           }}>
           <View style={{marginRight: 8}}>
             {index === 0 ? (
-              <Ranker_1st />
+              <Ic_1st />
             ) : index === 1 ? (
-              <Ranker_2nd />
+              <Ic_2nd />
             ) : index === 2 ? (
-              <Ranker_3rd />
+              <Ic_3rd />
             ) : (
               <Text style={styles.rank}>{index + 1}</Text>
             )}
@@ -238,7 +237,7 @@ const UserSearch = () => {
               </Text>
             </View>
           </View>
-          <ArrowIconRight
+          <Ic_arrow_right_regular_24_G600
             style={{position: 'absolute', right: 0, width: 24, height: 24}}
           />
         </View>
@@ -322,7 +321,7 @@ const UserSearch = () => {
                 : [styles.is_value, {borderColor: fooiyColor.G200}]
             }
           />
-          <Search_Icon style={{position: 'absolute', right: 16}} />
+          <Ic_search_G400 style={{position: 'absolute', right: 16}} />
         </View>
         <MainUI />
       </View>

@@ -1,9 +1,8 @@
-import React, {useState, useRef} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
-import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
+import React, {useRef, useState} from 'react';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Notice} from '../../../../../assets/icons/svg';
-import {Clear} from '../../../../../assets/icons/svg';
+import {Ic_clear_G400, Ic_info_18_G600} from '../../../../../assets/svg';
+import {fooiyColor, fooiyFont} from '../../../../common/globalStyles';
 
 const Input = props => {
   const {holders, onChangeText, value, title, checkInput} = props;
@@ -55,7 +54,7 @@ const Input = props => {
             onPress={() => {
               textInputRef.current.clear(), onChangeText('');
             }}>
-            <Clear />
+            <Ic_clear_G400 />
           </TouchableOpacity>
         ) : (
           <View style={{width: 24, height: 24}}></View>
@@ -64,7 +63,7 @@ const Input = props => {
       {title === '위치' ? (
         <View style={styles.location_notice}>
           <View style={{flexDirection: 'row'}}>
-            <Notice style={styles.location_notice_icon} />
+            <Ic_info_18_G600 style={styles.location_notice_icon} />
             <Text style={styles.location_notice_text}>
               정확한 위치를 몰라도 대략적인 위치를 적어주세요.{'\n'}ex)강남역
               9번 출구 편의점 옆

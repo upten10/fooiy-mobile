@@ -1,29 +1,29 @@
+import {Slider} from '@miblanchard/react-native-slider';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {fooiyColor} from '../../../../common/globalStyles';
 import {
-  Total_0,
-  Total_1,
-  Total_2,
-  Total_3,
-  Total_4,
-} from '../../../../../assets/icons/svg';
-import {Slider} from '@miblanchard/react-native-slider';
+  Ic_total_evaluation_10,
+  Ic_total_evaluation_30,
+  Ic_total_evaluation_50,
+  Ic_total_evaluation_70,
+  Ic_total_evaluation_99,
+} from '../../../../../assets/svg';
+import {fooiyColor} from '../../../../common/globalStyles';
 
 function TotalRating(props) {
   const {totalRating, setTotalRating} = props;
 
   const Imogi = () => {
     if (totalRating === 0) {
-      return <Total_0 />;
+      return <Ic_total_evaluation_10 />;
     } else if (totalRating === 1) {
-      return <Total_1 />;
+      return <Ic_total_evaluation_30 />;
     } else if (totalRating === 2) {
-      return <Total_2 />;
+      return <Ic_total_evaluation_50 />;
     } else if (totalRating === 3) {
-      return <Total_3 />;
+      return <Ic_total_evaluation_70 />;
     } else if (totalRating === 4) {
-      return <Total_4 />;
+      return <Ic_total_evaluation_99 />;
     }
   };
 

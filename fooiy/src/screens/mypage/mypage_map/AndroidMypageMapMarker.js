@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Marker} from 'react-native-nmap';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
@@ -46,8 +46,8 @@ const AndroidMypageMapMarker = props => {
         <Image
           source={
             clickedIndex === index
-              ? require('../../../../assets/icons/marker/mypage_marker_clicked.png')
-              : require('../../../../assets/icons/marker/mypage_marker_unclicked.png')
+              ? require('../../../../assets/images/aos_mypage_marker_clicked.png')
+              : require('../../../../assets/images/aos_mypage_marker_unclicked.png')
           }
           style={
             zoomLevel === 1
@@ -76,8 +76,8 @@ const AndroidMypageMapMarker = props => {
           }
           source={
             clickedIndex === index
-              ? require('../../../../assets/icons/marker/mypage_aos_marker_badge_clicked.png')
-              : require('../../../../assets/icons/marker/mypage_aos_marker_badge_unclicked.png')
+              ? require('../../../../assets/images/aos_mypage_marker_badge_clicked.png')
+              : require('../../../../assets/images/aos_mypage_marker_badge_unclicked.png')
           }
         />
         <Text

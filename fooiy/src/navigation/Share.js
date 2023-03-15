@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
-import {GoBackArrow} from '../../assets/icons/svg';
+import {Ic_arrow_left_large_K} from '../../assets/svg';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
 import FooiyToast from '../common/FooiyToast';
@@ -65,7 +65,7 @@ const Share = () => {
               : navigation.navigate('Login');
           }}
           style={{position: 'absolute', left: 16}}>
-          <GoBackArrow />
+          <Ic_arrow_left_large_K />
         </TouchableOpacity>
         <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.B}}>피드</Text>
       </View>

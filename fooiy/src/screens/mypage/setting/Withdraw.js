@@ -1,4 +1,5 @@
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -10,12 +11,11 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {Check, Uncheck} from '../../../../assets/icons/svg/index';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Ic_check_24_P500, Ic_uncheck_G300} from '../../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useNavigation} from '@react-navigation/native';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const Withdraw = props => {
   const checkBoxData = [
@@ -84,7 +84,7 @@ const Withdraw = props => {
           }>
           {item}
         </Text>
-        {clickedIndex === index ? <Check /> : <Uncheck />}
+        {clickedIndex === index ? <Ic_check_24_P500 /> : <Ic_uncheck_G300 />}
       </TouchableOpacity>
     );
   };

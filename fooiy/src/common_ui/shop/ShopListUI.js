@@ -1,8 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import FastImage from 'react-native-fast-image';
-import {PartyCrown} from '../../../assets/icons/svg';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Ic_crown_P500} from '../../../assets/svg';
 import {resizeImageType} from '../../common/Enums';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
@@ -81,7 +80,7 @@ const ShopListUI = item => {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {owner !== undefined ? (
             <View style={{marginRight: 4}}>
-              <PartyCrown />
+              <Ic_crown_P500 />
             </View>
           ) : null}
           <Text

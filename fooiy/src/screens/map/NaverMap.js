@@ -4,7 +4,7 @@ import Geolocation from 'react-native-geolocation-service';
 import NaverMapView from 'react-native-nmap';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import {LocationDarkIcon} from '../../../assets/icons/svg';
+import {Ic_my_location_G600} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -98,7 +98,7 @@ const NaverMap = props => {
           },
         ]}
         onPress={onClickLocationBtn}>
-        <LocationDarkIcon />
+        <Ic_my_location_G600 />
       </Pressable>
     );
   };

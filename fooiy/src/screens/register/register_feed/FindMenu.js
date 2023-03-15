@@ -1,23 +1,23 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Platform,
   Keyboard,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {ScrollView} from 'react-native-gesture-handler';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Ic_search_G400} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useNavigation} from '@react-navigation/native';
-import {Search_Icon} from '../../../../assets/icons/svg';
 import FooiyToast from '../../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {StackHeader} from '../../../common_ui/headers/StackHeader';
 
 const FindMenu = props => {
   const shop_id = props.route.params.shop.shop_id
@@ -87,7 +87,7 @@ const FindMenu = props => {
               onChangeText(text);
             }}
           />
-          <Search_Icon style={styles.search_icon} />
+          <Ic_search_G400 style={styles.search_icon} />
         </View>
         <ScrollView>
           {searchMenu &&

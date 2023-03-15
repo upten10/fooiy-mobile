@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Check, Notice, Uncheck} from '../../assets/icons/svg';
+import {
+  Ic_check_24_P500,
+  Ic_info_18_G600,
+  Ic_uncheck_G300,
+} from '../../assets/svg';
 import {ApiManagerV2} from '../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../common/Enums';
 import FooiyToast from '../common/FooiyToast';
@@ -81,7 +85,7 @@ const SelectParties = props => {
               ]}>
               {item.name}
             </Text>
-            {is_subscribe ? <Check /> : <Uncheck />}
+            {is_subscribe ? <Ic_check_24_P500 /> : <Ic_uncheck_G300 />}
           </View>
         </TouchableOpacity>
         <Margin h={16} />
@@ -122,14 +126,14 @@ const SelectParties = props => {
         <Margin h={16} />
         <View style={styles.commnet_notice}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Notice />
+            <Ic_info_18_G600 />
             <Text style={styles.commnet_notice_text}>
               선택하지 않으면 개인 피드에만 게시돼요.
             </Text>
           </View>
           <Margin h={8} />
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Notice />
+            <Ic_info_18_G600 />
             <Text style={styles.commnet_notice_text}>
               피드 1개당 공유할 파티는 10개만 선택할 수 있어요.
             </Text>

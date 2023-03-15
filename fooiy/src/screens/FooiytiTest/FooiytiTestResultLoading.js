@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {Musang} from '../../../assets/icons/svg';
+import {Fooiyti_result_musang} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -77,7 +77,7 @@ export default props => {
         <ApiLoading />
       </View>
       <View>
-        <Musang />
+        <Fooiyti_result_musang />
       </View>
     </SafeAreaView>
   );

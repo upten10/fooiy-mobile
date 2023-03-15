@@ -1,32 +1,32 @@
 import React from 'react';
 import {
-  FooiytiAImogi,
-  FooiytiCImogi,
-  FooiytiEImogi,
-  FooiytiFImogi,
-  FooiytiIImogi,
-  FooiytiNImogi,
-  FooiytiSImogi,
-  FooiytiTImogi,
-} from '../../../assets/icons/svg';
+  Ic_fooiyti_a,
+  Ic_fooiyti_c,
+  Ic_fooiyti_e,
+  Ic_fooiyti_f,
+  Ic_fooiyti_i,
+  Ic_fooiyti_n,
+  Ic_fooiyti_s,
+  Ic_fooiyti_t,
+} from '../../../assets/svg';
 const FooiytiImogi = props => {
   if (props) {
     return props.each_fooiyti === 'e' ? (
-      <FooiytiEImogi />
+      <Ic_fooiyti_e />
     ) : props.each_fooiyti === 'i' ? (
-      <FooiytiIImogi />
+      <Ic_fooiyti_i />
     ) : props.each_fooiyti === 's' ? (
-      <FooiytiSImogi />
+      <Ic_fooiyti_s />
     ) : props.each_fooiyti === 'n' ? (
-      <FooiytiNImogi />
+      <Ic_fooiyti_n />
     ) : props.each_fooiyti === 't' ? (
-      <FooiytiTImogi />
+      <Ic_fooiyti_t />
     ) : props.each_fooiyti === 'f' ? (
-      <FooiytiFImogi />
+      <Ic_fooiyti_f />
     ) : props.each_fooiyti === 'a' ? (
-      <FooiytiAImogi />
+      <Ic_fooiyti_a />
     ) : (
-      <FooiytiCImogi />
+      <Ic_fooiyti_c />
     );
   }
 };

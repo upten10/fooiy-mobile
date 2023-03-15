@@ -57,6 +57,7 @@ const Notification = props => {
   }, [totalCount]);
 
   const NotificationItem = item => {
+    console.log(item);
     const notificationList = item;
     return (
       <TouchableOpacity

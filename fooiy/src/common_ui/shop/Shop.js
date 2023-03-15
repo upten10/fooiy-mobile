@@ -1,27 +1,24 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
+  Platform,
   StyleSheet,
-  Button,
-  View,
   Text,
   TouchableOpacity,
-  Platform,
+  View,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {StackHeader} from '../headers/StackHeader';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Ic_menu_P500} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
-import {globalVariable} from '../../common/globalVariable';
-import {RenderLoader} from '../RenderLoader';
-import UI_Feed from '../feed/UI_Feed';
-import {useNavigation} from '@react-navigation/native';
 import {apiUrl} from '../../common/Enums';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Menu} from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import ShopFooiyti from './ShopFooiyti';
-import FlatListFooter from '../footer/FlatListFooter';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
+import UI_Feed from '../feed/UI_Feed';
+import FlatListFooter from '../footer/FlatListFooter';
+import {StackHeader} from '../headers/StackHeader';
+import ShopFooiyti from './ShopFooiyti';
 
 const Shop = props => {
   const [feeds, setFeeds] = useState([]);
@@ -124,7 +121,7 @@ const Shop = props => {
           style={styles.menu_container}
           activeOpacity={0.8}
           onPress={onClickMenu}>
-          <Menu style={styles.menu} />
+          <Ic_menu_P500 style={styles.menu} />
           <Text style={styles.menu_text}>메뉴판</Text>
         </TouchableOpacity>
         <TouchableOpacity

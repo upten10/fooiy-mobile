@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import Geolocation from 'react-native-geolocation-service';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {EmptyMenuClinic, LocationGrayIcon} from '../../../assets/icons/svg';
+import {
+  Ic_my_location_G400,
+  Menu_clinic_musang_transparency,
+} from '../../../assets/svg';
 import {geocoding} from '../../common/api/geocoding';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../common/Enums';
@@ -112,7 +114,7 @@ const MenuClinicFindShop = props => {
         <View>
           <Margin h={8} />
           <View style={styles.header_container}>
-            <LocationGrayIcon />
+            <Ic_my_location_G400 />
             <Margin w={8} />
             <Text style={styles.address_text}>
               {address.area1} {address.area2}
@@ -162,7 +164,7 @@ const MenuClinicFindShop = props => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <EmptyMenuClinic />
+        <Menu_clinic_musang_transparency style={{marginBottom: 16}} />
         <EmptyText />
       </View>
     );

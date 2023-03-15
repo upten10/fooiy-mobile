@@ -15,7 +15,7 @@ import RNFS from 'react-native-fs';
 import {CropView} from 'react-native-image-crop-tools';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {TurnLeft, TurnRight} from '../../../../assets/icons/svg';
+import {Ic_rotate_left, Ic_rotate_right} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
@@ -220,12 +220,12 @@ const ProfileImg = props => {
               <TouchableOpacity
                 style={[styles.rotate_icon, {left: 16}]}
                 onPress={() => cropViewRef.current.rotateImage(false)}>
-                <TurnLeft />
+                <Ic_rotate_left />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.rotate_icon, {right: 16}]}
                 onPress={() => cropViewRef.current.rotateImage(true)}>
-                <TurnRight />
+                <Ic_rotate_right />
               </TouchableOpacity>
             </View>
           </View>

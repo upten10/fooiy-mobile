@@ -12,23 +12,22 @@ import {
   View,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import FastImage from 'react-native-fast-image';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
-  ArrowIconRight,
-  PartyConfirmCheck,
-  PartyConfirmUncheck,
-  PartyCrown,
-  Search_Icon,
-} from '../../../../assets/icons/svg';
+  Ic_arrow_right_regular_24_G600,
+  Ic_check_24_P500,
+  Ic_crown_P500,
+  Ic_search_G400,
+  Ic_uncheck_G400,
+} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
+import {useDebounce} from '../../../common/hooks/useDebounce';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
 import Rank from '../../../common_ui/Rank';
-import {useDebounce} from '../../../common/hooks/useDebounce';
-import FooiyToast from '../../../common/FooiyToast';
 import ResizeImage from '../../../common_ui/ResizeImage';
 
 export const SearchBar = props => {
@@ -80,7 +79,7 @@ export const SearchBar = props => {
           }),
         }}
       />
-      <Search_Icon />
+      <Ic_search_G400 />
     </View>
   );
 };
@@ -316,7 +315,7 @@ export default props => {
                 }}>
                 {is_owner ? (
                   <View style={{marginRight: 4}}>
-                    <PartyCrown />
+                    <Ic_crown_P500 />
                   </View>
                 ) : null}
                 <Text style={{...fooiyFont.Subtitle3, color: fooiyColor.G800}}>
@@ -380,12 +379,12 @@ export default props => {
           </View>
           {isSetting ? (
             checkedMembers.findIndex(elem => elem === account_id) !== -1 ? (
-              <PartyConfirmCheck />
+              <Ic_check_24_P500 />
             ) : (
-              <PartyConfirmUncheck />
+              <Ic_uncheck_G400 />
             )
           ) : (
-            <ArrowIconRight />
+            <Ic_arrow_right_regular_24_G600 />
           )}
         </View>
       </TouchableOpacity>

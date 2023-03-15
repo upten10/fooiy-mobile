@@ -1,16 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Ic_map_G400} from '../../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
-import {Map} from '../../../../assets/icons/svg';
 import Rank from '../../../common_ui/Rank';
 
 const OtherUserPageProfile = props => {
@@ -76,7 +69,7 @@ const OtherUserPageProfile = props => {
               nickname: props.nickname,
             });
           }}>
-          <Map style={styles.otherBtnIcon} />
+          <Ic_map_G400 style={styles.otherBtnIcon} />
           <Text style={styles.otherBtnText}>지도</Text>
         </TouchableOpacity>
       </View>

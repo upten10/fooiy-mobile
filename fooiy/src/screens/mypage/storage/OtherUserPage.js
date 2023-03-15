@@ -1,16 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  Image,
   FlatList,
-  TouchableOpacity,
+  Image,
   ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {EmptyMenuClinic} from '../../../../assets/icons/svg';
+import {Menu_clinic_musang_transparency} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
@@ -99,7 +98,7 @@ const OtherUserPage = props => {
           alignItems: 'center',
           marginTop: 65,
         }}>
-        <EmptyMenuClinic />
+        <Menu_clinic_musang_transparency />
         <EmptyText />
       </View>
     );
@@ -119,7 +118,7 @@ const OtherUserPage = props => {
             source={{uri: item.image[0]}}
             style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}>
             <Image
-              source={require('../../../../assets/image/feed_confirm_simple.png')}
+              source={require('../../../../assets/images/feed_confirm_simple.png')}
               style={{flex: 1, resizeMode: 'cover', ...styles.feedImage}}
             />
           </ImageBackground>

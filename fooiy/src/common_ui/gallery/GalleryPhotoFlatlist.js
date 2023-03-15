@@ -1,13 +1,10 @@
-import React, {useCallback} from 'react';
+import {FlashList} from '@shopify/flash-list';
+import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import {globalVariable} from '../../common/globalVariable';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import ApiLoading from '../../common_ui/loading/ApiLoading';
-import {FlashList} from '@shopify/flash-list';
-import {phPathToFilePath} from './functions/getGalleryPhotos';
-import RNFS from 'react-native-fs';
 
 const GalleryPhotoFlatlist = props => {
   const {
@@ -82,7 +79,6 @@ const GalleryPhotoFlatlist = props => {
                 uri: item.node.image.url,
               }}
               style={styles.gallery_item}
-              // onError={require('../../../assets/icon_fork.png')}
             />
             <PhotoIndicator index={index} />
           </TouchableOpacity>

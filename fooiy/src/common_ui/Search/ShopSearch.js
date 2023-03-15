@@ -1,27 +1,27 @@
+import {useNavigation} from '@react-navigation/native';
+import {debounce} from 'lodash';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  Keyboard,
   FlatList,
-  TouchableOpacity,
   Image,
+  Keyboard,
   Platform,
   StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
-import {Notice, Search_Icon} from '../../../assets/icons/svg';
+import {Ic_info_18_G600, Ic_search_G400} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import Geolocation from 'react-native-geolocation-service';
-import {globalVariable} from '../../common/globalVariable';
-import {debounce} from 'lodash';
-import {useNavigation} from '@react-navigation/native';
-import {CheckLocationPermission} from '../../common/Permission';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
 import {elapsedText} from '../../common/helpers/elapsedText';
+import {CheckLocationPermission} from '../../common/Permission';
 
 const ShopSearch = () => {
   const navigation = useNavigation();
@@ -93,13 +93,13 @@ const ShopSearch = () => {
             이렇게 검색해 보세요!
           </Text>
           <View style={{flexDirection: 'row', marginTop: 8}}>
-            <Notice style={{marginRight: 8}} />
+            <Ic_info_18_G600 style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               먹고 싶은 음식
             </Text>
           </View>
           <View style={{flexDirection: 'row', marginTop: 8}}>
-            <Notice style={{marginRight: 8}} />
+            <Ic_info_18_G600 style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               먹고 싶은 음식점
             </Text>
@@ -205,13 +205,13 @@ const ShopSearch = () => {
               이렇게 검색해 보세요!
             </Text>
             <View style={{flexDirection: 'row', marginTop: 8}}>
-              <Notice style={{marginRight: 8}} />
+              <Ic_info_18_G600 style={{marginRight: 8}} />
               <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
                 먹고 싶은 음식
               </Text>
             </View>
             <View style={{flexDirection: 'row', marginTop: 8}}>
-              <Notice style={{marginRight: 8}} />
+              <Ic_info_18_G600 style={{marginRight: 8}} />
               <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
                 먹고 싶은 음식점
               </Text>
@@ -270,7 +270,7 @@ const ShopSearch = () => {
                 : [styles.is_value, {borderColor: fooiyColor.G200}]
             }
           />
-          <Search_Icon style={{position: 'absolute', right: 16}} />
+          <Ic_search_G400 style={{position: 'absolute', right: 16}} />
         </View>
         <MainUI />
       </View>

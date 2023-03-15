@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
-import {StyleSheet, Text, TouchableOpacity, Image, View} from 'react-native';
-import {PhotoCancel} from '../../../assets/icons/svg';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Ic_clear_W} from '../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 
 const WorkingPhotos = props => {
@@ -42,7 +42,7 @@ const WorkingPhotos = props => {
               );
             }}
             style={styles.delete_button}>
-            <PhotoCancel />
+            <Ic_clear_W />
           </TouchableOpacity>
         </View>
       );

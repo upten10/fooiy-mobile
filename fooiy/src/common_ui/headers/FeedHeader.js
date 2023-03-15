@@ -3,15 +3,15 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
-  ArrowIconBottomGray,
-  ArrowIconTopGray,
-  CafeShop,
-  CommonShop,
-  Logo,
-  Notification,
-  Notification_Push,
-  Search_Icon,
-} from '../../../assets/icons/svg';
+  Ic_arrow_bottom_regular_G300,
+  Ic_arrow_top_regular_G300,
+  Ic_cafe_28_G400,
+  Ic_dining_28_G400,
+  Ic_logo,
+  Ic_notifications_badge_G400,
+  Ic_notifications_G400,
+  Ic_search_G400,
+} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -56,15 +56,19 @@ const FeedHeader = props => {
       <View style={styles.header_container}>
         <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen(!open)}>
           <View style={styles.logo}>
-            <Logo />
+            <Ic_logo />
             <View style={styles.category}>
               {category === globalVariable.category_cafe ? (
-                <CafeShop />
+                <Ic_cafe_28_G400 />
               ) : (
-                <CommonShop />
+                <Ic_dining_28_G400 />
               )}
             </View>
-            {open ? <ArrowIconTopGray /> : <ArrowIconBottomGray />}
+            {open ? (
+              <Ic_arrow_top_regular_G300 style={{marginLeft: 2}} />
+            ) : (
+              <Ic_arrow_bottom_regular_G300 style={{marginLeft: 2}} />
+            )}
           </View>
         </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>
@@ -74,13 +78,17 @@ const FeedHeader = props => {
               notification(pushCount);
               setIsPush(false);
             }}>
-            {isPush ? <Notification_Push /> : <Notification />}
+            {isPush ? (
+              <Ic_notifications_badge_G400 />
+            ) : (
+              <Ic_notifications_G400 />
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               search();
             }}>
-            <Search_Icon />
+            <Ic_search_G400 />
           </TouchableOpacity>
         </View>
       </View>
@@ -105,7 +113,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   category: {
-    width: 28,
     marginLeft: 4,
   },
 });

@@ -1,13 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
-import {
-  BackHandler,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React from 'react';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
@@ -71,7 +64,7 @@ export default props => {
         </View>
         <View>
           <FastImage
-            source={require('../../../assets/icons/svg/fooiyti/FooiytiSummary.png')}
+            source={require('../../../assets/images/fooiyti_summary.png')}
             style={{width: '100%', height: 360}}
             resizeMode={'cover'}
           />

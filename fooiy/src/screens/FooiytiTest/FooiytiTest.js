@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Fooiyticheck, FooiytiUncheck} from '../../../assets/icons/svg';
+import {Ic_check_24_P500, Ic_uncheck_G300} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -73,9 +73,9 @@ export default props => {
           {item}
         </Text>
         {curCheckedIndex.findIndex(elem => elem === index) !== -1 ? (
-          <Fooiyticheck />
+          <Ic_check_24_P500 />
         ) : (
-          <FooiytiUncheck />
+          <Ic_uncheck_G300 />
         )}
       </TouchableOpacity>
     );

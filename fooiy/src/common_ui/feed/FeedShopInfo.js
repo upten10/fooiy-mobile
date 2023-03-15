@@ -2,17 +2,17 @@ import {useNavigation} from '@react-navigation/native';
 import React, {memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {globalVariable} from '../../common/globalVariable';
 import {
-  ArrowIcon,
-  TasteEvaluation10,
-  TasteEvaluation30,
-  TasteEvaluation50,
-  TasteEvaluation70,
-  TasteEvaluation99,
-} from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+  Ic_arrow_right_large_G400,
+  Ic_taste_evaluation_10,
+  Ic_taste_evaluation_30,
+  Ic_taste_evaluation_50,
+  Ic_taste_evaluation_70,
+  Ic_taste_evaluation_99,
+} from '../../../assets/svg';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
+import {globalVariable} from '../../common/globalVariable';
 import {elapsedText} from '../../common/helpers/elapsedText';
 
 const FeedShopInfo = props => {
@@ -62,7 +62,7 @@ const FeedShopInfo = props => {
             </View>
           </View>
           <View style={styles.arrow_icon}>
-            <ArrowIcon />
+            <Ic_arrow_right_large_G400 />
           </View>
         </View>
       </TouchableOpacity>
@@ -73,15 +73,15 @@ const FeedShopInfo = props => {
           <Text style={styles.taste_evaluation_text}>맛 평가</Text>
           <View style={styles.taste_evaluation_imogi}>
             {taste_evaluation === 99 ? (
-              <TasteEvaluation99 />
+              <Ic_taste_evaluation_99 />
             ) : taste_evaluation === 70 ? (
-              <TasteEvaluation70 />
+              <Ic_taste_evaluation_70 />
             ) : taste_evaluation === 50 ? (
-              <TasteEvaluation50 />
+              <Ic_taste_evaluation_50 />
             ) : taste_evaluation === 30 ? (
-              <TasteEvaluation30 />
+              <Ic_taste_evaluation_30 />
             ) : (
-              <TasteEvaluation10 />
+              <Ic_taste_evaluation_10 />
             )}
           </View>
         </View>

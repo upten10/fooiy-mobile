@@ -1,10 +1,9 @@
 import React, {memo} from 'react';
-import {TouchableOpacity, View, StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
-
-import {globalVariable} from '../../common/globalVariable';
+import {Ic_close_K, Shop_fooiyti_description} from '../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {Cancel, ShopFooiytiDescription} from '../../../assets/icons/svg';
+import {globalVariable} from '../../common/globalVariable';
 
 const ShopFooiytiModal = props => {
   const {isModalVisible, setModalVisible} = props;
@@ -21,7 +20,7 @@ const ShopFooiytiModal = props => {
             hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
             onPress={toggleModal}
             style={styles.icon_cancel}>
-            <Cancel />
+            <Ic_close_K />
           </TouchableOpacity>
         </View>
         <Text style={styles.description}>
@@ -29,7 +28,9 @@ const ShopFooiytiModal = props => {
           입맛에 맞을 확률이 높아져요.
         </Text>
         <View style={styles.taste_evaluation_image}>
-          <ShopFooiytiDescription style={{width: globalVariable.width - 280}} />
+          <Shop_fooiyti_description
+            style={{width: globalVariable.width - 280}}
+          />
         </View>
       </View>
     </Modal>

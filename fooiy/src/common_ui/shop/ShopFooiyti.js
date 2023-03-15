@@ -1,10 +1,10 @@
 import React, {useCallback, useState} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Notice_24_Bold} from '../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import FooiytiImogi from './FooiytiImogi';
+import {Ic_info_24_G600} from '../../../assets/svg';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import Margin from '../Margin';
+import FooiytiImogi from './FooiytiImogi';
 import ShopFooiytiModal from './ShopFooiytiModal';
 
 const ShopFooiyti = props => {
@@ -62,7 +62,7 @@ const ShopFooiyti = props => {
         <View style={styles.title_container}>
           <Text style={styles.title_text}>음식점 푸이티아이</Text>
           <Margin w={4} />
-          <Notice_24_Bold />
+          <Ic_info_24_G600 />
         </View>
       </TouchableOpacity>
       <View style={styles.container}>

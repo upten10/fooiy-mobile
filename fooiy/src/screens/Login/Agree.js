@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
-  AgreeAllCheck,
-  AgreeCheck,
-  AgreeUncheck,
-  ArrowRight24G400,
-} from '../../../assets/icons/svg';
+  Ic_arrow_right_large_G400,
+  Ic_check_G600,
+  Ic_check_W,
+  Ic_uncheck_G600,
+} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -95,7 +95,7 @@ export default props => {
           padding: 16,
           marginBottom: 8,
         }}>
-        {checkedIndex.length === 5 ? <AgreeAllCheck /> : <AgreeUncheck />}
+        {checkedIndex.length === 5 ? <Ic_check_W /> : <Ic_uncheck_G600 />}
         <Text
           style={{
             marginLeft: 8,
@@ -144,9 +144,9 @@ export default props => {
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {checkedIndex.findIndex(elem => elem === index) !== -1 ? (
-            <AgreeCheck />
+            <Ic_check_G600 />
           ) : (
-            <AgreeUncheck />
+            <Ic_uncheck_G600 />
           )}
           <Text
             style={{
@@ -159,7 +159,7 @@ export default props => {
         </View>
         {link ? (
           <TouchableOpacity activeOpacity={0.8} onPress={onPressLink}>
-            <ArrowRight24G400 />
+            <Ic_arrow_right_large_G400 />
           </TouchableOpacity>
         ) : null}
       </TouchableOpacity>

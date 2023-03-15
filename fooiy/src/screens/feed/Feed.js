@@ -1,3 +1,4 @@
+import messaging from '@react-native-firebase/messaging';
 import {React, useCallback, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
@@ -7,10 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import messaging from '@react-native-firebase/messaging';
 import {requestNotifications, RESULTS} from 'react-native-permissions';
-import {ArrowIconRight24, MenuClinicIcon} from '../../../assets/icons/svg';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {
+  Ic_arrow_right_large_G600,
+  Menu_clinic_musang,
+} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -19,8 +22,8 @@ import {globalVariable} from '../../common/globalVariable';
 import UI_Feed from '../../common_ui/feed/UI_Feed';
 import FlatListFooter from '../../common_ui/footer/FlatListFooter';
 import FeedHeader from '../../common_ui/headers/FeedHeader';
-import SelectCategoryModal from './SelectCategoryModal';
 import AnnouncementModal from './AnnouncementModal';
+import SelectCategoryModal from './SelectCategoryModal';
 
 const Feed = props => {
   const [token, setToken] = useState();
@@ -135,7 +138,7 @@ const Feed = props => {
           <View style={styles.header_container}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View style={{paddingTop: 8, paddingLeft: 4}}>
-                <MenuClinicIcon />
+                <Menu_clinic_musang />
               </View>
               <View style={{marginLeft: 16}}>
                 <Text style={{...fooiyFont.Body2, color: fooiyColor.G600}}>
@@ -147,7 +150,7 @@ const Feed = props => {
               </View>
             </View>
             <View style={{marginRight: 16}}>
-              <ArrowIconRight24 />
+              <Ic_arrow_right_large_G600 />
             </View>
           </View>
         </TouchableOpacity>

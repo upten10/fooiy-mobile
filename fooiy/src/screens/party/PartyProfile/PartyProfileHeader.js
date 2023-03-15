@@ -1,14 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
-import {Map, PartyProfileArrow} from '../../../../assets/icons/svg';
-import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
-import {globalVariable} from '../../../common/globalVariable';
-import Rank from '../../../common_ui/Rank';
+import {
+  Ic_arrow_right_regular_18_G600,
+  Ic_map_G400,
+} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../../common/globalStyles';
+import {globalVariable} from '../../../common/globalVariable';
+import Rank from '../../../common_ui/Rank';
 import ResizeImage from '../../../common_ui/ResizeImage';
 
 //  ("subscribe", "가입 중"),
@@ -133,7 +135,7 @@ export default props => {
               <Text style={[styles.party_info_text, styles.account_count_text]}>
                 파티원 {account_count}명
               </Text>
-              <PartyProfileArrow />
+              <Ic_arrow_right_regular_18_G600 />
             </TouchableOpacity>
           </View>
           <Text style={{...fooiyFont.Subtitle1}}>{name}</Text>
@@ -202,7 +204,7 @@ export default props => {
             borderRadius: 8,
             height: 48,
           }}>
-          <Map />
+          <Ic_map_G400 />
           <Text
             style={{
               ...fooiyFont.Button,

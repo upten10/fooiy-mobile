@@ -8,7 +8,7 @@ const ListEmptyTextComponent = text => {
       <Text
         style={{
           ...fooiyFont.Body1,
-          color: fooiyColor.G800,
+          color: fooiyColor.G600,
           textAlign: 'center',
         }}>
         {text}

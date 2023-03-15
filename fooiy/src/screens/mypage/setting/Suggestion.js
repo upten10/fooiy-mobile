@@ -1,4 +1,5 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -9,8 +10,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Ic_info_18_G600} from '../../../../assets/svg';
+import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
+import {apiUrl} from '../../../common/Enums';
+import FooiyToast from '../../../common/FooiyToast';
 import {
   fooiyColor,
   fooiyFont,
@@ -18,12 +24,6 @@ import {
 } from '../../../common/globalStyles';
 import {globalVariable} from '../../../common/globalVariable';
 import {StackHeader} from '../../../common_ui/headers/StackHeader';
-import {Notice} from '../../../../assets/icons/svg';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
-import {apiUrl} from '../../../common/Enums';
-import {useNavigation} from '@react-navigation/native';
-import FooiyToast from '../../../common/FooiyToast';
 
 const Suggestion = () => {
   const insets = useSafeAreaInsets();
@@ -155,13 +155,13 @@ const Suggestion = () => {
                 <Text style={styles.noticeTitle}>안내사항</Text>
               </View>
               <View style={styles.noticeTextContainer}>
-                <Notice style={styles.noticeIcon} />
+                <Ic_info_18_G600 style={styles.noticeIcon} />
                 <Text style={styles.noticeText}>
                   최소 10자 이상 적어주세요.
                 </Text>
               </View>
               <View style={styles.noticeTextContainerLast}>
-                <Notice style={[styles.noticeIcon, {paddingTop: 17}]} />
+                <Ic_info_18_G600 style={styles.noticeIcon} />
                 <Text style={styles.noticeText}>
                   푸이가 더 나은 방향으로 나아갈 수 있도록{'\n'}다양하고 소중한
                   의견을 남겨주세요 :)

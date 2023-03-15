@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {Notice_24} from '../../../assets/icons/svg';
+import {Ic_info_G400} from '../../../assets/svg';
 import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 import Margin from '../../common_ui/Margin';
 const Header = () => {
@@ -23,7 +23,7 @@ const Header = () => {
             })
           }>
           <View style={styles.category_button_container}>
-            <Notice_24 />
+            <Ic_info_G400 />
             <Margin w={8} />
             <Text style={styles.header_sub_title}>카테고리 활용법</Text>
           </View>

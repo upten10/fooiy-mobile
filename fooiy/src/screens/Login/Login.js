@@ -12,11 +12,11 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import {useDispatch} from 'react-redux';
 import {
-  Apple,
-  Kakaotalk,
-  Login_icon,
-  Login_img,
-} from '../../../assets/icons/svg';
+  Ic_apple,
+  Ic_kakao_talk,
+  Ic_login_logo,
+  Ic_login_text,
+} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
 import FooiyToast from '../../common/FooiyToast';
@@ -111,14 +111,14 @@ const Login = () => {
       <SafeAreaProvider>
         <View style={styles.container}>
           <View style={styles.info_container}>
-            <Login_img style={styles.login_img} />
-            <Login_icon style={styles.login_icon} />
+            <Ic_login_text style={styles.login_img} />
+            <Ic_login_logo style={styles.login_icon} />
           </View>
           <TouchableOpacity
             style={styles.kakao_btn_android}
             onPress={signInWithKakao}
             activeOpacity={0.8}>
-            <Kakaotalk style={styles.kakaotalk_icon} />
+            <Ic_kakao_talk style={styles.kakaotalk_icon} />
             <Text style={styles.kakao_text}>카카오로 시작하기</Text>
           </TouchableOpacity>
         </View>
@@ -129,21 +129,21 @@ const Login = () => {
       <SafeAreaProvider>
         <View style={styles.container}>
           <View style={styles.info_container}>
-            <Login_img style={styles.login_img} />
-            <Login_icon style={styles.login_icon} />
+            <Ic_login_text style={styles.login_img} />
+            <Ic_login_logo style={styles.login_icon} />
           </View>
           <TouchableOpacity
             style={styles.kakao_btn}
             onPress={signInWithKakao}
             activeOpacity={0.8}>
-            <Kakaotalk style={styles.kakaotalk_icon} />
+            <Ic_kakao_talk style={styles.kakaotalk_icon} />
             <Text style={styles.kakao_text}>카카오로 시작하기</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.apple_btn}
             onPress={() => onAppleButtonPress()}
             activeOpacity={0.8}>
-            <Apple style={styles.apple_icon} />
+            <Ic_apple style={styles.apple_icon} />
             <Text style={styles.apple_text}>APPLE로 시작하기</Text>
           </TouchableOpacity>
         </View>

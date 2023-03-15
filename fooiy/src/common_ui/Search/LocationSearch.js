@@ -1,29 +1,29 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {debounce} from 'lodash';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  Keyboard,
   FlatList,
-  TouchableOpacity,
+  Keyboard,
   Platform,
   StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {
-  Landmark,
-  Notice,
-  University,
-  Search_Icon,
-  Subway,
-  District,
-} from '../../../assets/icons/svg';
+  Ic_hotplace_W,
+  Ic_info_18_G600,
+  Ic_location_W,
+  Ic_school_W,
+  Ic_search_G400,
+  Ic_subway_W,
+} from '../../../assets/svg';
 import {ApiManagerV2} from '../../common/api/v2/ApiManagerV2';
 import {apiUrl} from '../../common/Enums';
-import {fooiyColor, fooiyFont} from '../../common/globalStyles';
-import {debounce} from 'lodash';
-import {useNavigation} from '@react-navigation/native';
 import FooiyToast from '../../common/FooiyToast';
+import {fooiyColor, fooiyFont} from '../../common/globalStyles';
 
 const LocationSearch = () => {
   const navigation = useNavigation();
@@ -71,19 +71,19 @@ const LocationSearch = () => {
             이렇게 검색해 보세요!
           </Text>
           <View style={{flexDirection: 'row', marginTop: 8}}>
-            <Notice style={{marginRight: 8}} />
+            <Ic_info_18_G600 style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               지역 이름
             </Text>
           </View>
           <View style={{flexDirection: 'row', marginTop: 8}}>
-            <Notice style={{marginRight: 8}} />
+            <Ic_info_18_G600 style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               지역 랜드마크
             </Text>
           </View>
           <View style={{flexDirection: 'row', marginTop: 8}}>
-            <Notice style={{marginRight: 8}} />
+            <Ic_info_18_G600 style={{marginRight: 8}} />
             <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
               지하철역
             </Text>
@@ -111,13 +111,13 @@ const LocationSearch = () => {
         <View style={styles.result_container}>
           <View style={styles.result_type}>
             {type === 'subway' ? (
-              <Subway />
+              <Ic_subway_W />
             ) : type === 'landmark' ? (
-              <Landmark />
+              <Ic_hotplace_W />
             ) : type === 'district' ? (
-              <District />
+              <Ic_location_W />
             ) : type === 'university' ? (
-              <University />
+              <Ic_school_W />
             ) : null}
           </View>
           <View>
@@ -159,19 +159,19 @@ const LocationSearch = () => {
               이렇게 검색해 보세요!
             </Text>
             <View style={{flexDirection: 'row', marginTop: 8}}>
-              <Notice style={{marginRight: 8}} />
+              <Ic_info_18_G600 style={{marginRight: 8}} />
               <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
                 지역 이름
               </Text>
             </View>
             <View style={{flexDirection: 'row', marginTop: 8}}>
-              <Notice style={{marginRight: 8}} />
+              <Ic_info_18_G600 style={{marginRight: 8}} />
               <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
                 지역 랜드마크
               </Text>
             </View>
             <View style={{flexDirection: 'row', marginTop: 8}}>
-              <Notice style={{marginRight: 8}} />
+              <Ic_info_18_G600 style={{marginRight: 8}} />
               <Text style={{...fooiyFont.Caption1, color: fooiyColor.G600}}>
                 지하철역
               </Text>
@@ -216,7 +216,7 @@ const LocationSearch = () => {
                 : [styles.is_value, {borderColor: fooiyColor.G200}]
             }
           />
-          <Search_Icon style={{position: 'absolute', right: 16}} />
+          <Ic_search_G400 style={{position: 'absolute', right: 16}} />
         </View>
         <MainUI />
       </View>

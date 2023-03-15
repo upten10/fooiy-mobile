@@ -12,7 +12,11 @@ import {
 import {TextInput} from 'react-native-gesture-handler';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ArrowIcon, Camera_Profile, Pencil} from '../../../../assets/icons/svg';
+import {
+  Ic_arrow_right_large_G400,
+  Ic_camera_static_G400,
+  Ic_edit_G400,
+} from '../../../../assets/svg';
 import {ApiManagerV2} from '../../../common/api/v2/ApiManagerV2';
 import {apiUrl, resizeImageType} from '../../../common/Enums';
 import FooiyToast from '../../../common/FooiyToast';
@@ -78,7 +82,7 @@ const SettingTab = props => {
           }}>
           {description}
         </Text>
-        <ArrowIcon />
+        <Ic_arrow_right_large_G400 />
       </View>
     </TouchableOpacity>
   );
@@ -180,7 +184,7 @@ export default props => {
                       borderColor: fooiyColor.G200,
                     }}
                   />
-                  <Camera_Profile style={styles.cameraIcon} />
+                  <Ic_camera_static_G400 style={styles.cameraIcon} />
                 </TouchableOpacity>
                 <Text style={{...fooiyFont.Subtitle1}}>{name}</Text>
               </View>
@@ -197,7 +201,7 @@ export default props => {
                   onFocus={onIntroFocus}
                   onBlur={onIntroBlur}
                 />
-                <Pencil
+                <Ic_edit_G400
                   style={isFocused ? styles.pencilFocus : styles.pencilBlur}
                 />
               </View>
