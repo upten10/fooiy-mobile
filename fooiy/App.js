@@ -1,117 +1,151 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
-import type {Node} from 'react';
+import messaging from '@react-native-firebase/messaging';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {Platform, StatusBar, Text, View} from 'react-native';
+import CodePush from 'react-native-code-push';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import {Provider} from 'react-redux';
+import analytics from '@react-native-firebase/analytics';
+import {fooiyColor, fooiyFont} from './src/common/globalStyles';
+import {globalVariable} from './src/common/globalVariable';
+import RootNavigator from './src/navigation/RootNavigator';
+import store from './src/redux/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import useCodePush from './src/common/hooks/useCodePush';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
+const toastConfig = {
+  notification: ({text1, text2}) => (
+    <View
+      style={{
+        height: 82,
+        width: globalVariable.width - 32,
+        backgroundColor: fooiyColor.G800,
+        borderRadius: 8,
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        padding: 16,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+      }}>
+      <Text style={{...fooiyFont.Subtitle2, color: fooiyColor.W}}>{text1}</Text>
+      <Text style={{...fooiyFont.Caption1, color: fooiyColor.W}}>{text2}</Text>
+    </View>
+  ),
+  message: ({text1}) => (
+    <View
+      style={{
+        height: 56,
+        marginBottom: Platform.OS === 'ios' ? globalVariable.tabBarHeight : 32,
+        width: globalVariable.width - 32,
+        backgroundColor: fooiyColor.G800,
+        borderRadius: 8,
+        marginTop: Platform.OS === 'ios' ? 16 : 0,
+        paddingLeft: 16,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+      }}>
       <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
+        style={{
+          ...fooiyFont.Subtitle2,
+          color: fooiyColor.W,
+          textAlign: 'center',
+          lineHeight: Platform.select({ios: 0, android: null}),
+        }}>
+        {text1}
       </Text>
     </View>
-  );
+  ),
 };
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+  const {updating} = useCodePush();
+  // Test
+  useEffect(() => {
+    messaging().setBackgroundMessageHandler(async remoteMessage => {});
+  }, []);
+  // Background Notification
+  useEffect(() => {
+    messaging().onNotificationOpenedApp(async remoteMessage => {
+      console.log(remoteMessage, 'Background notification');
+    });
+  }, []);
+  // // Quit Notification
+  // useEffect(() => {
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       console.log(remoteMessage, 'Quit notification');
+  //     });
+  // }, []);
+  //
+  // Foreground Notification
+  useEffect(() => {
+    messaging().onMessage(async remoteMessage => {
+      const {notification} = remoteMessage;
+      if (notification !== null) {
+        const {title, body} = notification;
+        Toast.show({
+          type: 'notification',
+          text1: title,
+          text2: body,
+        });
+      }
+    });
+  }, []);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const linking = {
+    prefixes: ['kakaoadeeb3a64a0ef610048dbcbe1010c07f://'],
+    config: {
+      screens: {
+        Share: 'kakaolink',
+      },
+    },
   };
 
+  const navigationRef = useNavigationContainerRef();
+  const routeNameRef = React.useRef(null);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        {updating ? null : (
+          <NavigationContainer
+            linking={linking}
+            ref={navigationRef}
+            onReady={() =>
+              (routeNameRef.current =
+                navigationRef.current.getCurrentRoute().name)
+            }
+            onStateChange={state => {
+              const previousRouteName = routeNameRef.current;
+              const currentRouteName =
+                navigationRef.current.getCurrentRoute().name;
+
+              if (previousRouteName !== currentRouteName) {
+                analytics()
+                  .logScreenView({
+                    screen_name: currentRouteName,
+                    screen_class: currentRouteName,
+                  })
+                  .then(() => {})
+                  .catch(err => {});
+              }
+              routeNameRef.current = currentRouteName;
+            }}>
+            <RootNavigator />
+            <StatusBar barStyle={'dark-content'} />
+          </NavigationContainer>
+        )}
+        <Toast config={toastConfig} />
+      </Provider>
+    </SafeAreaProvider>
   );
 };
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+const codePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
+};
+export default CodePush(codePushOptions)(App);
